@@ -1,0 +1,99 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - DMCA Takedown Request</title>
+<meta name="description" content="DMCA Takedown Request">
+<script src="/assets/js/comment_replies.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+{% filter markdown %}
+# DMCA Takedown Request
+
+Use this page to submit a DMCA takedown request to Ruqqus. 
+
+Abuse of this form is a violation of the Ruqqus [terms of service](/about/terms) and may lead to the termination of your Ruqqus account, at the discretion of Ruqqus staff.
+
+{% endfilter %}
+
+{% if v and v.is_suspended %}
+
+<div>Your Ruqqus account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
+
+{% elif v and v.is_activated %}
+
+<div class="h6 mt-5">Email</div>
+<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
+
+<form id="dmca-form" action="/help/dmca" method="post">
+	
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+	<label class="mt-5" for="input-links">Links to infringing content</label>
+	<textarea id="input-links" class="form-control" for="dmca-form" name="infringing_links" required></textarea>
+
+	<label>Who is the copyright owner?</label><br>
+	<input id="owner-me" type="radio" name="owner" value="me"> Me<br>
+	<input id="owner-rep" type="radio" name="owner" value="someone_i_represent"> A company, client, or organization that I am authorized to represent<br>
+	<input id="owner-other" type="radio" name="owner" value="other"> Someone else<br>
+
+	
+	<label class="mt-5" for="input-details">If you selected "A company, client, or organization that I am authorized to represent" above, provide additional information about the copyright owner and your relationship to them.</label>
+	<textarea id="input-details" class="form-control" for="dmca-form" name="relationship_details"></textarea>
+	
+
+	<label class="mt-5" for="your-name" class="mt-3">Your name</label>
+	<div>You must use your full legal name. Nicknames, usernames, stage names, abbreviations, etc. are not accepted.</div>
+	<input type="text" id="your-name" class="form-control" name="name" required>
+
+	<label class="mt-5" for="input-address">Your address</label>
+	<div>You must use your full legal permanent street or military address. PO boxes, C/O, etc. are not accepted.</div>
+	<textarea id="input-address" class="form-control" for="dmca-form" name="your_address" required></textarea>
+
+	<label class="mt-5" for="input-describe-work">Describe the copyrighted work</label>
+	<div>Include title and original date of publication at minimum.</div>
+	<textarea id="input-describe-work" class="form-control" for="dmca-form" name="describe_work" required></textarea>
+
+	<label for="input-corrob" class="mt-5">Provide evidence needed to corroborate your copyright ownership claim (optional)</label>
+	<div>This is not required, but will help if the allegedly infringing user files a counter-notice.</div>
+	<textarea id="input-corrob" class="form-control" for="dmca-form" name="corrob_evidence"></textarea>
+
+	<label class="mt-5">Required statements</label><br>
+	<input id="accept_email" type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ v.email }}.<br>
+	<input id="swear_perjury" type="checkbox" name="swear_perjury" value="true" required> I swear, under penalty of perjury, that the information in this Request is accurate, that the linked content is not protected by Fair Use, and that I am authorized to act on behalf of the copyright owner.<br>
+
+	<input class="btn btn-primary mt-5" type="submit" value="Submit">
+</form>
+
+{% elif v %}
+<p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
+{% else %}
+{% filter markdown %}
+<p>In order to ensure that we can respond to your request if needed, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
+{% endfilter %}
+{% endif %}
+
+{% endblock %}

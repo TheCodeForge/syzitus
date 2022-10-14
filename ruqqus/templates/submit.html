@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% block title %}
+    <title>Create a post - {{ 'SITE_NAME' | app_config }}</title>
+    {% endblock %}
+  
+  <link rel="icon" type="image/png" href="/assets/images/logo/favicon.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Ruqqus Board CSS -->
+
+    {% block stylesheets %}
+    {% if b %}
+    {% if v and v.can_use_darkmode and session.get("dark_mode_enabled") %}
+    <link id="css-link" rel="stylesheet" href="{{ b.css_dark_url }}">
+    {% else %}
+    <link id="css-link" rel="stylesheet" href="{{ b.css_url }}">
+    {% endif %}
+    {% else %}
+    {% if v and v.can_use_darkmode and session.get("dark_mode_enabled") %}
+    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css">
+    {% else %}
+    <link id="css-link" rel="stylesheet" href="/assets/style/main.css">
+    {% endif %}
+    {% endif %}
+    {% endblock %}
+
+    <!-- Font Awesome -->
+    <link href="https://fa.ruqqus.com/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+
+    {% if v %}
+
+    <script>
+        function post(url, callback, errortext) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);
+            var form = new FormData()
+            form.append("formkey", "{{ v.formkey }}");
+            xhr.withCredentials=true;
+            xhr.onload=callback
+            xhr.onerror=function(){alert(errortext)}
+            xhr.send(form);
+        }
+        function formkey() {
+            return '{{ v.formkey }}';
+        }
+    </script>
+
+    {% endif %}
+
+</head>
+
+<body id="submit">
+
+    <!-- Navigation -->
+    {% include "header.html" %}
+
+    {% block form %}
+
+    <!-- Page Content -->
+
+    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
+
+        <div class="container">
+
+            <div class="row justify-content-center mb-4 pb-7">
+
+                <div class="col col-md-6 p-3 py-md-0">
+
+                    <h1 class="d-none d-md-block">Create a post</h1>
+
+                    <h2 class="h3 d-md-none">Create a post</h2>
+
+                    <div class="body">
+
+                        <input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+                        <label for="title">Post Title</label>
+
+
+                        <input class="form-control" id="post-title" aria-describedby="titleHelpRegister" type="text" name="title" placeholder="Required" value="{{ title }}" minlength="1" maxlength="250" required oninput="checkForRequired()">
+
+                        <div id="urlblock">
+                            <label for="URL" class="mt-3">URL</label>
+                            <input class="form-control" id="post-URL" aria-describedby="URLHelp" type="url" name="url" placeholder="Optional if you have text." value="{{ request.args.get('url','') }}" required oninput="checkForRequired();hide_image()" onchange="autoSuggestTitle();">
+                            <small class="form-text text-muted">To post an image, use a direct image link such as i.imgur.com</small>
+                        </div>
+
+                        <div {% if not v.can_submit_image %} class="d-none"{% else %} ondrop="event.preventDefault();let input=document.getElementById('file-upload');input.files=event.dataTransfer.files;input.onchange();" ondragover="event.preventDefault();"{% endif %}>
+
+                        {% if v.can_submit_image %}
+                        <div id="image-upload-block">
+                            <div><label class="mt-3">Image Upload</label></div>
+
+                            <img id="image-preview" class="w-100 d-block">
+
+                            <label class="btn btn-secondary m-0" for="file-upload">
+                                <div id="filename-show">Select Image</div>
+                                <input id="file-upload" type="file" name="file" accept="image/*" hidden>
+                            </label>
+
+                            <small class="form-text text-muted">Images uploaded will be public. Optional if you have text.</small>
+                        </div>
+                        {% else %}
+                        <div id="image-upload-block">
+                            <div><label class="mt-3">Image Upload</label></div>
+
+                            <label class="btn btn-secondary m-0 disabled" for="file-upload">
+                                <div id="filename-show">Select Image</div>
+                                <input id="file-upload" type="file" accept="image/*" hidden disabled>
+                            </label>
+
+                            <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not v.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
+                        </div>
+                        {% endif %}
+                        </div>
+
+                        <label for="body" class="mt-3">Text<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Uses markdown. Limited to 10000 characters."></i></label>
+
+                        <div class="input-group">
+
+                            <textarea form="submitform" id="post-text" class="form-control rounded" aria-label="With textarea" placeholder="Optional if you have a link or an image." rows="5" name="body" oninput="charLimit('post-text','character-count-submit-text-form');checkForRequired()" maxlength="10000" required>{{ text }}</textarea>
+
+                            <span class="position-absolute text-small font-weight-bold" id="character-count-submit-text-form" style="right: 1rem; bottom: 0.5rem; z-index: 3;"></span>
+
+                            <div class="bg-light text-format d-none">
+                                <small class="format"><i class="fas fa-bold"></i></small>
+                                <small class="format"><i class="fas fa-italic"></i></small>
+                                <small class="format"><i class="fas fa-quote-right"></i></small>
+                                <small class="format"><i class="fas fa-link"></i></small>
+                            </div>
+                        </div>
+
+                        <div class="form-text text-small"><a href="/help/formatting" target="_blank">Formatting help</a></div>
+
+                        <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are Ruqqus communities. Enter a guild you would like your post to belong to."></i></label>
+                        <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
+
+                        <label for="over_18" class="text-danger mt-3">NSFW?</label>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
+                            <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <!-- Right Sidebar (hidden on devices smaller than "large") -->
+
+                <div class="col sidebar text-left d-none d-lg-block pt-3">
+
+                    <div class="sidebar-section sidebar-rules">
+                        <div class="title bg-purple"><span><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</span></div>
+                        <div class="body">
+                            <ol class="pl-0 mb-0">   
+                                <li>
+                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse1" role="button" aria-expanded="false" aria-controls="ruleCollapse1">Comply with US law<span class="float-right"><i class="fa"></i></span>
+                                    </a>
+                                </li>
+                                <div id="ruleCollapse1" class="collapse">
+                                    <p style="padding: 0 0 0 22px;">Do not post copyrighted material that you are not authorized to distribute. Do not post anything not legal to publish within, or export from, the United States of America.</p>
+                                </div>
+                                <li>
+                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse2" role="button" aria-expanded="false" aria-controls="ruleCollapse2">Do not harass other users<span class="float-right"><i class="fa"></i></span>
+                                    </a>
+                                </li>
+                                <div id="ruleCollapse2" class="collapse">
+                                    <p style="padding: 0 0 0 22px;">Do not harass or threaten others on Ruqqus. You are not allowed to share or publish personal information, either yours or another person.</p>
+                                </div>
+                                <li>
+                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse3" role="button" aria-expanded="false" aria-controls="ruleCollapse3">No inciting violence<span class="float-right"><i class="fa"></i></span>
+                                    </a>
+                                </li>
+                                <div id="ruleCollapse3" class="collapse">
+                                    <p style="padding: 0 0 0 22px;">No incitement, planning or execution of unlawful or violent activity. This does not include the exercise of human rights that may be considered unlawful in a user's home country but protected in the United States.</p>
+                                </div>
+                                <li>
+                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse4" role="button" aria-expanded="false" aria-controls="ruleCollapse4">Check for duplicates
+                                        <span class="float-right"><i class="fa"></i></span>
+                                    </a>
+                                </li>
+                                <div id="ruleCollapse4" class="collapse">
+                                    <p style="padding: 0 0 0 22px;">Nobody likes reposts. Please make sure the content you're posting hasn't been posted on Ruqqus before.</p>
+                                </div>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="d-none d-md-block">
+                        <ul class="list-inline text-small mb-0">
+                            <li class="list-inline-item"><a href="/help/about" class="text-gray-500">About</a></li>
+                            <li class="list-inline-item d-none"><a href="/help/contact" class="text-gray-500">Contact</a></li>
+                            <li class="list-inline-item"><a href="/help/terms" class="text-gray-500">Terms</a></li>
+                            <li class="list-inline-item"><a href="/help/privacy" class="text-gray-500">Privacy Policy</a></li>
+                            <li class="list-inline-item"><a href="/help/donate" class="text-gray-500">Donate</a></li>
+                            <li class="list-inline-item"><a href="/help/press" class="text-gray-500">Press</a></li>
+                            <li class="list-inline-item"><a href="/help" class="text-gray-500">Help</a></li>
+                            <li class="list-inline-item"><a href="https://www.twitter.com/ruqqus" class="text-gray-500">Twitter</a></li>
+                            <li class="list-inline-item"><a href="https://github.com/ruqqus/ruqqus" class="text-gray-500">GitHub</a></li>
+                            <li class="list-inline-item"><a href="/discord" class="text-gray-500">Discord</a></li>
+                        </ul>
+
+                        <div class="text-muted text-small-extra mt-1">v. 2.38.0, © 2021 Ruqqus, LLC</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div class="row fixed-bottom bg-white border-top p-3" id="" style="z-index: 100; bottom: 0px; transition: bottom 220ms cubic-bezier(0, 0, 0.2, 1) 0s;">
+                <div class="col">
+                    <a href="/" class="btn btn-secondary">Cancel</a>
+                </div>
+                <div class="col text-right">
+                    {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
+                    <button class="btn btn-purple" id="create_button" type="submit" disabled>Post</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    {% endblock %}
+
+    {% include "bootstrap.html" %}
+
+    <!-- Ruqqus JS -->
+
+    <script src="/assets/js/all_js.js?v=2.38.0"></script>
+
+    <!-- ClipboardJS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+
+    <!-- Instantiate clipboard by passing a string selector -->
+    <script type="text/javascript">
+        var clipboard = new ClipboardJS('.copy-link');
+        clipboard.on('success', function(e) {
+
+            jQuery(function($) {
+                $('#toast-success').toast('show');
+            })
+            console.log(e);
+        });
+        clipboard.on('error', function(e) {
+
+            jQuery(function($) {
+                $('#toast-error').toast('show');
+            })
+            console.log(e);
+        });
+    </script>
+
+    {% if v.can_submit_image %}
+    <script>
+    document.onpaste = function(event) {
+
+        f = document.getElementById('file-upload');
+        files = event.clipboardData.files;
+        filename = files[0].name.toLowerCase();
+
+        if (filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png") || filename.endsWith(".gif"))
+        {
+            f.files = files;
+            $('#filename-show').text(filename);
+            $('#urlblock').addClass('d-none');
+
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(f.files[0]);
+            fileReader.addEventListener("load", function () {
+                $('#image-preview').attr('src', this.result);
+            });
+
+            $('#file-upload').attr('required', false);
+
+            checkForRequired();
+        }
+    }
+
+    $('#file-upload').on('change', function(e){
+        f=document.getElementById('file-upload');
+        $('#urlblock').addClass('d-none');
+        $('#filename-show').text($('#file-upload')[0].files[0].name);
+
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(f.files[0]);
+        fileReader.addEventListener("load", function () {
+            $('#image-preview').attr('src', this.result);
+    });  
+
+        checkForRequired();
+    })
+    </script>
+    {% endif %}
+
+</body>
+
+</html>

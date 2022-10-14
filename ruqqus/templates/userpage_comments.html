@@ -1,0 +1,52 @@
+{% extends "userpage.html" %}
+
+{% block adminscripts %}
+<script src="/assets/js/comment_modding.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row no-gutters">
+  <div class="col">
+    <div class="flex-row box-shadow-bottom d-flex justify-content-center justify-content-md-between align-items-center">
+      <ul class="nav settings-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/@{{ u.username}}">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/@{{ u.username}}/comments">Comments</a>
+        </li>    
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row no-gutters my-md-3">
+
+  <div class="col">
+
+    {% if listing %}
+    <div class="posts p-3 p-md-0">
+     {% with comments=listing %}
+     {% include "comments.html" %}
+     {% endwith %}
+   </div>
+   {% else %}
+   <div class="text-center px-3 my-3">
+      <span class="fa-stack fa-2x text-muted mb-4">
+        <i class="fas fa-square text-gray-500 opacity-25 fa-stack-2x"></i>
+        <i class="fas text-gray-500 fa-scroll-old fa-stack-1x text-lg"></i>
+      </span>
+      {% if v and v.id == u.id %}
+      <h2 class="h5">You haven't made any comments yet</h2>
+      <p class="text-muted mb-md-5">Your commenting history will show here.</p>
+      {% else %}
+      <h2 class="h5">@{{ u.username }} hasn't made any comments yet</h2>
+      <p class="text-muted">Their commenting history will show here.</p>
+      {% endif %}
+    </div>
+
+  {% endif %}
+</div>
+</div>
+{% endblock %}

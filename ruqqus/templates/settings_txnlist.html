@@ -1,0 +1,33 @@
+{% extends "settings.html" %}
+
+{% block pagetitle %}Premium Settings - {{ 'SITE_NAME' | env }}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+  <div class="col col-lg-8">
+
+    <div class="settings">
+
+          <h2 id="ruqqus-premium" class="h5">Purchase History</h2>
+
+          {% with txns = v.txn_history %}
+          {% include "txn_listing.html" %}
+          {% endwith %}
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+
+{% block onload %}<script>coin_quote()</script>{% endblock %}

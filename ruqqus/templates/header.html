@@ -1,0 +1,212 @@
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-md navbar-light shadow shadow-md fixed-top" id="navbar">
+  <div class="container-fluid">
+    <div class="flex-grow-1"><a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}<span class="text-small-extra text-uppercase text-gray-400"> Beta</span></a></div>
+    <div class="flex-grow-1 d-fl d-none d-md-block">
+      <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
+        <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q">
+        <span class="input-group-append">
+          <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+        </span>
+      </form>
+    </div>
+    {% if v %}
+    <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+    {% else %}
+    <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon {% if v and v.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
+      {% if v and v.notifications_count %}
+      <i class="fas fa-circle text-danger text-small-extra position-absolute" style="right: -6px; top: -4px;"></i>
+      {% endif %}
+    </span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarResponsive">
+    <ul class="navbar-nav ml-auto d-none d-md-flex">
+
+      {% if v and v.mods_anything %}
+      <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+        <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools"><i class="fas fa-crown{% if v.has_report_queue %} text-warning{% endif %}"></i></a>
+      </li>
+      {% endif %}
+
+      {% if v %}
+
+      {% if v.notifications_count %}
+
+      <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+        <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class="fas fa-bell text-danger"></i><span class="badge-count font-weight-bolder">{{ v.notifications_count }}</span></a>
+      </li>
+      
+      {% else %}
+
+      <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+        <a class="nav-link" href="/notifications?all=true" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-bell"></i></a>
+      </li>
+
+      {% endif %}
+
+      <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+        <a class="nav-link" href="/submit{{ '?guild='+b.name if b else '' }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Create post"><i class="fas fa-feather-alt"></i></a>
+      </li>
+
+      <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <div class="dropdown">
+            <a class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-random"></i>
+            </a>
+            <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
+              <h6 class="dropdown-header">View random</h6>
+              <div class="px-2">
+                <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
+                <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
+                <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+      <li class="nav-item d-flex align-items-center justify-content-center text-center">
+        <div class="dropdown">
+          <a class="nav-link bg-transparent py-0 pr-0" href="{{ v.permalink }}" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <div class="d-flex">
+            <div><img src="{{ v.profile_url }}" class="profile-pic-35"></div>
+            <div class="text-left pl-2">
+              <div class="text-small font-weight-bold">{{ v.username }}</div>
+              <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+            </div>
+          </div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left border-0 shadow fade px-0 mt-2"
+        aria-labelledby="dropdownMenuButton">
+        <div class="px-2">
+          <div class="dropdown-meta">
+            <div class="font-weight-bold mb-2">{{ v.username }}</div>
+            <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+          </div>
+        </div>
+        <hr class="my-2">
+        <div class="px-2">
+          <a class="dropdown-item" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
+            profile</a>
+            {% if v.notifications_count %}
+            <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span
+              class="badge badge-danger rounded-circle align-top ml-1">{{ v.notifications_count }}</span></a>
+              {% else %}
+              <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+              {% endif %}
+              <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
+
+              {% block darkswitch %}
+              {% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
+              {% elif v and v.can_use_darkmode %}
+              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
+              {% else %}
+              <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
+              {% endif %}
+              {% endblock %}
+            </div>
+            <hr class="my-2">
+            <div class="px-2">
+              <button class="dropdown-item copy-link" data-clipboard-text="{{ ('/signup?ref='+v.username) | full_link }}"><i class="fad fa-user-friends fa-fw text-left mr-3"></i>Invite friends</button>
+            </div>
+            <hr class="my-2">
+            <div class="px-2">
+              <a class="dropdown-item" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% else %}
+      <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+        <a class="nav-link" href="/random/post" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="View random post"><i class="fas fa-random"></i></a>
+      </li>
+      <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+       <a class="btn btn-outline-purple" href="/login?redirect={{ request.path | urlencode}}">Sign In</a>
+     </li>
+     <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+       <a class="btn btn-purple" href="/signup?redirect={{ request.path | urlencode}}">Sign Up</a>
+     </li>
+     {% endif %}
+   </ul>
+
+   <!-- Mobile Nav Menu -->
+   <ul class="navbar-nav ml-auto d-flex d-md-none mt-3">
+     <li class="nav-item pb-3">
+      <form id="searchform" class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
+        <input class="form-control form-control-sm w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q">
+        <span class="input-group-append">
+          <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;" onclick="document.getElementById('searchform').submit()">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+        </span>
+      </form>
+    </li>
+    {% if v %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ v.username }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if v.notifications_count %}position-relative{% endif %}" href="/notifications?all=true">
+        <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
+        {% if v.notifications_count %}
+        <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
+    </li>
+    {% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
+    {% elif v and v.can_use_darkmode %}
+    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
+    {% else %}
+    <li class="nav-item"><a class="nav-link" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw mr-3"></i>Dark mode</a></li>
+    {% endif %}
+    {% if v and v.can_make_guild %}
+    <li class="nav-item">
+      <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
+    </li>
+    {% endif %}
+    <li class="nav-item border-top border-bottom mt-2 pt-2">
+      <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
+    </li>
+    {% else %}
+    <li class="nav-item d-flex align-items-center justify-content-center pb-3">
+      <a class="btn btn-outline-purple btn-block" href="/login?redirect={{ request.path | urlencode}}">Sign in</a>
+    </li>
+    <li class="nav-item d-flex align-items-center justify-content-center">
+      <a class="btn btn-purple btn-block" href="/signup?redirect={{ request.path | urlencode}}">Sign up</a>
+    </li>
+    {% endif %}
+    <li class="nav-item mt-2">
+      <a class="nav-link text-small-extra" href="/help/about">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/help/terms">Terms</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/help/privacy">Privacy</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="mailto:info@ruqqus.com">Contact</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="https://github.com/ruqqus/ruqqus">GitHub</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="https://ruqqus.com/discord">Discord</a>
+    </li>
+  </ul>
+
+</div>
+</div>
+</nav>

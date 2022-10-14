@@ -1,0 +1,24 @@
+{% extends "default.html" %}
+
+{% block content %}
+
+{% if v.is_activated %}
+<h1>My Info</h1>
+<div>
+<form action="/my_info" method="post">
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="method" value="html">
+	<input type="submit" class="btn btn-primary" value="Request HTML data">
+</form>
+</div>
+<div class="mt-2">
+<form action="/my_info" method="post">
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="method" value="json">
+	<input type="submit" class="btn btn-primary" value="Request JSON data">
+</form>
+</div>
+{% else %}
+<div>Verify your email first </div>
+{% endif %}
+{% endblock %}

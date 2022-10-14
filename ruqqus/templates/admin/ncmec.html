@@ -1,0 +1,41 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>File NCMEC Report</title>
+<meta name="description" content="NCMEC Report">
+{% endblock %}
+
+
+{% block content %}
+<h1>File NCMEC Report</h1>
+
+<p>This form will automatically file a report with NCMEC for child sexual abuse material submitted to {{ "SITE_NAME" | app_config }}.</p>
+
+{% if not ( "NCMEC_PASSWORD" | app_config ) %}
+<p>NCMEC reporting credentials are required to use this page. Obtain credentials and set <code>NCMEC_USERNAME</code> and <code>NCMEC_PASSWORD</code> environment variables.
+{% endif %}
+
+<form action="/admin/ncmec" method="post" class="mb-6">
+	<label for="link-input">Paste Ruqqus permalink</label>
+	<input id="link-input" type="text" class="form-control mb-2" name="link" required>
+
+	<label for="incident_type">Type of incident being reported</label>
+	<select name="incidentType" id="incident_type">
+		<option value="Child Pornography (possession, manufacture, and distribution)">Child Pornography (possession, manufacture, and distribution)</option>
+		<option value="Child Sex Trafficking">Child Sex Trafficking</option>
+		<option value="Child Sex Tourism">Child Sex Tourism</option>
+		<option value="Child Sexual Molestation">Child Sexual Molestation</option>
+		<option value="Misleading Domain Name">Misleading Domain Name</option>
+		<option value="Misleading Words or Digital Images on the Internet">Misleading Words or Digital Images on the Internet</option>
+		<option value="Online Enticement of Children for Sexual Acts">Online Enticement of Children for Sexual Acts</option>
+		<option value="Unsolicited Obscene Material Sent to a Child">Unsolicited Obscene Material Sent to a Child</option>
+	</select>
+
+	<label for="pw-input">Sign by re-entering your password</label>
+	<input id="pw-input" type="text" class="form-control mb-2" name="password" required>
+	<input type="submit" value="Submit" class="btn btn-primary">
+</form>
+{% endblock %}

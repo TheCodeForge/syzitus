@@ -1,0 +1,66 @@
+{% extends "docs_default.html" %}	
+
+{% block sidebarblock %}{% endblock %}
+
+{% block title %}	
+<title>{{ 'SITE_NAME' | app_config }} - Help</title>	
+<meta name="description" content="Ruqqus Help">	
+{% endblock %}	
+
+{% block sidebarLeftblock %}
+<div class="col sidebar d-none d-lg-block p-3">
+
+	<div class="sidebar-section">
+			<div class="title">Help</div>
+      <div class="body">
+	<a href="/">Back to {{ 'SITE_NAME' | app_config }}</a>
+      </div>
+	</div>
+
+	</div>
+
+{% endblock %}
+
+{% block content %}	
+{% filter markdown %}	
+# Help	
+
+## General Information	
+
+* [About](/help/about)	
+* [FAQ](/help/faq)
+* [Meet the admins](/help/admins)
+* [Post Formatting](/help/formatting)
+* [Guild Siege](/help/siege)
+* [Contact Ruqqus](/help/contact)
+
+## Account Cosmetics	
+
+* [Badges](/help/badges)	
+* [Titles](/help/titles)
+
+## Developer Resources
+
+* [API Documentation](/help/docs)
+* [OAuth2 Guide](/help/oauth)
+
+## Ruqqus Policies	
+
+* [Terms of service](/help/terms)	
+* [Content Policy](/help/rules)
+* [CSAM](/help/csam)
+* [Privacy Policy](/help/privacy)	
+* [Legal Policies](/help/legal)	
+
+## Legal Requests	
+
+* [Submit a Legal Request](/legal)	
+* [Submit a DMCA takedown request](/help/dmca)	
+* [Submit a DMCA counter-request](/help/counter_dmca)	
+
+## Press	
+
+* [Press Resources](/help/press)
+
+{% endfilter %}	
+{% endblock %}	

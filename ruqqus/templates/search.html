@@ -1,0 +1,272 @@
+{% extends "home.html" %}
+
+{% block pagetype %}search{% endblock %}
+
+{% block title %}
+<title>Search {% if b %}+{{ b.name }} {% endif %}for "{{ query }}" - {{ 'SITE_NAME' | app_config }}"</title> <!-- include dynamic jinja-generated text in title -->
+<meta name="description" content="{{ total }} result{{ 's' if total != 1 else '' }}">
+{% endblock %}
+
+{% block enlargeThumbJS %}
+<script src="/assets/js/enlarge_thumb.js"></script>
+{% endblock %}
+
+{% block toggleView %}
+<script src="/assets/js/toggle_view.js"></script>
+{% endblock %}
+
+{% block PseudoSubmitForm %}{% endblock %}
+
+{% block navbar %}
+      <div class="font-weight-bold py-3">{{ 'SITE_NAME' | env }} Search</div>
+
+      <div class="d-flex align-items-center">
+        <div class="text-small font-weight-bold mr-2">Filter by</div>
+        <div class="dropdown dropdown-actions">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
+            {% if time_filter=="week" %}<i class="fas fa-calendar-week mr-1"></i>{% endif %}
+            {% if time_filter=="month" %}<i class="fas fa-calendar-alt mr-1"></i>{% endif %}
+            {% if time_filter=="year" %}<i class="fas fa-calendar mr-1"></i>{% endif %}
+            {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
+            {{ time_filter | capitalize }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+            {% if not time_filter=="day" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day mr-2"></i>Day</a>{% endif %}
+            {% if not time_filter=="week" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week mr-2"></i>Week</a>{% endif %}
+            {% if not time_filter=="month" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt mr-2"></i>Month</a>{% endif %}
+            {% if not time_filter=="year" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=year"><i class="fas fa-calendar mr-2"></i>Year</a>{% endif %}
+            {% if not time_filter=="all" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}"><i class="fas fa-infinity mr-2"></i>All</a>{% endif %}
+          </div>
+        </div>
+
+        <div class="text-small font-weight-bold ml-3 mr-2">Sort by</div>
+        <div class="dropdown dropdown-actions">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if sort_method=="hot" %}<i class="fas fa-fire mr-1"></i>{% endif %}
+            {% if sort_method=="top" %}<i class="fas fa-arrow-alt-circle-up mr-1"></i>{% endif %}
+            {% if sort_method=="new" %}<i class="fas fa-sparkles mr-1"></i>{% endif %}
+            {% if sort_method=="old" %}<i class="fas fa-book mr-1"></i>{% endif %}
+            {% if sort_method=="disputed" %}<i class="fas fa-bullhorn mr-1"></i>{% endif %}
+            {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
+            {{ sort_method | capitalize }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+            {% if not sort_method=="hot" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=hot&t={{ time_filter }}"><i class="fas fa-fire mr-2"></i>Hot</a>{% endif %}
+            {% if not sort_method=="top" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=top&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up mr-2"></i>Top</a>{% endif %}
+            {% if not sort_method=="new" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=new&t={{ time_filter }}"><i class="fas fa-sparkles mr-2"></i>New</a>{% endif %}
+            {% if not sort_method=="old" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=old&t={{ time_filter }}"><i class="fas fa-book mr-2"></i>Old</a>{% endif %}
+            {% if not sort_method=="disputed" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=disputed&t={{ time_filter }}"><i class="fas fa-bullhorn mr-2"></i>Disputed</a>{% endif %}
+            {% if not sort_method=="activity" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort=activity&t={{ time_filter }}"><i class="fas fa-comments mr-2"></i>Activity</a>{% endif %}
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+
+
+{% block content %}
+<!-- Search text -->
+
+<div class="row no-gutters my-md-3">
+
+  <div class="col">
+
+    <div class="card search-results">
+
+      <div class="card-header bg-white d-none">
+        <ul class="list-inline no-bullets mb-0">
+          <li class="list-inline-item active mr-4"><i class="fas fa-align-left text-gray-400"></i></li>
+          <li class="list-inline-item"><i class="fas fa-link text-gray-400"></i></li>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div class="pl-md-3">
+
+          <div class="text-muted text-small mb-1">Showing {% block listinglength %}{{ listing | length }}{% endblock %} of {{ total }} result{{ 's' if total != 1 else '' }} for</div>
+          <h1 class="h4 mb-0">{{ query }}</h1>
+          {% if b %}<div class="text-muted text-small mb-1">Showing results in +{{ b.name }}. <a href="/search?q={{ query | urlencode }}">Did you want to search all of {{ 'SITE_NAME' | app_config }} instead?</a></div>{% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Post filters bar visible only on medium devices or larger-->
+
+<div class="flex-row tab-bar sticky d-none">
+
+  <ul class="nav post-nav mr-auto">
+    <li class="nav-item">
+
+      <a class="nav-link{% if sort_method=='hot' %} active{% endif %}" href="?sort=hot&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-fire"></i>Hot</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if sort_method=='top' %} active{% endif %}" href="?sort=top&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up"></i>Top</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if sort_method=='new' %} active{% endif %}" href="?sort=new&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-sparkles"></i>New</a> 
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if sort_method=='old' %} active{% endif %}" href="?sort=old&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-book"></i>Old</a> 
+    </li>
+    <li class="nav-item">
+      <a class="nav-link{% if sort_method=='fiery' %} active{% endif %}" href="?sort=fiery&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-bullhorn"></i>Disputed</a>
+    </li>
+    <li class="nav-item ">
+      <a class="nav-link {% if sort_method=='activity' %} active{% endif %}" href="/?sort=activity&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-comments"></i>Activity</a>
+    </li>
+  </ul>
+
+  <div>
+    <ul class="nav toggle-view ml-auto">
+      <li class="nav-item" style="">
+        <button class="btn nav-link active pr-3 pb-0 pl-0" id="toggle-list-view-btn" style="box-shadow: none;" onclick="toggle_list_view()">
+          <i class="fas fa-list"></i>List</button>
+        </li>
+        <li class="nav-item" style="">
+          <button class="btn nav-link p-0" style="box-shadow: none;" id="toggle-card-view-btn" onclick="toggle_card_view()">
+            <i class="fas fa-th-large"></i>Card</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="post-filter pb-2">
+        <span>Sort By:</span>
+        <span class="dropdown">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Time
+        </a>
+
+        <span class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="#">Day</a>
+          <a class="dropdown-item" href="#">Month</a>
+          <a class="dropdown-item" href="#">Year</a>
+          <a class="dropdown-item" href="#">All Time</a>
+        </span>
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="row no-gutters">
+
+    <div class="col-12">
+
+      {% block listing_template %}
+      
+      <div class="posts" id="posts">
+
+        {% include "submission_listing.html" %}
+    
+      </div>
+
+      {% endblock %}
+    </div>
+  </div>
+
+  <div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile" style="z-index: 100; top: 49px; transition: top cubic-bezier(0, 0, 0.2, 1) 220ms;">
+
+    <div class="col">
+
+      <div class="d-flex flex-row flex-nowrap justify-content-between">
+
+        <div class="post-filter">
+
+          <div class="d-flex align-items-center">
+
+            <div class="dropdown dropdown-actions">
+              <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if sort_method=="hot" %}<i class="fas fa-fire mr-1"></i>{% endif %}
+                {% if sort_method=="top" %}<i class="fas fa-arrow-alt-circle-up mr-1"></i>{% endif %}
+                {% if sort_method=="new" %}<i class="fas fa-sparkles mr-1"></i>{% endif %}
+                {% if sort_method=="old" %}<i class="fas fa-book mr-1"></i>{% endif %}
+                {% if sort_method=="disputed" %}<i class="fas fa-bullhorn mr-1"></i>{% endif %}
+                {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
+                {{ sort_method }}
+              </button>
+              <div class="dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-fire text-primary mr-3"></i>Hot</a>{% endif %}
+                {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up text-primary mr-3"></i>Top</a>{% endif %}
+                {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-sparkles text-primary mr-3"></i>New</a>{% endif %}
+                {% if not sort_method=="old" %}<a class="dropdown-item" href="?sort=old&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-book text-primary mr-3"></i>Old</a>{% endif %}
+                {% if not sort_method=="disputed" %}<a class="dropdown-item" href="?sort=disputed&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-bullhorn text-primary mr-3"></i>Disputed</a>{% endif %}
+                {% if not sort_method=="activity" %}<a class="dropdown-item" href="?sort=activity&q={{ query | urlencode }}&t={{ time_filter }}"><i class="fas fa-comments text-primary mr-3"></i>Activity</a>{% endif %}
+              </div>
+            </div>
+
+            <div class="dropdown dropdown-actions ml-2">
+              <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
+                {% if time_filter=="week" %}<i class="fas fa-calendar-week mr-1"></i>{% endif %}
+                {% if time_filter=="month" %}<i class="fas fa-fa-calendar-alt mr-1"></i>{% endif %}
+                {% if time_filter=="year" %}<i class="fas fa-calendar mr-1"></i>{% endif %}
+                {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
+                {{ time_filter | capitalize }}
+              </button>
+              <div class="dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                {% if not time_filter=="day" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day text-primary mr-3"></i>Day</a>{% endif %}
+                {% if not time_filter=="week" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week text-primary mr-3"></i>Week</a>{% endif %}
+                {% if not time_filter=="month" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt text-primary mr-3"></i>Month</a>{% endif %}
+                {% if not time_filter=="year" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}&t=year"><i class="fas fa-calendar text-primary mr-3"></i>Year</a>{% endif %}
+                {% if not time_filter=="all" %}<a class="dropdown-item" href="?q={{ query | urlencode }}&sort={{ sort_method }}"><i class="fas fa-infinity text-primary mr-3"></i>All</a>{% endif %}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {% endblock %}
+
+  {% block pagenav %}
+  {% if listing %}
+  <nav aria-label="Page navigation">
+    <ul class="pagination pagination-sm mb-0">
+      <li class="page-item{% if page==1 %} disabled{% endif %}">
+
+        <small><a class="page-link" href="?sort={{ sort_method }}&q={{ query | urlencode }}&t={{ time_filter }}&page={{ page-1 }}" tabindex="-1"{% if page==1 %} aria-disabled="true"{% endif %}>Back</a></small>
+      </li>
+      <li class="page-item{% if not next_exists %} disabled{% endif %}">
+        <small><a class="page-link" href="?sort={{ sort_method }}&q={{ query | urlencode }}&t={{ time_filter }}&page={{ page+1 }}">Next</a></small>
+
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+  {% endblock %}
+
+
+{% block adminpanel %}
+
+{% if domain %}
+  <p><b>{{ domain }}</b></p>
+  <p>{{ "Banned" if domain_obj and not domain_obj.can_submit else "Not banned" }}</p>
+
+  <form action="/admin/ban_domain" method="post">
+    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+    <input type="hidden" name="domain" value="{{ domain }}">
+    <label for="reason_select">Select Ban reason</label>
+    <select id="reason_select" class="form-control mt-2" name="reason" onchange="$('#ban-submit').prop('disabled', false)">
+        <option value="0">---Select Ban Reason---</option>
+        {% for i in reasons %}
+            <option value="{{ i }}"{% if i==domain.reason %} selected{% endif %}>{{ reasons[i] }}</option>
+        {% endfor %}
+    </select>
+    <input id="ban-submit" type="submit" class="btn btn-primary mt-2" value="Ban {{ domain_name }}" disabled>
+</form>
+
+{% endif %}
+
+{% endblock %}

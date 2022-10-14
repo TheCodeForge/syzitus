@@ -1,0 +1,79 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - The independent social platform</title>
+<meta name="description" content="Rules.">
+{% endblock %}
+
+
+{% block content %}
+
+{% filter markdown %}
+
+#Ruqqus Content Policy
+
+Ruqqus.com is a free speech environment. However, in order to comply with US law, and in order to ensure the safety of our users, there are a few things you are not permitted to do with the Ruqqus platform.
+
+By using ruqqus.com, you agree to follow these rules. Violations (in Ruqqus's sole discretion) may lead to the suspension of your ruqqus.com account.
+
+## 1: Intellectual Property
+
+You may not upload to, embed within, or link out from ruqqus.com:
+
+1. Copyrighted material that you are not authorized to distribute
+2. Anything not legal to publish within, or export from, the United States of America
+
+## 2: Digital Safety
+
+You may not upload to, embed within, or link out from ruqqus.com:
+
+1. Digitally malicious content, including but not limited to:
+    * Phishing attacks
+    * XSS attacks
+2. URL shorteners
+3. Anything that breaks Ruqqus
+    * If you find a problem, tell us about it. You'll get a nifty badge on your profile.
+
+## 3: User Safety
+
+You may not use ruqqus.com to do any of the following:
+
+1. Threaten, intimidate, or harrass other users
+2. Impersonate Ruqqus staff
+3. Solicit, collect, or publish personal information, either yours or another individual's
+	* This does not include information that is already publically available, such as public figures' names, government contact info, etc.
+4. Spam
+
+> Generally, we interpret harassment to be conduct that cannot be stopped using the site's built-in blocking features. Examples of such conduct include (but are not limited to) the use of multiple accounts to evade blocks, and the coordination of harassing activities across multiple users.
+
+## 4: Sexual Content
+
+You may not upload to, embed within, or link out from ruqqus.com:
+
+1. Sexual or sexually suggestive material not marked "NSFW"
+2. Sexual or sexually suggestive material involving individuals under the age of 18, including fictitious content
+3. Sexual or sexually suggestive material involving individuals who did not consent to its creation and distribution (commonly called "revenge pornography" or "involuntary pornography")
+
+> As a rule of thumb, if it features exposed genitalia outside of a strictly medical/educational context, it's probably adult content, and should be marked as such.
+
+## 5: IRL Safety
+
+You may not use ruqqus.com to do any of the following:
+
+1. Incite, plan, or execute unlawful or violent activity
+    * This includes the sale of illicit substances.
+    * This does not include the exercise of the human right to free speech, where the speech is unlawful in a user's home country but protected in the United States
+2. Engage in fraud
+
+## 6: Bots
+
+The following rules apply to clients interacting with Ruqqus in an automated manner ("Bots").
+
+1. Bots may not vote.
+2. Bots must use a unique `User-Agent` header.
+3. Bots must include a `X-User-Type` header with a value of `Bot`.
+4. Bots that post content must serve a useful function, such as looking up information or bridging to another service.
+5. Bots must authenticate with an OAuth2 token and use `/api/v1` endpoints whenever possible.
+
+{% endfilter %}
+{% endblock %}

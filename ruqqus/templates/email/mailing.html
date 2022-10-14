@@ -1,0 +1,25 @@
+{% extends "email/default.html" %}
+
+{% block preheader %}{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{% filter markdown %}
+
+Hey there, {{ user.username }}
+
+Thanks for using Two-Factor Authentication to help secure your Ruqqus account.
+
+We recently rolled out the ability to generate a **Two-Factor Recovery Code** when setting up Two-Factor Authentication. Because this provides a cryptographically secure method of recovering a Two-Factor account, **we will be removing the existing 24-hour wait recovery** before the end of the month.
+
+Once that happens, **it will not be possible to recover a Two-Factor account without a Recovery Code.**
+
+To obtain a Two-Factor Recovery Code, navigate to your account security settings, and remove and re-add Two Factor Authentication to your account.
+
+Thanks for using Ruqqus!
+
+-The Ruqqus team
+
+{% endfilter %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Ruqqus - Help</title>
+<meta name="description" content="Ruqqus Help">
+{% endblock %}
+
+{% block content %}
+<h1>Category Lock</h1>
+
+<form action="/admin/category" method="post" class="mb-6">
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<label for="category-selector">Enter guild</label>
+
+	<input id="guild" type="text" class="form-control" name="board" value="{{ b.name if b else '' }}">
+	<label for="category-selector">Select category</label>
+		<select id="category-selector" name="category" class="form-control" onchange="post_toast('/mod/{{ b.base36id }}/category/'+document.getElementById('category-selector').selectedOptions[0].value)" {% if b.is_locked_category %}disabled{% endif %}>
+              <option value="0" disabled>Select a Category</option>
+            {% for category in categories %}
+                <option disabled>{{ category.name }}</option>
+
+                {% for subcat in category.subcats %}
+                  <option value="{{ subcat.id }}"{% if b and subcat.id==b.subcat_id %} selected{% endif %}> - {{ subcat.name }}</option>
+                {% endfor %}
+            {% endfor %}
+		</select>
+        <div class="custom-control custom-checkbox mb-2">
+            <input type="checkbox" class="custom-control-input cat-check" id="lockbox" name="lock" {% if b and b.is_locked_category %}checked{% endif %}>
+            <label class="custom-control-label" for="lockbox">Lock Category Selection</label>
+        </div>
+    <input type="submit" value="Change guild category" class="btn btn-primary">
+</form>
+
+
+{% endblock %}

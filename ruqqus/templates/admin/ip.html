@@ -1,0 +1,46 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>IP: {{ ip }}</title>
+<meta name="description" content="Ruqqus Help">
+{% endblock %}
+
+{% block content %}
+<h2>{{ ip }}</h2>
+
+{% if ip_record %}
+    <h3>banned</h3>
+    {% else %}
+    <h3>not banned</h3>
+    {% if v.admin_level>=7 %}
+        <form action="/admin/ipban" method="post">
+        <input type="hidden" name="formkey" value="{{ v.formkey }}">
+        <input type="hidden" name="ip" value="{{ ip }}">
+        <input type="submit" value="ban {{ ip }}" class="btn btn-danger">
+        </form>
+    {% endif %}
+{% endif %}
+
+
+<h1>Users</h1>
+<div class="col {% block customPadding %}custom-gutters{% endblock %}" id="main-content-col">
+{% include "user_listing.html" %}
+</div>
+
+<h2>Posts</h2>
+<div class="row no-gutters mt-md-3">
+<div class="col-12">
+<div class="posts" id="posts">
+{% include "submission_listing.html" %}
+</div>
+</div>
+</div>
+
+<h2>Comments</h2>
+{% include "comments.html" %}
+
+
+{% endblock %}

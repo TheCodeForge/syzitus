@@ -1,0 +1,21 @@
+{% extends "legal_default.html" %}
+
+{% block content%}
+{% if success %}
+{% filter markdown %}
+# Completed
+
+Your legal request has been successfully submitted. We will send a response to your email address: {{ request.form.get("email","") }}
+
+Note that any information provided by Ruqqus LLC will be accompanied by a cryptographic signature, which may be used [here](/help/signature) to prove authenticity.
+
+{% endfilter %}
+{% else %}
+{% filter markdown %}
+# Unable to submit
+
+We were not able to save the form at this time. Please try again later.
+
+{% endfilter %}
+{% endif %}
+{% endblock %}

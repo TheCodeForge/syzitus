@@ -1,0 +1,21 @@
+{% extends "errors/default.html" %}
+
+{% block title %}
+<title>413 Request Entity Too Large</title>
+{% endblock %}
+
+{% block pagetype %}error-413{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+	<div class="col-10 col-md-5">
+	<div class="text-center px-3 my-8">
+			<i class="fad fa-mountain text-muted mb-5" style="font-size: 5rem;"></i>
+			<h1 class="h5">413 Request Entity Too Large</h1>
+			<p class="text-muted mb-5">There's a shortage of perfect request entities in this world. Would be a pity to damage yours.</p>
+			<p class="text-muted mb-5">(But you'll have to. There's a 16 MB limit to all file uploads, or 64 MB with Ruqqus Premium.)</p>
+			<div><a href="/" class="btn btn-primary">Go to frontpage</a></div>
+		</div>
+	</div>
+</div>
+{% endblock %}

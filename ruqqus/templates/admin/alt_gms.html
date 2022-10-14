@@ -1,0 +1,40 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Ruqqus - Help</title>
+<meta name="description" content="Ruqqus Help">
+{% endblock %}
+
+{% block content %}
+<h1>Guildmaster Check</h1>
+
+<form action="/admin/gm" method="get" class="mb-6">
+	<label for="link-input">Usernames</label>
+	<input id="link-input" type="text" class="form-control mb-2" name="user" value="{{ u1.username if u1 else '' }}" placeholder="User 1">
+	<input type="submit" value="Submit" class="btn btn-primary">
+</form>
+
+{% if user %}
+
+
+<h2>Results</h2>
+
+<p><b>Submitted Account: </b><a href="{{ user.permalink }}">@{{ user.username }}</a></p>
+<p><b>First Account: </b><a href="{{ first.permalink }}">@{{ first.username }}</a></p>
+<p><b>Total Guilds: </b>{{ boards | length }}</p>
+
+<p><b>Guild List:</b></p>
+{% for b in boards %}
+<ul>
+	<li><a href="{{ b.permalink }}">+{{ b.name }}</a>
+	</li>
+</ul>
+{% endfor %}
+
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "legal_default.html" %}
+
+{% block content%}
+<h1>Data Preservation Request</h1>
+<form action="/legal/final" method="post" enctype="multipart/form-data">
+	{% for k in request.form %}
+		<input type="hidden" name="{{ k }}" value="{{ request.form[k] }}">
+	{% endfor %}
+
+	<div class="h6 mt-5">List the username(s) of the account(s) whose information needs to be saved.</div>
+	<input type="text" name="target_user" class="form-control" required>
+
+	<div class="h6 mt-5">What kind of information is needed?</div>
+	<input type="radio" name="info_type" value="basic_info" checked required> Basic account information<br>
+	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by Ruqqus staff.<br>
+	<input type="radio" name="info_type" value="deleted_content"> Content that has been deleted by its owner. (Will require search warrant).<br>
+
+	<div class="h6 mt-5">Upload the data preservation request</div>
+	<div class="body">It must be on law enforcement letterhead, and be in English or include an official English translation.</div>
+	<input type="file" name="file" required>	
+
+	<div class="h6 mt-5">Required Statements</div>
+	<input type="checkbox" name="90day_understand" required> I understand that data preserved for this Request may not be available after 90 days.</br>
+	<input type="checkbox" name="swear_perjury" required> I swear, under penalty of perjury, that the information in this Request is accurate.</br>
+
+	<input class="btn btn-primary mt-5" type="submit" value="Next">	
+</form>
+{% endblock %}

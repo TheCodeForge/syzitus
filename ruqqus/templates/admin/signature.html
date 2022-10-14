@@ -1,0 +1,24 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Signature Generation</title>
+<meta name="description" content="Ruqqus Signature">
+{% endblock %}
+
+{% block content %}
+
+<h1>Signature Generation</h1>
+<p>Upload a file to generate a HMAC signature for it.</p>
+
+<form action="/admin/signature" method="post" class="mb-6" enctype="multipart/form-data">
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<label for="img-input">File Upload</label>
+	<input id="img-input" type="file" class="form-control-file mb-2" name="file">
+	<input type="submit" value="Generate Signature">
+</form>
+
+
+{% endblock %}

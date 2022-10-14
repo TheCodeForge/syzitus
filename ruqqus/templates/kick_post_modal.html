@@ -1,0 +1,44 @@
+
+<!-- kick Post Modal -->
+<div class="modal fade" id="kickPostModal" tabindex="-1" role="dialog" aria-labelledby="kickPostModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Kick post to +general</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="far fa-times"></i></span>
+        </button>
+      </div>
+      <!-- Before kick is made, show this -->
+      <div class="" id="kickPostFormBefore">
+        <form>
+          <div class="modal-body p-4">
+            <div class="d-flex justify-content-center">
+              <div>
+                <small class="text-muted">Original guild</small>
+                <select class="custom-select mt-1" name="kickReason" disabled="">
+                  <option value="Spam">+originalguild</option>
+                </select>
+              </div>
+
+              <div class="my-auto mx-4"><i class="far fa-long-arrow-right text-muted" style="font-size: 1.25rem;"></i></div>
+
+              <div>
+                <small class="text-muted">Desination guild</small>
+                <select class="custom-select mt-1" name="kickReason">
+                  <option value="Spam">+modsguild</option>
+                </select>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
+            <button id="kickPostButton" class="btn btn-primary">Kick post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

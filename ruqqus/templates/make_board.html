@@ -1,0 +1,153 @@
+{% extends "submit.html" %}
+
+{% block title %}
+<title>Create a Guild</title>
+{% endblock %}
+
+{% block pagetitle %}Create a Guild{% endblock %}
+{% block subtitle %}Launch your own guild on {{ 'SITE_NAME' | app_config }}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block stylesheets %}
+
+{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+<link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css">
+{% else %}
+<link id="css-link" rel="stylesheet" href="/assets/style/main.css">
+{% endif %}
+
+{% endblock %}
+
+{% block form %}
+
+<form id="submitform" action="/create_guild" method="post">
+
+    <div class="container">
+
+        <div class="row justify-content-center mb-4 pb-7">
+
+            <div class="col col-md-6 p-3 py-md-0">
+
+                <h1 class="d-none d-md-block">Create a guild</h1>
+
+                <h2 class="h3 d-md-none">Create a guild</h2>
+
+                <div class="body">
+
+                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+                    <label for="title">Guild Name</label>
+
+                    <input class="form-control" id="title-register"
+                    aria-describedby="titleHelpRegister" type="text" name="name" required>
+                    <small class="form-text text-muted">Names must be 3-25 characters</small>
+
+                    <label for="description" class="mt-3">Guild Description</label>
+
+                    <div class="input-group">
+                        <textarea form="submitform" class="form-control rounded" aria-label="With textarea" placeholder="Briefly describe what the guild is about..." rows="4" name="description">{{ description }}</textarea>
+                        <div class="bg-light text-format d-none">
+                            <small class="format"><i class="fas fa-bold"></i></small>
+                            <small class="format"><i class="fas fa-italic"></i></small>
+                            <small class="format"><i class="fas fa-quote-right"></i></small>
+                            <small class="format"><i class="fas fa-link"></i></small>
+                        </div>
+                    </div>
+
+                    <label for="select-category">Select Category</label>
+                    <div class="input-group">
+                      <select id="category-selector" name="category" class="form-control" >
+                        <option value="0" selected disabled>Select a Category</option>
+                        {% for category in categories %}
+                            <option disabled>{{ category.name }}</option>
+
+                            {% for subcat in category.subcats %}
+                              <option value="{{ subcat.id }}"> - {{ subcat.name }}</option>
+                            {% endfor %}
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <label for="over_18" class="text-danger mt-3">NSFW?</label>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18" value="true">
+                        <label class="custom-control-label" for="nsfwCheck">This guild is oriented around adult material.</label>
+                    </div>
+
+                </div>
+
+                <div class="footer">
+
+                    <div class="d-flex">
+
+                        {% if error %}
+                        <p class="mb-0">
+                            <span class="text-danger text-small" style="vertical-align: sub;">{{ error }}</span>
+                        </p>
+                        {% endif %}
+
+                        <button class="btn btn-primary ml-auto" id="create_button">Create Guild</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Right Sidebar (hidden on devices smaller than "large") -->
+
+            <div class="col sidebar text-left d-none d-lg-block pt-3">
+
+                <div class="sidebar-section sidebar-rules">
+                    <div class="title bg-purple"><span><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</span></div>
+                    <div class="body">
+                        <ol class="pl-0 mb-0">   
+                            <li>
+                                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse1" role="button" aria-expanded="false" aria-controls="ruleCollapse1">Comply with US law<span class="float-right"><i class="fa"></i></span>
+                                </a>
+                            </li>
+                            <div id="ruleCollapse1" class="collapse">
+                                <p style="padding: 0 0 0 22px;">Do not post copyrighted material that you are not authorized to distribute. Do not post anything not legal to publish within, or export from, the United States of America.</p>
+                            </div>
+                            <li>
+                                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse2" role="button" aria-expanded="false" aria-controls="ruleCollapse2">Do not harass other users<span class="float-right"><i class="fa"></i></span>
+                                </a>
+                            </li>
+                            <div id="ruleCollapse2" class="collapse">
+                                <p style="padding: 0 0 0 22px;">Do not harass or threaten others on {{ 'SITE_NAME' | app_config }}. You are not allowed to share or publish personal information, either yours or another person.</p>
+                            </div>
+                            <li>
+                                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse3" role="button" aria-expanded="false" aria-controls="ruleCollapse3">No inciting violence<span class="float-right"><i class="fa"></i></span>
+                                </a>
+                            </li>
+                            <div id="ruleCollapse3" class="collapse">
+                                <p style="padding: 0 0 0 22px;">No incitement, planning or execution of unlawful or violent activity. This does not include the exercise of human rights that may be considered unlawful in a user's home country but protected in the United States.</p>
+                            </div>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="d-none d-md-block">
+                    <ul class="list-inline text-small mb-0">
+                        <li class="list-inline-item"><a href="/help/about" class="text-gray-500">About</a></li>
+                        <li class="list-inline-item d-none"><a href="/help/contact" class="text-gray-500">Contact</a></li>
+                        <li class="list-inline-item"><a href="/help/terms" class="text-gray-500">Terms</a></li>
+                        <li class="list-inline-item"><a href="/help/privacy" class="text-gray-500">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a href="/help/donate" class="text-gray-500">Donate</a></li>
+                        <li class="list-inline-item"><a href="/help/press" class="text-gray-500">Press</a></li>
+                        <li class="list-inline-item"><a href="/help" class="text-gray-500">Help</a></li>
+                        <li class="list-inline-item"><a href="https://www.twitter.com/ruqqus" class="text-gray-500">Twitter</a></li>
+                        <li class="list-inline-item"><a href="https://github.com/ruqqus/ruqqus" class="text-gray-500">Github</a></li>
+                        <li class="list-inline-item"><a href="/discord" class="text-gray-500">Discord</a></li>
+                    </ul>
+                    <div class="text-muted text-small-extra mt-1">v. 2.29.9.9, © 2021 Ruqqus, LLC</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,396 @@
+{% extends "settings.html" %}
+
+{% block pagetitle %}Profile Settings - {{ 'SITE_NAME' | app_config }}{% endblock %}
+
+{% block content %}
+
+
+<div id="posts" class="row">
+
+  <div class="col col-lg-8">
+
+    <div class="settings">
+
+      <h2 class="h5">Profile Picture</h2>
+
+      <div class="settings-section rounded">
+
+        <div class="d-flex">
+
+          <div class="title w-lg-25 text-md-center">
+            <img src="{{ v.profile_url }}" class="profile-pic-75">
+          </div>
+
+          <div class="body w-lg-100 my-auto">
+
+            <div class="d-flex">
+
+              <div>
+
+                {% if v.can_upload_avatar %}
+
+                <form action="/settings/images/profile" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <label class="btn btn-secondary text-capitalize mr-2 mb-0">
+                    Update<input type="file" hidden name="profile" onchange="form.submit()">
+                  </label>
+                </form>
+
+                {% else %}
+
+                <div class="text-muted">You can add a custom avatar after earning 300 Rep.{% if request.headers.get("cf-ipcountry")=="T1" and not v.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</div>
+
+                {% endif %}
+
+              </div>
+
+              {% if v.has_profile %}
+              <div>
+                <form action="/settings/delete/profile" method="post">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+                </form>
+              </div>
+              {% endif %}
+
+            </div>
+
+            {% if v.can_upload_avatar %}
+
+            <div class="text-small-extra text-muted mt-3">JPG, PNG, GIF files supported. Max file size 16MB.</div>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+      <h2 class="h5">Profile Banner</h2>
+
+      <div class="settings-section rounded">
+
+        <div class="d-flex">
+
+          <div class="title w-lg-75 text-md-center">
+            <img src="{{ v.banner_url }}" class="banner-pic-135">
+          </div>
+
+          <div class="body w-lg-100 my-auto">
+
+            <div class="d-flex">
+
+              <div>
+
+                {% if v.can_upload_banner %}
+
+                <form action="/settings/images/banner" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <label class="btn btn-secondary text-capitalize mr-2 mb-0">
+                    Update<input type="file" hidden name="banner" onchange="form.submit()">
+                  </label>
+                </form>
+
+                {% else %}
+
+                <div class="text-muted">You can add a custom banner after earning 500 Rep.{% if request.headers.get("cf-ipcountry")=="T1" and not v.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</div>
+
+                {% endif %}
+
+              </div>
+
+              <div>
+
+                {% if v.has_banner %}
+                <form action="/settings/delete/banner" method="post">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+                </form>{% endif %}
+
+              </div>
+
+            </div>
+
+            {% if v.can_upload_banner %}
+
+            <div class="text-small-extra text-muted mt-3">JPG, PNG, GIF files supported. Max file size 16MB. (Recommend 1400x250 pixels)</div>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <h2 class="h5" id="referral" name="referral">Referrals</h2>
+
+      <p class="text-small text-muted">Invite a friend to make a {{ 'SITE_NAME' | app_config }}.</p>
+
+      <div class="settings-section rounded">
+
+        <div class="d-lg-flex">
+
+          <div class="title w-lg-25">
+            <label for="referral_code">Referral code</label>
+          </div>
+
+          <div class="body w-lg-100">
+
+            <div class="input-group">
+
+              <input type="text" readonly="" class="form-control copy-link" id="referral_code" value="{{ ('/signup?ref=' + v.username) | full_link }}" data-clipboard-text="{{ ('/signup?ref=' + v.username) | full_link }}">
+
+              <span class="input-group-append" data-toggle="tooltip" data-placement="top" title="You have referred {{ v.referral_count }} user{{ 's' if v.referral_count != 1 else '' }} so far. {% if v.referral_count==0 %}¯\_(ツ)_/¯{% elif v.referral_count>10%}Wow!{% endif %}">
+                <span class="input-group-text text-muted border-0">
+                  <i class="far fa-user mr-1" aria-hidden="true"></i>{{ v.referral_count }}</span>
+                </span>
+
+              </div>
+
+              <div class="text-small-extra text-muted mt-3">Share this link with a friend. {% if v.referral_count==0 %} When they sign up, you'll get the bronze recruitment badge. <a href="/help/badges">Learn more.</a>{% elif v.referral_count<10 %} When you refer 10 friends, you'll receive the silver recruitment badge. <a href="/help/badges">Learn more.</a>{% elif v.referral_count<100 %} When you refer 100 friends, you'll receive the gold recruitment badge. <a href="/help/badges">Learn more</a>.{% endif %}</div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <h2 class="h5" name="referral">Linked Accounts</h2>
+
+          <p class="text-small text-muted">Manage your connections to other services.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label>Discord</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                {% if v.discord_id %}
+                <form action="/settings/remove_discord" method="post">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <input type="submit" class="btn btn-secondary text-capitalize mr-2 mb-0 mt-2" value="Disconnect Discord">
+                </form>
+
+                <div class="text-small-extra text-muted mt-3">Disconnecting your Discord account will remove you from the {{ 'SITE_NAME' | app_config }} Discord server.</div>
+                {% else %}
+                <a href="/discord" class="btn btn-primary">Link Discord</a>
+                <div class="text-small-extra text-muted mt-3">Link your Discord account to join the {{ 'SITE_NAME' | app_config }} Discord server.</div>
+                {% endif %}
+
+              </div>
+
+            </div>
+
+          </div>
+
+    
+    
+          <h2 class="h5" name="referral">RSS Feed</h2>
+
+          <p class="text-small text-muted">Subscribe to your own personal {{ 'SITE_NAME' | app_config | lower}} rss feed.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="referral_code">Custom User Feed</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <input type="text" readonly="" class="form-control copy-link" id="rss_feed" value="{{ ('/feeds/@' + v.username + '/' + v.feedkey + '/hot') | full_link }}" data-clipboard-text="{{ ('/feeds/@' + v.username + '/' + v.feedkey + '/hot') | full_link }}">
+                <form action="/settings/new_feedkey" method="post">
+                  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                  <input type="submit" class="btn btn-secondary text-capitalize mr-2 mb-0 mt-2" value="Generate new URL">
+                </form>
+
+                <div class="text-small-extra text-muted mt-3">You can change the feed by replacing "hot" with either top, or disputed.</div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+            <h2 class="h5" id="bio" name="bio">Your Profile</h2>
+
+            <p class="text-small text-muted">Edit how others see you on {{ 'SITE_NAME' | app_config }}.</p>
+
+            <div class="settings-section rounded mb-0">
+
+              <div class="body d-lg-flex border-bottom">
+
+                <label for="bio" class="text-black w-lg-25">Display Name</label>
+
+                <div class="w-lg-100">
+                  <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs 20 Coins and may be done once every 7 days.</p>
+
+
+                  <form id="profile-settings" action="/settings/name_change" method="post">
+                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                    <input type="text" name="name" class="form-control" value="{{ v.username }}">
+                    <small>Your original username will always stay reserved for you: <code>{{ v.original_username }}</code></small>
+                    <div class="d-flex mt-2">
+                      <small>5-25 characters, including letters, numbers, and _</small>
+                      {% if v.can_change_name %}
+                      <input class="btn btn-primary ml-auto" id="nameSave" type="submit" value="Change Display Name">
+                      {% elif g.timestamp-v.name_changed_utc < 60*60*24*7 %}
+                      <input class="btn btn-primary ml-auto" id="nameSave" type="submit" value="{{ 7-((g.timestamp-v.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
+                      {% else %}
+                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium">20 Coins required</a>
+                      {% endif %}
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+              <div class="body d-lg-flex border-bottom">
+
+                <label for="bio" class="text-black w-lg-25">Bio</label>
+
+                <div class="w-lg-100">
+
+
+                  <form id="profile-bio" action="/settings/profile" method="post">
+                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                    <div class="input-group mb-2">
+                      <textarea class="form-control rounded" id="bio-text" aria-label="With textarea"
+                      placeholder="Tell the {{ 'SITE_NAME' | app_config }} community a bit about yourself."
+                      rows="3" name="bio" form="profile-bio" maxlength="256">{{ v.bio }}</textarea>
+                    </div>
+                    <div class="d-flex">
+                      <small>Limit of 256 characters</small>
+                      <input class="btn btn-primary ml-auto" id="bioSave" type="submit" value="Save Changes">
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+
+              <div class="body d-lg-flex border-bottom">
+                <label for="bio" class="text-black w-lg-25">Title</label>
+
+                <div class="w-lg-100">
+                  <p>Titles change the way your name is displayed across {{ 'SITE_NAME' | app_config }}, allowing you to show off a site achievement.</p>
+                  <div class="input-group mb2">
+                    <select id='title-selector' class="form-control" form="profile-settings" name="title_id" onchange="post_toast('/settings/profile?title_id='+document.getElementById('title-selector').value)">
+                     <option value="0"{{ ' selected' if v.title_id==0 else '' }}>No title</option>
+                     {% for entry in v.available_titles %}
+                     <option value="{{ entry.id }}"{{ ' selected' if v.title_id==entry.id else '' }}>{{ entry.text }}</option>
+                     {% endfor %}
+                   </select>
+                 </div>
+                 <div class="text-small-extra text-muted mt-3"><a href="/help/titles" target="_blank">Click here</a> to see all titles and the requirements to unlock them.</div>
+
+               </div>
+
+             </div>
+
+             <div class="body d-lg-flex border-bottom">
+                <label for="bio" class="text-black w-lg-25">Default Sorting</label>
+
+                <div class="w-lg-100">
+                  <p>Change the default sorting for posts.</p>
+                  <div class="input-group mb2">
+                    <select id='defaultsorting' class="form-control" form="profile-settings" name="defaultsorting" onchange="post_toast('/settings/profile?defaultsorting='+document.getElementById('defaultsorting').value)">
+                     {% for entry in ["hot", "new", "old", "top", "disputed", "activity"] %}
+                     <option value="{{ entry }}"{{ ' selected' if v.defaultsorting==entry else '' }}>{{ entry }}</option>
+                     {% endfor %}
+                   </select>
+                  </div>
+
+                </div>
+
+             </div>
+
+             <div class="body d-lg-flex border-bottom">
+                <label for="bio" class="text-black w-lg-25">Default Time Filter</label>
+
+                <div class="w-lg-100">
+                  <p>Change the default time filter for posts.</p>
+                  <div class="input-group mb2">
+                    <select id='defaulttime' class="form-control" form="profile-settings" name="defaulttime" onchange="post_toast('/settings/profile?defaulttime='+document.getElementById('defaulttime').value)">
+                     {% for entry in ["day", "week", "month", "year", "all"] %}
+                     <option value="{{ entry }}"{{ ' selected' if v.defaulttime==entry else '' }}>{{ entry }}</option>
+                     {% endfor %}
+                   </select>
+                  </div>
+
+                </div>
+
+             </div>
+
+             <div class="d-lg-flex border-bottom">
+
+              <div class="title w-lg-25">
+                <label for="privateswitch">Private Mode</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="privateswitch" name="private"{% if v.is_private%} checked{% endif %} onchange="post_toast('/settings/profile?private='+document.getElementById('privateswitch').checked)">
+                  <label class="custom-control-label" for="privateswitch"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">This will hide your post and comment history from others. We will also ask search engines to not index your profile page. (Your content will still be accessible via direct link.)</span>
+
+              </div>
+
+            </div>
+             <div class="d-lg-flex border-bottom">
+
+              <div class="title w-lg-25">
+                <label for="nofollowswitch">Disable Subscriptions</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="nofollowswitch" name="nofollow"{% if v.is_nofollow%} checked{% endif %} onchange="post_toast('/settings/profile?nofollow='+document.getElementById('nofollowswitch').checked)">
+                  <label class="custom-control-label" for="nofollowswitch"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Prevent other users from subscribing to you.</span>
+
+              </div>
+
+            </div>
+             <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="chatswitch">Automatically Join Chats</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="chatswitch" name="join_chat"{% if v.auto_join_chat%} checked{% endif %} onchange="post_toast('/settings/profile?join_chat='+document.getElementById('chatswitch').checked)">
+                  <label class="custom-control-label" for="chatswitch"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Automatically join Guild chat channels.</span>
+
+              </div>
+
+            </div>
+          </div>
+          </div>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+{% endblock %}

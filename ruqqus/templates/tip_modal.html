@@ -1,0 +1,91 @@
+<div class="modal fade" id="tipModal" tabindex="-1" role="dialog" aria-labelledby="deletePostModalTitle" aria-modal="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header d-flex">
+				<h5 class="modal-title">Give this ruqqie a tip!</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="far fa-times"></i></span>
+				</button>
+			</div>
+			<div class="modal-body bg-light text-center d-lg-flex align-items-center px-md-4">
+
+				<div class="w-100">
+
+					<div class="d-flex align-items-center justify-content-around w-25 mx-auto mb-2">
+
+						<img id="tip-sender-pfp" src="{{ v.profile_url }}" class="profile-pic-50">
+						<i class="far fa-long-arrow-right text-muted text-lg mx-3"></i>
+						<img id="tip-recipient-pfp" src="" class="profile-pic-50">
+
+					</div>
+					<div class="h5 mb-0">{% if v.has_premium %}Send a tip{% else %}Get coins to send a tip{% endif %}</div>
+					<div class="text-small-extra text-muted mb-3">All tips are anonymous :)</div>
+
+					<div class="position-relative">
+					<div class="bg-white shadow-sm rounded-lg text-left {% if not v.has_premium %}opacity-25{% endif %}">
+						<div class="px-5 py-4">
+							<div class="font-weight-bold text-muted mb-2">You are tipping</div>
+							<div class="h3 mb-0"><img src="/assets/images/icons/ruqqus-coin.png" class="mt-n1" style="width: 24px;"> 1 <span class="text-muted text-lg">coin</span></div></div><hr class="my-0" style="border-style: dashed;"><div class="px-5 py-4">
+								<div class="mb-3">
+									<div class="text-muted">Recipient:</div>
+									<div class="font-weight-bold">@<span id="tip-recipient-username"></span></div>
+								</div><div class="mb-3">
+									<div class="text-muted">Premium duration:</div>
+									<div class="font-weight-bold">1 week</div>
+								</div>
+
+								<div class="mb-md-3">
+									<div class="text-muted">Content awarded:</div>
+									<div class="font-weight-bold text-capitalize" id="tip-content-type">Post</div>
+								</div>
+								<div class="d-none d-md-block"><div class="text-muted">Perks:</div>
+								<ul class="mb-0 pl-0 no-bullets font-weight-bold">
+									<li class="py-1"><span class="fa-stack fa-1x mr-2">
+                  <i class="fas fa-square fa-stack-2x" style="color: #a2d2f6!important; font-size: 2rem!important;"></i>
+                  <i class="fas fa-unlock fa-stack-1x text-info text-base fa-inverse"></i>
+                  </span>Unlock all Rep-gated features
+                  </li>
+                  <li class="py-1"><span class="fa-stack fa-1x mr-2">
+										<i class="fas fa-square fa-stack-2x" style="color: #dabef9!important; font-size: 2rem!important;"></i>
+										<i class="fas fa-image fa-stack-1x text-purple text-base fa-inverse"></i>
+									</span>Direct image uploads in comments
+									</li>
+                  <li class="py-1"><span class="fa-stack fa-1x mr-2">
+                  <i class="fas fa-square fa-stack-2x" style="color: #f9efbe!important; font-size: 2rem!important;"></i>
+                  <i class="fas fa-file-upload fa-stack-1x text-warning text-base fa-inverse"></i>
+                  </span>Increased upload file size limit
+                  </li>
+							<li class="py-1"><span class="fa-stack fa-1x mr-2">
+								<i class="fas fa-square fa-stack-2x" style="color: #bef9cc!important; font-size: 2rem!important;"></i>
+								<i class="fas fa-hand-peace fa-stack-1x text-success text-base fa-inverse"></i>
+							</span>Keeping the ruqqus servers alive
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		{% if not v.has_premium %}
+		<div class="position-absolute" style="margin-left: auto; margin-right: auto; left: 0; right: 0;bottom: 50%;">
+			<a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1" style="width: 15px;"/>Get coins</a>
+		</div>
+		{% endif %}
+
+		</div>
+
+</div>
+
+
+</div>
+<!-- Footer -->
+<div class="modal-footer bg-white border-top" style="background-image: none!important">
+	<div class="text-small text-muted font-weight-bold">Coin balance:<span class="text-muted"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1" style="width: 15px;"/>{{ v.coin_balance }}</span><a href="/settings/premium" class="font-weight-normal text-purple ml-2">Get more coins</a>
+	</div>
+	<button type="button" class="btn btn-link text-muted ml-auto" data-dismiss="modal">Cancel</button>
+	<button type="button" id="sendTipButton" class="btn btn-warning" {% if not v.coin_balance %}disabled{% endif %}>Send Tip<span class="tip-content-type"></span></button>
+</div>
+</div>
+</div>
+<!-- Coin balance -->
+<span id="coin-balance" data-model="balance" class="d-none">{{ v.coin_balance }}</span>
+</div>

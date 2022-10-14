@@ -1,0 +1,62 @@
+{% extends "email/default.html" %}
+
+{% block image %}verify.png{% endblock %}
+
+{% block title %}Welcome to Ruqqus!{% endblock %}</h1>
+
+{% block content %}
+                        <p>Thanks for joining Ruqqus. We’re happy to have you on board. To get the most out of Ruqqus, please verify your account email:</p>
+                        <!-- Action -->
+                        <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                          <tr>
+                            <td align="center">
+                              <!-- Border based button
+           https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+                                <tr>
+                                  <td align="center">
+                                    <a href="{{action_url}}" class="f-fallback button" target="_blank">Verify email</a>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        <p>For reference, here's your username.</p>
+                        <table class="attributes" width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                          <tr>
+                            <td class="attributes_content">
+                              <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+                                <tr>
+                                  <td class="attributes_item">
+                                    <span class="f-fallback">
+              <strong>Email:</strong> {{ v.email }}
+            </span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td class="attributes_item">
+                                    <span class="f-fallback">
+              <strong>Username:</strong> {{ v.username }}
+            </span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                        <p>Please note that Ruqqus will never ask you for your email, password, or two-factor token via email, text, or phone.</p>
+                        <p>If you have any questions, feel free to <a href="mailto:hello@ruqqus.com">email the Ruqqus team.</a>.</p>
+                        <p>Thanks,
+                          <br>The Ruqqus Team</p>
+                        <p><strong>P.S.</strong> Feel free to tweet at us on Twitter <a href="https://www.twitter.com/ruqqus">@ruqqus</a>.</p>
+                        <!-- Sub copy -->
+                        <table class="body-sub" role="presentation">
+                          <tr>
+                            <td>
+                              <p class="f-fallback sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
+                              <p class="f-fallback sub">{{action_url}}</p>
+                            </td>
+                          </tr>
+                        </table>
+{% endblock %}

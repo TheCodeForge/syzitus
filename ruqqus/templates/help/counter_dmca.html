@@ -1,0 +1,87 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - DMCA Counter-Request</title>
+<meta name="description" content="DMCA Counter-Request">
+<script src="/assets/js/comment_replies.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+{% filter markdown %}
+# DMCA Counter-Request
+
+If any of your content saved to Ruqqus has been removed pursuant to a DMCA Takedown Request filed by a copyright holder, you are entitled to submit a DMCA counter-request explaining why you believe use of the content was acceptable.
+
+Use this page to submit a DMCA counter-notice request to Ruqqus.  
+
+Abuse of this form may lead to the termination of your Ruqqus account, at the discretion of Ruqqus staff.
+
+{% endfilter %}
+
+{% if v and v.is_banned %}
+
+<div>Your Ruqqus account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
+
+{% elif v and v.is_activated %}
+
+<div class="h6 mt-5">Email</div>
+<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
+
+<form id="dmca-form" action="/help/counter_dmca" method="post">
+	
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+	<label class="mt-5" for="input-links">Links to removed content</label>
+	<div>If you don't already have them, these links are in the DMCA Takedown Notice.</div>
+	<textarea id="input-links" class="form-control" for="dmca-form" name="removed_links" required></textarea>
+
+	<label class="mt-5" for="your-name" class="mt-3">Your name</label>
+	<div>You must use your full legal name. Nicknames, usernames, stage names, abbreviations, etc. are not accepted.</div>
+	<input type="text" id="your-name" class="form-control" name="name" required>
+
+	<label class="mt-5" for="input-address">Your address</label>
+	<div>You must use your full legal permanent street or military address. PO boxes, C/O, etc. are not accepted.</div>
+	<textarea id="input-address" class="form-control" for="dmca-form" name="your_address" required></textarea>
+
+	<label class="mt-5" for="input-describe-validity">Indicate why you believe your content was not an infringement of copyright.</label>
+	<textarea id="input-describe-validity" class="form-control" for="dmca-form" name="validity_reasoning" required></textarea>
+
+	<label class="mt-5">Required statements</label><br>
+	<input id="swear_goodfaith" type="checkbox" name="swear_goodfaith" value="true" required> I swear, under penalty of perjury, that I have a good-faith belief that the material was removed or disabled as a result of a mistake or misidentification of the material to be removed or disabled.<br>
+	<input id="swear_perjury" type="checkbox" name="consent_jurisdiction" value="true" required> I consent to the jurisdiction of Federal District Court for the judicial district in which my address is located (if in the United States, otherwise the District of Delaware where Ruqqus LLC is registered), and I will accept service of process from the person who provided the DMCA notification or an agent of such person.<br>
+
+	<input class="btn btn-primary mt-5" type="submit" value="Submit">
+</form>
+
+{% elif v %}
+<p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
+{% else %}
+{% filter markdown %}
+<p>In order to ensure that we can respond to your request if needed, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
+{% endfilter %}
+{% endif %}
+
+{% endblock %}

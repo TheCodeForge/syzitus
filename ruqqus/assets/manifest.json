@@ -1,0 +1,8 @@
+{
+  "name": "Ruqqus",
+  "short_name": "Ruqqus",
+  "start_url": "https://ruqqus.com",
+  "display": "standalone",
+  "background_color": "#805ad5",
+  "description": "Awesome online communities, without censorship"
+}

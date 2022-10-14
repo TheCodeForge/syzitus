@@ -1,0 +1,83 @@
+{% extends "guild/guild_settings.html" %}
+
+{% block postNav %}{% endblock %}
+
+{% block title %}
+<title>Reported Posts - Ruqqus</title>
+<meta name="description" content="in {{ '+'+b.name if b else 'your guilds'}}">
+{% endblock %}
+
+{% block sidebarblock %}
+{% if b %}
+<div class="sidebar-section sidebar-profile-basic">
+  <div class="body">
+    <h1 class="h6 d-inline-block mb-0" style="color:black">{{ '+'+b.name+' ' if b else ''}}Reported Posts</h1>
+	<p>Posts in {{ '+'+b.name if b else 'your guilds'}} that users have reported as being off-topic.</p>
+
+</div>
+</div>
+{% else %}
+<div class="sidebar-section sidebar-profile-basic">
+  <div class="body">
+    <h1 class="h6 d-inline-block mb-0" style="color:black">Reported Posts</h1>
+
+	<p>Posts in your guilds that users have reported as being off-topic.</p>
+</div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% include "expanded_image_modal.html" %}
+
+{% block content %}
+<!-- Post filters bar visible only on medium devices or larger-->
+
+
+<div class="row justify-content-around mx-lg-5 d-block d-lg-none no-gutters">
+  <div class="col bg-light border-bottom rounded-md p-3">
+    <div class="profile-details">
+      <div class="media">
+      <div class="media-body">
+        <h1 class="h6 d-inline-block">Flagged Posts</h1>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="row no-gutters">
+
+  <div class="col">
+
+	{% block listing %}
+    <div class="posts p-3">
+      {% include "submission_listing.html" %}
+    </div>
+	{% endblock %}
+  </div>
+</div>
+{% endblock %}
+
+{% block pagenav %}
+<nav aria-label="Page navigation">
+  <ul class="pagination pagination-sm py-3 pl-3 mb-0">
+    {% if page>1 %}
+    <li class="page-item">
+      <small><a class="page-link" href="?page={{ page-1 }}" tabindex="-1">Prev</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Prev</span></li>
+    {% endif %}
+    {% if next_exists %}
+    <li class="page-item">
+      <small><a class="page-link" href="?page={{ page+1 }}">Next</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}

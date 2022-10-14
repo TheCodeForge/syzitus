@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<meta name="thumbnail" content="/assets/images/preview-images/ruqqus_og_image.png">
+
+  <link rel="icon" type="image/png" href="/assets/images/logo/favicon.png">
+  
+	{% block title %}
+	<title>{{ "SITE_NAME" | app_config }}: The Open-Source Platform for Independent Internet Communities</title>
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+  <meta property="og:image" content="{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}" />
+  <meta property="og:url" content="{{ request.path | full_link }}">
+  <meta property="og:description" name="description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
+  <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config }}" />
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@{{ 'SITE_NAME' | app_config }}">
+  <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
+  <meta name="twitter:creator" content="@{{ 'SITE_NAME' | app_config }}">
+  <meta name="twitter:description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design." />
+  <meta name="twitter:image" content="/assets/images/preview-images/ruqqus_og_image.png" />
+  <meta name="twitter:url" content="{{ request.path | full_link }}" />
+  {% endblock %}
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- iOS webapp -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+  <!---<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicons/favicon-16x16.png">--->
+    <link rel="manifest" href="/assets/manifest.json">
+    <link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#805ad5">
+    <link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="{{ 'SITE_NAME' | app_config }}">
+    <meta name="application-name" content="{{ 'SITE_NAME' | app_config }}">
+    <meta name="msapplication-TileColor" content="#805ad5">
+    <meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#805ad5">
+
+
+
+    <link
+    rel="apple-touch-startup-image"
+    sizes="320x480"
+    href="/assets/images/splash/320x480.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="640x960"
+    href="/assets/images/splash/640x960.png"
+    />
+    <link
+    rel="apple-touch-icon"
+    sizes="640x1136"
+    href="/assets/images/splash/640x1136.png"
+    />
+    <link
+    rel="apple-touch-icon"
+    sizes="750x1334"
+    href="/assets/images/splash/750x1334.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="768x1004"
+    href="/assets/images/splash/768x1004.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="768x1024"
+    href="/assets/images/splash/768x1024.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="828x1792"
+    href="/assets/images/splash/828x1792.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1024x748"
+    href="/assets/images/splash/1024x748.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1024x768"
+    href="/assets/images/splash/1024x768.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1125x2436"
+    href="/assets/images/splash/1125x2436.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1242x2208"
+    href="/assets/images/splash/1242x2208.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1242x2688"
+    href="/assets/images/splash/1242x2688.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1334x750"
+    href="/assets/images/splash/1334x750.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1536x2008"
+    href="/assets/images/splash/1536x2008.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1536x2048"
+    href="/assets/images/splash/1536x2048.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1668x2224"
+    href="/assets/images/splash/1668x2224.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="1792x828"
+    href="/assets/images/splash/1792x828.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2048x1496"
+    href="/assets/images/splash/2048x1496.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2048x1536"
+    href="/assets/images/splash/2048x1536.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2048x2732"
+    href="/assets/images/splash/2048x2732.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2208x1242"
+    href="/assets/images/splash/2208x1242.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2224x1668"
+    href="/assets/images/splash/2224x1668.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2436x1125"
+    href="/assets/images/splash/2436x1125.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2668x1242"
+    href="/assets/images/splash/2668x1242.png"
+    />
+    <link
+    rel="apple-touch-startup-image"
+    sizes="2737x2048"
+    href="/assets/images/splash/2737x2048.png"
+    />
+
+
+
+    <!-- Ruqqus CSS -->
+    
+    {% block stylesheets %}
+
+    {% if v and v.can_use_darkmode and session.get("dark_mode_enabled") %}
+    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=2.38.0">
+    {% else %}
+    <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=2.38.0">
+    {% endif %}
+
+    {% endblock %}
+
+    <!-- Font Awesome -->
+    <link href="https://fa.ruqqus.com/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+
+    {% block fixedMobileBarJS %}
+    {% endblock %}
+
+    {% if v %}
+
+    <script>
+      function formkey() {
+       return '{{ v.formkey }}';
+     }
+   </script>
+   {% endif %}
+
+<!---
+   <script async defer data-domain="{{ 'SERVER_NAME' | app_config }}" src="https://plausible.ruqqus.com/js/plausible.js"></script>
+--->
+ </head>
+
+ <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if v and session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
+
+  {% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
+  <div class="row fixed-top" style="z-index:2000" id="mobile-prompt-row">
+    <div id="mobile-prompt-container" class="ml-auto mr-5">
+      <div id="mobile-prompt" href="javascript:void(0)" data-toggle="tooltip" data-container="#mobile-prompt-row" data-placement="top" data-trigger="click" title="" data-original-title="Install the {{ 'SITE_NAME' | app_config }} webapp by saving this page to your home screen!">
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+  <!--Header -->
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md navbar-light shadow shadow-md fixed-top" id="navbar">
+    <div class="container-fluid">
+      <div class="flex-grow-1"><a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}<span class="text-small-extra text-uppercase text-gray-400"> Beta</span></a></div>
+      <div class="flex-grow-1 d-fl d-none d-md-block">
+        <form id="searchform" class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
+          <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q" value="{{ request.args.get('q', '') }}">
+          <span class="input-group-append">
+            <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;" onclick="document.getElementById('searchform').submit()">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+          </span>
+        </form>
+      </div>
+      {% if v %}
+      <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+      {% else %}
+      <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+      {% endif %}
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon {% if v and v.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
+        {% if v and v.notifications_count %}
+        <i class="fas fa-circle text-danger text-small-extra position-absolute" style="right: -6px; top: -4px;"></i>
+        {% endif %}
+      </span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto d-none d-md-flex">
+
+        {% if v and v.mods_anything %}
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools"><i class="fas fa-crown{% if v.has_report_queue %} text-warning{% endif %}"></i></a>
+        </li>
+        {% endif %}
+
+        {% if v %}
+
+        {% if v.notifications_count %}
+
+        <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+          <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class="fas fa-bell text-danger"></i><span class="badge-count font-weight-bolder">{{ v.notifications_count }}</span></a>
+        </li>
+
+        {% else %}
+
+        <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+          <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-bell"></i></a>
+        </li>
+
+        {% endif %}
+
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <a class="nav-link" href="/submit{{ '?guild='+b.name if b else '' }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Create post"><i class="fas fa-feather-alt"></i></a>
+        </li>
+
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <div class="dropdown">
+            <a class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-random"></i>
+            </a>
+            <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
+              <h6 class="dropdown-header text-white">View random</h6>
+              <div class="px-2">
+                <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
+                <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
+                <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item d-flex align-items-center justify-content-center text-center">
+          <div class="dropdown">
+            <a class="nav-link bg-transparent py-0 pr-0" href="{{ v.permalink }}" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <div class="d-flex">
+              <div><img src="{{ v.profile_url }}" class="profile-pic-35"></div>
+              <div class="text-left pl-2">
+                <div class="text-small font-weight-bold">{{ v.username }}</div>
+                <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+              </div>
+            </div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left border-0 shadow fade px-0 mt-2"
+          aria-labelledby="dropdownMenuButton">
+          <div class="px-2">
+            <div class="dropdown-meta">
+              <div class="font-weight-bold mb-2">{{ v.username }}</div>
+              <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+            </div>
+          </div>
+          <hr class="my-2">
+          <div class="px-2">
+            <a class="dropdown-item" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
+            profile</a>
+            {% if v.notifications_count %}
+            <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span
+              class="badge badge-danger rounded-circle align-top ml-1">{{ v.notifications_count }}</span></a>
+              {% else %}
+              <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+              {% endif %}
+              <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
+              <a class="dropdown-item d-lg-none" href="/categories"><i class="fas fa-shapes fa-fw text-left mr-3" id="dark-switch"></i>Categories</a>
+
+              {% block darkswitch %}
+              {% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
+              {% elif v and v.can_use_darkmode %}
+              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
+              {% else %}
+              <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
+              {% endif %}
+              {% endblock %}
+            </div>
+            <hr class="my-2">
+            <div class="px-2">
+              <button class="dropdown-item copy-link" data-clipboard-text="{{ ('/signup?ref='+v.username) | full_link }}"><i class="fad fa-user-friends fa-fw text-left mr-3"></i>Invite friends</button>
+            </div>
+            <hr class="my-2">
+            <div class="px-2">
+              <a class="dropdown-item" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
+            </div>
+          </div>
+        </div>
+      </li>
+      {% else %}
+      <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+        <a class="nav-link" href="/random/post" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="View random post"><i class="fas fa-random"></i></a>
+      </li>
+      <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+       <a class="btn btn-outline-purple" href="/login?redirect={{ request.path | urlencode}}">Sign In</a>
+     </li>
+     <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+       <a class="btn btn-purple" href="/signup?redirect={{ request.path | urlencode}}">Sign Up</a>
+     </li>
+     {% endif %}
+   </ul>
+
+   <!-- Mobile Nav Menu -->
+   <ul class="navbar-nav ml-auto d-flex d-md-none mt-3">
+     <li class="nav-item pb-3">
+      <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
+        <input class="form-control form-control-sm w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q" value="{{ request.args.get('q', '') }}">
+        <span class="input-group-append">
+          <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </span>
+        </span>
+      </form>
+    </li>
+    {% if v %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ v.username }}</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% if v.notifications_count %}position-relative{% endif %}" href="/notifications{% if not v.notifications_count %}?all=true{% endif %}">
+        <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
+        {% if v.notifications_count %}
+        <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
+        {% endif %}
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
+    </li>
+    {% if v.can_make_guild %}
+    <li class="nav-item">
+      <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    <li class="nav-item">
+      <a class="nav-link" href="/categories"><i class="fas fa-shapes fa-fw mr-3"></i>Categories</a>
+    </li>
+    {% if v %}
+    {% block darkswitchMobile %}
+    {% if session.get("dark_mode_enabled")%}
+    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fas fa-toggle-on fa-fw mr-3" id="dark-switch-mobile"></i>Dark mode</a></li>
+    {% else %}
+    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fas fa-toggle-off fa-fw mr-3" id="dark-switch-mobile"></i>Dark mode</a></li>
+    {% endif %}
+    {% endblock %}
+    {% endif %}
+
+    {% if v %}
+    <li class="nav-item border-top mt-2 pt-2">
+      <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
+    </li>
+    {% else %}
+    <li class="nav-item d-flex align-items-center justify-content-center pb-3">
+      <a class="btn btn-outline-purple btn-block" href="/login?redirect={{ request.path | urlencode}}">Sign in</a>
+    </li>
+    <li class="nav-item d-flex align-items-center justify-content-center">
+      <a class="btn btn-purple btn-block" href="/signup?redirect={{ request.path | urlencode}}">Sign up</a>
+    </li>
+    {% endif %}
+    <li class="nav-item border-top mt-2 pt-2">
+      <a class="nav-link text-small-extra" href="/help/about">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/help/terms">Terms</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/help/privacy">Privacy</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/help/contact">Contact</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="https://github.com/ruqqus/ruqqus">GitHub</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-small-extra" href="/discord">Discord</a>
+    </li>
+  </ul>
+
+</div>
+</div>
+</nav>
+
+
+
+<!-- Page Content -->
+
+{% block mobileUserBanner %}
+{% endblock %}
+
+{% block mobileBanner %}
+{% endblock %}
+
+{% block postNav %}
+{% endblock %}
+
+<div class="container-fluid">
+  <div class="row justify-content-around" id="main-content-row">
+
+    {% block leftSidebar %}
+    {% block leftSidebarBlock %}
+    {% endblock %}
+    {% endblock %}
+
+    <div class="col h-100 bg-white {% block customPadding %}custom-gutters{% endblock %}" id="main-content-col">
+
+      {% block desktopUserBanner %}
+      {% endblock %}
+
+      {% block desktopBanner %}
+      {% endblock %}
+
+      {% block PseudoSubmitForm %}
+      {% endblock %}
+
+      {% block searchText %}
+      {% endblock %}
+
+      {% block content %}
+      {% endblock %}
+
+      {% block pagenav %}
+      {% endblock %}
+
+    </div>
+
+    <!-- Right Sidebar (hidden on devices smaller than "large") -->
+
+    {% block sidebar %}
+    <div class="col sidebar text-left d-none d-lg-block pt-3 bg-white border-left">
+      {% block sidebarblock %}
+      <div class="sidebar-section">
+        <div class="title">
+          <i class="fas fa-heart mr-2"></i>Support {{ "SITE_NAME" | app_config }}
+        </div>
+        <div class="body">
+          <p>Exclusive titles, merch, and more. Support {{ "SITE_NAME" | app_config }} today!</p>
+
+          <a href="https://www.bonfire.com/store/ruqqus/" target="blank" class="btn btn-block btn-link text-info text-left text-decoration-none px-1 mt-0">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x" style="color: #BEE3F8!important; font-size: 2rem!important;"></i>
+              <i class="fas fa-tshirt fa-stack-1x text-info text-base fa-inverse"></i>
+            </span>Awesome T-Shirts
+          </a>
+
+          <a href="https://gumroad.com/l/XpCXQ" target="blank" class="btn btn-block btn-link text-success text-left text-decoration-none px-1 mt-0">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x" style="color: #9AE6B4!important; font-size: 2rem!important;"></i>
+              <i class="fas fa-laugh fa-stack-1x text-success text-base fa-inverse"></i>
+            </span>Custom Stickers
+          </a>
+
+          <a href="https://github.com/ruqqus/ruqqus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x text-gray-300" style="font-size: 2rem!important;"></i>
+              <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
+            </span>Contribute Code
+          </a>
+
+          <a href="https://github.com/ruqqus/ruqqus#sponsors" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #F7931A!important">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x" style="color: #FEEBC8!important; font-size: 2rem!important;"></i>
+              <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse" style="color: #F7931A!important;"></i>
+            </span>Donate Crypto
+          </a>
+
+          <a href="https://github.com/ruqqus/ruqqus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #DC143C!important">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x" style="color: #FC8181!important; font-size: 2rem!important;"></i>
+              <i class="fas fa-bug fa-stack-1x text-base fa-inverse" style="color: #DC143C!important;"></i>
+            </span>Report Bugs
+          </a>
+
+          <a href="/discord" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #7289DA!important;">
+            <span class="fa-stack fa-1x ml-n1 mr-2">
+              <i class="fas fa-square fa-stack-2x text-gray-300" style="font-size: 2rem!important;"></i>
+              <i class="fab fa-discord fa-stack-1x text-base fa-inverse" style="color: #7289DA!important;"></i>
+            </span>Discord Server
+          </a>
+
+        </div>
+      </div>
+      {% endblock %}
+
+      {% if v and v.admin_level %}
+      <div class="sidebar-section sidebar-adminpanel">
+        <div class="title"><i class="fas fa-user-shield mr-2"></i>Admin Panel</div>
+        <div class="body">
+          {% block adminpanel %}
+          <div class="text-center mb-2" style=""><i class="fad fa-ghost text-muted" style="font-size: 2.5rem"></i></div>
+          <p class="text-center text-small text-muted mb-0">No admin actions available</p>
+          {% endblock %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% include "footer.html" %}
+
+    </div>
+    {% endblock %}
+  </div>
+</div>
+
+{% block mobilenavbar %}
+{% include "mobile_navigation_bar.html" %}
+{% endblock %}
+
+{% block actionsModal %}
+{% endblock %}
+
+{% block reportCommentModal %}
+{% endblock %}
+
+{% block guildModal %}
+{% endblock %}
+
+{% block GIFtoast %}
+{% endblock %}
+
+{% block GIFpicker %}
+{% endblock %}
+
+<!-- Clipboard Toast -->
+
+<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+	<div class="toast-body text-center">
+		<i class="fas fa-check-circle text-success mr-2"></i>Link copied to clipboard
+	</div>
+</div>
+
+<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+	<div class="toast-body text-center">
+		<i class="fas fa-exclamation-circle text-danger mr-2"></i>Unable to copy link
+	</div>
+</div>
+
+<div class="toast" id="toast-post-success" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 1000" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+  <div class="toast-body bg-success text-center text-white">
+    <i class="fas fa-comment-alt-smile mr-2"></i><span id="toast-post-success-text"></span>
+  </div>
+</div>
+<div class="toast" id="toast-post-error" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 1000" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+  <div class="toast-body bg-danger text-center text-white">
+    <i class="fas fa-exclamation-circle mr-2"></i><span id="toast-post-error-text"></span>
+  </div>
+</div>
+
+{% if v %}
+{% include "flag_post_modal.html" %}
+{% include "flag_comment_modal.html" %}
+{% include "gif_modal.html" %}
+{% include "delete_comment_modal.html" %}
+{% include "delete_post_modal.html" %}
+{% include "tip_modal.html" %}
+{% endif %}
+
+{% if v and v.mods_anything %}
+{% include "kick_post_modal.html" %}
+{% include "yank_post_modal.html" %}
+{% endif %}
+
+{% include "expanded_image_modal.html" %}
+
+{% include "bootstrap.html" %}
+
+<script src="/assets/js/all_js.js?v=2.38.0" importance="high" ></script>
+
+<!-- ClipboardJS -->
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" importance="high"></script>
+
+<!-- Instantiate clipboard by passing a string selector -->
+<script type="text/javascript">
+	var clipboard = new ClipboardJS('.copy-link');
+	clipboard.on('success', function(e) {
+
+		jQuery(function($) {
+			$('#toast-success').toast('show');
+		})
+		console.log(e);
+	});
+	clipboard.on('error', function(e) {
+
+		jQuery(function($) {
+			$('#toast-error').toast('show');
+		})
+		console.log(e);
+	});
+</script>
+
+<!-- Mobile "install the app" tooltip -->
+
+
+{% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (not g.system.endswith('/chrome') and not g.system.endswith('/other')) and not g.system.endswith('/webview') %}
+
+<div id="mobile-prompt-container" class="fixed-bottom">
+  <div id="mobile-prompt" href="javascript:void(0)" data-toggle="tooltip" data-container="#mobile-prompt-container" data-placement="top" data-trigger="click" title="Install the {{ "SITE_NAME" | app_config }} webapp by saving this page to your home screen!"></div>
+</div>
+{% endif %}
+
+</body>
+
+</html>

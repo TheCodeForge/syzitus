@@ -1,0 +1,29 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Ruqqus - Help</title>
+<meta name="description" content="Ruqqus Help">
+{% endblock %}
+
+{% block content %}
+<h1>Siege Form</h1>
+
+<form action="/admin/siege_guild" method="post">
+  <label>User name:</label>
+  <input class="form-control" type="text" name="username" required>
+
+  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+  <label for="text-guild mt-2">Guild to siege:</label>
+  <input class="form-control" id="text-guild" type="text" name="guild">
+
+  <input id="activitycheck" type="checkbox" name="activity_bypass" value="true"> Bypass GM activity checks<br>
+
+  <input class="btn btn-primary mt-2" type="submit" value="Siege Guild">
+</form>
+
+
+{% endblock %}

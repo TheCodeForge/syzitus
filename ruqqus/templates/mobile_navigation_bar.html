@@ -1,0 +1,63 @@
+<div class="container d-inline-flex d-lg-none">
+
+    <div class="row fixed-bottom bg-white border-top p-2" id="mobile-bottom-navigation-bar"
+    style="z-index: 100; bottom: 0px; transition: bottom cubic-bezier(0, 0, 0.2, 1) 220ms;">
+
+{% if v %}
+        <div class="col px-0">
+            <a href="/" class="text-decoration-none" role="button">
+                <div class="text-center {% if request.path=='/' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="fas fa-home-alt text-lg d-block"></i>
+                    <div class="text-small">Home</div>
+                </div>
+            </a>
+        </div>
+{% endif %}
+        <div class="col px-0">
+            <a href="/all?sort=new" class="text-decoration-none" role="button">
+                <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="fas fa-globe-americas text-lg d-block"></i>
+                    <div class="text-small">New</div>
+                </div>
+            </a>
+        </div>
+        <div class="col px-0">
+            <a href="/all?sort=hot" class="text-decoration-none" role="button">
+                <div class="text-center {% if request.path=='/all' and sort_method=='hot' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="fas fa-fire text-lg d-block"></i>
+                    <div class="text-small">Trending</div>
+                </div>
+            </a>
+        </div>
+{% if v %}
+        <div class="col px-0">
+            <a href="/mine/guilds" class="text-decoration-none" role="button">
+                <div class="text-center {% if request.path=='/mine' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="fas fa-chess-rook text-lg d-block"></i>
+                    <div class="text-small">Guilds</div>
+                </div>
+            </a>
+        </div>
+{% endif %}
+        <div class="col px-0">
+            <a href="/browse" class="text-decoration-none" role="button">
+                <div class="text-center {% if request.path=='/browse' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="fas fa-compass text-lg d-block"></i>
+                    <div class="text-small">Browse</div>
+                </div>
+            </a>
+        </div>
+{% if not v %}
+        <div class="col px-0">
+            <a href="/signup" class="text-decoration-none" role="button">
+                <div class="text-center text-muted">
+                    <i class="fas fa-user-plus text-lg d-block"></i>
+                    <div class="text-small">Sign Up</div>
+                </div>
+            </a>
+        </div>
+{% endif %}
+
+    </div>
+
+</div>

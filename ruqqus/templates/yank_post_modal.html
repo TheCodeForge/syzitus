@@ -1,0 +1,54 @@
+<!-- yank Post Modal -->
+<div class="modal fade" id="yankPostModal" tabindex="-1" role="dialog" aria-labelledby="yankPostModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Yank post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="far fa-times"></i></span>
+        </button>
+      </div>
+      <div>
+        <form id="yank-post-form" method="post">
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              <i class="fas fa-info-circle"></i>You can yank this post to any community you manage.
+            </div>
+
+            <div class="card my-4">
+              <div class="card-body d-flex p-2">
+                <div class="ml-2">
+                  <div class="h6 font-weight-normal"><span class="text-break" id="post-title"></span></div>
+                  <div class="post-meta"><span id="post-comments"></span> comments</div>
+                  <div class="post-meta">
+                    <span id="post-timestamp"></span> by <a href="" id="post-author-url" class="user-name"><span id="post-author"></span></a> · <span id="post-domain"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="h6">Choose where to yank this post.</div>
+            <small class="form-text text-muted">Select a guild below to yank this post.</small>
+            <input type="hidden" name="formkey" value="{{ v.formkey }}">
+            <select name="board_id" id="yank-type-dropdown" form="yank-post-form" class="custom-select mt-3" onchange="document.getElementById('yankPostButton').disabled=false;">
+              <option disabled selected>Pick a guild</option>
+              {% for b in v.boards_modded %}
+              <option value="{{ b.base36id }}">+{{ b.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
+            <button type="button" id="yankPostButton" class="btn btn-primary" disabled>Yank Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast error" id="toast-invite-error" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000" data-animation="true" data-autohide="true">
+  <div class="toast-body text-center">
+    <i class="fas fa-exclamation-circle text-danger mr-2"></i>
+    <span id="toast-error-message">Error. Please try again.</span>
+  </div>
+</div>

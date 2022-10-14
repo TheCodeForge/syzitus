@@ -1,0 +1,76 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - The independent social platform</title>
+<meta name="description" content="Rules.">
+{% endblock %}
+
+
+{% block content %}
+
+{% filter markdown %}
+
+# Warrant Canaries
+
+Warrant canaries are a statements put out by service providers indicating that they have not been required to comply with certain types of secret legal orders.
+
+The First Amendment protects the publication of these statements, and it also prevents the government from compelling an organization to make a canary statement that is not true.
+
+The name comes from canaries used in coal mines. When the canary died, miners would know oxygen was low and that they needed to evacuate. Similarly, when a canary statement "dies", users can infer that the statement is no longer true.
+
+This page was last updated on 09 October 2020.
+
+## Our Canaries
+
+
+### Political Canaries
+
+1. Ruqqus has never removed or modified content or terminated an account due to political pressure.
+2. Ruqqus has never removed or modified content or terminated an account at the request of law enforcement or another third party, except in response to valid DMCA requests logged in [+RuqqusDMCA](/+RuqqusDMCA).
+
+### Legal Canaries
+
+1. Ruqqus has never received a legal demand of any kind, from any government or law enforcement agency, foreign or domestic, including secret warrants, which compelled the disclosure of personal information.
+2. <del>Ruqqus has never received an emergency information request from any government or law enforcement agency.</del>
+3. Ruqqus has never received legal service of any kind, including service which might compel the discovery of personal information.
+4. Ruqqus has never provided user information to foreign law enforcement.
+
+### Technological Canaries
+
+1. Ruqqus has never turned over its master secret to law enforcement or any other third party (other than our hosting provider).
+2. Ruqqus has never turned over cryptographic user information (including password hashes and two factor secrets) to law enforcement or another third party (other than our database provider)
+3. Ruqqus has never weakened, compromised, or subverted its cryptographic security at the request of law enforcement or another third party.
+4. Ruqqus has never retained a plaintext password.
+5. Ruqqus has never falsified authentication tokens or other cryptographic information.
+6. Ruqqus has never deployed a version of ruqqus.com which was not fully open source.
+
+## Changelog
+
+{% endfilter %}
+
+<table class="table table-striped mb-5">
+	<thead class="bg-primary text-white">
+		<tr>
+			<td>Date</td>
+			<td>Change</td>
+		</tr>
+	</thead>
+	<tr>
+		<td>25 June 2020</td>
+		<td>Created this page</td>
+	</tr>
+	<tr>
+		<td>09 October 2020</td>
+		<td>Updated Political Canary #2 to reflect DMCA removals. Revised Technological Canary #2 to apply only to cryptographic information.</td>
+	</tr>
+		<td>09 April 2021</td>
+		<td>Clarified Legal Canary #1 to apply to compelled disclosure. Killed Legal Canary #2 (effective 14 Jan 2021 but I forgot to update this page). Added Legal Canary #4.</td>
+	</tr>
+		</tr>
+		<td>13 October 2021</td>
+		<td>Final version. No change from previous.</td>
+	</tr>
+</table>
+
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Ruqqus - Help</title>
+<meta name="description" content="Ruqqus Help">
+{% endblock %}
+
+{% block content %}
+{% filter markdown %}
+# Admin Tools
+
+## Content
+
+* [Flagged Posts](/admin/flagged/posts)
+* [Flagged Comments](/admin/flagged/comments)
+* [Image Feed](/admin/image_posts)
+* [Removed Feed](/admin/removed)
+* [Users Feed](/admin/users)
+* [Remove S3-hosted image](/admin/image_purge)
+* [Perceptive Hash Image Ban](/admin/image_ban)
+
+## Vote Info
+
+* [Single item via url](/admin/vote_info)
+
+## Alts
+
+* [Multi Vote Analysis](/admin/alt_votes)
+* [IP Analysis](/admin/ip)
+* [Link Accounts](/admin/link_accounts)
+
+## Guilds
+
+* [Guildmaster Check](/admin/gm)
+* [Siege Count](/admin/siege_count)
+
+## Categories
+
+* [Lock Category](admin/category)
+
+## Finance
+
+* [Financial Statistics](/admin/money)
+* [Transactions](/admin/paypaltxns)
+
+## Apps
+
+* [App Queue](/admin/apps)
+* [App Data](/admin/appdata)
+
+## Account Cosmetics
+
+* [Badges](/admin/badge_grant)
+
+## Data
+
+* [Content Stats](/admin/content_stats)
+* [Ban Analysis](/admin/ban_analysis)
+
+
+
+
+{% endfilter %}
+{% endblock %}

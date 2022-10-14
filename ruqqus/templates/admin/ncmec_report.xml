@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<report>
+	<incidentSummary>
+		<incidentType>
+			{{ incidentType }}
+		</incidentType>
+		<incidentDateTime>
+			{{ thing.created_iso }}
+		</incidentDateTime>
+	</incidentSummary>
+
+	<internetDetails>
+		<webPageIncident>
+			{{ thing.permalink_full }}
+		</webPageIncident>
+	</internetDetails>
+
+	{% if thing.__dict__.get('url') %}
+	<internetDetails>
+		<webPageIncident>
+			{{ thing.url }}
+		</webPageIncident>
+		<thirdPartyHostedContent>
+			{{ 'true' if thing.domain not in ['SERVER_NAME' | app_config , 'S3_BUCKET' | app_config] else 'false' }}
+		</thirdPartyHostedContent>
+	</internetDetails>
+	{% endif %}
+
+	<reporter>
+		<reportingPerson>
+			<firstName>
+				{{ v.username }}
+			</firstName>
+			<email>
+				{{ v.email }}
+			</email>
+		</reportingPerson>
+		<termsOfService>
+			https://{{ "SERVER_NAME" | app_config}}/help/terms
+		</termsOfService>
+	</reporter>
+
+	<personOrUserReported>
+		<personOrUserReportedPerson>
+			<firstname>
+				{{ thing.author.username }}
+			</firstname>
+			<email>
+				{{ thing.author.email }}
+				<verified>
+					{{ 'true' if thing.author.is_activated else 'false' }}
+				</verified>
+			</email>
+		</personOrUserReportedPerson>
+		<screenName>
+			{{ thing.author.original_username }}
+		</screenName>
+		<displayName>
+			{{ thing.author.username }}
+		</displayName>
+		<espIdentifier>
+			{{ thing.author.fullname }}
+		</espIdentifier>
+		<profileUrl>
+			{{ thing.author.permalink_full }}
+		</profileUrl>
+		<ipCaptureEvent>
+			<ipAddress>
+				{{ thing.author.creation_ip }}
+			</ipAddress>
+			<eventName>
+				Registration
+			</eventName>
+			<dateTime>
+				{{ thing.author.created_iso }}
+			</dateTime>
+			<possibleProxy>
+				{{ 'true' if thing.author.creation_region=="T1" else 'false' }}
+			</possibleProxy>
+		</ipCaptureEvent>
+		<ipCaptureEvent>
+			<ipAddress>
+				{{ thing.creation_ip }}
+			</ipAddress>
+			<eventName>
+				Upload
+			</eventName>
+			<dateTime>
+				{{ thing.created_iso }}
+			</dateTime>
+			<possibleProxy>
+				{{ 'true' if thing.creation_region=="T1" else 'false' }}
+			</possibleProxy>
+		</ipCaptureEvent>
+	</personOrUserReported>
+</report>

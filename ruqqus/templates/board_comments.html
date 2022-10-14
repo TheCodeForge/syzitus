@@ -1,0 +1,134 @@
+{% extends "board.html" %}
+
+
+{% block PseudoSubmitForm %}{% endblock %}
+{% block sortnav %}{% endblock %}
+
+
+{% block desktopBanner %}
+<!-- Guild reference -->
+
+<span id="guild-name-reference" class="d-none">{{ b.name }}</span>
+
+<!-- Desktop -->
+<div class="row d-none d-md-block">
+  <div class="col px-0">
+    <img src="{{ b.banner_url }}" style="width: 100%; height: 250px; object-fit: cover;">
+  </div>
+</div>
+<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top" style="overflow: visible;">
+  <div class="col">
+    <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center border-right py-2 pr-3">
+        <div>
+          <a href="{{ b.permalink }}"><img src="{{ b.profile_url }}" class="profile-pic-35 mr-2"></a>
+        </div>
+        <div>
+          <a href="{{ b.permalink }}">
+          <span class="h6 text-black mb-0">+{{ b.name }}
+            {% if v and v.has_blocked_guild(b) %}
+            <i class="fas fa-eye-slash text-danger align-middle ml-2" data-toggle="tooltip" data-placement="bottom" data-html="true" title="You have hidden this guild from /all. Visit your settings or click the <i class='far fa-ellipsis-h text-small'></i> icon to adjust its visibility."></i>
+            {% endif %}
+          </span>
+            {% if b.over_18 %}
+            <span class="badge badge-danger text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild contains adult content">nsfw</span>
+            {% endif %}
+            {% if b.is_nsfl %}
+            <span class="badge badge-black text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild contains adult content">nsfl</span>
+            {% endif %}
+            {% if b.is_private %}
+            <span class="badge badge-warning text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild is private. Content posted prior to the guild being set to private is visible to everyone.">private</span>{% endif %}
+          </a>
+        </div>
+      </div>
+      <div class="border-right py-3 px-3">
+        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black" style="text-decoration: none;">Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
+      </div>
+      <div class="border-right p-3">
+        Member{{ 's' if b.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ b.stored_subscriber_count }}</span>
+      </div>
+      <div class="d-flex align-items-center p-3">
+        <div class="dropdown dropdown-actions">
+          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;
+          ">
+          <i class="far fa-ellipsis-h text-base text-black"></i>
+        </a>
+        <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
+        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+        <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
+        {% if b.has_mod(v) %}
+        <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
+        {% endif %}
+        {% if v and not v.has_blocked_guild(b) %}
+        <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ b.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
+        {% elif v %}
+        <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ b.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="ml-auto">
+    <div class="d-flex align-items-center">
+
+
+      {% if v %}
+      <div id="button-sub" {% if b.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">Join guild</a></div>
+      <div id="button-unsub" {% if not b.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post_toast('/api/unsubscribe/{{ b.name }}', callback=toggleSub)">Leave</a></div>
+      {% elif not v %}
+      <a class="btn btn-primary" href="/signup">Join guild</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="p-3 p-md-0">
+
+  <h1 class="h3 d-md-none">+{{ b.name }} Comments</h1>
+
+  {% include "comments.html" %}
+  {% if not comments %}
+
+  <div class="text-center py-7 py-md-8">
+
+    <span class="fa-stack fa-2x text-muted mb-4">
+      <i class="fas fa-square text-gray-400 fa-stack-2x"></i>
+      <i class="fas text-gray-600 fa-comment fa-stack-1x text-lg"></i>
+    </span>
+
+    <div class="h5">No comments</div>
+    <div class="text-small text-muted mb-3">When someone comments in +{{ b.name }}, it will show up here.</div>
+  </div>
+
+  {% endif %}
+
+</div>
+{% endblock %}
+
+
+{% block pagenav %}
+<nav aria-label="Page navigation">
+  <ul class="pagination pagination-sm mb-0">
+    {% if page>1 %}
+    <li class="page-item">
+      <small><a class="page-link" href="?page={{ page-1 }}" tabindex="-1">Prev</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Prev</span></li>
+    {% endif %}
+    {% if next_exists %}
+    <li class="page-item">
+      <small><a class="page-link" href="?page={{ page+1 }}">Next</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}

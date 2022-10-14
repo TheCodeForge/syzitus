@@ -1,0 +1,22 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Purge Image</title>
+<meta name="description" content="Purge Image">
+{% endblock %}
+
+{% block content %}
+<h1>S3 Image Purge</h1>
+<p>Paste an i.ruqqus.com link here to delete the image and purge it from cache</p>
+
+<form action="/admin/image_purge" method="post" class="mb-6">
+	<label for="link-input">S3 Link</label>
+	<input id="link-input" type="text" class="form-control mb-2" name="url">
+	<input type="submit" value="Delete Image" class="btn btn-primary">
+</form>
+
+
+{% endblock %}

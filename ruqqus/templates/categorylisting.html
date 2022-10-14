@@ -1,0 +1,58 @@
+{% extends "home.html" %}
+
+{% block PseudoSubmitForm %}{% endblock %}
+{% block sidebar %}{% endblock %}
+{% block leftSidebarBlock %}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block mobilenavbar %}{% endblock %}
+
+{% block content %}
+<div class="col col-md-8 col-xl-6 mx-auto mt-n5 mt-md-0">
+  <div class="mt-4 text-center">
+    {% if request.path=="/" %}
+      <h1>Welcome to {{ 'SITE_NAME' | app_config }}</h1>
+      <p class="text-muted">To get started, pick some topics that interest you. (You can always change these later.)</p>
+    {% else %}
+      <h1>Select Categories</h1>
+      <p class="text-muted">Customize your Trending feed by selecting categories that you are interested in.</p>
+    {% endif %}
+  </div>
+  <div class="card-columns bg-white p-md-4 pb-md-3 rounded">
+  {% for cat in categories %}
+    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if cat.id in session.get('groupids',[]) %} selected{% endif %}" onclick="cattoggle('{{ cat.base36id }}')" id="cat-card-{{ cat.base36id }}">
+      <img src="/assets/images/categories/{{ cat.name | lower }}.gif" class="card-img h-100 object-cover" alt="{{ cat.name }}">
+      <div class="card-img-overlay onboarding-card-overlay d-flex justify-content-center align-items-center">
+        <h5 class="card-title h4 mb-0">{{ cat.name }}</h5>
+      </div>
+    </div>
+    <input type="checkbox" class="d-none cat-group" id="group-{{ cat.base36id }}" data-group="{{ cat.id }}"{% if cat.id in session.get('groupids',[]) %} checked{% endif %}>
+    <div class="d-none">
+      {% for subcat in cat.subcats %}
+          <input type="checkbox" class="cat-check group-{{ cat.base36id }}" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}"{% if cat.id in session.get('groupids',[]) %} checked{% endif %}>
+      {% endfor %}
+    </div>
+  {% endfor %}
+    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if 0 in session.get('groupids',[]) %} selected{% endif %}" onclick="cattoggle('0')" id="cat-card-0">
+      <img src="/assets/images/categories/uncategorized.gif" class="card-img h-100" alt="...">
+      <div class="card-img-overlay onboarding-card-overlay d-flex justify-content-center align-items-center">
+        <h5 class="card-title h4 mb-0">Uncategorized</h5>
+      </div>
+    </div>
+    <input type="checkbox" class="d-none cat-group" id="group-0" data-group="0"{% if 0 in session.get('groupids',[]) %} checked{% endif %}>
+    <div class="d-none">
+    <input type="checkbox" class="cat-check group-0" id="cat-0" data-cat="0"{% if 0 in session.get('groupids',[]) %} checked{% endif %}>
+    </div>
+  </div>
+  <div class="row">
+    <div class="mr-3 ml-auto mb-5 mt-3">
+      {% if v %}
+      <a href="javascript:void(0)" onclick="all_cats()" class="btn btn-secondary ml-auto mr-2">Show all</a>
+      <a href="javascript:void(0)" onclick="togglecat('hot', reload=true, delay=0)" class="btn btn-primary">Apply Selections</a>
+      {% else %}
+      <a href="javascript:void(0)" onclick="all_cats('/')" class="btn btn-secondary ml-auto mr-2">Show all</a>
+      <a href="javascript:void(0)" onclick="togglecat('hot', reload=true, delay=0, page='/')" class="btn btn-primary">Apply Selections</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

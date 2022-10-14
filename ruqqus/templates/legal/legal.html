@@ -1,0 +1,73 @@
+{% extends "legal_default.html" %}
+
+{% block content %}
+{% filter markdown %}
+# Ruqqus Legal Request
+
+Use this page to submit a legal request to Ruqqus LLC. You must provide an official email address, such as a .gov address. Requests with non-official email addresses will not be processed.
+
+Ruqqus LLC may charge reasonable fees for compliance with legal process to which Ruqqus LLC is not party, in accordance with 18 USC 2706.
+
+Abuse of this service may lead to the termination of your Ruqqus account, at the discretion of Ruqqus staff.
+
+{% endfilter %}
+
+{% if v and v.is_suspended %}
+
+<div>Your Ruqqus account has been suspended. You are not permitted to submit legal requests via this portal.</div>
+
+{% elif v and v.is_activated %}
+<form id="legal-form" action="/legal/2" method="post">
+	
+	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+	<div class="h6 mt-5">Email</div>
+	<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
+	<input type="hidden" name="username" value="{{ v.username }}">
+
+	<div class="h6 mt-5">Tell us about yourself.</div>
+	<input type="radio" name="about_yourself" value="law_enforcement"> I am an authorized law enforcement representative (ex. police).<br>
+	<input type="radio" name="about_yourself" value="gov_official"> I am an authorized  government representative (ex. district attorney)<br>
+	<input type="radio" name="about_yourself" value="not_authorized" checked required> None of the above<br>
+
+	<div class="h6 mt-5">Your name</div>
+	<div class="body">Your full, legal name. Stage names, pen names, nicknames, pseudonyms, etc. are not accepted and will result in the denial of your request.</div>
+	<input type="text" name="your_name" class="form-control" required>
+
+	<div class="h6 mt-5">Your organization</div>
+	<input type="text" name="your_org" class="form-control" required>
+
+	<div class="h6 mt-5">Your position/title</div>
+	<input type="text" name="your_position" class="form-control" required>
+
+	<div class="h6 mt-5">Your address</div>
+	<div class="body">Your full legal address. PO boxes and similar are not accepted.</div>
+	<textarea form="legal-form" name="your_address" class="form-control" required></textarea>
+
+	<div class="h6 mt-5">Your reference number</div>
+	<div class="body">For your convenience, we will include this reference number in our response to you.</div>
+	<input type="text" name="your_reference" class="form-control" required>
+
+	<div class="h6 mt-5">What kind of request is this?</div>
+	<input type="radio" name="request_type" value="user_info_emergency"> Emergency request for user account information<br>
+	<input type="radio" name="request_type" value="user_info_legal"> Subpoena, search warrant, or similar legal request for user account information<br>
+	<input type="radio" name="request_type" value="user_info_baseless" checked required> Other request for user account information<br>
+	<input type="radio" name="request_type" value="post_takedown"> Request to take down illegal content<br>
+	<input type="radio" name="request_type" value="data_save"> Request to preserve data for a future information request<br>
+
+	<div class="h6 mt-5">Required acknowledgements</div>
+	<input type="checkbox" name="ack_convenience" value="true" required> I acknowledge and understand that this form is for convenience only, and that Ruqqus does not waive any of its legal rights, including but not limited to its right to object for improper service or lack of jurisdiction.<br>
+	<input type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ v.email }}.<br>
+
+	<input class="btn btn-primary mt-5" type="submit" value="Next">
+</form>
+
+{% elif v %}
+<p>Please <a href="/settings/profile">verify your email address</a>. Then, refresh this page.</p>
+{% else %}
+{% filter markdown %}
+<p>In order to ensure that we can respond to your request, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your official email address</a>. Then, refresh this page.</p>
+{% endfilter %}
+{% endif %}
+
+{% endblock %}

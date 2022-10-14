@@ -1,0 +1,76 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - Contact</title>
+<meta name="description" content="Contact Ruqqus LLC">
+<script src="/assets/js/comment_replies.js"></script>
+{% endblock %}
+
+<!-- Left Sidebar -->
+
+	
+{% block content %}
+
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+
+<h1 class="article-title">Contact Ruqqus</h1>
+{% if v and v.is_activated and not v.is_suspended %}
+
+<p>Use this form to contact Ruqqus LLC.</p>
+
+<label class="mt-3">Your Email</label>
+<input class="form-control" value="{{ v.email }}" readonly="readonly" disabled>
+
+<form id="contactform" action="/help/submit_contact" method="post">
+<input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+<label for="input-name" class="mt-3">Your name</label>
+<input type="text" id="input-name" class="form-control" name="name">
+
+<label for="input-title" class="mt-3">Subject</label>
+<input type="text" id="input-title" class="form-control" name="subject" required>
+
+<label for="input-inquiry" class="mt-3">Your inquiry</label>
+<textarea id="input-inquiry" form="contactform" name="inquiry" class="form-control" required></textarea>
+
+<input type="submit" value="Submit" class="btn btn-primary mt-3">
+
+</form>
+
+{% elif v and v.is_suspended %}
+
+<p>Your Ruqqus account has been suspended. You are not permitted to use this form.</p>
+
+
+{% elif v %}
+
+<p>Please <a target="_blank" href="/settings/security">verify your email address</a> in order to ensure we can respond to your inquiry if needed. Then, refresh this page.</p>
+
+{% else %}
+
+<p>In order to ensure that we can respond to your inquiry, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
+
+{% endif %}
+
+{% endblock %}

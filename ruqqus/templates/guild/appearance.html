@@ -1,0 +1,253 @@
+{% extends "guild/guild_settings.html" %}
+
+{% block pagetitle %}Edit +{{ b.name }} Appearance - Ruqqus Guildmaster Tools{% endblock %}
+
+{% block stylesheets %}
+
+{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
+{% else %}
+<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-around">
+
+  <div class="col h-100">
+
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+
+    <script>
+      function mod_post(url, type, id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        var form = new FormData()
+        form.append("formkey", "{{ v.formkey }}");
+        item=document.getElementById(type);
+        button=document.getElementById(id);
+        if (item.type=="checkbox") {
+          form.append(item.name, item.checked)
+          if (item.checked) {
+           form.append(item.name, true);
+         } else {
+           form.append(item.name, false);
+         }
+        }
+        else {
+        form.append(item.name, item.value);
+      }
+      xhr.withCredentials=true;
+      xhr.onprogress=function(){
+        button.classList.add("btn-primary");
+        button.disabled = true;
+        button.innerHTML = `<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Saving`;
+      }
+      xhr.onload=function(){
+        button.classList.remove("btn-danger");
+        button.classList.add("btn-success");
+        button.innerHTML = `<i class="fas fa-check mr-2"></i>Saved`;
+      }
+      xhr.onerror=function(){
+        button.disabled = false;
+        button.classList.add("btn-danger");
+        button.innerHTML = `<i class="fas fa-times mr-2"></i>Setting not saved. Try again.`;
+      }
+      xhr.send(form);
+    }
+
+    function detect_change(id, button) {
+
+      var new_val = id.value;
+
+      var original_val = id.defaultValue;
+
+      var save_button = document.getElementById(button);
+
+      if (original_val !== new_val) {
+        save_button.disabled = false;
+      }
+      else {
+        save_button.disabled = true;
+      }
+
+    }
+  </script>
+
+  <div class="row">
+
+    <div class="col col-md-8">
+
+      <div class="settings">
+
+        <h2 id="color" class="h5" name="referral">Guild Color</h2>
+
+        <div class="settings-section rounded">
+
+          <div class="d-lg-flex">
+
+            <div class="body w-lg-100 my-auto">
+
+              <p class="text-small mb-2">Pick an accent color to represent your guild. Affects buttons, links, etc.</p>
+
+              <div class="d-flex">
+
+                 <form action="/mod/{{ b.base36id }}/color" id="color-form" method="post" class="color-picker" style="line-height: 0">
+                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+                    {% for color in [('SITE_COLOR' | app_config | lower),'2a96f3','62ca56','eb4963','f39731','30409f','3e98a7','e4432d','7b9ae4','ec72de','7f8fa6'] %}
+                    <input type="radio" name="color" id="color-{{ color }}" value="{{ color }}" {% if b.color == color %}checked{% endif %} onclick="document.getElementById('color-form').submit()"/>
+                    <label class="color-radio" for="color-{{ color }}">
+                      <span style="background-color: #{{ color }}">
+                      {% if b.color.lower() == color %}
+                        <i class="fas fa-check text-white"></i>
+                      {% else %}
+                        &nbsp;
+                      {% endif %}
+                      </span>
+                    </label>
+                    {% endfor %}
+
+                </form>
+
+              </div>
+              
+              <p class="text-small mb-2">Or type a color code:</p>
+              
+              <div class="d-flex">
+              
+                <form action="/mod/{{ b.base36id }}/color" id="color-code-form" method="post">
+                   <input type="hidden" name="formkey" value="{{ v.formkey }}">
+
+                   <input class="form-control" type="text" name="color" id="color-code" value="{{ b.color }}">
+                   <label class="btn btn-secondary text-capitalize mr-2 mt-2 mb-0">Update<input type="text" for="color-code" onclick="form.submit()" hidden=""></label>
+                </form>
+                
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <h2 class="h5" id="images" name="referral">Guild Icon</h2>
+
+      <div class="settings-section rounded">
+
+        <div class="d-lg-flex">
+
+          <div class="title w-lg-25 text-md-center">
+            <img src="{{ b.profile_url }}" class="profile-pic-75">
+          </div>
+
+          <div class="body w-lg-100 my-auto">
+
+            <div class="d-flex">
+
+              <div>
+
+               <form action="/mod/{{ b.base36id }}/images/profile" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                <label class="btn btn-secondary text-capitalize mr-2 mb-0">
+                  Update<input type="file" hidden name="profile" onchange="form.submit()">
+                </label>
+              </form>
+
+            </div>
+
+            {% if b.has_profile %}
+            <div>
+              <form action="/mod/{{ b.base36id }}/delete/profile" method="post">
+                <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+              </form>
+            </div>
+            {% endif %}
+
+          </div>
+
+          <div class="text-small-extra text-muted mt-3">JPG, PNG, GIF files supported. Max file size 16MB.</div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <h2 class="h5" name="referral">Guild Banner</h2>
+
+    <div class="settings-section rounded">
+
+      <div class="d-lg-flex">
+
+        <div class="title w-lg-75 text-md-center">
+          <img src="{{ b.banner_url }}" class="banner-pic-135">
+        </div>
+
+        <div class="body w-lg-100 my-auto">
+
+          <div class="d-flex">
+
+            <div>
+
+             <form action="/mod/{{ b.base36id }}/images/banner" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="formkey" value="{{ v.formkey }}">
+              <label class="btn btn-secondary text-capitalize mr-2 mb-0">
+                Update<input type="file" hidden name="banner" onchange="form.submit()">
+              </label>
+            </form>
+
+          </div>
+
+          {% if b.has_banner %}
+          <div>
+            <form action="/mod/{{ b.base36id }}/delete/banner" method="post">
+              <input type="hidden" name="formkey" value="{{ v.formkey }}">
+              <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+            </form>
+          </div>
+          {% endif %}
+
+        </div>
+
+        <div class="text-small-extra text-muted mt-3">JPG, PNG, GIF files supported. Max file size 16MB. (Recommend ratio of 106:25)</div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+{% endblock %}

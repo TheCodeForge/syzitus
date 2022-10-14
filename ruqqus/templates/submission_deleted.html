@@ -1,0 +1,278 @@
+{% extends "submission.html" %}
+
+
+
+{% set score=p.score_fuzzed %}
+{% if v %}
+{% set voted=v.vote_status_on_post(p) %}
+{% set adjust=voted %}
+{% else %}
+{% set voted=-2 %}
+{% set adjust=0 %}
+{% endif %}
+
+{% block title %}
+{% if comment_info and not comment_info.is_banned and linked_comment.deleted_utc == 0 %}
+<title>@{{ comment_info.author.username }} comments in +{{ p.board.name }} on "{{ p.title }}"</title>
+<meta name="description" content="{{ comment_info.body }}">
+{% else %}
+<title>{{ p.title | safe}}</title>
+<meta name="description" content="posted {{ p.age_string }} by [deleted] in +{{ p.board.name }}">
+{% endif %}
+{% endblock %}
+
+{% block desktopBanner %}
+<!-- Desktop -->
+<div class="row border-bottom bg-white sticky d-none d-md-block" style="overflow: visible;">
+  <div class="col">
+    <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center border-right py-2 pr-3">
+        <div>
+          <a href="{{ p.board.permalink }}"><img src="{{ p.board.profile_url }}" class="profile-pic-35 mr-2"></a>
+        </div>
+        <div>
+          <a href="{{ p.board.permalink }}"><span class="h6 text-black mb-0">+{{ p.board.name }}</span></a>
+        </div>
+      </div>
+      <div class="border-right py-3 px-3">
+        Guildmasters<span class="text-primary"> {{ p.board.mods_count }}</span>
+      </div>
+      <div class="border-right p-3">
+        Member{{ 's' if p.board.subscriber_count != 1 else '' }}<span class="text-primary"> {{ p.board.subscriber_count }}</span>
+      </div>
+      <div class="d-flex align-items-center p-3">
+        <div class="dropdown dropdown-actions">
+          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+            <i class="far fa-ellipsis-h text-muted" style="font-size: 1rem"></i>
+          </a>
+          <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
+          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+          <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
+          {% if p.board.has_mod(v) %}
+          <a class="dropdown-item" href="{{ p.board.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="ml-auto">
+      {% if v %}
+      <div id="button-sub" {% if p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post('/api/subscribe/{{ p.board.name }}', callback=toggleSub)">Join guild</a></div>
+      <div id="button-unsub" {% if not p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post('/api/unsubscribe/{{ p.board.name }}', callback=toggleSub)">Leave</a></div>
+      {% elif not v %}
+      <a class="btn btn-primary" href="/signup">Join guild</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block mobileBanner %}
+<!-- Mobile -->
+{% if p.board_id %}
+<div class="jumbotron jumbotron-fluid jumbotron-guild text-white d-block d-md-none" style="background-image: url({{ p.board.banner_url }});">
+  <div class="w-100 position-absolute text-center bg-white" style="bottom: 0;">
+    <div class="container">
+      <div style="margin-top: -34px;">
+        <a href="{{ p.board.permalink }}"><img src="{{ p.board.profile_url }}" class="profile-pic-65 border-2 border-white mb-2"></a>
+      </div>
+      <a href="{{ p.board.permalink }}" class="text-black">
+        <h1 class="h5 d-inline-block mb-0">+{{ p.board.name }}
+          {% if p.board.over_18 %}
+          <span class="badge badge-danger text-small align-top">nsfw</span>
+          {% endif %}
+        </h1>
+      </a>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block adminpanel %}
+<p>Author: <a href="{{ p.author.permalink }}">@{{ p.author.username }}</a></p>
+<p>Score: +{{ p.ups }}/-{{ p.downs }}</p>
+{% endblock %}
+
+{% block adminscripts %}
+<script src="/assets/js/comment_modding.js"></script>
+{% endblock %}
+
+{% block embedJS %}
+<script src="/assets/js/yt_embed.js"></script>
+{% endblock %}
+
+{% block formatJS %}
+<script src="/assets/js/txt_formatting.js"></script>
+{% endblock %}
+
+{% block actionsModal %}{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+
+  <div class="col-12">
+
+    <div id="post-{{ p.base36id }}" class="card border-0 mt-3{% if p.is_banned %} banned{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}">
+      <div class="d-flex flex-row-reverse flex-nowrap justify-content-end">
+
+        <div class="card-block w-100 my-md-auto">
+
+          <div class="post-meta text-left d-none d-md-block mb-md-2"><span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by [deleted by user] · ({{ p.domain }}){% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}{% if p.over_18 %} · <span class="badge badge-danger text-small-extra">nsfw</span>{% endif %}</div>
+
+          <h1 class="card-title post-title text-left mb-md-3">{{ p.title | safe }}</h1>
+
+
+          <div class="post-meta text-left d-block d-md-none mb-3">{% if p.over_18 %}<span class="text-danger"><i class="far fa-exclamation-triangle text-small mr-1"></i>nsfw</span> · {% endif %}<span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by [deleted by user]{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}</div>
+
+
+              <div class="d-none d-md-flex justify-content-between align-items-center mt-2">
+                <div class="post-actions mt-2">
+                  <ul class="list-inline text-right d-flex">
+
+                    <li class="list-inline-item"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
+
+                    <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Copy link</a></li>
+
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Voting on "medium" devices or larger, hidden on smaller devices -->
+
+            {% if v %}
+
+            <div id="voting" class="voting d-none d-md-block mb-auto">
+              <div id="post-{{ p.base36id }}-up" class="arrow-up mx-auto">
+              </div>
+              <span id="post-{{ p.base36id }}-score-up" class="score-up text-muted{% if voted!=1 %} d-none{% endif %}">{{ score+1-adjust }}</span>
+              <span id="post-{{ p.base36id }}-score-none" class="score text-muted{% if voted!=0 and voted!=-2 %} d-none{% endif %}">{{ score-adjust }}</span>
+              <span id="post-{{ p.base36id }}-score-down" class="score-down text-muted{% if voted!=-1 %} d-none{% endif %}">{{ score-1-adjust }}</span>
+
+              {% if not p.board.downvotes_disabled %}
+              <div id="post-{{ p.base36id }}-down" class="arrow-down mx-auto">
+              </div>
+              {% endif %}
+            </div>
+
+            {% endif %}
+
+          </div>
+
+
+
+            </div>
+
+          </div>
+
+
+       </div>
+
+       <div class="row mb-3 d-block d-md-none">
+        <div class="col-12">
+
+          <div class="post-actions">
+            <ul class="list-inline text-right d-flex">
+
+              <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
+
+              <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
+              {% if v %}
+              <li class="list-inline-item">
+                <a href="#" data-toggle="modal" data-target="#actionsModal">
+                  <i class="fas fa-ellipsis-h"></i>
+                </a>
+              </li>
+              {% endif %}
+              <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
+
+                <span id="arrow-{{ p.base36id }}-mobile-up" class="mr-2 arrow-mobile-up">
+                  <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
+                </span>
+
+
+
+
+                <span id="post-{{ p.base36id }}-score-mobile-up" class="score-up text-muted d-none">{{ score+1 }}</span>
+                <span id="post-{{ p.base36id }}-score-mobile-none" class="score text-muted">{{ score }}</span>
+                <span id="post-{{ p.base36id }}-score-mobile-down" class="score-down text-muted d-none">{{ score-1 }}</span>
+
+                <span id="arrow-{{ p.base36id }}-mobile-down" class="arrow-mobile-down ml-2 my-0">
+                  <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
+                </span>
+
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="row border-md-0 comment-section pb-3">
+        <div class="col border-top">
+          <div class="comments-count py-3">
+            {% if linked_comment and p.comment_count >= 2%}
+            <div class="total"><a href="{{ p.permalink }}">View entire discussion</a></div>
+            {% else %}
+            <div class="total">Comments <span class="d-none d-md-inline-block">({{ p.comment_count }})</span></div>
+            {% endif %}
+            <div class="post-filter ml-auto"><span>Sort By:</span>
+              <span class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+              </a>
+              <span class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="?sort=new">New</a>
+                <a class="dropdown-item" href="?sort=old">Old</a>
+                <a class="dropdown-item" href="?sort=top">Top</a>
+                <a class="dropdown-item" href="?sort=disputed">Disputed</a>
+                <a class="dropdown-item d-none" href="#">Based</a>
+              </span>
+            </span>
+          </div>
+        </div>
+
+        {% if not v and p.comment_count >= 2 %}
+        <div class="card border-0 bg-light mt-4">
+          <div class="card-body">
+            <h5 class="card-title">Jump in the discussion.</h5>
+            <p class="card-text">Become part of the community, no email address required. Make a Ruqqus.</p>
+            <div>
+              <a href="/signup" class="btn btn-primary">Sign up</a>
+              <a href="/login" class="btn btn-link text-muted">Sign in</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if p.replies %}
+    <div class="comment-section">
+     {% with comments=p.replies %}
+      {% include "comments.html" %}
+     {% endwith %}
+   </div>
+       {% elif not p.replies and p.deleted_utc == 0 %}
+       <div class="comment-section text-center py-7">
+        <i class="fad fa-ghost text-gray-500 mb-4" style="
+        font-size: 3.5rem;"></i>
+        {% if v %}
+        <div class="h6 text-gray-500">This comment section is a ghost town. Be the first to comment!</div>
+        {% else %}
+        <div class="h6 text-gray-500">This comment section is a ghost town. <a href="/login">Sign in</a> to comment!</div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+  {% endblock %}
+
+  {% block guildModal %}
+  {% include "guild_details_modal.html" %}
+  {% endblock %}

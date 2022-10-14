@@ -1,0 +1,193 @@
+<div class="col sidebar sidebar-left hide-scrollbar bg-white border-right d-none d-lg-block pt-3{% if session.get('sidebar_collapsed',False) %} sidebar-collapsed{%endif %}" id="sidebar-left" style="overflow-y: auto; height: calc(100vh - 49px);">
+
+  <div class="sidebar-section sidebar-trending" style="word-break: break-word">
+    <div class="body p-0">
+
+      <div class="mb-4">
+        <div class="sidebar-collapsed-hidden collapsed-toggle-parent">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="text-small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.025rem;">{{ "SITE_NAME" | app_config }} Feeds</div>
+            <button class="btn" data-toggle="tooltip" data-placement="right" title="Collapse" onclick="toggle_sidebar_collapse();post('/settings/toggle_collapse');"><span class="collapsed-toggle"></span></button>
+          </div>
+        </div>
+        <div class="sidebar-collapsed-visible collapsed-toggle-parent">
+          <button class="btn mb-3" onclick="toggle_sidebar_expand();post('/settings/toggle_collapse');"><span class="collapsed-toggle"></span></button>
+        </div>
+        <div class="sidebar-collapsed-visible">
+          <span class="fa-stack">
+            <i class="fas fa-newspaper text-muted mb-3" style="font-size: 1rem;"></i>
+          </span>
+        </div>
+        <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+          <li class="guild-recommendations-item">
+            <a href="/">
+              <div class="d-flex">
+                <span class="fa-stack">
+                  <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                  <i class="fa-stack-1x fas fa-home fa-inverse d-inline-block text-white"></i>
+                </span>
+                <span class="my-auto ml-2 text-black font-weight-normal">Home</span>
+              </div>
+              </a>
+            </li>
+            <li class="guild-recommendations-item">
+              <a href="/all?sort=new">
+                <div class="d-flex">
+                  <span class="fa-stack">
+                    <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                    <i class="fa-stack-1x fas fa-globe-americas fa-inverse d-inline-block text-white"></i>
+                  </span>
+                  <span class="my-auto ml-2 text-black font-weight-normal">All</span>
+                </div>
+              </a>
+            </li>
+            <li class="guild-recommendations-item">
+              <a href="/all?sort=hot">
+                <div class="d-flex">
+                  <span class="fa-stack">
+                    <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                    <i class="fa-stack-1x fas fa-fire fa-inverse d-inline-block text-white"></i>
+                  </span>
+                  <span class="my-auto ml-2 text-black font-weight-normal">Trending</span>
+                </div>
+              </a>
+              </li>
+            </ul>
+              <!-- Show this list when sidebar is collapsed-->
+              <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+                <li class="guild-recommendations-item">
+                  <a href="/">
+                    <span class="fa-stack">
+                      <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                      <i class="fa-stack-1x fas fa-home fa-inverse d-inline-block text-white"></i>
+                    </span>
+                  </a>
+                </li>
+                <li class="guild-recommendations-item">
+                  <a href="/all?sort=new">
+                    <span class="fa-stack">
+                      <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                      <i class="fa-stack-1x fas fa-globe-americas fa-inverse d-inline-block text-white"></i>
+                  </span>
+                  </a>
+                </li>
+                <li class="guild-recommendations-item">
+                  <a href="/all?sort=hot">
+                    <span class="fa-stack">
+                      <i class="fa-2x fas fa-circle text-purple fa-stack-2x" style=""></i>
+                      <i class="fa-stack-1x fas fa-fire fa-inverse d-inline-block text-white"></i>
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {% if v and v.subscribed_to_anything %}
+            <div class="mb-4">
+              <div class="sidebar-collapsed-hidden">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="text-small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.025rem;">My guilds</div>
+                  <span><a href="/browse" class="btn btn-link text-small-extra font-weight-normal text-purple px-0">Discover guilds</a></span>
+                </div>
+              </div>
+              <div class="sidebar-collapsed-visible">
+                <span class="fa-stack">
+                  <i class="fas fa-chess-rook text-muted mb-3" style="font-size: 1rem;"></i>
+                </span>
+              </div>
+              <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+                {% for board in v.boards_subscribed[0:10] %}
+                <li class="guild-recommendations-item">
+                  <a href="{{ board.permalink }}">
+                    <div class="d-flex">
+                      <div>
+                        <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 ml-1 mr-2">
+                      </div>
+                      <div class="my-auto">
+                        <div class="text-black font-weight-normal">+{{ board.name }}</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              <a class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden" href="/mine">View more</a>
+              <!-- Show this list when sidebar is collapsed -->
+              <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+                {% for board in v.boards_subscribed[0:10] %}
+                <li class="guild-recommendations-item">
+                  <a href="{{ board.permalink }}">
+                    <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            {% elif v and not v.subscribed_to_anything %}
+            <div class="sidebar-collapsed-hidden">
+              <div class="mb-3">
+                <div class="text-small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.025rem;">My guilds</div>
+              </div>
+              <p>You are not a member of any guilds. Guilds you participate in will be displayed here.</p>
+              <a href="/browse" class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden">Discover guilds</a>
+            </div>
+            {% endif %}
+
+            {% if v and v.mods_anything %}
+            <div class="sidebar-collapsed-hidden">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="text-small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.025rem;">Guildmaster of</div>
+                <span><a href="/mod/queue" class="btn btn-link text-small-extra font-weight-normal px-0">Mod Queue</a></span>
+              </div>
+            </div>
+            <div class="sidebar-collapsed-visible">
+              
+              <span class="fa-stack">
+                <i class="fas fa-crown text-warning mb-3" style="font-size: 1rem;"></i>
+              </span>
+            </div>
+            <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+              {% for board in v.boards_modded %}
+              <li class="guild-recommendations-item">
+                <a href="{{ board.permalink }}">
+                  <div class="d-flex">
+                    <div>
+                      <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 mr-2">
+                    </div>
+                    <div class="my-auto">
+                      <div class="text-black font-weight-normal">+{{ board.name }}</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            <!-- Show this list when sidebar is collapsed -->
+            <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+              {% for board in v.boards_modded[0:10] %}
+              <li class="guild-recommendations-item">
+                <a href="{{ board.permalink }}">
+                  <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if not v %}
+        <div class="sidebar-section sidebar-guild-recommendations bg-gray-100 sidebar-collapsed-hidden">
+          <div class="body">
+            <div class="my-3" style="">
+              <i class="fad fa-telescope text-purple" style="font-size:3rem"></i>
+            </div>
+            <h5>Discover amazing communities across <span class="text-purple">{{ "SITE_NAME" | app_config }}</span>.</h5>
+            <p class="text-small">Create a {{ "SITE_NAME" | app_config }} account and join your favorite communities, no email address required.</p>
+            <a href="/signup" class="btn btn-purple btn-block">Sign up</a>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>

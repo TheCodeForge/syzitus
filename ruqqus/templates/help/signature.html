@@ -1,0 +1,34 @@
+{% extends "docs_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>Signature Verification</title>
+<meta name="description" content="Ruqqus Signature Verification">
+{% endblock %}
+
+{% block content %}
+
+<h1>Ruqqus Signature Verification</h1>
+<p>This page may be used to authenticate any file which is purported to be from Ruqqus LLC.</p>
+<p>Any file provided by Ruqqus LLC in response to a legal process, such as a search warrant, will be accompanied by a cryptographic signature. A file may be submitted here, with its signature. If this page does not validate the signature, then the file may not be authentic, and you should suspect tampering or mishandling.</p>
+
+As an example, you can test this page using the Ruqqus logo <a href="/assets/images/logo/ruqqus_logo.png" target="_blank">here</a>. Its signature is <code>bd50e735a575eaaa9ab8cff79e063cde</code>.
+
+{% if error %}
+	<p class="text-danger">The signature is not valid. The file or signature may have been altered or mishandled, or the file is inauthentic.</p>
+{% elif success %}
+	<p class="text-info">The signature is valid. The file you uploaded is authentic.</p>
+{% endif %}
+
+<form action="/help/signature" method="post" class="mb-6" enctype="multipart/form-data">
+	<label for="img-input">File Upload</label>
+	<input id="img-input" type="file" class="form-control-file mb-2" name="file">
+	<label for="sig-input">Signature Input</label>
+	<input id="sig-input" type="text" class="form-control" placeholder="Paste signature here" name="sig">
+	<input type="submit" class="btn btn-primary mt-2" value="Validate Signature">
+</form>
+
+
+{% endblock %}

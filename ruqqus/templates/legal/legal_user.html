@@ -1,0 +1,40 @@
+{% extends "legal_default.html" %}
+
+{% block content%}
+<h1>User Information Request</h1>
+<form action="/legal/final" method="post" enctype="multipart/form-data">
+	{% for k in request.form %}
+		<input type="hidden" name="{{ k }}" value="{{ request.form[k] }}">
+	{% endfor %}
+
+	<div class="h6 mt-5">List the username(s) of the account(s) whose information is being requested.</div>
+	<input type="text" name="target_user" class="form-control" required>
+
+	<div class="h6 mt-5">What kind of information is needed?</div>
+	<input type="radio" name="info_type" value="basic_info" checked required> Basic account information<br>
+	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by Ruqqus staff.<br>
+	<input type="radio" name="info_type" value="deleted_content"> Content that has been deleted by its owner. (Requires search warrant).<br>
+	
+	
+	<div class="h6 mt-5">Issuing Court Name</div>
+	<input type="text" name="court_name" class="form-control" required>
+
+	<div class="h6 mt-5">Issuing Court Location</div>
+	<input type="text" name="court_location" class="form-control" required>	
+
+	<div class="h6 mt-5">Can Ruqqus notify the user that their information has been requested?</div>
+	<div class="body">It is Ruqqus policy to notify a user that their information has been requested by legal process, except when prohibited by law or in certain exigent circumstances.</div>
+	<input type="radio" name="notify_perms" value="non_disclosure"> This legal process includes a non-disclosure provision pursuant to 18 USC 2705(b). Ruqqus is prohibited from notifying the user.<br>
+	<input type="radio" name="notify_perms" value="exigent"> This legal process involves exigent circumstances such as terrorism, human trafficking, or imminent threats to life. Although Ruqqus is legally permitted to notify the user, Ruqqus policy means we will most likely refrain from doing so.<br>
+	<input type="radio" name="notify_perms" value="may_notify" checked required> None of the above. Ruqqus is permitted to notify the user that their information has been requested.<br>
+
+	<div class="h6 mt-5">Upload the legal document</div>
+	<div class="body">It must be in English or include an official English translation.</div>
+	<input type="file" name="file" required>	
+
+	<div class="h6 mt-5">Required Statement</div>
+	<input type="checkbox" name="swear_perjury" required> I swear, under penalty of perjury, that the information in this Request is accurate.</br>
+
+	<input class="btn btn-primary mt-5" type="submit" value="Submit">	
+</form>
+{% endblock %}

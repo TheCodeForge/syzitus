@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Sign in to Ruqqus">
+    <meta name="author" content="">
+
+    <title>2-Step Login - Ruqqus</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+
+    <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/latest/js/all.js"
+    integrity="sha384-L469/ELG4Bg9sDQbl0hvjMq8pOcqFgkSpwhwnslzvVVGpDjYJ6wJJyYjvG3u8XW7"
+    crossorigin="anonymous"></script>
+
+    <!-- Ruqqus CSS -->
+    <link rel="stylesheet" href="/assets/style/main.css">
+
+</head>
+
+<body id="login">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top border-0">
+        <div class="container-fluid">
+            <button class="navbar-toggler d-none" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/help/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/help/terms">Terms</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mailto:info@ruqqus.com">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Content -->
+
+<div class="container-fluid position-absolute h-100 p-0 overflow-auto">
+    <div class="row no-gutters h-100">
+
+        <div class="col-12 col-md-6 my-auto p-3">
+
+            <div class="row justify-content-center">
+
+                <div class="col-10 col-md-7">
+
+                    <div class="mb-5">
+                        <a href="/" class="text-decoration-none"><span class="h3 text-primary">ruqqus</span></a>
+                    </div>
+
+
+                        <h1 class="h2">Premium Required</h1>
+
+                        <p class="text-muted mb-md-5">Development server access is a Ruqqus Premium benefit.</p>
+
+                        <a href="https://ruqqus.com/settings/premium" class="btn btn-primary">Get Premium</a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-12 col-md-6 d-none d-md-block">
+
+        <div class="splash-wrapper">
+
+            <div class="splash-overlay"></div>
+
+            <h6 class="splash-text">
+                {{ i.text }}
+            </h6>
+
+            <img class="splash-img" src="{{ i.path }}"></img>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+{% include "bootstrap.html" %}
+
+<!-- Initialize BS 4 tool tips -->
+
+<script src="/assets/js/tooltips.js"></script>
+
+<!-- BS Spinner JS -->
+
+<script src="/assets/js/spinner.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+{% extends "guild/guild_settings.html" %}
+
+{% block pagetitle %}+{{ b.name }} Settings - Ruqqus Guildmaster Tools{% endblock %}
+
+{% block stylesheets %}
+
+{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
+{% else %}
+<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-around">
+
+  <div class="col h-100">
+
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+
+
+
+  <div class="row">
+
+    <div class="col col-md-8">
+
+      <div class="settings">
+
+        <div id="name">
+
+          <h2 class="h5" name="guild_name">Guild Name</h2>
+
+          <p class="text-small text-muted">Change the capitilization of your guild's name.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="guild_name">Name</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <input type="text" class="form-control copy-link" id="guild_name" name="guild_name" value="{{ b.name }}">
+
+                <div class="text-small-extra text-muted mt-3">Only the guild name capitalization can be changed.</div>
+
+              </div>
+
+            </div>
+
+            <div class="footer">
+
+              <div class="d-flex justify-content-end">
+
+                {% if error %}
+                <p class="mb-0">
+                  <span class="text-danger text-small" style="vertical-align: sub;">{{ error }}</span>
+                </p>
+                {% endif %}
+                <button class="btn btn-primary ml-auto" id="save-guild-name" onclick="mod_post('/mod/{{ b.base36id }}/settings/name', 'guild_name', 'save-guild-name');">Save</button>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div id="description">
+
+          <h2 class="h5" id="guild_description" name="guild_description">Guild Description</h2>
+
+          <p class="text-small text-muted">Edit the guild's public description. All visitors to the guild will see this.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="body d-lg-flex">
+
+              <label for="bio" class="text-black w-lg-25">Description</label>
+
+              <div class="w-lg-100">
+                <div class="input-group mb-2">
+                  <textarea class="form-control rounded" id="bio" aria-label="With textarea" placeholder="What's this guild all about?" rows="3" name="description" form="profile-settings" maxlength="1000">{{ b.description }}</textarea>
+                </div>
+
+                <small>Limit of 1000 characters</small>
+
+              </div>
+
+            </div>
+
+            <div class="footer">
+
+              <div class="d-flex justify-content-end">
+
+                {% if error %}
+                <p class="mb-0">
+                  <span class="text-danger text-small" style="vertical-align: sub;">{{ error }}</span>
+                </p>
+                {% endif %}
+
+                <button class="btn btn-primary ml-auto" id="save-bio" onclick="mod_post('/mod/{{ b.base36id }}/settings/description', 'bio', 'save-bio');">Save</button>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div id="category">
+          <h2 class="h5" id="guild_category">Guild Category</h2>
+
+          <p class="text-small text-muted">Select the category of content this guild is for. Selecting the correct category will improve visibility for people who might be interested in joining.</p>
+
+          <div class="settings-section rounded">
+            <div class="body d-lg-flex">
+
+              <label for="category-select" class="text-black w-lg-25">Category</label>
+
+
+              <div class="w-lg-100">
+                <div class="input-group mb-2">
+                  <select id="category-selector" name="category" class="form-control" onchange="post_toast('/mod/{{ b.base36id }}/category/'+document.getElementById('category-selector').selectedOptions[0].value)" {% if b.is_locked_category %}disabled{% endif %}>
+                    {% if not b.subcat %}
+                      <option value="0" selected disabled>Select a Category</option>
+                    {% endif %}
+                    {% for category in categories %}
+                        <option disabled>{{ category.name }}</option>
+
+                        {% for subcat in category.subcats %}
+                          <option value="{{ subcat.id }}"{% if subcat.id==b.subcat_id %} selected{% endif %}> - {{ subcat.name }}</option>
+                        {% endfor %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="nsfw">
+
+          <h2 class="h5">Age-Restricted Content</h2>
+
+          <p class="text-small text-muted">Designate whether your guild contains mature content.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="over18">NSFW Content</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="over18" name="over_18"{% if b.over_18 %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/over_18','over18')">
+                  <label class="custom-control-label" for="over18"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Enable if your guild contains NSFW content suitable only for 18+ users.</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="restricted">
+
+          <h2 class="h5">Restricted Posting</h2>
+
+          <p class="text-small text-muted">Restrict submission posting in +{{ b.name }} to approved contributors only.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="restrictswitch">Restrict Posting</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="restrictswitch" name="restrictswitch"{% if b.restricted_posting %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/restricted','restrictswitch')">
+                  <label class="custom-control-label" for="restrictswitch"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Restrict posting in +{{ b.name }} to approved users only. (Anyone will still be able to comment).</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="privacy">
+
+          <h2 class="h5">Guild Privacy</h2>
+
+          <p class="text-small text-muted">Make submissions to +{{ b.name }} private. Posts will only be visible to approved Guild Members.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="guildprivacy">Toggle Privacy</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="guildprivacy" name="guildprivacy"{% if b.is_private %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/private','guildprivacy')">
+                  <label class="custom-control-label" for="guildprivacy"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Restrict viewing, posting, and commenting in +{{ b.name }} to approved members only. (You will also be unable to yank posts from +general into +{{ b.name }}, unless the post was originally made in +{{ b.name }}) </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="optout">
+
+          <h2 class="h5">Opt Out of All/Trending</h2>
+
+          <p class="text-small text-muted">Don't show +{{ b.name }} content in All or Trending for users that aren't members of the guild.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="guildoptout">Toggle Opt-Out</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="guildoptout" name="opt_out"{% if b.all_opt_out %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/opt_out','guildoptout')">
+                  <label class="custom-control-label" for="guildoptout"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Don't show +{{ b.name }} content in All or Trending for users that aren't members of the guild. (You will also be unable to yank posts from +general into +{{ b.name }}, unless the post was originally made in +{{ b.name }}) </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="disallow_bots">
+
+          <h2 class="h5">Disallow Bots</h2>
+
+          <p class="text-small text-muted">Disallow bots from posting and commenting in +{{ b.name }}.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="disallowbots">Disallow Bots</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="disallowbots" name="disallowbots"{% if b.disallowbots %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/disallowbots','disallowbots')">
+                  <label class="custom-control-label" for="disallowbots"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">Disallow bots from posting and commenting in +{{ b.name }}.</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+<!--
+        <div id="chatsetting">
+
+          <h2 class="h5">Chat Availability</h2>
+
+          <p class="text-small text-muted">Enable Chat for this guild.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="public_chat">Turn on Public Chat</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="public_chat" name="public_chat"{% if b.public_chat %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/public_chat','public_chat')">
+                  <label class="custom-control-label" for="public_chat"></label>
+                </div>
+
+                <span class="text-small-extra text-muted">If off, <a href="{{ b.permalink }}/chat" target="_blank">#{{ b.name }}</a> will only be accessible to moderators and approved contributors.</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      -->
+
+  </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+{% endblock %}

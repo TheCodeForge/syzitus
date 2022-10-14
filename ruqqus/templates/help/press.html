@@ -1,0 +1,194 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>Ruqqus - Press</title>
+<meta name="description" content="Ruqqus Press Resources">
+<script src="/assets/js/comment_replies.js"></script>
+{% endblock %}
+
+<!-- Left Sidebar -->
+
+	
+{% block content %}
+
+    {% if request.args.get('error') or error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error if error else request.args.get('error') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+    {% if request.args.get('msg') or msg %}
+    <div class="alert alert-success alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-check-circle my-auto" aria-hidden="true"></i>
+      <span>
+        {{ msg if msg else request.args.get('msg') }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
+
+<h1 class="article-title">Press</h1>
+
+{% filter markdown %}
+
+Welcome to the Ruqqus press portal.
+
+## Press Releases
+
+Official Ruqqus press releases are posted in [+RuqqusPress](/+RuqqusPress?sort=new).
+
+## Logo
+
+Use primary logos on light backgrounds, and alternate logos with dark backgrounds. Logos may be uniformly resized but may not be redrawn, rotated, recolored, distorted, or otherwise altered.
+
+The tilted "r" in alternate logos is deliberately transparent so that it can match the background color. Do not fill in the "r" with a different color.
+
+Do not display logos against a textured background.
+
+* [Primary logo](/assets/images/logo/ruqqus_logo_square_white_fill.png)
+* [Alternate logo](/assets/images/logo/ruqqus_logo_white.png)
+* [Primary logo with wordmark](/assets/images/logo/ruqqus_text_logo.png)
+* [Alternate logo with wordmark](/assets/images/logo/ruqqus_text_logo_white.png)
+
+## Mascot
+
+The name of the Ruqqus mascot is "Ruqqie".
+
+Ruqqie may be resized, but should not be redrawn, rotated, distorted, or otherwise altered. Transformative artistic works are permitted under Fair Use. However, Ruqqie and transformative artistic works based on Ruqqie may not be sold, affixed to merchandise, or otherwise monetized without explicit written permission from Ruqqus LLC.
+
+* [Ruqqie](/assets/images/logo/ruqqie.png)
+
+## Terminology
+
+Ruqqus is broken into numerous smaller messaging and commenting boards focused around a variety of topics. These boards are called "Guilds". Guild names always start with a `+` symbol, and are usually (though not always) named after their topic of interest. For example, [+news](/+news) is a Guild focused on sharing and discussion of news and current events.
+
+The users who create and moderate Guilds are called "Guildmasters". Guildmasters are regular users, and have no affiliation with Ruqqus LLC beyond having a ruqqus.com account.
+
+Users can submit posts to Guilds. They can also can add comments as replies to posts or other comments.
+
+Guildmasters cannot hide or remove content. They can "kick" off-topic posts out of their guild. Such content then appears in [+general](/+general), an unmoderated Guild that functions as a catch-all area. Similarly, Guildmasters can "yank" content from +general into their own guild. When a post is kicked or yanked, all of its comments move with it. 
+
+When referring to the Ruqqus social media platform, use "Ruqqus" or "ruqqus.com".
+
+When referring to the business which owns and operates the Ruqqus platform, use "Ruqqus LLC".
+
+When referring to the owners, staff, or other elements of Ruqqus LLC, use "Ruqqus staff", "Ruqqus owners", or similar phrasing.
+
+Users of the Ruqqus platform may be informally called "Ruqqies", or formally "Ruqqus users".
+
+## Coloring
+
+The name of the Ruqqus purple color is "porpl". Its RGB hex code is #805ad5.
+
+## Licensing
+
+The assets on this page ("brand assets") may be used for the following purposes, under a limited, nonexclusive, nontransferable, royalty-free license ("the License"):
+
+* To link to Ruqqus, enable sharing to Ruqqus, or refer to your presence on Ruqqus.
+* To indicate the presence of a Ruqqus-powered embed of content from Ruqqus.
+* As specifically permitted by a separate written agreement you have with Ruqqus LLC
+
+Use of brand assets for the following is not permitted under the License:
+
+* Placing Ruqqus name or brand assets on apparel or merchandise, without written approval from Ruqqus LLC.
+* Using the Ruqqus name or brand assets as a name, or part of a name, of a company, product, service, application, website, domain name, or social media account.
+
+Terms of the License. A violation of these terms shall automatically terminate your License.
+
+* Do not modify the brand assets or use modified versions found elsewhere.
+* Do not use the Ruqqus name or brand assets in a manner that implies a partnership with, or endorsement by, ruqqus.com or Ruqqus LLC.
+* Do not use the Ruqqus name or brand assets in connection with material that violates the Ruqqus [terms of service](/help/terms) or [content policy](/help/rules).
+* Do not use the brand assets in connection with content that disparages ruqqus.com, Ruqqus LLC, or Ruqqus staff.
+
+Ruqqus LLC may revoke your License at any time and for any reason.
+
+A failure by Ruqqus in one or more instances to insist upon your strict adherence to these licence terms, shall not be construed as a waiver of any continuing or subsequent violations of these license terms.
+
+## Content
+
+The following requirements must be met when attributing any Ruqqus content within ediorial content:
+
+Do:
+
+* Explicitly state and cite Ruqqus. (Logo assets may be helpful here.)
+* Capitalize "Ruqqus", except when using it as part of "ruqqus.com" or within links
+* Capitalize "Ruqqus LLC"
+* Link to the original Ruqqus post, comment, or community if it appears online.
+* Use the full text of the post or comment.
+* Respect the displayed capitalization of Ruqqus guild names and user names.
+* Refer to guilds as "+guildname"
+* Refer to individual users as "@username"
+
+Do not:
+
+* Screenshot Ruqqus content to use within digital editorial content. (Embed it instead.)
+* Alter posts, comments, username identification, or any other content found on Ruqqus.
+* Quote a Ruqqus user without properly attributing the quote to them and providing a link to the comment.
+* Omit part of a comment or post text.
+* Capitalize "ruqqus.com"
+* Leave outdated versions of content up. Changes or deletions to content should be reflected in a timely manner. (Use of Ruqqus-powered embeds is the best way to accomplish this.)
+
+Verbal rules:
+
+* Explicitly state that content is from Ruqqus
+* Do not alter the title, text, or meaning of the content.
+* Read content in full. Do not excerpt content. Do not attempt to quote content from memory.
+* "Ruqqus" is pronounced identically to the standard English word "ruckus"
+* "Ruqqie" is pronounced "RUCK-ee"
+
+
+
+## Inquiry Contact
+
+{% endfilter %}
+
+{% if v and v.is_activated and not v.is_suspended %}
+
+<p>Use this form to submit a press inquiry. You must have a press email address set on your account. If you have a generic, non-press email address, please <a target="_blank" href="/settings/security">update it</a> before submitting this form.</p>
+
+<label class="mt-3">Your Email</label>
+<input class="form-control" value="{{ v.email }}" readonly="readonly" disabled>
+
+<form id="pressform" action="/help/submit_contact" method="post">
+<input type="hidden" name="formkey" value="{{ v.formkey }}">
+<input type="hidden" name="press" value="true">
+
+<label for="input-name" class="mt-3">Your name</label>
+<input type="text" id="input-name" class="form-control" name="name" required>
+
+<label for="input-org" class="mt-3">Your organization</label>
+<input type="text" id="input-org" class="form-control" name="organization" required>
+
+<label for="input-title" class="mt-3">Your title</label>
+<input type="text" id="input-title" class="form-control" name="title" required>
+
+<label for="input-inquiry" class="mt-3">Your inquiry</label>
+<textarea id="input-inquiry" for="pressform" name="inquiry" class="form-control" required></textarea>
+
+<input type="submit" value="Submit Inquiry" class="btn btn-primary mt-3">
+
+</form>
+
+{% elif v and v.is_suspended %}
+
+<p>Your Ruqqus account has been suspended. You are not permitted to submit press inquiries at this time.</p>
+
+
+{% elif v %}
+
+<p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your inquiry. Then, refresh this page.</p>
+
+{% else %}
+
+<p>In order to ensure that we can respond to your inquiry, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your press email address</a>. Then, refresh this page.</p>
+
+{% endif %}
+
+{% endblock %}

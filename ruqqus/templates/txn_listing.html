@@ -1,0 +1,64 @@
+
+
+{% for t in txns %}
+
+<div id="txn-{{ t.base36id }}" class="card">
+
+  <div class="d-flex flex-row-reverse flex-md-row flex-nowrap justify-content-end py-2 px-3"> 
+
+        <div class="card-block text-left x-scroll-parent my-md-auto w-100">
+
+          <div style="height: 21px" class="d-block d-md-none mb-1">
+
+            <div class="post-meta text-left x-scroll" style="overflow-x: scroll;"><span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ t.created_date }}">{{ t.age_string }}</span> by <a href="/@{{ t.user.username }}" class="user-name">{{ t.user.username }}</a>{% if t.user.title %}{{ t.user.title.rendered | safe }}{% endif %}
+          </div>
+        </div>
+
+        <div class="post-meta text-left d-none d-md-block mb-md-2"><span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ t.created_datetime }}">{{ t.age_string }}</span> by <a href="/@{{ t.user.username }}" class="user-name">{{ t.user.username }}</a>{% if t.user.title %}{{ t.user.title.rendered | safe }}{% endif %}
+
+      </div>
+
+      <h5 class="card-title post-title text-left w-lg-75 mb-0 pb-0 pb-md-1">{{ t.coin_count }} Coin{{ 's' if t.coin_count >1 else '' }}</h5>
+      <h5 class="card-title post-title text-left w-lg-75 mb-0 pb-0 pb-md-1">{{ t.display_usd }}</h5>
+
+      {% if t.promo %}
+      <div class="text-left text-muted">with promo code <code>{{ t.promo.code }}</code></div>
+      {% endif %}
+
+      {% if t.status != 3 %}
+      <div class="text-left text-danger font-weight-bold">{{ t.status_text }}</div>
+      {% endif %}
+
+
+      <div class="post-actions mt-2 d-block">
+        <ul class="list-inline text-right d-flex">
+
+          <li class="list-inline-item"><a href="{{ t.permalink }}"><i class="fas fa-link"></i>Permalink</a></li>
+
+          <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ t.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+
+</div>
+
+{% else %}
+
+
+<div class="row no-gutters">   
+  <div class="col">      
+    <div class="text-center py-7">
+      <div class="h4 p-2">You haven't bought any Coins yet. (<a href="/settings/premium">But you can change that!</a>)</div>
+    </div>       
+  </div>  
+</div>
+
+
+
+{% endfor %}
+

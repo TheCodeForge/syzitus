@@ -1,0 +1,143 @@
+{% extends "settings.html" %}
+
+{% block pagetitle %}Profile Settings - {{ 'SITE_NAME' | app_config }}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+  <div class="col col-lg-8">
+
+    <div class="settings">
+
+          <h2 class="h5">Content Filters</h2>
+
+            <div class="settings-section rounded">
+
+              <div class="d-lg-flex border-bottom">
+
+                <div class="title w-lg-25">
+                  <label for="over18">View NSFW Content</label>
+                </div>
+
+                <div class="body w-lg-100">
+
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="over18" name="over18"{% if v.over_18 %} checked{% endif %} onchange="post_toast('/settings/profile?over18='+document.getElementById('over18').checked);document.getElementById('filter-nsfw-option').classList.toggle('d-none')">
+                    <label class="custom-control-label" for="over18"></label>
+                  </div>
+
+                  <span class="text-small-extra text-muted">Enable if you are 18+ and are ok with viewing NSFW content.</span>
+                  <div id="filter-nsfw-option" {% if not v.over_18 %}class="d-none"{% endif %}>
+                    <hr>
+
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="filter-nsfw" name="filter_nsfw"{% if not v.filter_nsfw %} checked{% endif %} onchange="post_toast('/settings/profile?filter_nsfw='+document.getElementById('filter-nsfw').checked)">
+                      <label class="custom-control-label" for="filter-nsfw"></label>
+                    </div>
+
+                    <span class="text-small-extra text-muted">Enable if you also want to see NSFW content in All/Trending.</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="d-lg-flex border-bottom">
+
+                <div class="title w-lg-25">
+                  <label for="hidensfl">View NSFL Content</label>
+                </div>
+
+                <div class="body w-lg-100">
+
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="hidensfl" name="show_nsfl"{% if v.show_nsfl %} checked{% endif %} onchange="post_toast('/settings/profile?show_nsfl='+document.getElementById('hidensfl').checked)">
+                    <label class="custom-control-label" for="hidensfl"></label>
+                  </div>
+
+                  <span class="text-small-extra text-muted">Enable if you are ok with viewing NSFL content. We recommend keeping this off if you are under 18.</span>
+
+                </div>
+
+              </div>
+
+              <div class="d-lg-flex border-bottom">
+
+                <div class="title w-lg-25">
+                  <label for="hideoffensive">Hide offensive speech</label>
+                </div>
+
+                <div class="body w-lg-100">
+
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="hideoffensive" name="hide_offensive"{% if v.hide_offensive %} checked{% endif %} onchange="post_toast('/settings/profile?hide_offensive='+document.getElementById('hideoffensive').checked)">
+                    <label class="custom-control-label" for="hideoffensive"></label>
+                  </div>
+
+                  <span class="text-small-extra text-muted">Hide posts or collapse comments that include racial slurs. A full list of words can be found <a href="/slurs.txt" target="_blank">here</a>.</span>
+
+                </div>
+
+              </div>
+			  
+              <div class="d-lg-flex border-bottom">
+
+                <div class="title w-lg-25">
+                  <label for="hidebot">Hide bot content</label>
+                </div>
+
+                <div class="body w-lg-100">
+
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="hidebot" name="hide_bot"{% if v.hide_bot %} checked{% endif %} onchange="post_toast('/settings/profile?hide_bot='+document.getElementById('hidebot').checked)">
+                    <label class="custom-control-label" for="hidebot"></label>
+                  </div>
+
+                  <span class="text-small-extra text-muted">Hide posts or collapse comments that are made by bots.</span>
+
+                </div>
+
+              </div>
+
+              <div class="d-lg-flex">
+
+                <div class="title w-lg-25">
+                  <label for="filters-text">Custom Filters</label>
+                </div>
+
+                <div class="body w-lg-100">
+                  <form id="custom-filter" action="/settings/profile" method="post">
+                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                      <small>Hides matching content from Home, All, and Trending, and collapses matching comments.</small>
+                    <div class="input-group mb-2">
+                      <textarea class="form-control rounded" id="filters-text" aria-label="With textarea"
+                      placeholder="Add your own custom content filters."
+                      rows="3" name="filters" form="custom-filter" maxlength="1000">{{ v.custom_filter_list }}</textarea>
+                    </div>
+                    <div class="d-flex">
+                      <small>Use a new line for each filter entry. Limit of 1000 characters.</small>
+                      <input class="btn btn-primary ml-auto" id="bioSave" type="submit" value="Save Changes">
+                    </div>
+                  </form>
+
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+{% endblock %}

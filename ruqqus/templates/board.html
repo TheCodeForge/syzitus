@@ -1,0 +1,413 @@
+{% extends "home.html" %}
+
+{% block stylesheets %}
+{% if v and session.get("dark_mode_enabled") %}
+<link id="css-link" rel="stylesheet" href="{{ b.css_dark_url }}?v=2.38.0">
+{% else %}
+<link id="css-link" rel="stylesheet" href="{{ b.css_url }}?v=2.38.0">
+{% endif %}
+<link id="board-css" rel="stylesheet" href="{{ b.custom_css_url }}">
+{% endblock %}
+
+{% block adminpanel %}
+{% if v.admin_level >=3 %}
+{% if b.is_banned %}
+<form action="/api/unban_guild/{{ b.base36id }}" method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="submit" class="btn btn-success" value="Unban guild">
+</form>
+
+<p class="my-3">Reason: {{ b.ban_reason }}</p>
+
+{% if v.admin_level >=5 %}
+<form action="/admin/purge_guild_images/{{ b.name }}" method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="submit" class="btn btn-danger" value="Purge All Hosted Images">
+</form>
+{% endif %}
+{% else %}
+<form action="/api/ban_guild/{{ b.base36id }}", method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input id="guild-ban-reason" type="text" class="form-control bg-white" name="reason" placeholder="Ban Reason" onchange="document.getElementById('guild-ban-submit').disabled=false;">
+  <input id="guild-ban-submit" type="submit" class="btn btn-warning mt-3" value="Ban guild" disabled>
+</form>
+{% if not b.has_mod(v) %}
+<form action="/api/mod_self/{{ b.base36id }}" method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="submit" class="btn btn-success mt-3" value="Mod Self">
+</form>
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% endblock %}
+
+{% block sidebarblock %}
+<div class="sidebar-section sidebar-guildmake">
+  <div class="title"><i class="fas fa-info-circle mr-2"></i>About Guild</div>
+  <div class="body">
+    {{ b.description_html | safe }}
+
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-1" style="letter-spacing: 0.025rem;">Founded</div>
+    <p>{{ b.created_date }}</p>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.025rem;">Guildmasters</div>
+    <div class="d-flex align-items-center">
+      {% for mod in b.mods_list[0:3] %}
+      <a href="{{ mod.user.permalink }}">
+        <img src="{{ mod.user.profile_url }}" class="profile-pic profile-pic-30 profile-stacked {% if not loop.first %}ml-n2{% endif %}" data-toggle="tooltip" data-placement="bottom" title="{{ '@' + mod.user.username }}">
+      </a>
+      {% if loop.last %}
+      {% if b.mods_count - loop.index > 0 %}
+      <div class="text-small text-primary ml-2">
+        <a href="{{ b.permalink+'/mod/mods' }}">+{{ b.mods_count - loop.index }} more guildmaster{% if b.mods_count - loop.index > 1 %}s{% endif %}</a>
+      </div>
+      {% endif %}
+      {% endif %}
+      {% else %}
+      <small class="text-muted">No guildmasters</small>
+      {% endfor %}
+    </div>
+
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3" style="letter-spacing: 0.025rem;">Settings</div>
+    <div class="text-primary">
+      <i class="fas fa-filter"data-toggle="tooltip" data-placement="bottom" title="Category: {% if b.subcat %}{{ b.subcat.category.name }} / {{ b.subcat.name }}{% else %}Uncategorized{% endif %}"></i>
+      {% if b.is_private %}<i class="fas fa-eye-slash"data-toggle="tooltip" data-placement="bottom" title="Private mode."></i>{% endif %}
+      {% if b.restricted_posting %}<i class="fas fa-user-lock"data-toggle="tooltip" data-placement="bottom" title="Restricted posting mode."></i>{% endif %}
+      {% if b.over_18 %}<i class="fas fa-eye-evil" data-toggle="tooltip" data-placement="bottom" title="NSFW"></i>{% endif %}
+      {% if b.all_opt_out %}<i class="fad fa-list" data-toggle="tooltip" data-placement="bottom" title="Opted out of All/Trending"></i>{% endif %}        
+    </div>
+
+  </div>
+</div>
+
+
+{% if False %}
+<div class="sidebar-section sidebar-chat">
+  <a href="{{ b.chat_url }}" target="_blank"><div class="title"><i class="fas fa-comments-alt mr-2"></i>Guild Chat (<i class="far fa-user fa-sm mr-1"></i><span class="board-chat-count"></span>)</div></a>
+  <div class="body">
+    {% include "chat/chat_client.html" %}
+  </div>
+</div>
+{% endif %}
+
+{% set mod = b.has_mod(v) %}
+
+{% if mod %}
+<div class="sidebar-section sidebar-info">
+  <div class="title"><i class="fas fa-crown mr-2"></i>Guildmaster Tools</div>
+  <div class="body">
+    <ul class="list-unstyled mb-0">
+
+      {% if mod.perm_config %}<li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/settings"><i class="fas fa-cog fa-fw text-center mr-2"></i>Settings</a></li>{% endif %}
+      {% if mod.perm_appearance %}<li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/appearance"><i class="fas fa-palette fa-fw text-center mr-2"></i>Appearance</a></li>{% endif %}
+      <li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/mods"><i class="fas fa-crown fa-fw text-center mr-2"></i>Guildmasters</a></li>
+      <li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/log"><i class="fas fa-scroll-old fa-fw text-center mr-2"></i>Mod Log</a></li>
+      <li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/css"><i class="fas fa-pencil-paintbrush fa-fw text-center mr-2"></i>CSS</a></li>
+      {% if mod.perm_access %}<li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/exiled"><i class="fas fa-user-slash fa-fw text-center mr-2"></i>Exiles</a></li>{% endif %}
+      {% if mod.perm_content %}<li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/queue"><i class="fas fa-flag fa-fw text-center mr-2"></i>Reports</a></li>{% endif %}
+      {% if mod.perm_access and (b.restricted_posting or b.is_private) %}<li class="mb-2"><a class="text-muted" href="/+{{ b.name }}/mod/contributors"><i class="fas fa-user-check fa-fw text-center mr-2"></i>Approved users</a></li>{% endif %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block darkswitch %}
+
+<script>
+  function switch_css_board() {
+    css = document.getElementById("css-link");
+    dswitch = document.getElementById("dark-switch");
+
+    if (css.href.endsWith("{{ b.css_url }}?v=2.38.0")) {
+
+      post("/settings/dark_mode/1",
+        callback=function(){
+          css.href="{{ b.css_dark_url }}?v=2.38.0";
+          dswitch.classList.remove("fa-toggle-off");
+          dswitch.classList.add("fa-toggle-on");
+        }
+        );
+    }
+    else {
+      post("/settings/dark_mode/0",
+        callback=function(){
+          css.href="{{ b.css_url }}?v=2.38.0";
+          dswitch.classList.remove("fa-toggle-on");
+          dswitch.classList.add("fa-toggle-off");
+        }
+        );
+
+    }
+  }
+</script>
+{% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+<a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-width-rem text-left mr-3" id="dark-switch"></i>Dark mode</a>
+{% elif v and v.can_use_darkmode %}
+<a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-width-rem text-left mr-3" id="dark-switch"></i>Dark mode</a>
+{% else %}
+<a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-width-rem text-left mr-3"></i>Dark mode</a>
+{% endif %}
+{% endblock %}
+
+{% block PseudoSubmitForm %}
+
+{% if b.can_submit(v) %}
+<!-- Link to submission page from guild -->
+<div class="row no-gutters d-none d-lg-flex mt-3">
+  <div class="col">
+    <div class="card pseudo-submit-form">
+      <div class="card-header bg-gray-100">
+        <div class="mb-0">Create post in +{{ b.name }}</div>
+        <ul class="list-inline no-bullets mb-0 d-none">
+          <li class="list-inline-item active mr-4"><i class="fas fa-align-left text-gray-400"></i></li>
+          <li class="list-inline-item"><i class="fas fa-link text-gray-400"></i></li>
+        </ul>
+      </div>
+      <div class="card-body">
+        {% if v and not b.is_subscribed %}
+        <a href="/submit?guild={{ b.name | urlencode }}">
+          <input type="text" class="form-control"
+          placeholder="Share something with this guild..." aria-label="Username"
+          aria-describedby="basic-addon1">
+        </a>
+        {% elif v and b.is_subscribed %}
+        <a href="/submit?guild={{ b.name | urlencode }}">
+          <input type="text" class="form-control"
+          placeholder="Share something with your guild..." aria-label="Username"
+          aria-describedby="basic-addon1">
+        </a>
+        {% else %}
+        <a href="/signup">
+          <input type="text" class="form-control"
+          placeholder="Share something with this guild..." aria-label="Username"
+          aria-describedby="basic-addon1">
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block desktopBanner %}
+<!-- Guild reference -->
+
+<span id="guild-name-reference" class="d-none">{{ b.name }}</span>
+
+<!-- Desktop -->
+<div class="row d-none d-md-block">
+  <div class="col px-0">
+    {% block desktopbanner %}
+    <img src="{{ b.banner_url }}" style="width: 100%; height: 250px; object-fit: cover;">
+    {% endblock %}
+  </div>
+</div>
+<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top" style="overflow: visible;">
+  <div class="col">
+    <div class="d-flex align-items-center">
+      <div class="d-flex align-items-center border-right py-2 pr-3">
+        <div>
+          <a href="{{ b.permalink }}"><img src="{{ b.profile_url }}" class="profile-pic-35 mr-2"></a>
+        </div>
+        <div>
+          <a href="{{ b.permalink }}">
+            <span class="h6 text-black mb-0">+{{ b.name }}
+              {% if v and v.has_blocked_guild(b) %}
+              <i class="fas fa-eye-slash text-danger align-middle ml-2" data-toggle="tooltip" data-placement="bottom" data-html="true" title="You have hidden this guild from /all. Visit your settings or click the <i class='far fa-ellipsis-h text-small'></i> icon to adjust its visibility."></i>
+              {% endif %}
+            </span>
+            {% if b.over_18 %}
+            <span class="badge badge-danger text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild contains adult content">nsfw</span>
+            {% endif %}
+            {% if b.is_nsfl %}
+            <span class="badge badge-black text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild contains adult content">nsfl</span>
+            {% endif %}
+            {% if b.is_private %}
+            <span class="badge badge-warning text-small ml-2" data-toggle="tooltip" data-placement="bottom" title="This guild is private. Content posted prior to the guild being set to private is visible to everyone.">private</span>{% endif %}
+          </a>
+        </div>
+      </div>
+
+      {% block infobar %}
+      <div class="border-right py-3 px-3">
+        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black" style="text-decoration: none;">Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
+      </div>
+      <div class="border-right p-3">
+        Member{{ 's' if b.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ [b.stored_subscriber_count, 0] | max }}</span>
+      </div>
+      <div class="d-flex align-items-center p-3">
+        <div class="dropdown dropdown-actions">
+          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;
+          ">
+          <i class="far fa-ellipsis-h text-base text-black"></i>
+        </a>
+        <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
+        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+        <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
+        <a class="dropdown-item" href="{{ b.permalink }}/mod/log"><i class="fas fa-scroll-old"></i>Moderation log</a>
+        {% if b.has_mod(v) %}
+        <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
+        {% endif %}
+        {% if v and not v.has_blocked_guild(b) %}
+        <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ b.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
+        {% elif v %}
+        <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ b.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+  <div class="ml-auto">
+    <div class="d-flex align-items-center">
+
+      {% block viewfilters %}
+      <div class="text-small font-weight-bold mr-2">Filter by</div>
+      <div class="dropdown dropdown-actions">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
+          {% if time_filter=="week" %}<i class="fas fa-calendar-week mr-1"></i>{% endif %}
+          {% if time_filter=="month" %}<i class="fas fa-calendar-alt mr-1"></i>{% endif %}
+          {% if time_filter=="year" %}<i class="fas fa-calendar mr-1"></i>{% endif %}
+          {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
+          {{ time_filter | capitalize }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+          {% if not time_filter=="day" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day mr-2"></i>Day</a>{% endif %}
+          {% if not time_filter=="week" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week mr-2"></i>Week</a>{% endif %}
+          {% if not time_filter=="month" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt mr-2"></i>Month</a>{% endif %}
+          {% if not time_filter=="year" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=year"><i class="fas fa-calendar mr-2"></i>Year</a>{% endif %}
+          {% if not time_filter=="all" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=all"><i class="fas fa-infinity mr-2"></i>All</a>{% endif %}
+        </div>
+      </div>
+      <div class="text-small font-weight-bold ml-3 mr-2">Sort by</div>
+      <div class="dropdown dropdown-actions">
+        <button class="btn btn-secondary dropdown-toggle mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {% if sort_method=="hot" %}<i class="fas fa-fire mr-1"></i>{% endif %}
+          {% if sort_method=="top" %}<i class="fas fa-arrow-alt-circle-up mr-1"></i>{% endif %}
+          {% if sort_method=="new" %}<i class="fas fa-sparkles mr-1"></i>{% endif %}
+          {% if sort_method=="old" %}<i class="fas fa-book mr-1"></i>{% endif %}
+          {% if sort_method=="disputed" %}<i class="fas fa-bullhorn mr-1"></i>{% endif %}
+          {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
+          {{ sort_method }}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+          {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&t={{time_filter}}"><i class="fas fa-fire mr-2"></i>Hot</a>{% endif %}
+          {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&t={{time_filter}}"><i class="fas fa-arrow-alt-circle-up mr-2"></i>Top</a>{% endif %}
+          {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&t={{time_filter}}"><i class="fas fa-sparkles mr-2"></i>New</a>{% endif %}
+          {% if not sort_method=="old" %}<a class="dropdown-item" href="?sort=old&t={{time_filter}}"><i class="fas fa-book mr-2"></i>Old</a>{% endif %}
+          {% if not sort_method=="disputed" %}<a class="dropdown-item" href="?sort=disputed&t={{time_filter}}"><i class="fas fa-bullhorn mr-2"></i>Disputed</a>{% endif %}
+          {% if not sort_method=="activity" %}<a class="dropdown-item" href="?sort=activity&t={{time_filter}}"><i class="fas fa-comments mr-2"></i>Activity</a>{% endif %}
+        </div>
+      </div>
+      {% endblock %}
+
+      {% if v %}
+      <div id="button-sub" {% if b.is_subscribed %}class="d-none"{% endif %}>
+        <button class="btn btn-primary" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">
+          Join guild
+        </button>
+      </div>
+      <div id="button-unsub" class="{% if not b.is_subscribed %}d-none{% endif %}" role="group" aria-label="Leave guild desktop">
+        <button class="btn btn-secondary" onclick="post_toast('/api/unsubscribe/{{ b.name }}', callback=toggleSub)">Leave</button>
+        <button class="btn btn-transparent bell-button" data-toggle="tooltip" data-placement="bottom" title="Be notified when this guild has new content." data-url="/+{{ b.name }}/toggle_bell">
+          <i class="fas fa-fw bell-icon {% if b.is_subscribed and b.is_subscribed.get_notifs %}fa-bell-on text-primary{% else %}fa-bell{% endif %}"></i>
+        </button>
+      </div>
+      {% elif not v %}
+      <a class="btn btn-primary" href="/signup">Join guild</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block mobileBanner %}
+<!-- Mobile -->
+<div class="container-fluid text-center bg-white d-md-none">
+  <div class="row">
+    <div class="col px-0">
+      <img src="{{ b.banner_url }}" style="width: 100%; height: 65px; object-fit: cover;">
+    </div>
+  </div>
+  <div class="row border-bottom">
+    <div class="col">
+      <div style="margin-top: -34px;">
+        <a href="{{ b.permalink }}"><img src="{{ b.profile_url }}" class="profile-pic-65 border-2 border-white mb-2"></a>
+      </div>
+      <div class="mt-n3 py-3">
+        <a href="{{ b.permalink }}" class="text-black">
+          <h1 class="h5 d-inline-block">+{{ b.name }}
+            {% if b.over_18 %}
+            <span class="badge badge-danger text-small align-top">nsfw</span>
+            {% endif %}
+            {% if b.is_nsfl %}
+            <span class="badge badge-black text-small align-top">nsfl</span>
+            {% endif %}
+            {% if b.is_private %}
+            <span class="badge badge-warning text-small align-top" data-toggle="tooltip" data-placement="bottom" title="This guild is private. Content posted prior to the guild being set to private is visible to everyone.">private</span>
+            {% endif %}
+          </h1>
+        </a>
+
+        {% block mobile_description %}
+        <div class="text-muted text-break">{{ b.description_html | safe }}</div>
+        {% endblock %}
+        <p class="font-weight-bold">{{ [b.stored_subscriber_count, 0] | max }} member{{ 's' if b.stored_subscriber_count != 1 else '' }}
+        </p>
+        {% if b.has_mod(v) %}
+        <a class="btn btn-outline-secondary btn-block text-muted mb-2" href="{{ b.permalink }}/mod/settings">Guild settings</a>
+        {% endif %}
+
+        {% if False and b.can_chat(v) %}
+        <a class="btn btn-primary btn-block text-white mb-2" href="{{ b.chat_url }}">Chat</a>
+        {% endif %}
+
+      {% if v %}
+        <div id="button-sub-mobile" {% if b.is_subscribed %}class="d-none"{% endif %}>
+          <button class="btn btn-primary btn-block" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">
+            Join guild
+          </button>
+        </div>
+        <div id="button-unsub-mobile" {% if not b.is_subscribed %}class="d-none"{% endif %}>
+          <button class="btn btn-secondary btn-block" onclick="post_toast('/api/unsubscribe/{{ b.name }}', callback=toggleSub)">
+            Leave
+          </button>
+          <button class="btn btn-transparent bell-button" data-url="/+{{ b.name }}/toggle_bell">
+            <i class="fas bell-icon fa-fw {% if b.is_subscribed and b.is_subscribed.get_notifs %}fa-bell-on text-primary{% else %}fa-bell{% endif %}"></i>
+          </button>
+        </div>
+        {% elif not v %}
+        <a class="btn btn-primary btn-block" href="/signup">Join guild</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<!-- Left Sidebar (navigation-purposes, hidden on devices smaller than "large") -->
+
+{% block leftSidebarBlock %}
+{% include "sidebar-left.html" %}
+{% endblock %}
+
+{% block pagetype %}guild{% endblock %}
+
+{% block title %}
+<title>+{{ b.name }} - {{ 'SITE_NAME' | app_config }}</title>
+<meta name="description" content="{{ b.description }}">
+{% endblock %}
+
+{% block enlargeThumbJS %}
+<script src="/assets/js/enlarge_thumb.js"></script>
+{% endblock %}
+
+{% block guildModal %}
+{% include "guild_details_modal.html" %}
+{% endblock %}

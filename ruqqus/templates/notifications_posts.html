@@ -1,0 +1,15 @@
+{% extends "notifications.html" %}
+
+{% block pagetype %}frontpage{% endblock %}
+
+{% block notif_content %}
+    <div class="row no-gutters mt-md-3">
+      <div class="col-12">
+        <div class="posts" id="posts">
+  {% with listing=notifications %}
+    {% include "submission_listing.html" %}
+  {% endwith %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

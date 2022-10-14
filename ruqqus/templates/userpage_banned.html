@@ -1,0 +1,92 @@
+{% extends "default.html" %}
+
+{% block pagetype %}userpage{% endblock %}
+
+{% block enlargeThumbJS %}
+<script src="/assets/js/enlarge_thumb.js"></script>
+{% endblock %}
+
+{% block fixedMobileBarJS %}
+<script>
+  var prevScrollpos = window.pageYOffset;
+  window.onscroll = function () {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+      document.getElementById("fixed-bar-mobile").style.top = "49px";
+      document.getElementById("navbar").classList.remove("shadow");
+    } 
+    else if (currentScrollPos <= 125) {
+      document.getElementById("fixed-bar-mobile").style.top = "49px";
+      document.getElementById("navbar").classList.remove("shadow");
+    }
+    else {
+      document.getElementById("fixed-bar-mobile").style.top = "-49px";
+      document.getElementById("dropdownMenuSortBy").classList.remove('show');
+      document.getElementById("dropdownMenuFrom").classList.remove('show');
+      document.getElementById("navbar").classList.add("shadow");
+    }
+    prevScrollpos = currentScrollPos;
+  }
+</script>
+{% endblock %}
+
+{% block title %}
+<title>{{ u.username }}</title>
+<meta name="description" content="[banned]">
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block adminpanel %}
+{% if v.admin_level >=3 and v.admin_level > u.admin_level %}
+{% if u.is_banned %}
+<form action="/api/unban_user/{{ u.id }}" method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="submit" class="btn btn-success" value="Unban user">
+</form>
+{% else %}
+<form action="/api/ban_user/{{ u.id }}", method="post">
+  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="submit" class="btn btn-warning" value="Ban user">
+</form>
+{% endif %}
+{% endif %}
+{% if v.admin_level >=4 and v.admin_level > u.admin_level %}
+<table>
+ <tr>
+  <th>Key</th>
+  <th>Value</th>
+</tr>
+<tr>
+  <td>Account Creation IP</td>
+  <td>{{ u.creation_ip }}</td>
+</tr>
+</table>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row no-gutters">
+  <div class="col-12">
+    <div class="text-center py-7 py-md-8">
+      <span class="fa-stack fa-2x text-muted mb-4">
+        <i class="fas fa-square text-danger opacity-25 fa-stack-2x"></i>
+        <i class="fas text-danger fa-user-slash fa-stack-1x text-lg"></i>
+      </span>
+      <h2 class="h5">@{{ u.username }} is banned</h2>
+      {% if u.unban_utc %}
+      <p class="text-muted">This account has been temporarily suspended from Ruqqus. Check back later.</p>
+      {% else %}
+      <p class="text-muted">This account has been permanently suspended from Ruqqus.</p>
+      {% endif %}
+      {% if u.ban_reason %}
+      <p class="text-small text-muted"><span class="font-weight-bold">Reason:</span> {{ u.ban_reason }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block pagenav %}
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "home.html" %}
+
+{% block fixedMobileBarJS %}{% endblock %}
+
+{% block pagetype %}{% endblock %}
+
+{% block PseudoSubmitForm %}{% endblock %}
+
+{% block navbar %}
+<div class="font-weight-bold py-3">Inbox</div>
+{% endblock %}
+
+{% block gifKeyboard %}
+<script src="/assets/js/get_gif.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row border-bottom bg-white sticky d-block x-scroll-parent" style="overflow: visible;">
+  <div class="col w-100">
+    <ul class="nav settings-nav px-0 x-scroll">
+      <li class="nav-item">
+        <a class="nav-link py-3{% if request.path=='/notifications/all' %} active{% endif %}" href="/notifications/all">
+          All
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-3{% if request.path=='/notifications' %} active{% endif %}" href="/notifications">
+          Unread
+        </a>
+      </li>
+      <li class="nav-item">
+
+        <a class="nav-link py-3{% if request.path=='/notifications/posts' %} active{% endif %}" href="/notifications/posts{% if not v.post_notifications_count %}?all=true{% endif %}">
+          Posts{% if v.post_notifications_count %} <span class="text-purple font-weight-bold">({{ v.post_notifications_count }})</span>{% endif %}
+
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-3{% if request.path=='/notifications/replies' %} active{% endif %}" href="/notifications/replies">
+          Replies{% if v.replies_count %} <span class="text-purple font-weight-bold">{{ v.replies_count }}</span>{% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-3{% if request.path=='/notifications/mentions' %} active{% endif %}" href="/notifications/mentions">
+          Mentions{% if v.mentions_count %} <span class="text-purple font-weight-bold">{{ v.mentions_count }}</span>{% endif %}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link py-3 {% if request.path=='/notifications/system' %} active{% endif %}" href="/notifications/system">
+          System{% if v.system_notif_count %} <span class="text-purple font-weight-bold">{{ v.system_notif_count }}</span>{% endif %}
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="p-3 p-md-0">
+
+  <h1 class="h3 d-md-none">Inbox</h1>
+
+  {% block notif_content %}
+    {% with comments=notifications %}
+      {% include "comments.html" %}
+    {% endwith %}
+  {% endblock %}
+
+  {% if not notifications %}
+  <div class="text-center py-7 py-md-8">
+
+    <span class="fa-stack fa-2x text-muted mb-4">
+      <i class="fas fa-square text-gray-400 fa-stack-2x"></i>
+      <i class="fas text-gray-600 fa-envelope fa-stack-1x text-lg"></i>
+    </span>
+
+    <div class="h5">No unread messages</div>
+    <div class="text-small text-muted mb-3">When you receive new posts, replies, or mentions, they will show up here.</div>
+    <a href="/notifications/all" class="btn btn-outline-primary">View all</a>
+  </div>
+
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block pagenav %}
+{% if notifications %}
+<nav aria-label="Page navigation">
+  <ul class="pagination pagination-sm mb-0">
+    {% if page>1 %}
+    <li class="page-item">
+      <small><a class="page-link" href="?all={{ request.args.get('all', '') }}&page={{ page-1 }}" tabindex="-1">Prev</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Prev</span></li>
+    {% endif %}
+    {% if next_exists %}
+    <li class="page-item">
+      <small><a class="page-link" href="?all={{ request.args.get('all', '') }}&page={{ page+1 }}">Next</a></small>
+    </li>
+    {% else %}
+    <li class="page-item disabled"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block GIFpicker %}
+{% if v %}
+{% include "gif_modal.html" %}
+{% endif %}
+{% endblock %}
