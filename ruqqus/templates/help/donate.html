@@ -133,7 +133,7 @@
 				<p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Why donate?</p>
 
 				<h2 class="h3">We're taking on Big Tech and traditional social media</h2>
-				<p class="text-muted mb-6 mb-md-7">Our crack team of three developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
+				<p class="text-muted mb-6 mb-md-7">Our crack team of developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
 
 			</div>
 
@@ -281,96 +281,6 @@
 
 </div>
 
-<div class="row text-left text-white d-flex d-md-none">
-
-	<div class="col">
-
-		<a href="https://github.com/ruqqus/ruqqus" class="btn btn-lg btn-primary btn-block mb-6">View our code</a>
-
-		<pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-		style="height: 330px; overflow-x: hidden;">
-		import time
-		from ruqqus.helpers.wrappers
-		import *
-		from flask
-		import *
-
-		from ruqqus.__main__
-		import app, db, cache
-		from ruqqus.classes
-		import *
-
-		@cache.memoize(timeout = 30)
-		def frontlist(sort = "hot", page = 1):
-
-		cutoff = int(time.time()) - (60 * 60 * 24 * 30)
-
-		posts = db.query(Submission).filter(Submission.created_utc >= cutoff,
-		Submission.is_banned == False,
-		Submission.stickied == False)
-
-		if sort == "hot":
-		posts = posts.order_by(text("submissions.rank_hot desc"))
-		elif sort == "new":
-		posts = posts.order_by(Submission.created_utc.desc())
-		elif sort == "fiery":
-		posts = posts.order_by(text("submissions.rank_fiery desc"))
-		elif sort == "top":
-		posts = posts.order_by(text("submissions.score desc"))
-
-		posts = [x.id
-		for x in posts.offset(25 * (page - 1)).limit(25).all()
-		]
-
-		return posts
-
-		@app.route("/", methods = ["GET"])
-		@auth_desired
-		def home(v):
-
-		page = int(request.args.get("page", 1))
-
-		sort_method = request.args.get("sort", "hot")
-
-		# get list of ids
-		ids = frontlist(sort = sort_method, page = page)
-
-		# assemble list of tuples
-		i = 1
-		tups = []
-		for x in ids:
-		tups.append((x, i))
-		i += 1
-
-		# tuple string
-		tups = str(tups).lstrip("[").rstrip("]")
-
-		# hit db
-		for entries
-		posts = db.query(Submission).from_statement(
-		text(f ""
-		"
-		select submissions.*, submissions.ups, submissions.downs from submissions join(values {
-		tups
-	}) as x(id, n) on submissions.id = x.id order by x.n ""
-	"
-	)).all()
-
-	# If page 1, check
-	for sticky
-	if page == 1:
-	sticky = []
-	sticky = db.query(Submission).filter_by(stickied = True).first()
-	if sticky:
-	posts = [sticky] + posts
-
-	return render_template("home.html", v = v, listing = posts, sort_method = sort_method)
-</pre>
-
-</div>
-
-</div>
-
 </div>
 
 </section>
@@ -395,16 +305,6 @@
 					">Donate today</p>
 					<h2 class="h1">Help support the future of online discourse</h2>
 					<p class="text-white opacity-80">Now accepting Bitcoin, Litecoin, and Ethereum. Every donation counts :)</p>
-					<div class="d-none d-md-block mt-5">
-						<button class="btn btn-black text-warning btn-lg mr-md-2" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
-						<a href="https://paypal.me/ruqqus" target="_blank" class="btn btn-black text-info btn-lg"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
-					</div>
-
-					<div class="d-md-none mt-5">
-						<button class="btn btn-black text-warning btn-lg btn-block mb-3" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
-						<a href="https://paypal.me/ruqqus" target="_blank" class="btn btn-black text-info btn-lg btn-block"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
-
-					</div>
 
 				</div>
 			</div>

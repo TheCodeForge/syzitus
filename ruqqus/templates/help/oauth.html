@@ -67,7 +67,7 @@ Python example:
 
 	code=request.args.get("code")
 
-	headers={"User-Agent": "Porpl Reader v1 by @captainmeta4"}
+	headers={"User-Agent": "Porpl Reader v1"}
 	url="https://ruqqus.com/oauth/grant"
 	data={"client_id": my_client_id,
 		  "client_secret": my_client_secret,
@@ -105,7 +105,7 @@ Python example, presuming that the application has obtained a valid `read` autho
 	import pprint
 
 	headers={"Authorization": "Bearer " + access_token,
-			 "User-Agent": "Porpl Reader v1 by @captainmeta4"}
+			 "User-Agent": "Porpl Reader v1"}
 	url="https://ruqqus.com/api/v2/me/submissions"
 
 	r=requests.get(url, headers=headers)
@@ -134,7 +134,7 @@ Python example:
 	import requests
 	import pprint
 
-	headers={"User-Agent": "Porpl Reader v1 by @captainmeta4"}
+	headers={"User-Agent": "Porpl Reader v1"}
 	url="https://ruqqus.com/oauth/grant"
 	data={"client_id": my_client_id,
 		  "client_secret": my_client_secret,
