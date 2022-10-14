@@ -48,7 +48,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         uselist=False,
         innerjoin=True,
         primaryjoin="Submission.id==SubmissionAux.id")
-    author_id = Column(BigInteger, ForeignKey("users.id"))
+    author_id = Column(BigInteger, ForeignKey("users.id"), index=True)
     repost_id = Column(BigInteger, ForeignKey("submissions.id"), default=0)
     edited_utc = Column(BigInteger, default=0)
     created_utc = Column(BigInteger, default=0)
@@ -70,7 +70,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     flags = relationship("Flag", backref="submission")
     is_approved = Column(Integer, ForeignKey("users.id"), default=0)
     approved_utc = Column(Integer, default=0)
-    board_id = Column(Integer, ForeignKey("boards.id"), default=None)
+    board_id = Column(Integer, ForeignKey("boards.id"), default=None, index=True)
     original_board_id = Column(Integer, ForeignKey("boards.id"), default=None)
     over_18 = Column(Boolean, default=False)
     original_board = relationship(

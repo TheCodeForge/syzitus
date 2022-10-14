@@ -10,8 +10,8 @@ import time
 class ModRelationship(Base, Age_times):
     __tablename__ = "mods"
     id = Column(BigInteger, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    board_id = Column(Integer, ForeignKey("boards.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), index=True)
+    board_id = Column(Integer, ForeignKey("boards.id"), index=True)
     created_utc = Column(Integer, default=0)
     accepted = Column(Boolean, default=False)
     invite_rescinded = Column(Boolean, default=False)

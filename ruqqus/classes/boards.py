@@ -21,7 +21,7 @@ class Board(Base, Stndrd, Age_times):
     __tablename__ = "boards"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, index=True)
     created_utc = Column(Integer)
     description = Column(String)
 

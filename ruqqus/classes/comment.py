@@ -36,7 +36,7 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
         uselist=False,
         innerjoin=True,
         primaryjoin="Comment.id==CommentAux.id")
-    author_id = Column(Integer, ForeignKey("users.id"))
+    author_id = Column(Integer, ForeignKey("users.id"), index=True)
     parent_submission = Column(Integer, ForeignKey("submissions.id"))
 
     # this column is foreignkeyed to comment(id) but we can't do that yet as
@@ -58,8 +58,8 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     score_hot = Column(Float, default=0)
     score_top = Column(Integer, default=1)
     level = Column(Integer, default=0)
-    parent_comment_id = Column(Integer, ForeignKey("comments.id"))
-    original_board_id = Column(Integer, ForeignKey("boards.id"))
+    parent_comment_id = Column(Integer, ForeignKey("comments.id"), index=True)
+    original_board_id = Column(Integer, ForeignKey("boards.id"), index=True)
 
     over_18 = Column(Boolean, default=False)
     is_offensive = Column(Boolean, default=False)
