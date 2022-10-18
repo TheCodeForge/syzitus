@@ -98,7 +98,7 @@ def check_ban_evade():
     
     if random.randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
         g.user.ban(reason="Evading a site-wide ban")
-        send_notification(v, "Your Ruqqus account has been permanently suspended for the following reason:\n\n> ban evasion")
+        send_notification(g.user, "Your Ruqqus account has been permanently suspended for the following reason:\n\n> ban evasion")
 
         for post in g.db.query(Submission).filter_by(author_id=g.user.id).all():
             if post.is_banned:
@@ -141,7 +141,7 @@ def check_ban_evade():
 
     else:
         g.user.ban_evade +=1
-        g.db.add(v)
+        g.db.add(g.user)
         g.db.commit()
 
 
@@ -179,7 +179,7 @@ def auth_required(f):
 
         get_logged_in_user()
 
-        #print(v, c)
+        #print(g.user, c)
 
         if not g.user:
             abort(401)
@@ -206,7 +206,7 @@ def is_not_banned(f):
 
         get_logged_in_user()
 
-        #print(v, c)
+        #print(g.user, c)
 
         if not g.user:
             abort(401)
@@ -307,7 +307,7 @@ def is_guildmaster(*perms):
             else:
                 return jsonify({"error": f"no guild specified"}), 400
 
-            m=board.has_mod(v)
+            m=board.has_mod(g.user)
             if not m:
                 return jsonify({"error":f"You aren't a guildmaster of +{board.name}"}), 403
 
