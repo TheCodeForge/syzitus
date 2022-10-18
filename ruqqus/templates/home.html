@@ -66,7 +66,7 @@
 {% block PseudoSubmitForm %}
 <!-- Link to submission page from homepage, only visible on home -->
 
-<div class="row no-gutters d-none d-lg-flex mt-3 {% if not v %}mb-3{% endif %}">
+<div class="row no-gutters d-none d-lg-flex mt-3 {% if not g.user %}mb-3{% endif %}">
 
   <div class="col">
     <div class="card pseudo-submit-form">
@@ -78,7 +78,7 @@
         </ul>
       </div>
       <div class="card-body">
-        {% if v %}
+        {% if g.user %}
         <a href="/submit">
           <input type="text" class="form-control"
           placeholder="Share something with the {{ 'SITE_NAME' | app_config }} community..." aria-label="Username"
@@ -245,7 +245,7 @@
     {% endblock %}
 
     {% block sidebarblock %}
-    {% if v and v.can_make_guild %}
+    {% if g.user and g.user.can_make_guild %}
     <div class="sidebar-section sidebar-guildmake">
       <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
       <div class="body">
@@ -253,11 +253,11 @@
         <a href="/create_guild" class="btn btn-primary btn-block">Create Guild</a>
       </div>
     </div>
-    {% elif v and not v.can_make_guild %}
+    {% elif g.user and not g.user.can_make_guild %}
     <div class="sidebar-section sidebar-guildmake">
       <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
       <div class="body">
-        <p class="text-muted">{% if not v.can_join_gms %}You already lead the maximum of 10 guilds.{% else %}You need 250 rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
+        <p class="text-muted">{% if not g.user.can_join_gms %}You already lead the maximum of 10 guilds.{% else %}You need 250 rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
         <a href="#" class="btn btn-primary btn-block disabled">Create Guild</a>
       </div>
     </div>
@@ -301,7 +301,7 @@
           </span>Contribute Code
         </a>
 
-        {% if not v.has_premium %}
+        {% if not g.user.has_premium %}
         <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #F7931A!important">
           <span class="fa-stack fa-1x ml-n1 mr-2">
             <i class="fas fa-square fa-stack-2x" style="color: #FEEBC8!important; font-size: 2rem!important;"></i>
