@@ -215,6 +215,6 @@ BADGE_DATA={
     }
 }
 
-BADGES={x:BadgeDef(id=x, **BADGE_DATA[number]) for x in BADGE_DATA}
+BADGES={x:BadgeDef(id=x, **BADGE_DATA[x]) for x in BADGE_DATA}
 
 
