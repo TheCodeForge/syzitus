@@ -8,20 +8,13 @@ from .mix_ins import *
 import time
 
 
-class Category(Base, Stndrd):
+class Category(Stndrd):
     id = Column(BigInteger, primary_key=True)
     name = Column(String(20), default="")
     icon = Column(String(256), default="")
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
-
-    @property
-    @lazy
-    def subcats(self):
-        l=[i for i in self._subcats]
-
-        return sorted(l, key=lambda x:x.name)
     
     @property
     def json(self):
@@ -31,12 +24,15 @@ class Category(Base, Stndrd):
             "subcategories": [x.json for x in self.subcats]
         }
 
-class SubCategory(Base, Stndrd):
+class SubCategory(Stndrd):
 
-    category = relationship("Category", lazy="joined")
 
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+
+    @property
+    def category(self):
+        return CATEGORIES[self.cat_id]
 
     @property
     def visible(self):
