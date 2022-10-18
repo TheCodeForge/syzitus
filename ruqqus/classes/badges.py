@@ -217,7 +217,7 @@ BADGE_DEFS={
 
 BADGES={}
 for number in BADGE_DEFS:
-    badge=Badge(**BADGE_DEFS[number])
+    badge=BadgeDef(**BADGE_DEFS[number])
     badge.id=number
     BADGES[number]=badge
 
