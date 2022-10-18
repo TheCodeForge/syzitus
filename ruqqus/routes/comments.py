@@ -512,7 +512,7 @@ Optional file data:
                 
             csam_thread=threading.Thread(target=check_csam_url, 
                                          args=(f"https://{BUCKET}/{name}", 
-                                               v=g.user, 
+                                               g.user, 
                                                del_function
                                               )
                                         )
