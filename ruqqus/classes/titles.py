@@ -7,7 +7,7 @@ from ruqqus.helpers.lazy import lazy
 from ruqqus.__main__ import Base, cache
 
 
-class Title(Base):
+class Title():
 
     def __init__(**kwargs):
         self.__dict__.update(kwargs)
