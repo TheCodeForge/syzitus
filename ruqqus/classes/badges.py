@@ -145,7 +145,77 @@ BADGE_DEFS={
         "description":"Verified an email address",
         "kind": 1,
         "rank": 1,
-        "icon": "baby.png",
-        "expr": lambda x: x.age<60*60*24*30
+        "icon": "mail.png",
+        "expr": lambda x: x.is_activated
+    },
+    7: {
+        "name":"Recruiter I",
+        "description":"Referred a friend to join",
+        "kind": 1,
+        "rank": 1,
+        "icon": "recruit-1.png",
+        "expr": lambda x: x.referral_count >=1 and x.referral_count <10
+    },
+    8: {
+        "name":"Recruiter II",
+        "description":"Referred 10 friends to join",
+        "kind": 1,
+        "rank": 1,
+        "icon": "recruit-10.png",
+        "expr": lambda x: x.referral_count >=10 and x.referral_count <100
+    },
+    9: {
+        "name":"Recruiter III",
+        "description":"Referred 100 friends to join",
+        "kind": 1,
+        "rank": 1,
+        "icon": "recruit-100.png",
+        "expr": lambda x: x.referral_count >=100 and x.referral_count <1000
+    },
+    10: {
+        "name":"Recruiter IV",
+        "description":"Referred 1000 friends to join",
+        "kind": 1,
+        "rank": 1,
+        "icon": "recruit-1000.png",
+        "expr": lambda x: x.referral_count >=100
+    },
+    11: {
+        "name":"Sitebreaker",
+        "description":"Involuntarily QA tested the site.",
+        "kind": 2,
+        "rank": 2,
+        "icon": "sitebreaker.png"
+    },
+    12: {
+        "name":"White Hat Hacker",
+        "description":"Responsibly disclosed a security vulnerability to staff.",
+        "kind": 2,
+        "rank": 3,
+        "icon": "whitehat.png"
+    },
+    12: {
+        "name":"1 Year",
+        "description":"Joined a year ago.",
+        "kind": 1,
+        "rank": 5,
+        "icon": "year-1.png",
+        "expr": lambda x: x.age_string=="1 year ago"
+    },
+    12: {
+        "name":"2 Year",
+        "description":"Joined two years ago.",
+        "kind": 1,
+        "rank": 5,
+        "icon": "year-2.png",
+        "expr": lambda x: x.age_string=="2 years ago"
     }
 }
+
+BADGES=[]
+for number in BADGE_DEFS:
+    badge=Badge(BADGE_DEFS[number])
+    badge.id=number
+    BADGES.append(badge)
+
+
