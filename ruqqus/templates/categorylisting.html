@@ -18,7 +18,7 @@
     {% endif %}
   </div>
   <div class="card-columns bg-white p-md-4 pb-md-3 rounded">
-  {% for cat in categories %}
+  {% for cat in categories.values() %}
     <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if cat.id in session.get('groupids',[]) %} selected{% endif %}" onclick="cattoggle('{{ cat.base36id }}')" id="cat-card-{{ cat.base36id }}">
       <img src="/assets/images/categories/{{ cat.name | lower }}.gif" class="card-img h-100 object-cover" alt="{{ cat.name }}">
       <div class="card-img-overlay onboarding-card-overlay d-flex justify-content-center align-items-center">
