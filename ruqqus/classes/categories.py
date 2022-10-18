@@ -163,4 +163,5 @@ CATEGORIES={x:Category(
     ) for x in CATEGORY_DATA}
 
 from pprint import pprint
-pprint({x:x.__dict__ for x in CATEGORIES})
+pprint(CATEGORIES)
+pprint({x:CATEGORIES[x].__dict__ for x in CATEGORIES})
