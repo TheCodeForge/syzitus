@@ -106,7 +106,7 @@ KINDS={
     4: "special"
 }
 
-BADGE_DEFS={
+BADGE_DATA={
     1: {
         "name":"Artist",
         "description":"Contributed art or other graphics to the platform",
@@ -215,10 +215,6 @@ BADGE_DEFS={
     }
 }
 
-BADGES={}
-for number in BADGE_DEFS:
-    badge=BadgeDef(**BADGE_DEFS[number])
-    badge.id=number
-    BADGES[number]=badge
+BADGES={x:BadgeDef(id=x, **BADGE_DATA[number]) for x in BADGE_DATA}
 
 
