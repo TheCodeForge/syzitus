@@ -25,12 +25,12 @@ def slash_post():
 @app.route("/api/v1/notifications", methods=["GET"])
 @auth_required
 @api("read")
-def notifications(v):
+def notifications():
 
     page = int(request.args.get('page', 1))
     all_ = request.args.get('all', False)
 
-    cids = v.notification_commentlisting(page=page,
+    cids = g.user.notification_commentlisting(page=page,
                                          all_=request.path=="/notifications/all",
                                          mentions_only=request.path=="/notifications/mentions",
                                          replies_only=request.path=="/notifications/replies",
@@ -39,7 +39,7 @@ def notifications(v):
     next_exists = (len(cids) == 26)
     cids = cids[0:25]
 
-    comments = get_comments(cids, v=v, sort_type="new", load_parent=True)
+    comments = get_comments(cids, sort_type="new", load_parent=True)
 
     listing = []
     for c in comments:
@@ -49,7 +49,7 @@ def notifications(v):
         if c.author_id == 1:
             c._is_system = True
             listing.append(c)
-        elif c.level > 1 and c.parent_comment and c.parent_comment.author_id == v.id:
+        elif c.level > 1 and c.parent_comment and c.parent_comment.author_id == g.user.id:
             c._is_comment_reply = True
             parent = c.parent_comment
 
@@ -59,7 +59,7 @@ def notifications(v):
                 parent.replies = [c]
                 listing.append(parent)
 
-        elif c.level == 1 and c.post.author_id == v.id:
+        elif c.level == 1 and c.post.author_id == g.user.id:
             c._is_post_reply = True
             listing.append(c)
         else:
@@ -67,7 +67,6 @@ def notifications(v):
             listing.append(c)
 
     return {'html': lambda: render_template("notifications.html",
-                            v=v,
                             notifications=listing,
                             next_exists=next_exists,
                             page=page,
@@ -79,11 +78,11 @@ def notifications(v):
 @app.get("/notifications/posts")
 @auth_required
 @api("read")
-def notifications_posts(v):
+def notifications_posts():
 
     page=int(request.args.get("page", 1))
 
-    pids=v.notification_postlisting(
+    pids=g.user.notification_postlisting(
         page=page,
         all_=request.args.get("all")
         )
@@ -91,10 +90,9 @@ def notifications_posts(v):
     next_exists=(len(pids)==26)
     pids=pids[0:25]
 
-    posts=get_posts(pids, v=v, sort="new")
+    posts=get_posts(pids, sort="new")
 
     return {'html': lambda: render_template("notifications_posts.html",
-                            v=v,
                             notifications=posts,
                             next_exists=next_exists,
                             page=page,
@@ -109,7 +107,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     # cutoff=int(time.time())-(60*60*24*30)
 
     if sort == None:
-        if v: sort = v.defaultsorting
+        if v: sort = g.user.defaultsorting
         else: sort = "hot"
 
     if sort == "hot":
@@ -143,28 +141,28 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     if not nsfl:
         posts = posts.filter_by(is_nsfl=False)
 
-    if (v and v.hide_offensive) or not v:
+    if (g.user and g.user.hide_offensive) or not v:
         posts = posts.filter_by(is_offensive=False)
     
-    if v and v.hide_bot:
+    if g.user and g.user.hide_bot:
         posts = posts.filter(Submission.is_bot==False)
 
-    if v and v.admin_level >= 4:
+    if g.user and g.user.admin_level >= 4:
         board_blocks = g.db.query(
             BoardBlock.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
 
         posts = posts.filter(Submission.board_id.notin_(board_blocks))
     elif v:
         m = g.db.query(ModRelationship.board_id).filter_by(
-            user_id=v.id, invite_rescinded=False).subquery()
+            user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
             ContributorRelationship.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
 
         posts = posts.filter(
             or_(
-                Submission.author_id == v.id,
+                Submission.author_id == g.user.id,
                 Submission.post_public == True,
                 Submission.board_id.in_(m),
                 Submission.board_id.in_(c)
@@ -173,10 +171,10 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
 
         blocking = g.db.query(
             UserBlock.target_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
         # blocked = g.db.query(
         #     UserBlock.user_id).filter_by(
-        #     target_id=v.id).subquery()
+        #     target_id=g.user.id).subquery()
         posts = posts.filter(
             Submission.author_id.notin_(blocking) #,
         #    Submission.author_id.notin_(blocked)
@@ -184,7 +182,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
 
         board_blocks = g.db.query(
             BoardBlock.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
 
         posts = posts.filter(Submission.board_id.notin_(board_blocks))
     else:
@@ -198,7 +196,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
                 Submission.board_id.in_(
                     g.db.query(
                         Subscription.board_id).filter_by(
-                        user_id=v.id,
+                        user_id=g.user.id,
                         is_active=True).subquery()
                 )
             )
@@ -213,7 +211,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     if categories:
         posts=posts.filter(Board.subcat_id.in_(tuple(categories)))
         
-    if (v and v.hide_offensive) or not v:
+    if (g.user and g.user.hide_offensive) or not v:
         posts=posts.filter(
             Board.subcat_id.notin_([44, 108]) 
             )
@@ -225,13 +223,13 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
 
     #custom filter
     #print(filter_words)
-    if v and filter_words:
+    if g.user and filter_words:
         posts=posts.join(Submission.submission_aux)
         for word in filter_words:
             #print(word)
             posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
-    if t == None and v: t = v.defaulttime
+    if t == None and v: t = g.user.defaulttime
     if t:
         now = int(time.time())
         if t == 'day':
@@ -278,7 +276,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
 @app.route("/api/v2/me/submissions")
 @auth_desired
 @api("read")
-def home(v):
+def home():
     """
 Get personalized home page based on subscriptions and personal settings.
 
@@ -288,13 +286,13 @@ Optional query parameters:
 * `page` - Page of results to return. Default `1`.
 """
 
-    if v and [i for i in v.subscriptions if i.is_active]:
+    if g.user and [i for i in g.user.subscriptions if i.is_active]:
 
         only=request.args.get("only",None)
 
         if v:
-            defaultsorting = v.defaultsorting
-            defaulttime = v.defaulttime
+            defaultsorting = g.user.defaultsorting
+            defaulttime = g.user.defaulttime
         else:
             defaultsorting = "hot"
             defaulttime = "all"
@@ -305,17 +303,17 @@ Optional query parameters:
         ignore_pinned = bool(request.args.get("ignore_pinned", False))
 
         
-        ids=v.idlist(sort=sort,
+        ids=g.user.idlist(sort=sort,
                      page=page,
                      only=only,
                      t=t,
-                     filter_words=v.filter_words,
+                     filter_words=g.user.filter_words,
 
                      # these arguments don't really do much but they exist for
                      # cache memoization differentiation
-                     allow_nsfw=v.over_18,
-                     hide_offensive=v.hide_offensive,
-                     hide_bot=v.hide_bot,
+                     allow_nsfw=g.user.over_18,
+                     hide_offensive=g.user.hide_offensive,
+                     hide_bot=g.user.hide_bot,
 
                      #greater/less than
                      gt=int(request.args.get("utc_greater_than",0)),
@@ -335,10 +333,9 @@ Optional query parameters:
                 ids=[sticky.id]+ids
 
 
-        posts = get_posts(ids, sort=sort, v=v)
+        posts = get_posts(ids, sort=sort)
 
         return {'html': lambda: render_template("subscriptions.html",
-                                                v=v,
                                                 listing=posts,
                                                 next_exists=next_exists,
                                                 sort_method=sort,
@@ -367,10 +364,9 @@ def default_cat_cookie():
 
 @app.route("/categories", methods=["GET"])
 @auth_desired
-def categories_select(v):
+def categories_select():
     return render_template(
         "categorylisting.html",
-        v=v,
         categories=CATEGORIES
         )
 
@@ -381,7 +377,7 @@ def categories_select(v):
 @app.get("/api/v2/submissions")
 @auth_desired
 @api("read")
-def front_all(v):
+def front_all():
     """
 Get all posts, minus filtered content based on personal settings.
 
@@ -397,8 +393,8 @@ Optional query parameters:
     page = max(page, 1)
 
     if v:
-        defaultsorting = v.defaultsorting
-        defaulttime = v.defaulttime
+        defaultsorting = g.user.defaultsorting
+        defaulttime = g.user.defaulttime
     else:
         defaultsorting = "hot"
         defaulttime = "all"
@@ -414,7 +410,6 @@ Optional query parameters:
         return make_response(
             render_template(
                 "categorylisting.html",
-                v=v,
                 categories=CATEGORIES
                 )
             )
@@ -437,15 +432,14 @@ Optional query parameters:
 
     ids = frontlist(sort=sort,
                     page=page,
-                    nsfw=(v and v.over_18 and not v.filter_nsfw),
-                    nsfl=(v and v.show_nsfl),
+                    nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
+                    nsfl=(g.user and g.user.show_nsfl),
                     t=t,
-                    v=v,
-                    hide_offensive=(v and v.hide_offensive) or not v,
-                    hide_bot=(v and v.hide_bot),
+                    hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                    hide_bot=(g.user and g.user.hide_bot),
                     gt=int(request.args.get("utc_greater_than", 0)),
                     lt=int(request.args.get("utc_less_than", 0)),
-                    filter_words=v.filter_words if v else [],
+                    filter_words=g.user.filter_words if g.user else [],
                     categories=[] if request.path.startswith("/api/") else cats
                     )
 
@@ -460,10 +454,9 @@ Optional query parameters:
         if sticky:
             ids = [sticky.id] + ids
     # check if ids exist
-    posts = get_posts(ids, sort=sort, v=v)
+    posts = get_posts(ids, sort=sort)
 
     return {'html': lambda: render_template("home.html",
-                                            v=v,
                                             listing=posts,
                                             next_exists=next_exists,
                                             sort_method=sort,
@@ -472,7 +465,6 @@ Optional query parameters:
                                             CATEGORIES=CATEGORIES
                                             ),
             'inpage': lambda: render_template("submission_listing.html",
-                                              v=v,
                                               listing=posts
                                               ),
             'api': lambda: jsonify({"data": [x.json for x in posts],
@@ -487,8 +479,8 @@ Optional query parameters:
 def subcat(name, v):
 
     if v:
-        defaultsorting = v.defaultsorting
-        defaulttime = v.defaulttime
+        defaultsorting = g.user.defaultsorting
+        defaulttime = g.user.defaulttime
     else:
         defaultsorting = "hot"
         defaulttime = "all"
@@ -506,29 +498,27 @@ def subcat(name, v):
         for name in name.split("+"):
             ids += frontlist(sort=sort,
                             page=page,
-                            nsfw=(v and v.over_18 and not v.filter_nsfw),
-                            nsfl=(v and v.show_nsfl),
+                            nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
+                            nsfl=(g.user and g.user.show_nsfl),
                             t=t,
-                            v=v,
-                            hide_offensive=(v and v.hide_offensive) or not v,
-                            hide_bot=(v and v.hide_bot),
+                            hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                            hide_bot=(g.user and g.user.hide_bot),
                             gt=int(request.args.get("utc_greater_than", 0)),
                             lt=int(request.args.get("utc_less_than", 0)),
-                            filter_words=v.filter_words if v else [],
+                            filter_words=g.user.filter_words if g.user else [],
                             categories=[name]
                             )
     else:
         ids = frontlist(sort=sort,
                         page=page,
-                        nsfw=(v and v.over_18 and not v.filter_nsfw),
-                        nsfl=(v and v.show_nsfl),
+                        nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
+                        nsfl=(g.user and g.user.show_nsfl),
                         t=t,
-                        v=v,
-                        hide_offensive=(v and v.hide_offensive) or not v,
-                        hide_bot=(v and v.hide_bot),
+                        hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                        hide_bot=(g.user and g.user.hide_bot),
                         gt=int(request.args.get("utc_greater_than", 0)),
                         lt=int(request.args.get("utc_less_than", 0)),
-                        filter_words=v.filter_words if v else [],
+                        filter_words=g.user.filter_words if g.user else [],
                         categories=[name]
                         )
 
@@ -537,10 +527,9 @@ def subcat(name, v):
     ids = ids[0:25]
 
     # check if ids exist
-    posts = get_posts(ids, sort=sort_method, v=v)
+    posts = get_posts(ids, sort=sort_method)
 
     return {'html': lambda: render_template("home.html",
-                                            v=v,
                                             listing=posts,
                                             next_exists=next_exists,
                                             sort_method=sort,
@@ -549,7 +538,6 @@ def subcat(name, v):
                                             CATEGORIES=CATEGORIES
                                             ),
             'inpage': lambda: render_template("submission_listing.html",
-                                              v=v,
                                               listing=posts
                                               ),
             'api': lambda: jsonify({"data": [x.json for x in posts],
@@ -590,7 +578,7 @@ def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
 @app.get("/api/v2/guilds")
 @auth_desired
 @api("read")
-def browse_guilds(v):
+def browse_guilds():
     """
 Get a listing of guilds
 
@@ -611,7 +599,7 @@ Optional query parameters:
     ids = guild_ids(
         sort=sort_method, 
         page=page, 
-        nsfw=(v and v.over_18),
+        nsfw=(g.user and g.user.over_18),
         cats=request.args.get("cats").split(',') if request.args.get("cats") else None
         )
 
@@ -622,12 +610,11 @@ Optional query parameters:
     # check if ids exist
     if ids:
 
-        boards = get_boards(ids, v=v)
+        boards = get_boards(ids)
     else:
         boards = []
 
     return {"html": lambda: render_template("boards.html",
-                                            v=v,
                                             boards=boards,
                                             page=page,
                                             next_exists=next_exists,
@@ -656,9 +643,9 @@ Optional query parameters:
 
     b = g.db.query(Board)
 
-    contribs = g.db.query(ContributorRelationship.board_id).filter_by(user_id=v.id, is_active=True).subquery()
-    m = g.db.query(ModRelationship.board_id).filter_by(user_id=v.id, accepted=True).subquery()
-    s = g.db.query(Subscription.board_id).filter_by(user_id=v.id, is_active=True).subquery()
+    contribs = g.db.query(ContributorRelationship.board_id).filter_by(user_id=g.user.id, is_active=True).subquery()
+    m = g.db.query(ModRelationship.board_id).filter_by(user_id=g.user.id, accepted=True).subquery()
+    s = g.db.query(Subscription.board_id).filter_by(user_id=g.user.id, is_active=True).subquery()
 
     content = b.filter(
         or_(
@@ -677,7 +664,6 @@ Optional query parameters:
         board._is_subscribed=True
 
     return {"html": lambda: render_template("mine/boards.html",
-                           v=v,
                            boards=content,
                            next_exists=next_exists,
                            page=page,
@@ -709,7 +695,7 @@ Optional query parameters:
 
     u = g.db.query(User).filter_by(is_banned=0, is_deleted=False)
 
-    follows = g.db.query(Follow).filter_by(user_id=v.id).subquery()
+    follows = g.db.query(Follow).filter_by(user_id=g.user.id).subquery()
 
     content = u.join(follows,
                      User.id == follows.c.target_id,
@@ -722,7 +708,6 @@ Optional query parameters:
     content = content[0:25]
 
     return {"html": lambda: render_template("mine/users.html",
-                           v=v,
                            users=content,
                            next_exists=next_exists,
                            page=page,
@@ -732,7 +717,7 @@ Optional query parameters:
 
 @app.route("/random/post", methods=["GET"])
 @auth_desired
-def random_post(v):
+def random_post():
 
     x = g.db.query(Submission).options(
         lazyload('board')).filter_by(
@@ -743,22 +728,22 @@ def random_post(v):
     cutoff = now - (60 * 60 * 24 * 180)
     x = x.filter(Submission.created_utc >= cutoff)
 
-    if not (v and v.over_18):
+    if not (g.user and g.user.over_18):
         x = x.filter_by(over_18=False)
 
-    if not (v and v.show_nsfl):
+    if not (g.user and g.user.show_nsfl):
         x = x.filter_by(is_nsfl=False)
 
-    if v and v.hide_offensive:
+    if g.user and g.user.hide_offensive:
         x = x.filter_by(is_offensive=False)
         
-    if v and v.hide_bot:
+    if g.user and g.user.hide_bot:
         x = x.filter_by(is_bot=False)
 
     if v:
         bans = g.db.query(
             BanRelationship.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
         x = x.filter(Submission.board_id.notin_(bans))
 
     x=x.join(Submission.board).filter(Board.is_banned==False)
@@ -772,7 +757,7 @@ def random_post(v):
 
 @app.route("/random/guild", methods=["GET"])
 @auth_desired
-def random_guild(v):
+def random_guild():
 
     x = g.db.query(Board).filter_by(
         is_banned=False,
@@ -781,7 +766,7 @@ def random_guild(v):
         is_nsfl=False)
 
     if v:
-        bans = g.db.query(BanRelationship.id).filter_by(user_id=v.id).all()
+        bans = g.db.query(BanRelationship.id).filter_by(user_id=g.user.id).all()
         x = x.filter(Board.id.notin_([i[0] for i in bans]))
 
     total = x.count()
@@ -794,7 +779,7 @@ def random_guild(v):
 
 @app.route("/random/comment", methods=["GET"])
 @auth_desired
-def random_comment(v):
+def random_comment():
 
     x = g.db.query(Comment).filter_by(is_banned=False,
                                       over_18=False,
@@ -802,7 +787,7 @@ def random_comment(v):
                                       is_offensive=False,
                                       is_bot=False).filter(Comment.parent_submission.isnot(None))
     if v:
-        bans = g.db.query(BanRelationship.id).filter_by(user_id=v.id).all()
+        bans = g.db.query(BanRelationship.id).filter_by(user_id=g.user.id).all()
         x = x.filter(Comment.board_id.notin_([i[0] for i in bans]))
 
     total = x.count()
@@ -814,7 +799,7 @@ def random_comment(v):
 
 @app.route("/random/user", methods=["GET"])
 @auth_desired
-def random_user(v):
+def random_user():
     x = g.db.query(User).filter(or_(User.is_banned == 0, and_(
         User.is_banned > 0, User.unban_utc < int(time.time()))))
 
@@ -837,21 +822,21 @@ def comment_idlist(page=1, v=None, nsfw=False, **kwargs):
     if not nsfw:
         posts = posts.filter_by(over_18=False)
 
-    if v and not v.show_nsfl:
+    if g.user and not g.user.show_nsfl:
         posts = posts.filter_by(is_nsfl=False)
 
-    if v and v.admin_level >= 4:
+    if g.user and g.user.admin_level >= 4:
         pass
     elif v:
         m = g.db.query(ModRelationship.board_id).filter_by(
-            user_id=v.id, invite_rescinded=False).subquery()
+            user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
             ContributorRelationship.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
 
         posts = posts.filter(
             or_(
-                Submission.author_id == v.id,
+                Submission.author_id == g.user.id,
                 Submission.post_public == True,
                 Submission.board_id.in_(m),
                 Submission.board_id.in_(c),
@@ -866,27 +851,27 @@ def comment_idlist(page=1, v=None, nsfw=False, **kwargs):
 
     comments = g.db.query(Comment).options(lazyload('*'))
 
-    if v and v.hide_offensive:
+    if g.user and g.user.hide_offensive:
         comments = comments.filter_by(is_offensive=False)
         
-    if v and v.hide_bot:
+    if g.user and g.user.hide_bot:
         comments = comments.filter_by(is_bot=False)
 
-    if v and v.admin_level <= 3:
+    if g.user and g.user.admin_level <= 3:
         # blocks
         blocking = g.db.query(
             UserBlock.target_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
         blocked = g.db.query(
             UserBlock.user_id).filter_by(
-            target_id=v.id).subquery()
+            target_id=g.user.id).subquery()
 
         comments = comments.filter(
             Comment.author_id.notin_(blocking),
             Comment.author_id.notin_(blocked)
         )
 
-    if not v or not v.admin_level >= 3:
+    if not g.user or not g.user.admin_level >= 3:
         comments = comments.filter_by(is_banned=False).filter(Comment.deleted_utc == 0)
 
     comments = comments.join(posts, Comment.parent_submission == posts.c.id)
@@ -902,7 +887,7 @@ def comment_idlist(page=1, v=None, nsfw=False, **kwargs):
 @app.get("/api/v2/comments")
 @auth_desired
 @api("read")
-def all_comments(v):
+def all_comments():
     """
 Get all comments
 
@@ -912,21 +897,19 @@ Optional query parameters:
 
     page = int(request.args.get("page", 1))
 
-    idlist = comment_idlist(v=v,
-                            page=page,
-                            nsfw=v and v.over_18,
-                            nsfl=v and v.show_nsfl,
-                            hide_offensive=v and v.hide_offensive,
-                            hide_bot=v and v.hide_bot)
+    idlist = comment_idlist(page=page,
+                            nsfw=g.user and g.user.over_18,
+                            nsfl=g.user and g.user.show_nsfl,
+                            hide_offensive=g.user and g.user.hide_offensive,
+                            hide_bot=g.user and g.user.hide_bot)
 
-    comments = get_comments(idlist, v=v)
+    comments = get_comments(idlist)
 
     next_exists = len(idlist) == 26
 
     idlist = idlist[0:25]
 
     return {"html": lambda: render_template("home_comments.html",
-                                            v=v,
                                             page=page,
                                             comments=comments,
                                             standalone=True,
@@ -937,7 +920,7 @@ Optional query parameters:
 @app.route("/api/v1/categories", methods=["GET"])
 @auth_desired
 @api()
-def categories(v):
+def categories():
 
     return make_response(
         jsonify(
