@@ -12,9 +12,11 @@ class Title(Base):
     def __init__(**kwargs):
         self.__dict__.update(kwargs)
 
-    def check_eligibility(self, v):
+    def check_eligibility(self, user):
 
-        return bool(eval(self.qualification_expr, {}, {"v": v}))
+        #legacy compatability function
+
+        return self.evaluate(user)
 
     @property
     def rendered(self):
