@@ -24,7 +24,7 @@ from ruqqus.__main__ import app, cache
 @app.route("/api/ban_user/<user_id>", methods=["POST"])
 @admin_level_required(3)
 @validate_formkey
-def ban_user(user_id, v):
+def ban_user(user_id):
 
     user = g.db.query(User).filter_by(id=user_id).first()
 
@@ -67,7 +67,7 @@ def ban_user(user_id, v):
 @app.route("/api/unban_user/<user_id>", methods=["POST"])
 @admin_level_required(3)
 @validate_formkey
-def unban_user(user_id, v):
+def unban_user(user_id):
 
     user = g.db.query(User).filter_by(id=user_id).first()
 
@@ -86,7 +86,7 @@ def unban_user(user_id, v):
 @app.route("/api/ban_post/<post_id>", methods=["POST"])
 @admin_level_required(3)
 @validate_formkey
-def ban_post(post_id, v):
+def ban_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
 
@@ -112,7 +112,7 @@ def ban_post(post_id, v):
 
     ma=ModAction(
         kind="ban_post",
-        user_id=v.id,
+        user_id=g.user.id,
         target_submission_id=post.id,
         board_id=post.board_id,
         note="admin action"
@@ -124,7 +124,7 @@ def ban_post(post_id, v):
 @app.route("/api/unban_post/<post_id>", methods=["POST"])
 @admin_level_required(3)
 @validate_formkey
-def unban_post(post_id, v):
+def unban_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
 
@@ -134,7 +134,7 @@ def unban_post(post_id, v):
     if post.is_banned:
         ma=ModAction(
             kind="unban_post",
-            user_id=v.id,
+            user_id=g.user.id,
             target_submission_id=post.id,
             board_id=post.board_id,
             note="admin action"
@@ -142,7 +142,7 @@ def unban_post(post_id, v):
         g.db.add(ma)
 
     post.is_banned = False
-    post.is_approved = v.id
+    post.is_approved = g.user.id
     post.approved_utc = int(time.time())
 
     g.db.add(post)
@@ -153,20 +153,20 @@ def unban_post(post_id, v):
 @app.route("/api/distinguish/<post_id>", methods=["POST"])
 @admin_level_required(1)
 @validate_formkey
-def api_distinguish_post(post_id, v):
+def api_distinguish_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
 
     if not post:
         abort(404)
 
-    if not post.author_id == v.id:
+    if not post.author_id == g.user.id:
         abort(403)
 
     if post.distinguish_level:
         post.distinguish_level = 0
     else:
-        post.distinguish_level = v.admin_level
+        post.distinguish_level = g.user.admin_level
 
     g.db.add(post)
 
@@ -175,7 +175,7 @@ def api_distinguish_post(post_id, v):
 
 @app.route("/api/sticky/<post_id>", methods=["POST"])
 @admin_level_required(3)
-def api_sticky_post(post_id, v):
+def api_sticky_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
     if post:
@@ -200,7 +200,7 @@ def api_sticky_post(post_id, v):
 
 @app.route("/api/ban_comment/<c_id>", methods=["post"])
 @admin_level_required(1)
-def api_ban_comment(c_id, v):
+def api_ban_comment(c_id):
 
     comment = g.db.query(Comment).filter_by(id=base36decode(c_id)).first()
     if not comment:
@@ -213,7 +213,7 @@ def api_ban_comment(c_id, v):
     g.db.add(comment)
     ma=ModAction(
         kind="ban_comment",
-        user_id=v.id,
+        user_id=g.user.id,
         target_comment_id=comment.id,
         board_id=comment.post.board_id,
         note="admin action"
@@ -224,7 +224,7 @@ def api_ban_comment(c_id, v):
 
 @app.route("/api/unban_comment/<c_id>", methods=["post"])
 @admin_level_required(1)
-def api_unban_comment(c_id, v):
+def api_unban_comment(c_id):
 
     comment = g.db.query(Comment).filter_by(id=base36decode(c_id)).first()
     if not comment:
@@ -234,7 +234,7 @@ def api_unban_comment(c_id, v):
     if comment.is_banned:
         ma=ModAction(
             kind="unban_comment",
-            user_id=v.id,
+            user_id=g.user.id,
             target_comment_id=comment.id,
             board_id=comment.post.board_id,
             note="admin action"
@@ -242,7 +242,7 @@ def api_unban_comment(c_id, v):
         g.db.add(ma)
 
     comment.is_banned = False
-    comment.is_approved = v.id
+    comment.is_approved = g.user.id
     comment.approved_utc = int(time.time())
 
 
@@ -251,21 +251,20 @@ def api_unban_comment(c_id, v):
 
 @app.route("/api/distinguish_comment/<c_id>", methods=["post"])
 @admin_level_required(1)
-def admin_distinguish_comment(c_id, v):
+def admin_distinguish_comment(c_id):
 
-    comment = get_comment(c_id, v=v)
+    comment = get_comment(c_id)
 
-    if comment.author_id != v.id:
+    if comment.author_id != g.user.id:
         abort(403)
 
-    comment.distinguish_level = 0 if comment.distinguish_level else v.admin_level
+    comment.distinguish_level = 0 if comment.distinguish_level else g.user.admin_level
 
     g.db.add(comment)
     g.db.commit()
 
     html=render_template(
                 "comments.html",
-                v=v,
                 comments=[comment],
                 render_replies=False,
                 is_allowed_to_comment=True
@@ -282,7 +281,7 @@ def admin_distinguish_comment(c_id, v):
 @validate_formkey
 def api_ban_guild(v, bid):
 
-    board = get_board(bid, v=v)
+    board = get_board(bid)
 
     board.is_banned = True
     board.ban_reason = request.form.get("reason", "")
@@ -297,7 +296,7 @@ def api_ban_guild(v, bid):
 @validate_formkey
 def api_unban_guild(v, bid):
 
-    board = get_board(bid, v=v)
+    board = get_board(bid)
 
     board.is_banned = False
     board.ban_reason = ""
@@ -314,7 +313,7 @@ def mod_self_to_guild(v, bid):
 
     board = get_board(bid)
     if not board.has_mod(v):
-        mr = ModRelationship(user_id=v.id,
+        mr = ModRelationship(user_id=g.user.id,
                              board_id=board.id,
                              accepted=True,
                              perm_full=True,
@@ -326,8 +325,8 @@ def mod_self_to_guild(v, bid):
 
         ma=ModAction(
             kind="add_mod",
-            user_id=v.id,
-            target_user_id=v.id,
+            user_id=g.user.id,
+            target_user_id=g.user.id,
             board_id=board.id,
             note="admin action"
         )
@@ -544,7 +543,7 @@ def multiple_plots(**kwargs):
 @app.route("/admin/csam_nuke/<pid>", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def admin_csam_nuke(pid, v):
+def admin_csam_nuke(pid):
 
     post = get_post(pid)
 
@@ -560,10 +559,10 @@ def admin_csam_nuke(pid, v):
         )
 
     user = post.author
-    user.is_banned = v.id
+    user.is_banned = g.user.id
     g.db.add(user)
     for alt in user.alts:
-        alt.is_banned = v.id
+        alt.is_banned = g.user.id
         g.db.add(alt)
 
     if post.domain == "i.ruqqus.com":
@@ -646,7 +645,7 @@ def admin_nuke_user(v):
 
         ma=ModAction(
             kind="ban_post",
-            user_id=v.id,
+            user_id=g.user.id,
             target_submission_id=post.id,
             board_id=post.board_id,
             note=note
@@ -662,7 +661,7 @@ def admin_nuke_user(v):
 
         ma=ModAction(
             kind="ban_comment",
-            user_id=v.id,
+            user_id=g.user.id,
             target_comment_id=comment.id,
             board_id=comment.post.board_id,
             note=note
@@ -681,7 +680,7 @@ def admin_demod_user(v):
     for mod in g.db.query(ModRelationship).filter_by(user_id=user.id, accepted=True):
 
         ma=ModAction(
-            user_id=v.id,
+            user_id=g.user.id,
             target_user_id=user.id,
             board_id=mod.board_id,
             kind="remove_mod",
@@ -714,7 +713,6 @@ def sig_validate(v):
 
     return render_template(
         "help/signature.html",
-        v=v,
         success = valid,
         error = not valid
         )
