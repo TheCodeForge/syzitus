@@ -1,0 +1,1 @@
+web: gunicorn ruqqus.__main__:app -k gevent
