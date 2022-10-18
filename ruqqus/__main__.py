@@ -242,8 +242,9 @@ limiter = Limiter(
 #    "leader": create_engine(app.config['DATABASE_URL'], pool_size=pool_size, pool_use_lifo=True),
 #    "followers": [create_engine(x, pool_size=pool_size, pool_use_lifo=True) for x in app.config['SQLALCHEMY_READ_URIS'] if x] if any(i for i in app.config['SQLALCHEMY_READ_URIS']) else [create_engine(app.config['DATABASE_URL'], pool_size=pool_size, pool_use_lifo=True)]
 #}
+
 _engine=create_engine(
-    app.config['DATABASE_URL'],
+    app.config['DATABASE_URL'].replace("postgres://","postgresql://"),
     poolclass=QueuePool,
     pool_size=int(environ.get("PG_POOL_SIZE",10)),
     pool_use_lifo=True
