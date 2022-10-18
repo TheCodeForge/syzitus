@@ -15,7 +15,7 @@ from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_compress import Compress
-from flask_socketio import SocketIO
+#from flask_socketio import SocketIO
 from time import sleep
 from collections import deque
 import psycopg2
@@ -39,43 +39,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 _version = "2.38.0"
-
-# def time_limit(s):
-#     def wrapper_maker(f):
-#         def wrapper(*args, **kwargs):
-
-#             timeout=gevent.Timeout(s, gevent.Timeout)
-#             timeout.start()
-#             target_thread=gevent.spawn(f, *args, **kwargs)
-#             try:
-#                 target_thread.join()
-#                 return target_thread.value
-#             except gevent.timeout.Timeout as t:
-#                 target_thread.kill()
-#                 try:
-#                     g.db.rollback()
-#                     g.db.invalidate()
-#                 except:
-#                     pass
-#                 abort(500)
-
-#         wrapper.__name__=f.__name__
-#         return wrapper
-#     return wrapper_maker
-
-# class Flask_Timeout(Flask):
-    
-            
-#     def full_dispatch_request(self, *args, **kwargs):
-        
-        
-#         @copy_current_request_context
-#         @time_limit(10)
-#         @copy_current_request_context
-#         def thread_target(self, *args, **kwargs):   
-#             return super(Flask_Timeout, self).full_dispatch_request(*args, **kwargs)
-        
-#         return thread_target(self, *args, **kwargs)
 
 app = Flask(__name__,
             template_folder='./templates',
@@ -327,7 +290,7 @@ r=redis.Redis(
 
 local_ban_cache={}
 
-#IP_BAN_CACHE_TTL = int(environ.get("IP_BAN_CACHE_TTL", 3600))
+IP_BAN_CACHE_TTL = int(environ.get("IP_BAN_CACHE_TTL", 3600))
 UA_BAN_CACHE_TTL = int(environ.get("UA_BAN_CACHE_TTL", 3600))
 
 

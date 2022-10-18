@@ -3,7 +3,7 @@ from .admin_api import *
 from .api import *
 from .boards import *
 from .comments import *
-from .discord import *
+#from .discord import *
 from .errors import *
 from .flagging import *
 from .front import *
