@@ -107,7 +107,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     # cutoff=int(time.time())-(60*60*24*30)
 
     if sort == None:
-        if v: sort = g.user.defaultsorting
+        if g.user: sort = g.user.defaultsorting
         else: sort = "hot"
 
     if sort == "hot":
@@ -141,7 +141,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     if not nsfl:
         posts = posts.filter_by(is_nsfl=False)
 
-    if (g.user and g.user.hide_offensive) or not v:
+    if (g.user and g.user.hide_offensive) or not g.user:
         posts = posts.filter_by(is_offensive=False)
     
     if g.user and g.user.hide_bot:
@@ -153,7 +153,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
             user_id=g.user.id).subquery()
 
         posts = posts.filter(Submission.board_id.notin_(board_blocks))
-    elif v:
+    elif g.user:
         m = g.db.query(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
@@ -189,7 +189,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
         posts = posts.filter(Submission.post_public==True)
 
     # board opt out of all
-    if v:
+    if g.user:
         posts = posts.join(Submission.board).filter(
             or_(
                 Board.all_opt_out == False,
@@ -211,7 +211,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
     if categories:
         posts=posts.filter(Board.subcat_id.in_(tuple(categories)))
         
-    if (g.user and g.user.hide_offensive) or not v:
+    if (g.user and g.user.hide_offensive) or not g.user:
         posts=posts.filter(
             Board.subcat_id.notin_([44, 108]) 
             )
@@ -229,7 +229,7 @@ def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
             #print(word)
             posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
-    if t == None and v: t = g.user.defaulttime
+    if t == None and g.user: t = g.user.defaulttime
     if t:
         now = int(time.time())
         if t == 'day':
@@ -290,7 +290,7 @@ Optional query parameters:
 
         only=request.args.get("only",None)
 
-        if v:
+        if g.user:
             defaultsorting = g.user.defaultsorting
             defaulttime = g.user.defaulttime
         else:
@@ -392,7 +392,7 @@ Optional query parameters:
     # prevent invalid paging
     page = max(page, 1)
 
-    if v:
+    if g.user:
         defaultsorting = g.user.defaultsorting
         defaulttime = g.user.defaulttime
     else:
@@ -435,7 +435,7 @@ Optional query parameters:
                     nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
                     nsfl=(g.user and g.user.show_nsfl),
                     t=t,
-                    hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                    hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
                     hide_bot=(g.user and g.user.hide_bot),
                     gt=int(request.args.get("utc_greater_than", 0)),
                     lt=int(request.args.get("utc_less_than", 0)),
@@ -476,9 +476,9 @@ Optional query parameters:
 @app.route("/subcat/<name>", methods=["GET"])
 @auth_desired
 @api("read")
-def subcat(name, v):
+def subcat(name):
 
-    if v:
+    if g.user:
         defaultsorting = g.user.defaultsorting
         defaulttime = g.user.defaulttime
     else:
@@ -501,7 +501,7 @@ def subcat(name, v):
                             nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
                             nsfl=(g.user and g.user.show_nsfl),
                             t=t,
-                            hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                            hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
                             hide_bot=(g.user and g.user.hide_bot),
                             gt=int(request.args.get("utc_greater_than", 0)),
                             lt=int(request.args.get("utc_less_than", 0)),
@@ -514,7 +514,7 @@ def subcat(name, v):
                         nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
                         nsfl=(g.user and g.user.show_nsfl),
                         t=t,
-                        hide_offensive=(g.user and g.user.hide_offensive) or not v,
+                        hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
                         hide_bot=(g.user and g.user.hide_bot),
                         gt=int(request.args.get("utc_greater_than", 0)),
                         lt=int(request.args.get("utc_less_than", 0)),
@@ -740,7 +740,7 @@ def random_post():
     if g.user and g.user.hide_bot:
         x = x.filter_by(is_bot=False)
 
-    if v:
+    if g.user:
         bans = g.db.query(
             BanRelationship.board_id).filter_by(
             user_id=g.user.id).subquery()
@@ -765,7 +765,7 @@ def random_guild():
         over_18=False,
         is_nsfl=False)
 
-    if v:
+    if g.user:
         bans = g.db.query(BanRelationship.id).filter_by(user_id=g.user.id).all()
         x = x.filter(Board.id.notin_([i[0] for i in bans]))
 
@@ -786,7 +786,7 @@ def random_comment():
                                       is_nsfl=False,
                                       is_offensive=False,
                                       is_bot=False).filter(Comment.parent_submission.isnot(None))
-    if v:
+    if g.user:
         bans = g.db.query(BanRelationship.id).filter_by(user_id=g.user.id).all()
         x = x.filter(Comment.board_id.notin_([i[0] for i in bans]))
 
@@ -814,7 +814,7 @@ def random_user():
 
 
 @cache.memoize(600)
-def comment_idlist(page=1, v=None, nsfw=False, **kwargs):
+def comment_idlist(page=1, nsfw=False, **kwargs):
 
     posts = g.db.query(Submission).options(
         lazyload('*')).join(Submission.board)
@@ -827,7 +827,7 @@ def comment_idlist(page=1, v=None, nsfw=False, **kwargs):
 
     if g.user and g.user.admin_level >= 4:
         pass
-    elif v:
+    elif g.user:
         m = g.db.query(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
