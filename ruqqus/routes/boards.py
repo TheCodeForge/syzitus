@@ -32,7 +32,7 @@ valid_board_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}$")
 @api("read")
 def multiboard(name):
     
-    if v:
+    if g.user:
         defaultsorting = g.user.defaultsorting
         defaulttime = g.user.defaulttime
     else:
@@ -47,29 +47,29 @@ def multiboard(name):
     
     for name in name.split("+"):
         board = get_guild(name)
-        if board.is_banned and not (v and g.user.admin_level >= 3): continue
-        if board.over_18 and not (v and g.user.over_18) and not session_over18(board): continue
-        if not board.can_view(v): continue
+        if board.is_banned and not (g.user and g.user.admin_level >= 3): continue
+        if board.over_18 and not (g.user and g.user.over_18) and not session_over18(board): continue
+        if not board.can_view(g.user): continue
 
         board_ids.append(board.id)
 
     posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False).filter(Submission.deleted_utc == 0,
                                                                                                                                                 Submission.board_id.in_(tuple(board_ids)))
     
-    if v:
+    if g.user:
         blocking = g.db.query(UserBlock.target_id).filter_by(user_id=g.user.id).subquery()
         posts = posts.filter(Submission.author_id.notin_(blocking))
 
-    if v and not g.user.over_18:
+    if g.user and not g.user.over_18:
         posts = posts.filter_by(over_18=False)
 
-    if v and g.user.hide_offensive:
+    if g.user and g.user.hide_offensive:
         posts = posts.filter_by(is_offensive=False)
         
-    if v and g.user.hide_bot:
+    if g.user and g.user.hide_bot:
         posts = posts.filter_by(is_bot=False)
 
-    if v and not g.user.show_nsfl:
+    if g.user and not g.user.show_nsfl:
         posts = posts.filter_by(is_nsfl=False)
 
     if t:
@@ -123,7 +123,7 @@ def multiboard(name):
 @app.route("/create_guild", methods=["GET"])
 @is_not_banned
 @no_negative_balance("html")
-def create_board_get(v):
+def create_board_get():
     if not g.user.can_make_guild:
         return render_template("message.html",
                                title=f"You already lead {app.config['MAX_GUILD_COUNT']} guilds." if not g.user.can_join_gms else "Unable to make a guild. For now.",
@@ -163,7 +163,7 @@ def api_board_available(name):
 @no_negative_balance("html")
 @api("create")
 @validate_formkey
-def create_board_post(v):
+def create_board_post():
     """
 Create a Guild
 
@@ -315,7 +315,7 @@ Optional query parameters:
                 'api': lambda: jsonify({'error': f'+{board.name} is NSFW.'})
                 }
 
-    if v:
+    if g.user:
         defaultsorting = g.user.defaultsorting
         defaulttime = g.user.defaulttime
     else:
@@ -796,13 +796,13 @@ def mod_take_pid(pid, board):
     if not post.board_id == 1:
         return jsonify({'error': f"This post is no longer in +general"}), 403
 
-    if not board.has_mod(v):
+    if not board.has_mod(g.user):
         return jsonify({'error': f"You are no longer a guildmaster of +{board.name}"}), 403
 
     if board.has_ban(post.author):
         return jsonify({'error': f"@{post.author.username} is exiled from +{board.name}, so you can't yank their post there."}), 403
 
-    if post.author.any_block_exists(v):
+    if post.author.any_block_exists(g.user):
         return jsonify({'error': f"You can't yank @{post.author.username}'s content."}), 403
 
     if not board.can_take(post):
@@ -951,7 +951,7 @@ def mod_accept_board(bid):
 
     if not g.user.can_join_gms:
         return jsonify({"error": f"You already lead enough guilds."}), 409
-    if board.has_ban(v):
+    if board.has_ban(g.user):
         return jsonify({"error": f"You are exiled from +{board.name} and can't currently become a guildmaster."}), 409
     x.accepted = True
     x.created_utc=int(time.time())
@@ -976,7 +976,7 @@ def mod_accept_board(bid):
 def mod_step_down(bid, board):
 
 
-    v_mod = board.has_mod(v)
+    v_mod = board.has_mod(g.user)
 
     if not v_mod:
         abort(404)
@@ -1012,7 +1012,7 @@ def mod_remove_username(bid, username, board):
     user = get_user(username)
 
     u_mod = board.has_mod(user)
-    v_mod = board.has_mod(v)
+    v_mod = board.has_mod(g.user)
 
     if not u_mod:
         abort(400)
@@ -1300,7 +1300,7 @@ def mod_edit_rule(bid, board):
     if board.is_banned:
         abort(403)
 
-    if board.has_ban(v):
+    if board.has_ban(g.user):
         abort(403)
 
     body = request.form.get("body", "")
@@ -1359,7 +1359,7 @@ URL path parameters:
         "api":lambda:(jsonify({"error":f"+{board.name} is banned"}), 403)
         }
 
-    me = board.has_mod(v)
+    me = board.has_mod(g.user)
 
     return {
         "html":lambda:render_template("guild/mods.html", b=board, me=me),
@@ -1381,7 +1381,7 @@ def board_about_css(guildname):
         "api":lambda:(jsonify({"error":f"+{board.name} is banned"}), 403)
         }
 
-    me = board.has_mod(v)
+    me = board.has_mod(g.user)
 
     return {
         "html":lambda:render_template("guild/css.html", b=board, me=me),
@@ -1622,7 +1622,7 @@ URL path parameters:
     g.db.flush()
 
     # clear your cached guild listings
-    cache.delete_memoized(User.idlist, v, kind="board")
+    cache.delete_memoized(User.idlist, g.user, kind="board")
 
     # update board trending rank
     board.rank_trending = board.trending_rank
@@ -1658,7 +1658,7 @@ URL path parameters:
     g.db.flush()
 
     # clear your cached guild listings
-    cache.delete_memoized(User.idlist, v, kind="board")
+    cache.delete_memoized(User.idlist, g.user, kind="board")
 
     board.rank_trending = board.trending_rank
     board.stored_subscriber_count = board.subscriber_count
@@ -1714,7 +1714,7 @@ URL path parameters:
 @app.get("/api/v2/me/modqueue")
 @auth_required
 @api("read", "guildmaster")
-def all_mod_queue(v):
+def all_mod_queue():
     """Get reported posts in all of your guilds."""
 
     page = int(request.args.get("page", 1))
@@ -1767,7 +1767,7 @@ def mod_board_images_profile(bid, board):
     # anti csam
     new_thread = threading.Thread(target=check_csam_url,
                                   args=(board.profile_url,
-                                        v,
+                                        g.user,
                                         lambda: board.del_profile()
                                         )
                                   )
@@ -1798,7 +1798,7 @@ def mod_board_images_banner(bid, board):
     # anti csam
     new_thread = threading.Thread(target=check_csam_url,
                                   args=(board.banner_url,
-                                        v,
+                                        g.user,
                                         lambda: board.del_banner()
                                         )
                                   )
@@ -2133,7 +2133,7 @@ Optional query parameters:
     idlist = b.comment_idlist(page=page,
                               nsfw=v and g.user.over_18,
                               nsfl=v and g.user.show_nsfl,
-                              hide_offensive=(v and g.user.hide_offensive) or not v,
+                              hide_offensive=(v and g.user.hide_offensive) or not g.user,
                               hide_bot=v and g.user.hide_bot)
 
     next_exists = len(idlist) == 26
@@ -2272,7 +2272,7 @@ def board_mod_perms_change(guildname, board):
 
     user=get_user(request.form.get("username"))
 
-    v_mod=board.has_mod(v)
+    v_mod=board.has_mod(g.user)
     u_mod=board.has_mod_record(user)
 
     if v_mod.id > u_mod.id:
@@ -2382,7 +2382,7 @@ def mod_unchatban_bid_user(bid, board):
 @app.route("/siege_guild", methods=["POST"])
 @is_not_banned
 @validate_formkey
-def siege_guild(v):
+def siege_guild():
 
     now = int(time.time())
     guild = request.form.get("guild", None)
@@ -2429,17 +2429,17 @@ def siege_guild(v):
 
     # update siege date
     g.user.last_siege_utc = now
-    g.db.add(v)
+    g.db.add(g.user)
     for alt in g.user.alts:
         alt.last_siege_utc = now
-        g.db.add(v)
+        g.db.add(g.user)
 
     #check user subscription time
 
 
 
     # check user activity
-    if guild not in g.user.boards_modded and g.user.guild_rep(guild, recent=180) < guild.siege_rep_requirement and not guild.has_contributor(v):
+    if guild not in g.user.boards_modded and g.user.guild_rep(guild, recent=180) < guild.siege_rep_requirement and not guild.has_contributor(g.user):
         return render_template(
             "message.html",
             title=f"Siege against +{guild.name} Failed",
@@ -2524,7 +2524,7 @@ def siege_guild(v):
     #Siege is successful
 
     #look up current mod record if one exists
-    m=guild.has_mod(v)
+    m=guild.has_mod(g.user)
 
     #remove current mods. If they are at or below existing mod, leave in place
     for x in guild.moderators:
