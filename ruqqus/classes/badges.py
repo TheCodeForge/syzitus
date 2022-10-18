@@ -5,17 +5,13 @@ from sqlalchemy.orm import relationship
 from ruqqus.__main__ import Base, app
 
 
-class BadgeDef(Base):
-
-    __tablename__ = "badge_defs"
+class BadgeDef():
 
     id = Column(BigInteger, primary_key=True)
-    name = Column(String(64))
-    description = Column(String(64))
-    icon = Column(String(64))
-    kind = Column(Integer, default=1)
-    rank = Column(Integer, default=1)
-    qualification_expr = Column(String(128), default=None)
+
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
 
     def __repr__(self):
 
@@ -33,6 +29,15 @@ class BadgeDef(Base):
             "description": self.description,
             "icon": self.icon
         }
+
+    def evaluate(self, user):
+
+        expr=self.__dict__.get("expr")
+
+        if not expr:
+            return None
+
+        return bool(expr(user))
     
 
 
@@ -90,3 +95,57 @@ class Badge(Base):
     property
     def json(self):
         return self.json_core
+
+KINDS={
+    1: "regular",
+    2: "awarded",
+    3: "discontinued",
+    4: "special"
+}
+
+BADGE_DEFS={
+    1: {
+        "name":"Artist",
+        "description":"Contributed art or other graphics to the platform",
+        "kind": 2,
+        "rank": 3,
+        "icon": "art.png"
+    },
+    2: {
+        "name":"New User",
+        "description":"Joined within the last 30 days",
+        "kind": 1,
+        "rank": 1,
+        "icon": "baby.png",
+        "expr": lambda x: x.age<60*60*24*30
+    },
+    3: {
+        "name":"Code Contributor",
+        "description":"Contributed code to the site",
+        "kind": 2,
+        "rank": 3,
+        "icon": "git.png"
+    },
+    4: {
+        "name":"Idea",
+        "description":"Provided a good idea for the site that was eventually added",
+        "kind": 2,
+        "rank": 2,
+        "icon": "idea.png"
+    },
+    5: {
+        "name":"Lab Rat",
+        "description":"Helped test out new or experimental features",
+        "kind": 2,
+        "rank": 3,
+        "icon": "labrat.png"
+    },
+    6: {
+        "name":"Verified Email",
+        "description":"Verified an email address",
+        "kind": 1,
+        "rank": 1,
+        "icon": "baby.png",
+        "expr": lambda x: x.age<60*60*24*30
+    }
+}

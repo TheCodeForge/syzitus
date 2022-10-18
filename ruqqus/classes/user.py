@@ -24,7 +24,7 @@ from .board_relationships import *
 from .mix_ins import *
 from .subscriptions import *
 from .userblock import *
-from .badges import *
+from .badges import BADGES
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
@@ -35,7 +35,7 @@ class User(Base, Stndrd, Age_times):
 
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    username = Column(String, default=None)
+    username = Column(String, default=None, index=True)
     email = Column(String, default=None)
     passhash = deferred(Column(String, default=None))
     created_utc = Column(Integer, default=0)
@@ -1217,11 +1217,13 @@ class User(Base, Stndrd, Age_times):
 
     def refresh_selfset_badges(self):
 
-        # check self-setting badges
-        badge_types = g.db.query(BadgeDef).filter(
-            BadgeDef.qualification_expr.isnot(None)).all()
-        for badge in badge_types:
-            if eval(badge.qualification_expr, {}, {'v': self}):
+
+        for badge in BADGE_DEFS:
+            if not badge.expr:
+                continue
+                
+            should_have = badge.evaluate(self)
+            if should_have:
                 if not self.has_badge(badge.id):
                     new_badge = Badge(user_id=self.id,
                                       badge_id=badge.id,
@@ -1229,7 +1231,7 @@ class User(Base, Stndrd, Age_times):
                                       )
                     g.db.add(new_badge)
 
-            else:
+            elif should_have==False:
                 bad_badge = self.has_badge(badge.id)
                 if bad_badge:
                     g.db.delete(bad_badge)
