@@ -186,7 +186,7 @@
     
     {% block stylesheets %}
 
-    {% if v and v.can_use_darkmode and session.get("dark_mode_enabled") %}
+    {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
     <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=2.38.0">
     {% else %}
     <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=2.38.0">
@@ -200,11 +200,11 @@
     {% block fixedMobileBarJS %}
     {% endblock %}
 
-    {% if v %}
+    {% if g.user %}
 
     <script>
       function formkey() {
-       return '{{ v.formkey }}';
+       return '{{ g.user.formkey }}';
      }
    </script>
    {% endif %}
@@ -214,7 +214,7 @@
 --->
  </head>
 
- <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if v and session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
+ <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if g.user and session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
 
   {% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
   <div class="row fixed-top" style="z-index:2000" id="mobile-prompt-row">
@@ -241,15 +241,15 @@
           </span>
         </form>
       </div>
-      {% if v %}
+      {% if g.user %}
       <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
       {% else %}
       <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
       {% endif %}
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
       aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon {% if v and v.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
-        {% if v and v.notifications_count %}
+      <span class="navbar-toggler-icon {% if g.user and g.user.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
+        {% if g.user and g.user.notifications_count %}
         <i class="fas fa-circle text-danger text-small-extra position-absolute" style="right: -6px; top: -4px;"></i>
         {% endif %}
       </span>
@@ -257,18 +257,18 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto d-none d-md-flex">
 
-        {% if v and v.mods_anything %}
+        {% if g.user and g.user.mods_anything %}
         <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-          <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools"><i class="fas fa-crown{% if v.has_report_queue %} text-warning{% endif %}"></i></a>
+          <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools"><i class="fas fa-crown{% if g.user.has_report_queue %} text-warning{% endif %}"></i></a>
         </li>
         {% endif %}
 
-        {% if v %}
+        {% if g.user %}
 
-        {% if v.notifications_count %}
+        {% if g.user.notifications_count %}
 
         <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
-          <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class="fas fa-bell text-danger"></i><span class="badge-count font-weight-bolder">{{ v.notifications_count }}</span></a>
+          <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class="fas fa-bell text-danger"></i><span class="badge-count font-weight-bolder">{{ g.user.notifications_count }}</span></a>
         </li>
 
         {% else %}
@@ -301,13 +301,13 @@
 
         <li class="nav-item d-flex align-items-center justify-content-center text-center">
           <div class="dropdown">
-            <a class="nav-link bg-transparent py-0 pr-0" href="{{ v.permalink }}" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            <a class="nav-link bg-transparent py-0 pr-0" href="{{ g.user.permalink }}" role="button" id="dropdownMenuLink" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <div class="d-flex">
-              <div><img src="{{ v.profile_url }}" class="profile-pic-35"></div>
+              <div><img src="{{ g.user.profile_url }}" class="profile-pic-35"></div>
               <div class="text-left pl-2">
-                <div class="text-small font-weight-bold">{{ v.username }}</div>
-                <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+                <div class="text-small font-weight-bold">{{ g.user.username }}</div>
+                <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
               </div>
             </div>
           </a>
@@ -315,17 +315,17 @@
           aria-labelledby="dropdownMenuButton">
           <div class="px-2">
             <div class="dropdown-meta">
-              <div class="font-weight-bold mb-2">{{ v.username }}</div>
-              <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ v.true_score }} Rep</div>
+              <div class="font-weight-bold mb-2">{{ g.user.username }}</div>
+              <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
             </div>
           </div>
           <hr class="my-2">
           <div class="px-2">
-            <a class="dropdown-item" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
+            <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
             profile</a>
-            {% if v.notifications_count %}
+            {% if g.user.notifications_count %}
             <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span
-              class="badge badge-danger rounded-circle align-top ml-1">{{ v.notifications_count }}</span></a>
+              class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
               {% else %}
               <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
               {% endif %}
@@ -333,9 +333,9 @@
               <a class="dropdown-item d-lg-none" href="/categories"><i class="fas fa-shapes fa-fw text-left mr-3" id="dark-switch"></i>Categories</a>
 
               {% block darkswitch %}
-              {% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+              {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
               <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-              {% elif v and v.can_use_darkmode %}
+              {% elif g.user and g.user.can_use_darkmode %}
               <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
               {% else %}
               <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
@@ -378,14 +378,14 @@
         </span>
       </form>
     </li>
-    {% if v %}
+    {% if g.user %}
     <li class="nav-item">
-      <a class="nav-link" href="{{ v.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ v.username }}</a>
+      <a class="nav-link" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ g.user.username }}</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link {% if v.notifications_count %}position-relative{% endif %}" href="/notifications{% if not v.notifications_count %}?all=true{% endif %}">
+      <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications{% if not g.user.notifications_count %}?all=true{% endif %}">
         <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
-        {% if v.notifications_count %}
+        {% if g.user.notifications_count %}
         <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
         {% endif %}
       </a>
@@ -393,7 +393,7 @@
     <li class="nav-item">
       <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
     </li>
-    {% if v.can_make_guild %}
+    {% if g.user.can_make_guild %}
     <li class="nav-item">
       <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
     </li>
@@ -402,7 +402,7 @@
     <li class="nav-item">
       <a class="nav-link" href="/categories"><i class="fas fa-shapes fa-fw mr-3"></i>Categories</a>
     </li>
-    {% if v %}
+    {% if g.user %}
     {% block darkswitchMobile %}
     {% if session.get("dark_mode_enabled")%}
     <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fas fa-toggle-on fa-fw mr-3" id="dark-switch-mobile"></i>Dark mode</a></li>
@@ -412,7 +412,7 @@
     {% endblock %}
     {% endif %}
 
-    {% if v %}
+    {% if g.user %}
     <li class="nav-item border-top mt-2 pt-2">
       <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
     </li>
@@ -549,7 +549,7 @@
       </div>
       {% endblock %}
 
-      {% if v and v.admin_level %}
+      {% if g.user and g.user.admin_level %}
       <div class="sidebar-section sidebar-adminpanel">
         <div class="title"><i class="fas fa-user-shield mr-2"></i>Admin Panel</div>
         <div class="body">
@@ -612,7 +612,7 @@
   </div>
 </div>
 
-{% if v %}
+{% if g.user %}
 {% include "flag_post_modal.html" %}
 {% include "flag_comment_modal.html" %}
 {% include "gif_modal.html" %}
@@ -621,7 +621,7 @@
 {% include "tip_modal.html" %}
 {% endif %}
 
-{% if v and v.mods_anything %}
+{% if g.user and g.user.mods_anything %}
 {% include "kick_post_modal.html" %}
 {% include "yank_post_modal.html" %}
 {% endif %}
