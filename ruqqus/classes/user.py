@@ -127,15 +127,15 @@ class User(Base, Stndrd, Age_times):
     name_changed_utc=deferred(Column(Integer, default=0))
 
 
-    moderates = relationship("ModRelationship")
-    banned_from = relationship("BanRelationship",
-                               primaryjoin="BanRelationship.user_id==User.id")
+    #moderates = relationship("ModRelationship")
+    # banned_from = relationship("BanRelationship",
+    #                            primaryjoin="BanRelationship.user_id==User.id")
     subscriptions = relationship("Subscription")
     boards_created = relationship("Board", lazy="dynamic")
-    contributes = relationship(
-        "ContributorRelationship",
-        lazy="dynamic",
-        primaryjoin="ContributorRelationship.user_id==User.id")
+    # contributes = relationship(
+    #     "ContributorRelationship",
+    #     lazy="dynamic",
+    #     primaryjoin="ContributorRelationship.user_id==User.id")
     board_blocks = relationship("BoardBlock", lazy="dynamic")
 
     following = relationship("Follow", primaryjoin="Follow.user_id==User.id")

@@ -26,8 +26,8 @@ class ModRelationship(Base, Age_times):
     #permTitles = Column(Boolean, default=False)
     #permLodges = Column(Boolean, default=False)
 
-    user = relationship("User", lazy="joined")
-    board = relationship("Board", lazy="joined")
+    user = relationship("User", lazy="joined", backref="moderates")
+    board = relationship("Board", lazy="joined", backref="moderators")
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
@@ -106,12 +106,13 @@ class BanRelationship(Base, Stndrd, Age_times):
     user = relationship(
         "User",
         lazy="joined",
-        primaryjoin="User.id==BanRelationship.user_id")
+        primaryjoin="User.id==BanRelationship.user_id",
+        backref="banned_from")
     banning_mod = relationship(
         "User",
         lazy="joined",
         primaryjoin="User.id==BanRelationship.banning_mod_id")
-    board = relationship("Board")
+    board = relationship("Board", backref="bans")
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
@@ -142,53 +143,54 @@ class BanRelationship(Base, Stndrd, Age_times):
 
         return data
 
-class ChatBan(Base, Stndrd, Age_times):
+# class ChatBan(Base, Stndrd, Age_times):
 
-    __tablename__ = "chatbans"
-    id = Column(BigInteger, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    board_id = Column(Integer, ForeignKey("boards.id"))
-    created_utc = Column(BigInteger, default=0)
-    banning_mod_id = Column(Integer, ForeignKey("users.id"))
+#     __tablename__ = "chatbans"
+#     id = Column(BigInteger, primary_key=True)
+#     user_id = Column(Integer, ForeignKey("users.id"))
+#     board_id = Column(Integer, ForeignKey("boards.id"))
+#     created_utc = Column(BigInteger, default=0)
+#     banning_mod_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship(
-        "User",
-        lazy="joined",
-        primaryjoin="User.id==ChatBan.user_id")
-    banning_mod = relationship(
-        "User",
-        lazy="joined",
-        primaryjoin="User.id==ChatBan.banning_mod_id")
-    board = relationship("Board")
+#     user = relationship(
+#         "User",
+#         lazy="joined",
+#         primaryjoin="User.id==ChatBan.user_id")
+#     banning_mod = relationship(
+#         "User",
+#         lazy="joined",
+#         primaryjoin="User.id==ChatBan.banning_mod_id")
+#     board = relationship("Board")
 
-    def __init__(self, *args, **kwargs):
-        if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+#     def __init__(self, *args, **kwargs):
+#         if "created_utc" not in kwargs:
+#             kwargs["created_utc"] = int(time.time())
 
-        super().__init__(*args, **kwargs)
+#         super().__init__(*args, **kwargs)
 
-    def __repr__(self):
-        return f"<Ban(id={self.id}, uid={self.uid}, board_id={self.board_id})>"
+#     def __repr__(self):
+#         return f"<Ban(id={self.id}, uid={self.uid}, board_id={self.board_id})>"
 
-    @property
-    def json_core(self):
-        return {
-            'user_id':self.user_id,
-            'board_id':self.board_id,
-            'created_utc':self.created_utc,
-            'mod_id':self.banning_mod_id
-        }
+#     @property
+#     def json_core(self):
+#         return {
+#             'user_id':self.user_id,
+#             'board_id':self.board_id,
+#             'created_utc':self.created_utc,
+#             'mod_id':self.banning_mod_id
+#         }
 
 
-    @property
-    def json(self):
-        data=self.json_core
+    # @property
+    # def json(self):
+    #     data=self.json_core
 
-        data["user"]=self.user.json_core
-        data["mod"]=self.banning_mod.json_core
-        data["guild"]=self.board.json_core
+    #     data["user"]=self.user.json_core
+    #     data["mod"]=self.banning_mod.json_core
+    #     data["guild"]=self.board.json_core
 
-        return data
+    #     return data
+
 class ContributorRelationship(Base, Stndrd, Age_times):
 
     __tablename__ = "contributors"
@@ -202,12 +204,13 @@ class ContributorRelationship(Base, Stndrd, Age_times):
     user = relationship(
         "User",
         lazy="joined",
-        primaryjoin="User.id==ContributorRelationship.user_id")
+        primaryjoin="User.id==ContributorRelationship.user_id",
+        backref="contributes")
     approving_mod = relationship(
         "User",
         lazy='joined',
         primaryjoin="User.id==ContributorRelationship.approving_mod_id")
-    board = relationship("Board", lazy="subquery")
+    board = relationship("Board", lazy="subquery", backref="contributors")
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:

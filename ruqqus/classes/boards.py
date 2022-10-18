@@ -55,12 +55,12 @@ class Board(Base, Stndrd, Age_times):
     css=deferred(Column(String(65536), default=''))
 
     #subcat=relationship("SubCategory")
-    moderators=relationship("ModRelationship")
+    #moderators=relationship("ModRelationship")
     subscribers=relationship("Subscription", lazy="dynamic")
     submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
-    contributors=relationship("ContributorRelationship", lazy="dynamic")
-    bans=relationship("BanRelationship", lazy="dynamic")
-    chatbans=relationship("ChatBan", lazy="dynamic")
+    #contributors=relationship("ContributorRelationship", lazy="dynamic")
+    #bans=relationship("BanRelationship", lazy="dynamic")
+    #chatbans=relationship("ChatBan", lazy="dynamic")
     postrels=relationship("PostRelationship", lazy="dynamic")
 
     trending_rank=deferred(Column(Float, server_default=FetchedValue()))
@@ -76,6 +76,8 @@ class Board(Base, Stndrd, Age_times):
 
     def __repr__(self):
         return f"<Board(name={self.name})>"
+
+
 
     @property
     def fullname(self):
@@ -645,3 +647,4 @@ class Board(Base, Stndrd, Age_times):
     #         count=int(count.decode('utf-8'))
 
     #     return count
+    
