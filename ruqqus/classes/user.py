@@ -352,39 +352,39 @@ class User(Base, Stndrd, Age_times):
         return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
     @cache.memoize(300)
-    def userpagelisting(self, v=None, page=1, sort="new", t="all"):
+    def userpagelisting(self, page=1, sort="new", t="all"):
 
         submissions = g.db.query(Submission.id).options(
             lazyload('*')).filter_by(author_id=self.id)
 
-        if not (v and v.over_18):
+        if not (g.user and g.user.over_18):
             submissions = submissions.filter_by(over_18=False)
 
-        if v and v.hide_offensive and v.id!=self.id:
+        if g.user and g.user.hide_offensive and g.user.id!=self.id:
             submissions = submissions.filter_by(is_offensive=False)
 
-        if v and v.hide_bot:
+        if g.user and g.user.hide_bot:
             submissions = submissions.filter_by(is_bot=False)
 
-        if not (v and (v.admin_level >= 3)):
+        if not (g.user and (g.user.admin_level >= 3)):
             submissions = submissions.filter_by(deleted_utc=0)
 
-        if not (v and (v.admin_level >= 3 or v.id == self.id)):
+        if not (g.user and (g.user.admin_level >= 3 or g.user.id == self.id)):
             submissions = submissions.filter_by(is_banned=False).join(Submission.board).filter(Board.is_banned==False)
 
-        if v and v.admin_level >= 4:
+        if g.user and g.user.admin_level >= 4:
             pass
         elif v:
             m = g.db.query(
                 ModRelationship.board_id).filter_by(
-                user_id=v.id,
+                user_id=g.user.id,
                 invite_rescinded=False).subquery()
             c = g.db.query(
                 ContributorRelationship.board_id).filter_by(
-                user_id=v.id).subquery()
+                user_id=g.user.id).subquery()
             submissions = submissions.filter(
                 or_(
-                    Submission.author_id == v.id,
+                    Submission.author_id == g.user.id,
                     Submission.post_public == True,
                     Submission.board_id.in_(m),
                     Submission.board_id.in_(c)
@@ -422,33 +422,33 @@ class User(Base, Stndrd, Age_times):
         return listing
 
     @cache.memoize(300)
-    def commentlisting(self, v=None, page=1, sort="new", t="all"):
+    def commentlisting(self, page=1, sort="new", t="all"):
         comments = self.comments.options(
             lazyload('*')).filter(Comment.parent_submission is not None).join(Comment.post)
 
-        if not (v and v.over_18):
+        if not (g.user and g.user.over_18):
             comments = comments.filter(Submission.over_18 == False)
 
-        if v and v.hide_offensive and v.id != self.id:
+        if g.user and g.user.hide_offensive and g.user.id != self.id:
             comments = comments.filter(Comment.is_offensive == False)
 
-        if v and v.hide_bot:
+        if g.user and g.user.hide_bot:
             comments = comments.filter(Comment.is_bot == False)
 
-        if v and not v.show_nsfl:
+        if g.user and not g.user.show_nsfl:
             comments = comments.filter(Submission.is_nsfl == False)
 
-        if (not v) or v.admin_level < 3:
+        if (not v) or g.user.admin_level < 3:
             comments = comments.filter(Comment.deleted_utc == 0)
 
-        if not (v and (v.admin_level >= 3 or v.id == self.id)):
+        if not (g.user and (g.user.admin_level >= 3 or g.user.id == self.id)):
             comments = comments.filter(Comment.is_banned == False)
 
-        if v and v.admin_level >= 4:
+        if g.user and g.user.admin_level >= 4:
             pass
         elif v:
-            m = g.db.query(ModRelationship).filter_by(user_id=v.id, invite_rescinded=False).subquery()
-            c = v.contributes.subquery()
+            m = g.db.query(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False).subquery()
+            c = g.user.contributes.subquery()
 
             comments = comments.join(m,
                                      m.c.board_id == Submission.board_id,
@@ -457,7 +457,7 @@ class User(Base, Stndrd, Age_times):
                                             c.c.board_id == Submission.board_id,
                                             isouter=True
                                             ).join(Board, Board.id == Submission.board_id)
-            comments = comments.filter(or_(Comment.author_id == v.id,
+            comments = comments.filter(or_(Comment.author_id == g.user.id,
                                            Submission.post_public == True,
                                            Board.is_private == False,
                                            m.c.board_id != None,
