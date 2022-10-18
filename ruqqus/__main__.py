@@ -62,7 +62,7 @@ app.config['DATABASE_URL'] = environ.get("DATABASE_URL","").replace("postgres://
 #     environ.get("DATABASE_CONNECTION_READ_03_URL")
 # ]
 
-app.config['SECRET_KEY'] = environ.get('MASTER_KEY')
+app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
 SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "ruqqus.com")).lstrip().rstrip()
 # ONION_NAME = environ.get("ONION_NAME", "")
