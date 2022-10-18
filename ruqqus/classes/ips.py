@@ -20,6 +20,6 @@ class Agent(Base):
     id = Column(Integer, primary_key=True)
     kwd = Column(String(64), index=True)
     reason = Column(String(256), default="")
-    banned_by = Column(Boolean, ForeignKey("users.id"), default=True)
+    banned_by = Column(Integer, ForeignKey("users.id"))
     mock = Column(String(256), default="")
     status_code = Column(Integer, default=418)

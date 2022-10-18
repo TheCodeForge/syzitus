@@ -14,15 +14,15 @@ from ruqqus.__main__ import db_session
 from .base36 import hex2bin
 
 BUCKET = environ.get("S3_BUCKET_NAME",'i.ruqqus.com').lstrip().rstrip()
-CF_KEY = environ.get("CLOUDFLARE_KEY").lstrip().rstrip()
-CF_ZONE = environ.get("CLOUDFLARE_ZONE").lstrip().rstrip()
+CF_KEY = environ.get("CLOUDFLARE_KEY",'').lstrip().rstrip()
+CF_ZONE = environ.get("CLOUDFLARE_ZONE",'').lstrip().rstrip()
 
 # setup AWS connection
 S3 = boto3.client("s3",
                   aws_access_key_id=environ.get(
-                      "AWS_ACCESS_KEY_ID").lstrip().rstrip(),
+                      "AWS_ACCESS_KEY_ID",'').lstrip().rstrip(),
                   aws_secret_access_key=environ.get(
-                      "AWS_SECRET_ACCESS_KEY").lstrip().rstrip()
+                      "AWS_SECRET_ACCESS_KEY",'').lstrip().rstrip()
                   )
 
 def check_phash(db, name):

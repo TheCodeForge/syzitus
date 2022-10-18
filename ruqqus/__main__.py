@@ -54,9 +54,7 @@ app.config["SITE_COLOR"]=environ.get("SITE_COLOR", "805ad5").lstrip().rstrip()
 app.config["RUQQUSPATH"]=environ.get("RUQQUSPATH", os.path.dirname(os.path.realpath(__file__)))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['DATABASE_URL'] = environ.get(
-    "DATABASE_CONNECTION_POOL_URL",
-    environ.get("DATABASE_URL"))
+app.config['DATABASE_URL'] = environ.get("DATABASE_URL","").replace("postgres://", "postgresql://")
 
 # app.config['SQLALCHEMY_READ_URIS'] = [
 #     environ.get("DATABASE_CONNECTION_READ_01_URL"),
@@ -66,7 +64,7 @@ app.config['DATABASE_URL'] = environ.get(
 
 app.config['SECRET_KEY'] = environ.get('MASTER_KEY')
 
-SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain")).lstrip().rstrip()
+SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "ruqqus.com")).lstrip().rstrip()
 # ONION_NAME = environ.get("ONION_NAME", "")
 
 class DomainMatcher(str):
@@ -207,7 +205,7 @@ limiter = Limiter(
 #}
 
 _engine=create_engine(
-    app.config['DATABASE_URL'].replace("postgres://","postgresql://"),
+    app.config['DATABASE_URL'],
     poolclass=QueuePool,
     pool_size=int(environ.get("PG_POOL_SIZE",10)),
     pool_use_lifo=True

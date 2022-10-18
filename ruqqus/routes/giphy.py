@@ -4,7 +4,7 @@ import requests
 
 from ruqqus.__main__ import app
 
-GIPHY_KEY = environ.get('GIPHY_KEY').rstrip()
+GIPHY_KEY = environ.get('GIPHY_KEY','').rstrip()
 
 
 @app.route("/giphy", methods=["GET"])

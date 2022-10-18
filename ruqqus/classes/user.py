@@ -16,7 +16,7 @@ from ruqqus.helpers.discord import add_role, delete_role, discord_log_event
 #from ruqqus.helpers.alerts import send_notification
 from .votes import Vote
 from .alts import Alt
-from .titles import Title
+from .titles import TITLES
 from .submission import Submission, SubmissionAux, SaveRelationship
 from .comment import Comment, Notification
 from .boards import Board
@@ -74,8 +74,7 @@ class User(Base, Stndrd, Age_times):
     defaulttime = Column(String, default="all")
     feed_nonce = Column(Integer, default=0)
     login_nonce = Column(Integer, default=0)
-    title_id = Column(Integer, ForeignKey("titles.id"), default=None)
-    title = relationship("Title", lazy="joined")
+    title_id = Column(Integer)
     has_profile = Column(Boolean, default=False)
     has_banner = Column(Boolean, default=False)
     reserved = Column(String(256), default=None)
@@ -232,6 +231,11 @@ class User(Base, Stndrd, Age_times):
     @property
     def age(self):
         return int(time.time()) - self.created_utc
+
+    @property
+    def title(self):
+        return TITLES[self.title_id]
+    
 
     @cache.memoize(timeout=300)
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
