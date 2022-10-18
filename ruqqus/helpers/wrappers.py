@@ -155,7 +155,7 @@ def auth_desired(f):
 
         get_logged_in_user()
             
-        check_ban_evade(g.user)
+        check_ban_evade()
 
         resp = make_response(f(*args, **kwargs))
         if g.user:
@@ -184,7 +184,7 @@ def auth_required(f):
         if not g.user:
             abort(401)
             
-        check_ban_evade(v)
+        check_ban_evade()
 
         resp = make_response(f(*args, **kwargs))
 
@@ -211,7 +211,7 @@ def is_not_banned(f):
         if not g.user:
             abort(401)
             
-        check_ban_evade(v)
+        check_ban_evade()
 
         if g.user.is_suspended:
             abort(403)
