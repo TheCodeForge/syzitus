@@ -101,7 +101,7 @@ def notifications_posts():
             }
 
 @cache.memoize(timeout=900)
-def frontlist(v=None, sort=None, page=1, nsfw=False, nsfl=False,
+def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
               t=None, categories=[], filter_words='', **kwargs):
 
     # cutoff=int(time.time())-(60*60*24*30)
@@ -356,8 +356,8 @@ def default_cat_cookie():
     output=[]
     for cat in CATEGORIES:
         for subcat in cat.subcats:
-            if subcat.visible:
-                output.append(subcat.id)
+            #if subcat.visible:
+            output.append(subcat.id)
 
     output += [0]
     return output
