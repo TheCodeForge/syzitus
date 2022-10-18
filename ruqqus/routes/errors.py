@@ -42,8 +42,8 @@ def error_401(e):
 @error_wrapper
 @auth_desired
 @api()
-def error_402(e, v):
-    return{"html": lambda: (render_template('errors/402.html', v=v), 402),
+def error_402(e):
+    return{"html": lambda: (render_template('errors/402.html'), 402),
            "api": lambda: (jsonify({"error": "402 Payment Required"}), 402)
            }
 
@@ -51,8 +51,8 @@ def error_402(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_403(e, v):
-    return{"html": lambda: (render_template('errors/403.html', v=v), 403),
+def error_403(e):
+    return{"html": lambda: (render_template('errors/403.html'), 403),
            "api": lambda: (jsonify({"error": "403 Forbidden"}), 403)
            }
 
@@ -61,8 +61,8 @@ def error_403(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_404(e, v):
-    return{"html": lambda: (render_template('errors/404.html', v=v), 404),
+def error_404(e):
+    return{"html": lambda: (render_template('errors/404.html'), 404),
            "api": lambda: (jsonify({"error": "404 Not Found"}), 404)
            }
 
@@ -71,8 +71,8 @@ def error_404(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_405(e, v):
-    return{"html": lambda: (render_template('errors/405.html', v=v), 405),
+def error_405(e):
+    return{"html": lambda: (render_template('errors/405.html'), 405),
            "api": lambda: (jsonify({"error": "405 Method Not Allowed"}), 405)
            }
 
@@ -81,8 +81,8 @@ def error_405(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_409(e, v):
-    return{"html": lambda: (render_template('errors/409.html', v=v), 409),
+def error_409(e):
+    return{"html": lambda: (render_template('errors/409.html'), 409),
            "api": lambda: (jsonify({"error": "409 Conflict"}), 409)
            }
 
@@ -91,8 +91,8 @@ def error_409(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_413(e, v):
-    return{"html": lambda: (render_template('errors/413.html', v=v), 413),
+def error_413(e):
+    return{"html": lambda: (render_template('errors/413.html'), 413),
            "api": lambda: (jsonify({"error": "413 Request Payload Too Large"}), 413)
            }
 
@@ -101,8 +101,8 @@ def error_413(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_422(e, v):
-    return{"html": lambda: (render_template('errors/422.html', v=v), 422),
+def error_422(e):
+    return{"html": lambda: (render_template('errors/422.html'), 422),
            "api": lambda: (jsonify({"error": "422 Unprocessable Entity"}), 422)
            }
 
@@ -111,7 +111,7 @@ def error_422(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_429(e, v):
+def error_429(e):
 
     ip=request.remote_addr
 
@@ -141,7 +141,7 @@ def error_429(e, v):
 
 
 
-    return{"html": lambda: (render_template('errors/429.html', v=v), 429),
+    return{"html": lambda: (render_template('errors/429.html'), 429),
            "api": lambda: (jsonify({"error": "429 Too Many Requests"}), 429)
            }
 
@@ -150,8 +150,8 @@ def error_429(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_451(e, v):
-    return{"html": lambda: (render_template('errors/451.html', v=v), 451),
+def error_451(e):
+    return{"html": lambda: (render_template('errors/451.html'), 451),
            "api": lambda: (jsonify({"error": "451 Unavailable For Legal Reasons"}), 451)
            }
 
@@ -160,13 +160,13 @@ def error_451(e, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_500(e, v):
+def error_500(e):
     try:
         g.db.rollback()
     except AttributeError:
         pass
 
-    return{"html": lambda: (render_template('errors/500.html', v=v), 500),
+    return{"html": lambda: (render_template('errors/500.html'), 500),
            "api": lambda: (jsonify({"error": "500 Internal Server Error"}), 500)
            }
 
@@ -186,7 +186,7 @@ def error_503(e):
 @app.route("/allow_nsfw_logged_in/<bid>", methods=["POST"])
 @auth_required
 @validate_formkey
-def allow_nsfw_logged_in(bid, v):
+def allow_nsfw_logged_in(bid):
 
     cutoff = int(time.time()) + 3600
 
@@ -200,9 +200,9 @@ def allow_nsfw_logged_in(bid, v):
 
 @app.route("/allow_nsfw_logged_out/<bid>", methods=["POST"])
 @auth_desired
-def allow_nsfw_logged_out(bid, v):
+def allow_nsfw_logged_out(bid):
 
-    if v:
+    if g.user:
         return redirect('/')
 
     t = int(request.form.get('time'))
@@ -224,7 +224,7 @@ def allow_nsfw_logged_out(bid, v):
 @app.route("/allow_nsfl_logged_in/<bid>", methods=["POST"])
 @auth_required
 @validate_formkey
-def allow_nsfl_logged_in(bid, v):
+def allow_nsfl_logged_in(bid):
 
     cutoff = int(time.time()) + 3600
 
@@ -238,9 +238,9 @@ def allow_nsfl_logged_in(bid, v):
 
 @app.route("/allow_nsfl_logged_out/<bid>", methods=["POST"])
 @auth_desired
-def allow_nsfl_logged_out(bid, v):
+def allow_nsfl_logged_out(bid):
 
-    if v:
+    if g.user:
         return redirect('/')
 
     t = int(request.form.get('time'))
@@ -261,10 +261,10 @@ def allow_nsfl_logged_out(bid, v):
 
 @app.route("/error/<eid>", methods=["GET"])
 @auth_desired
-def error_all_preview(eid, v):
+def error_all_preview(eid):
 
      eid=int(eid)
-     return render_template(f"errors/{eid}.html", v=v)
+     return render_template(f"errors/{eid}.html")
 
 
 
@@ -272,7 +272,7 @@ def error_all_preview(eid, v):
 @error_wrapper
 @auth_desired
 @api()
-def error_402(e, v):
-    return{"html": lambda: (render_template('errors/overload.html', v=v), 500),
+def error_402(e):
+    return{"html": lambda: (render_template('errors/overload.html'), 500),
            "api": lambda: (jsonify({"error": "500 Internal Server Error (database overload)"}), 500)
            }

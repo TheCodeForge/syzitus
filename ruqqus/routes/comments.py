@@ -50,7 +50,7 @@ def comment_cid_api_redirect(cid=None, pid=None):
 @app.get("/api/v2/comments/<cid>")
 @auth_desired
 @api("read")
-def post_pid_comment_cid(cid, pid=None, guildname=None, anything=None, v=None):
+def post_pid_comment_cid(cid, pid=None, guildname=None, anything=None):
     """
 Fetch a single comment and up to 5 total layers above and below.
 
@@ -61,13 +61,13 @@ Optional query parameters:
 * `context` - Integer between `0` and `4` inclusive. Number of generations of parent comments to fetch. Default `0`
 """
 
-    comment = get_comment(cid, v=v)
+    comment = get_comment(cid)
     
     # prevent api shenanigans
     if not pid:
         pid = base36encode(comment.parent_submission)
     
-    post = get_post(pid, v=v)
+    post = get_post(pid)
     board = post.board
     
     if not guildname:
@@ -77,9 +77,8 @@ Optional query parameters:
     if (board.name != guildname or comment.parent_submission != post.id) and not request.path.startswith("/api/"):
         return redirect(comment.permalink)
 
-    if board.is_banned and not (v and v.admin_level > 3):
+    if board.is_banned and not (g.user and g.user.admin_level > 3):
         return {'html': lambda: render_template("board_banned.html",
-                                                v=v,
                                                 b=board),
 
                 'api': lambda: {'error': f'+{board.name} is banned.'}
@@ -87,10 +86,9 @@ Optional query parameters:
                 }
 
     if post.over_18 and not (
-            v and v.over_18) and not session_over18(comment.board):
+            g.user and g.user.over_18) and not session_over18(comment.board):
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfw.html",
-                                                v=v,
                                                 t=t,
                                                 lo_formkey=make_logged_out_formkey(
                                                     t),
@@ -101,10 +99,9 @@ Optional query parameters:
                 }
 
     if post.is_nsfl and not (
-            v and v.show_nsfl) and not session_isnsfl(comment.board):
+            g.user and g.user.show_nsfl) and not session_isnsfl(comment.board):
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfl.html",
-                                                v=v,
                                                 t=t,
                                                 lo_formkey=make_logged_out_formkey(
                                                     t),
@@ -117,9 +114,8 @@ Optional query parameters:
 
     # check guild ban
     board = post.board
-    if board.is_banned and v.admin_level < 3:
+    if board.is_banned and g.user.admin_level < 3:
         return {'html': lambda: render_template("board_banned.html",
-                                                v=v,
                                                 b=board),
                 'api': lambda: {'error': f'+{board.name} is banned.'}
                 }
@@ -132,7 +128,7 @@ Optional query parameters:
     c = comment
     while context > 0 and not c.is_top_level:
 
-        parent = get_comment(c.parent_comment_id, v=v)
+        parent = get_comment(c.parent_comment_id)
 
         post._preloaded_comments += [parent]
 
@@ -151,13 +147,13 @@ Optional query parameters:
         ).distinct(ModAction.target_comment_id).subquery()
 
     for i in range(6 - context):
-        if v:
+        if g.user:
 
             votes = g.db.query(CommentVote).filter(
-                CommentVote.user_id == v.id).subquery()
+                CommentVote.user_id == g.user.id).subquery()
 
-            blocking = v.blocking.subquery()
-            blocked = v.blocked.subquery()
+            blocking = g.user.blocking.subquery()
+            blocked = g.user.blocked.subquery()
 
 
             comms = g.db.query(
@@ -270,7 +266,7 @@ Optional query parameters:
 
     post.replies=[top_comment]
 
-    return {'html': lambda: post.rendered_page(v=v, comment=top_comment, comment_info=comment_info),
+    return {'html': lambda: post.rendered_page(comment=top_comment, comment_info=comment_info),
             'api': lambda: top_comment.json
             }
 
@@ -279,8 +275,8 @@ Optional query parameters:
 @app.route("/api/v1/post/<pid>/comment/<cid>", methods=["GET"])
 @auth_desired
 @api("read")
-def post_pid_comment_cid_noboard(pid, cid, anything=None, v=None):
-    comment=get_comment(cid, v=v)
+def post_pid_comment_cid_noboard(pid, cid, anything=None):
+    comment=get_comment(cid)
     
     return redirect(comment.permalink)
 
@@ -310,18 +306,18 @@ Optional file data:
     # get parent item info
     parent_id = parent_fullname.split("_")[1]
     if parent_fullname.startswith("t2"):
-        parent_post = get_post(parent_id, v=v)
+        parent_post = get_post(parent_id)
         parent = parent_post
         parent_comment_id = None
         level = 1
         parent_submission = base36decode(parent_id)
     elif parent_fullname.startswith("t3"):
-        parent = get_comment(parent_id, v=v)
+        parent = get_comment(parent_id)
         parent_comment_id = parent.id
         level = parent.level + 1
         parent_id = parent.parent_submission
         parent_submission = parent_id
-        parent_post = get_post(parent_id, v=v)
+        parent_post = get_post(parent_id)
     else:
         abort(400)
 
@@ -329,7 +325,7 @@ Optional file data:
     body = request.form.get("body", "")[0:10000]
     body = body.lstrip().rstrip()
 
-    if not body and not (v.has_premium and request.files.get('file')):
+    if not body and not (g.user.has_premium and request.files.get('file')):
         return jsonify({"error":"You need to actually write something!"}), 400
     
     if parent_post.board.disallowbots and request.headers.get("X-User-Type")=="Bot":
@@ -351,16 +347,16 @@ Optional file data:
             
         #auto ban for digitally malicious content
         if any([x.reason==7 for x in bans]):
-            v.ban(reason="Sexualizing minors")
+            g.user.ban(reason="Sexualizing minors")
         elif any([x.reason==4 for x in bans]):
-            v.ban(days=30, reason="Digitally malicious content")
+            g.user.ban(days=30, reason="Digitally malicious content")
         elif any([x.reason==9 for x in bans]):
-            v.ban(days=7, reason="Engaging in illegal activity")
+            g.user.ban(days=7, reason="Engaging in illegal activity")
         
         return jsonify({"error": reason}), 401
 
     # check existing
-    existing = g.db.query(Comment).join(CommentAux).filter(Comment.author_id == v.id,
+    existing = g.db.query(Comment).join(CommentAux).filter(Comment.author_id == g.user.id,
                                                            Comment.deleted_utc == 0,
                                                            Comment.parent_comment_id == parent_comment_id,
                                                            Comment.parent_submission == parent_submission,
@@ -374,12 +370,12 @@ Optional file data:
         return jsonify(
             {"error": "You can't comment on things that have been deleted."}), 403
 
-    if parent.is_blocking and not v.admin_level>=3 and not parent.board.has_mod(v, "content"):
+    if parent.is_blocking and not g.user.admin_level>=3 and not parent.board.has_mod(v, "content"):
         return jsonify(
             {"error": "You can't reply to users that you're blocking."}
             ), 403
 
-    if parent.is_blocked and not v.admin_level>=3 and not parent.board.has_mod(v, "content"):
+    if parent.is_blocked and not g.user.admin_level>=3 and not parent.board.has_mod(v, "content"):
         return jsonify(
             {"error": "You can't reply to users that are blocking you."}
             ), 403
@@ -402,26 +398,26 @@ Optional file data:
             lazyload('*')
         ).join(Comment.comment_aux
                ).filter(
-            Comment.author_id == v.id,
+            Comment.author_id == g.user.id,
             CommentAux.body.op(
                 '<->')(body) < app.config["COMMENT_SPAM_SIMILAR_THRESHOLD"],
             Comment.created_utc > cutoff
         ).options(contains_eager(Comment.comment_aux)).all()
 
         threshold = app.config["COMMENT_SPAM_COUNT_THRESHOLD"]
-        if v.age >= (60 * 60 * 24 * 7):
+        if g.user.age >= (60 * 60 * 24 * 7):
             threshold *= 3
-        elif v.age >= (60 * 60 * 24):
+        elif g.user.age >= (60 * 60 * 24):
             threshold *= 2
 
         if len(similar_comments) > threshold:
             text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
             send_notification(v, text)
 
-            v.ban(reason="Spamming.",
+            g.user.ban(reason="Spamming.",
                   days=1)
 
-            for alt in v.alts:
+            for alt in g.user.alts:
                 if not alt.is_suspended:
                     alt.ban(reason="Spamming.", days=1)
 
@@ -474,7 +470,7 @@ Optional file data:
             return jsonify({"error": f"Remove the following link and try again: `{check_url}`. Reason: {badlink.reason_text}"}), 403
 
     # create comment
-    c = Comment(author_id=v.id,
+    c = Comment(author_id=g.user.id,
                 parent_submission=parent_submission,
                 #parent_fullname=parent.fullname,
                 parent_comment_id=parent_comment_id,
@@ -484,7 +480,7 @@ Optional file data:
                 is_offensive=is_offensive,
                 original_board_id=parent_post.board_id,
                 is_bot=is_bot,
-                app_id=v.client.application.id if v.client else None,
+                app_id=g.user.client.application.id if g.user.client else None,
                 creation_region=request.headers.get("cf-ipcountry")
                 )
 
@@ -492,7 +488,7 @@ Optional file data:
     g.db.flush()
 
 
-    if v.has_premium:
+    if g.user.has_premium:
         if request.files.get("file"):
             file=request.files["file"]
             if not file.content_type.startswith('image/'):
@@ -516,7 +512,7 @@ Optional file data:
                 
             csam_thread=threading.Thread(target=check_csam_url, 
                                          args=(f"https://{BUCKET}/{name}", 
-                                               v, 
+                                               v=g.user, 
                                                del_function
                                               )
                                         )
@@ -536,7 +532,7 @@ Optional file data:
     notify_users = set()
 
     # queue up notification for parent author
-    if parent.author.id != v.id:
+    if parent.author.id != g.user.id:
         notify_users.add(parent.author.id)
 
     # queue up notifications for username mentions
@@ -548,9 +544,9 @@ Optional file data:
         user = g.db.query(User).filter_by(username=username).first()
 
         if user:
-            if v.any_block_exists(user):
+            if g.user.any_block_exists(user):
                 continue
-            if user.id != v.id:
+            if user.id != g.user.id:
                 notify_users.add(user.id)
 
     for x in notify_users:
@@ -560,7 +556,7 @@ Optional file data:
 
 
     # create auto upvote
-    vote = CommentVote(user_id=v.id,
+    vote = CommentVote(user_id=g.user.id,
                        comment_id=c.id,
                        vote_type=1
                        )
@@ -572,14 +568,13 @@ Optional file data:
 
     g.db.commit()
 
-    c=get_comment(c.id, v=v)
+    c=get_comment(c.id)
 
 
-    # print(f"Content Event: @{v.username} comment {c.base36id}")
+    # print(f"Content Event: @{g.user.username} comment {c.base36id}")
 
 
     return {"html": lambda: jsonify({"html": render_template("comments.html",
-                                                             v=v,
                                                              comments=[c],
                                                              render_replies=False,
                                                              is_allowed_to_comment=True
@@ -594,7 +589,7 @@ Optional file data:
 @is_not_banned
 @validate_formkey
 @api("update")
-def edit_comment(cid, v):
+def edit_comment(cid):
     """
 Edit your comment.
 
@@ -605,9 +600,9 @@ Required form data:
 * `body` - The new raw comment text
 """
 
-    c = get_comment(cid, v=v)
+    c = get_comment(cid)
 
-    if not c.author_id == v.id:
+    if not c.author_id == g.user.id:
         abort(403)
 
     if c.is_banned or c.deleted_utc > 0:
@@ -632,7 +627,7 @@ Required form data:
 
         #auto ban for digitally malicious content
         if any([x.reason==4 for x in bans]):
-            v.ban(days=30, reason="Digitally malicious content is not allowed.")
+            g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             return jsonify({"error":"Digitally malicious content is not allowed."})
         
         if ban.reason:
@@ -645,7 +640,6 @@ Required form data:
                                                 badlinks=[
                                                     x.domain for x in bans],
                                                 body=body,
-                                                v=v
                                                 ),
                 'api': lambda: ({'error': f'A blacklisted domain was used.'}, 400)
                 }
@@ -688,25 +682,25 @@ Required form data:
         lazyload('*')
     ).join(Comment.comment_aux
            ).filter(
-        Comment.author_id == v.id,
+        Comment.author_id == g.user.id,
         CommentAux.body.op(
             '<->')(body) < app.config["SPAM_SIMILARITY_THRESHOLD"],
         Comment.created_utc > cutoff
     ).options(contains_eager(Comment.comment_aux)).all()
 
     threshold = app.config["SPAM_SIMILAR_COUNT_THRESHOLD"]
-    if v.age >= (60 * 60 * 24 * 30):
+    if g.user.age >= (60 * 60 * 24 * 30):
         threshold *= 4
-    elif v.age >= (60 * 60 * 24 * 7):
+    elif g.user.age >= (60 * 60 * 24 * 7):
         threshold *= 3
-    elif v.age >= (60 * 60 * 24):
+    elif g.user.age >= (60 * 60 * 24):
         threshold *= 2
 
     if len(similar_comments) > threshold:
         text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
         send_notification(v, text)
 
-        v.ban(reason="Spamming.",
+        g.user.ban(reason="Spamming.",
               include_alts=True,
               days=1)
 
@@ -738,7 +732,7 @@ Required form data:
 @auth_required
 @validate_formkey
 @api("delete")
-def delete_comment(cid, v):
+def delete_comment(cid):
     """
 Delete your comment.
 
@@ -752,7 +746,7 @@ URL path parameters:
     if not c:
         abort(404)
 
-    if not c.author_id == v.id:
+    if not c.author_id == g.user.id:
         abort(403)
 
     c.deleted_utc = int(time.time())
@@ -760,7 +754,7 @@ URL path parameters:
     g.db.add(c)
 
 
-    cache.delete_memoized(User.commentlisting, v)
+    cache.delete_memoized(User.commentlisting)
 
     return {"html": lambda: ("", 204),
             "api": lambda: ("", 204)}
@@ -794,7 +788,7 @@ def embed_comment_cid(cid, pid=None):
 @is_guildmaster("content")
 @api("guildmaster")
 @validate_formkey
-def mod_toggle_comment_pin(guildname, cid, board, v):
+def mod_toggle_comment_pin(guildname, cid, board):
     """
 Toggle pin status on a top-level comment.
 
@@ -803,7 +797,7 @@ URL path parameters:
 * `cid` - The base 36 comment id
 """
 
-    comment = get_comment(cid, v=v)
+    comment = get_comment(cid)
 
     if comment.post.board_id != board.id:
         abort(400)
@@ -825,7 +819,7 @@ URL path parameters:
     g.db.add(comment)
     ma=ModAction(
         kind="pin_comment" if comment.is_pinned else "unpin_comment",
-        user_id=v.id,
+        user_id=g.user.id,
         board_id=board.id,
         target_comment_id=comment.id
     )
@@ -833,7 +827,6 @@ URL path parameters:
 
     html=render_template(
                 "comments.html",
-                v=v,
                 comments=[comment],
                 render_replies=False,
                 is_allowed_to_comment=True
