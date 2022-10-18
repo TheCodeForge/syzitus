@@ -214,7 +214,7 @@ BADGE_DEFS={
 
 BADGES=[]
 for number in BADGE_DEFS:
-    badge=Badge(BADGE_DEFS[number])
+    badge=Badge(**BADGE_DEFS[number])
     badge.id=number
     BADGES.append(badge)
 
