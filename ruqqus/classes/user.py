@@ -1218,7 +1218,7 @@ class User(Base, Stndrd, Age_times):
     def refresh_selfset_badges(self):
 
 
-        for badge in BADGE_DEFS:
+        for badge in BADGE_DEFS.values():
             if not badge.expr:
                 continue
                 

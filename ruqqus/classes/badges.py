@@ -52,11 +52,14 @@ class Badge(Base):
     description = Column(String(64))
     url = Column(String(256))
     created_utc = Column(Integer)
-    badge = relationship("BadgeDef", lazy="joined", innerjoin=True)
 
     def __repr__(self):
 
         return f"<Badge(user_id={self.user_id}, badge_id={self.badge_id})>"
+
+    @property
+    def badge(self):
+        return BADGES[self.badge_id]
 
     @property
     def text(self):
@@ -194,7 +197,7 @@ BADGE_DEFS={
         "rank": 3,
         "icon": "whitehat.png"
     },
-    12: {
+    13: {
         "name":"1 Year",
         "description":"Joined a year ago.",
         "kind": 1,
@@ -202,7 +205,7 @@ BADGE_DEFS={
         "icon": "year-1.png",
         "expr": lambda x: x.age_string=="1 year ago"
     },
-    12: {
+    14: {
         "name":"2 Year",
         "description":"Joined two years ago.",
         "kind": 1,
@@ -212,10 +215,10 @@ BADGE_DEFS={
     }
 }
 
-BADGES=[]
+BADGES={}
 for number in BADGE_DEFS:
     badge=Badge(**BADGE_DEFS[number])
     badge.id=number
-    BADGES.append(badge)
+    BADGES[number]=badge
 
 
