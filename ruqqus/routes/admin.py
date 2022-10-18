@@ -27,7 +27,7 @@ from ruqqus.__main__ import app
 
 @app.route("/admin/flagged/posts", methods=["GET"])
 @admin_level_required(3)
-def flagged_posts(v):
+def flagged_posts():
 
     page = max(1, int(request.args.get("page", 1)))
 
@@ -43,16 +43,16 @@ def flagged_posts(v):
     next_exists = (len(listing) == 26)
     listing = listing[0:25]
 
-    listing = get_posts(listing, v=v)
+    listing = get_posts(listing)
 
     return render_template("admin/flagged_posts.html",
-                           next_exists=next_exists, listing=listing, page=page, v=v)
+                           next_exists=next_exists, listing=listing, page=page)
 
 
 @app.route("/admin/image_posts", methods=["GET"])
 @admin_level_required(3)
 @api("read")
-def image_posts_listing(v):
+def image_posts_listing():
 
     page = int(request.args.get('page', 1))
 
@@ -64,10 +64,9 @@ def image_posts_listing(v):
     next_exists = (len(posts) == 26)
     posts = posts[0:25]
 
-    posts = get_posts(posts, v=v)
+    posts = get_posts(posts)
 
     return {'html': lambda: render_template("admin/image_posts.html",
-                                            v=v,
                                             listing=posts,
                                             next_exists=next_exists,
                                             page=page,
@@ -79,7 +78,7 @@ def image_posts_listing(v):
 
 @app.route("/admin/flagged/comments", methods=["GET"])
 @admin_level_required(3)
-def flagged_comments(v):
+def flagged_comments():
 
     page = max(1, int(request.args.get("page", 1)))
 
@@ -95,33 +94,32 @@ def flagged_comments(v):
     next_exists = (len(listing) == 26)
     listing = listing[0:25]
 
-    listing = get_comments(listing, v=v)
+    listing = get_comments(listing)
 
     return render_template("admin/flagged_comments.html",
                            next_exists=next_exists,
                            listing=listing,
                            page=page,
-                           v=v,
                            standalone=True)
 
 
 # @app.route("/admin/<path>", methods=["GET"])
 # @admin_level_required(3):
-# def admin_path(v):
+# def admin_path():
 # try:
-# return render_template(safe_join("admin", path+".html"), v=v)
+# return render_template(safe_join("admin", path+".html"))
 # except jinja2.exceptions.TemplateNotFound:
 # abort(404)
 
 @app.route("/admin", methods=["GET"])
 @admin_level_required(3)
-def admin_home(v):
-    return render_template("admin/admin_home.html", v=v)
+def admin_home():
+    return render_template("admin/admin_home.html")
 
 
 @app.route("/admin/badge_grant", methods=["GET"])
 @admin_level_required(4)
-def badge_grant_get(v):
+def badge_grant_get():
 
     badge_types = g.db.query(BadgeDef).filter_by(
         kind=3).order_by(BadgeDef.rank).all()
@@ -131,7 +129,6 @@ def badge_grant_get(v):
               }
 
     return render_template("admin/badge_grant.html",
-                           v=v,
                            badge_types=badge_types,
                            error=errors.get(
                                request.args.get("error"),
@@ -144,7 +141,7 @@ def badge_grant_get(v):
 @app.route("/badge_grant", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def badge_grant_post(v):
+def badge_grant_post():
 
     user = get_user(request.form.get("username"), graceful=True)
     if not user:
@@ -177,7 +174,7 @@ def badge_grant_post(v):
     g.db.commit()
 
     text = f"""
-@{v.username} has given you the following profile badge:
+@{g.user.username} has given you the following profile badge:
 \n\n![]({new_badge.path})
 \n\n{new_badge.name}
 """
@@ -189,7 +186,7 @@ def badge_grant_post(v):
 
 @app.route("/admin/users", methods=["GET"])
 @admin_level_required(2)
-def users_list(v):
+def users_list():
 
     page = int(request.args.get("page", 1))
 
@@ -208,7 +205,6 @@ def users_list(v):
     users = users[0:25]
 
     return render_template("admin/new_users.html",
-                           v=v,
                            users=users,
                            next_exists=next_exists,
                            page=page,
@@ -217,12 +213,11 @@ def users_list(v):
 
 @app.route("/admin/data", methods=["GET"])
 @admin_level_required(2)
-def admin_data(v):
+def admin_data():
 
     data = user_stat_data().get_json()
 
     return render_template("admin/new_users.html",
-                           v=v,
                            next_exists=False,
                            page=1,
                            single_plot=data['single_plot'],
@@ -232,7 +227,7 @@ def admin_data(v):
 
 @app.route("/admin/content_stats", methods=["GET"])
 @admin_level_required(2)
-def participation_stats(v):
+def participation_stats():
 
     now = int(time.time())
     cutoff=now-60*60*24*180
@@ -267,12 +262,12 @@ def participation_stats(v):
 
     #data = {x: f"{data[x]:,}" for x in data}
 
-    return render_template("admin/content_stats.html", v=v, title="Content Statistics", data=data)
+    return render_template("admin/content_stats.html", title="Content Statistics", data=data)
 
 
 @app.route("/admin/money", methods=["GET"])
 @admin_level_required(2)
-def money_stats(v):
+def money_stats():
 
     now = time.gmtime()
     midnight_year_start = time.struct_time((now.tm_year,
@@ -307,17 +302,17 @@ def money_stats(v):
         "coins_sold_ytd":g.db.query(func.sum(PayPalTxn.coin_count)).filter(PayPalTxn.status==3, PayPalTxn.created_utc>midnight_year_start).scalar(),
         "revenue_usd_ytd":f"{revenue[0:-2]}.{revenue[-2:]}"
     }
-    return render_template("admin/content_stats.html", v=v, title="Financial Statistics", data=data)
+    return render_template("admin/content_stats.html", title="Financial Statistics", data=data)
 
 
 @app.route("/admin/vote_info", methods=["GET"])
 @admin_level_required(4)
-def admin_vote_info_get(v):
+def admin_vote_info_get():
 
     if not request.args.get("link"):
-        return render_template("admin/votes.html", v=v)
+        return render_template("admin/votes.html")
 
-    thing = get_from_permalink(request.args.get("link"), v=v)
+    thing = get_from_permalink(request.args.get("link"))
 
     if isinstance(thing, Submission):
 
@@ -351,7 +346,6 @@ def admin_vote_info_get(v):
         abort(400)
 
     return render_template("admin/votes.html",
-                           v=v,
                            thing=thing,
                            ups=ups,
                            downs=downs,)
@@ -359,10 +353,10 @@ def admin_vote_info_get(v):
 
 @app.route("/admin/alt_votes", methods=["GET"])
 @admin_level_required(4)
-def alt_votes_get(v):
+def alt_votes_get():
 
     if not request.args.get("u1") or not request.args.get("u2"):
-        return render_template("admin/alt_votes.html", v=v)
+        return render_template("admin/alt_votes.html")
 
     u1 = request.args.get("u1")
     u2 = request.args.get("u2")
@@ -461,7 +455,6 @@ def alt_votes_get(v):
     return render_template("admin/alt_votes.html",
                            u1=u1,
                            u2=u2,
-                           v=v,
                            data=data
                            )
 
@@ -469,7 +462,7 @@ def alt_votes_get(v):
 @app.route("/admin/link_accounts", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def admin_link_accounts(v):
+def admin_link_accounts():
 
     u1 = int(request.form.get("u1"))
     u2 = int(request.form.get("u2"))
@@ -489,12 +482,12 @@ def admin_link_accounts(v):
 @app.route("/admin/<pagename>", methods=["GET"])
 @admin_level_required(3)
 def admin_tools(v, pagename):
-    return render_template(f"admin/{pagename}.html", v=v)
+    return render_template(f"admin/{pagename}.html")
 
 
 @app.route("/admin/removed", methods=["GET"])
 @admin_level_required(3)
-def admin_removed(v):
+def admin_removed():
 
     page = int(request.args.get("page", 1))
 
@@ -507,10 +500,9 @@ def admin_removed(v):
 
     ids = ids[0:25]
 
-    posts = get_posts(ids, v=v)
+    posts = get_posts(ids)
 
     return render_template("admin/removed_posts.html",
-                           v=v,
                            listing=posts,
                            page=page,
                            next_exists=next_exists
@@ -518,7 +510,7 @@ def admin_removed(v):
 
 @app.route("/admin/gm", methods=["GET"])
 @admin_level_required(3)
-def admin_gm(v):
+def admin_gm():
     
     username=request.args.get("user")
 
@@ -548,41 +540,36 @@ def admin_gm(v):
 
            
         return render_template("admin/alt_gms.html",
-            v=v,
             user=user,
             first=main,
             boards=boards
             )
     else:
-        return render_template("admin/alt_gms.html",
-            v=v)
+        return render_template("admin/alt_gms.html")
     
 
 
 @app.route("/admin/appdata", methods=["GET"])
 @admin_level_required(4)
-def admin_appdata(v):
+def admin_appdata():
 
     url=request.args.get("link")
 
     if url:
 
-        thing = get_from_permalink(url, v=v)
+        thing = get_from_permalink(url)
 
         return render_template(
             "admin/app_data.html",
-            v=v,
             thing=thing
             )
 
     else:
-        return render_template(
-            "admin/app_data.html",
-            v=v)
+        return render_template("admin/app_data.html")
 
 @app.route("/admin/ban_analysis")
 @admin_level_required(3)
-def admin_ban_analysis(v):
+def admin_ban_analysis():
 
     banned_accounts = g.db.query(User).filter(User.is_banned>0, User.unban_utc==0).all()
 
@@ -615,7 +602,7 @@ def admin_ban_analysis(v):
 
 @app.route("/admin/paypaltxns", methods=["GET"])
 @admin_level_required(4)
-def admin_paypaltxns(v):
+def admin_paypaltxns():
 
     page=int(request.args.get("page",1))
     user=request.args.get('user','')
@@ -636,7 +623,6 @@ def admin_paypaltxns(v):
 
     return render_template(
         "single_txn.html", 
-        v=v, 
         txns=txns, 
         next_exists=next_exists,
         page=page
@@ -654,7 +640,6 @@ def admin_domain_domain(domain_name, v):
 
     return render_template(
         "admin/manage_domain.html",
-        v=v,
         domain_name=domain_name,
         domain=domain,
         reasons=REASONS
@@ -663,7 +648,7 @@ def admin_domain_domain(domain_name, v):
 @app.route("/admin/category", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def admin_category_lock(v):
+def admin_category_lock():
 
     board=get_guild(request.form.get("board"))
 
@@ -680,7 +665,7 @@ def admin_category_lock(v):
 
     ma1=ModAction(
         board_id=board.id,
-        user_id=v.id,
+        user_id=g.user.id,
         kind="update_settings",
         note=f"category={sc.category.name} / {sc.name} | admin action"
         )
@@ -690,7 +675,7 @@ def admin_category_lock(v):
         board.is_locked_category = lock
         ma2=ModAction(
             board_id=board.id,
-            user_id=v.id,
+            user_id=g.user.id,
             kind="update_settings",
             note=f"category_locked={lock} | admin action"
             )
@@ -701,11 +686,10 @@ def admin_category_lock(v):
 
 @app.route("/admin/category", methods=["GET"])
 @admin_level_required(4)
-def admin_category_get(v):
+def admin_category_get():
 
     return render_template(
         "admin/category.html", 
-        v=v,
         categories=CATEGORIES,
         b=get_board(request.args.get("guild"), graceful=True)
         )
@@ -717,7 +701,7 @@ def admin_user_data_get(username, v):
     user=get_user(username, graceful=True)
 
     if not user:
-        return render_template("admin/user_data.html", v=v)
+        return render_template("admin/user_data.html")
 
     post_ids = [x[0] for x in g.db.query(Submission.id).filter_by(author_id=user.id).order_by(Submission.created_utc.desc()).all()]
     posts=get_posts(post_ids)
@@ -742,7 +726,7 @@ def admin_account_data_get(username, v):
     user=get_user(username, graceful=True)
 
     if not user:
-        return render_template("admin/user_data.html", v=v)
+        return render_template("admin/user_data.html")
 
     return jsonify(
         {
@@ -752,7 +736,7 @@ def admin_account_data_get(username, v):
 
 @app.route("/admin/image_purge", methods=["POST"])
 @admin_level_required(5)
-def admin_image_purge(v):
+def admin_image_purge():
     
     url=request.form.get("url")
 
@@ -783,7 +767,6 @@ def admin_ip_addr(ipaddr, v):
 
     return render_template(
         "admin/ip.html",
-        v=v,
         users=g.db.query(User).filter_by(creation_ip=ipaddr).order_by(User.created_utc.desc()).all(),
         listing=get_posts(pids) if pids else [],
         comments=get_comments(cids) if cids else [],
@@ -794,14 +777,14 @@ def admin_ip_addr(ipaddr, v):
 
 @app.route("/admin/test", methods=["GET"])
 @admin_level_required(5)
-def admin_test_ip(v):
+def admin_test_ip():
 
     return f"IP: {request.remote_addr}; fwd: {request.headers.get('X-Forwarded-For')}"
 
 
 @app.route("/admin/siege_count")
 @admin_level_required(3)
-def admin_siege_count(v):
+def admin_siege_count():
 
     board=get_guild(request.args.get("board"))
     recent=int(request.args.get("days",0))
@@ -837,7 +820,7 @@ def admin_siege_count(v):
 
 # @app.route('/admin/deploy', methods=["GET"])
 # @admin_level_required(3)
-# def admin_deploy(v):
+# def admin_deploy():
 
 #     def reload_function():
 #         time.sleep(3)
@@ -850,7 +833,7 @@ def admin_siege_count(v):
 
 # @app.route('/admin/test', methods=["GET"])
 # @admin_level_required(3)
-# def admin_test(v):
+# def admin_test():
 
 
 #     return "1"
@@ -903,13 +886,13 @@ def admin_purge_guild_images(boardname, v):
 @app.route("/admin/image_ban", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def admin_image_ban(v):
+def admin_image_ban():
 
     i=request.files['file']
 
 
     #make phash
-    tempname = f"admin_image_ban_{v.username}_{int(time.time())}"
+    tempname = f"admin_image_ban_{g.user.username}_{int(time.time())}"
 
     i.save(tempname)
 
@@ -924,7 +907,7 @@ def admin_image_ban(v):
     remove(tempname)
 
     if badpic:
-        return render_template("admin/image_ban.html", v=v, existing=badpic)
+        return render_template("admin/image_ban.html", existing=badpic)
 
     new_bp=BadPic(
         phash=h,
@@ -935,12 +918,12 @@ def admin_image_ban(v):
     g.db.add(new_bp)
     g.db.commit()
 
-    return render_template("admin/image_ban.html", v=v, success=True)
+    return render_template("admin/image_ban.html", success=True)
 
 @app.route("/admin/ipban", methods=["POST"])
 @admin_level_required(7)
 @validate_formkey
-def admin_ipban(v):
+def admin_ipban():
 
     #bans all non-Tor IPs associated with a given account
     #only use for obvious proxys
@@ -948,7 +931,7 @@ def admin_ipban(v):
     target_ip=request.values.get("ip")
 
     new_ipban=IP(
-        banned_by=v.id,
+        banned_by=g.user.id,
         addr=target_ip
         )
     g.db.add(new_ipban)
@@ -961,7 +944,7 @@ def admin_ipban(v):
 @app.route("/admin/user_ipban", methods=["POST"])
 @admin_level_required(7)
 @validate_formkey
-def admin_user_ipban(v):
+def admin_user_ipban():
 
     #bans all non-Tor IPs associated with a given account
     #only use for obvious proxys
@@ -987,7 +970,7 @@ def admin_user_ipban(v):
     for ip in ips:
 
         new_ipban=IP(
-            banned_by=v.id,
+            banned_by=g.user.id,
             addr=ip
             )
         g.db.add(new_ipban)
@@ -996,14 +979,13 @@ def admin_user_ipban(v):
 
 @app.route("/admin/get_ip", methods=["GET"])
 @admin_level_required(4)
-def admin_get_ip_info(v):
+def admin_get_ip_info():
 
     link=request.args.get("link","")
 
     if not link:
         return render_template(
             "admin/ip_info.html",
-            v=v
             )
 
     thing=get_from_permalink(link)
@@ -1034,7 +1016,7 @@ def admin_get_ip_info(v):
                     continue
 
                 new_ipban=IP(
-                    banned_by=v.id,
+                    banned_by=g.user.id,
                     addr=ip
                     )
                 g.db.add(new_ipban)
@@ -1056,7 +1038,7 @@ def print_(*x):
 @app.route("/admin/siege_guild", methods=["POST"])
 @admin_level_required(3)
 @validate_formkey
-def admin_siege_guild(v):
+def admin_siege_guild():
 
     now = int(time.time())
     guild = request.form.get("guild")
@@ -1064,16 +1046,14 @@ def admin_siege_guild(v):
     user=get_user(request.form.get("username"))
     guild = get_guild(guild)
 
-    if now-v.created_utc < 60*60*24*30:
+    if now-g.user.created_utc < 60*60*24*30:
         return render_template("message.html",
-                               v=v,
                                title=f"Siege on +{guild.name} Failed",
                                error=f"@{user.username}'s account is too new."
                                ), 403
 
-    if v.is_suspended or v.is_deleted:
+    if g.user.is_suspended or g.user.is_deleted:
         return render_template("message.html",
-                               v=v,
                                title=f"Siege on +{guild.name} Failed",
                                error=f"@{user.username} is deleted/suspended."
                                ), 403
@@ -1082,14 +1062,12 @@ def admin_siege_guild(v):
     # check time
     #if user.last_siege_utc > now - (60 * 60 * 24 * 7):
     #    return render_template("message.html",
-    #                           v=v,
     #                           title=f"Siege on +{guild.name} Failed",
     #                           error=f"@{user.username} needs to wait 7 days between siege attempts."
     #                           ), 403
     # check guild count
     if not user.can_join_gms and guild not in user.boards_modded:
         return render_template("message.html",
-                               v=v,
                                title=f"Siege on +{guild.name} Failed",
                                error=f"@{user.username} already leads the maximum number of guilds."
                                ), 403
@@ -1098,7 +1076,6 @@ def admin_siege_guild(v):
     if g.db.query(BanRelationship).filter_by(is_active=True, user_id=user.id, board_id=guild.id).first():
         return render_template(
             "message.html",
-            v=v,
             title=f"Siege on +{guild.name} Failed",
             error=f"@{user.username} is exiled from +{guild.name}."
             ), 403
@@ -1106,7 +1083,6 @@ def admin_siege_guild(v):
     # Cannot siege +general, +ruqqus, +ruqquspress, +ruqqusdmca
     if not guild.is_siegable:
         return render_template("message.html",
-                               v=v,
                                title=f"Siege on +{guild.name} Failed",
                                error=f"+{guild.name} is an admin-controlled guild and is immune to siege."
                                ), 403
@@ -1120,7 +1096,6 @@ def admin_siege_guild(v):
     
     if recent:
         return render_template("message.html",
-                               v=v,
                                title=f"Siege on +{guild.name} Failed",
                                error=f"@{user.username} sieged +{recent.board.name} within the past 7 days.",
                                link=recent.permalink,
@@ -1132,18 +1107,17 @@ def admin_siege_guild(v):
     # update siege date
     user.last_siege_utc = now
     g.db.add(user)
-    for alt in v.alts:
+    for alt in g.user.alts:
         alt.last_siege_utc = now
         g.db.add(user)
 
 
     # check user activity
-    #if guild not in user.boards_modded and user.guild_rep(guild, recent=180) < guild.siege_rep_requirement and not guild.has_contributor(v):
+    #if guild not in user.boards_modded and user.guild_rep(guild, recent=180) < guild.siege_rep_requirement and not guild.has_contributor():
     #    return render_template(
     #       "message.html",
-    #        v=v,
     #        title=f"Siege against +{guild.name} Failed",
-    #        error=f"@{user.username} does not have enough recent Reputation in +{guild.name} to siege it. +{guild.name} currently requires {guild.siege_rep_requirement} Rep within the last 180 days, and @{user.username} has {v.guild_rep(guild, recent=180)}."
+    #        error=f"@{user.username} does not have enough recent Reputation in +{guild.name} to siege it. +{guild.name} currently requires {guild.siege_rep_requirement} Rep within the last 180 days, and @{user.username} has {g.user.guild_rep(guild, recent=180)}."
     #        ), 403
 
     # Assemble list of mod ids to check
@@ -1196,7 +1170,6 @@ def admin_siege_guild(v):
             ).first()
         if ma:
             return render_template("message.html",
-                                   v=v,
                                    title=f"Siege against +{guild.name} Failed",
                                    error=f" One of the guildmasters has performed a mod action in +{guild.name} within the last 60 days. You may try again in 7 days.",
                                    link=ma.permalink,
@@ -1211,7 +1184,6 @@ def admin_siege_guild(v):
                                         Submission.is_banned==False).order_by(Submission.board_id==guild.id).first()
         if post:
             return render_template("message.html",
-                                   v=v,
                                    title=f"Siege against +{guild.name} Failed",
                                    error=f"One of the guildmasters created a post in +{guild.name} within the last 60 days. You may try again in 7 days.",
                                    link=post.permalink,
@@ -1238,7 +1210,6 @@ def admin_siege_guild(v):
 
         if comment:
             return render_template("message.html",
-                                   v=v,
                                    title=f"Siege against +{guild.name} Failed",
                                    error=f"One of the guildmasters created a comment in +{guild.name} within the last 60 days. You may try again in 7 days.",
                                    link=comment.permalink,
@@ -1264,7 +1235,7 @@ def admin_siege_guild(v):
 
             ma=ModAction(
                 kind="remove_mod",
-                user_id=v.id,
+                user_id=g.user.id,
                 board_id=guild.id,
                 target_user_id=x.user_id,
                 note="siege"
@@ -1273,7 +1244,7 @@ def admin_siege_guild(v):
         else:
             ma=ModAction(
                 kind="uninvite_mod",
-                user_id=v.id,
+                user_id=g.user.id,
                 board_id=guild.id,
                 target_user_id=x.user_id,
                 note="siege"
@@ -1298,7 +1269,7 @@ def admin_siege_guild(v):
         g.db.add(new_mod)
         ma=ModAction(
             kind="add_mod",
-            user_id=v.id,
+            user_id=g.user.id,
             board_id=guild.id,
             target_user_id=user.id,
             note="siege"
@@ -1316,7 +1287,7 @@ def admin_siege_guild(v):
         g.db.add(m)
         ma=ModAction(
             kind="change_perms",
-            user_id=v.id,
+            user_id=g.user.id,
             board_id=guild.id,
             target_user_id=user.id,
             note="siege"

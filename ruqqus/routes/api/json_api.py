@@ -12,7 +12,7 @@ from ruqqus.classes.boards import Board
 @app.route("/api/v1/guild/<boardname>", methods=["GET"])
 @auth_desired
 @api("read")
-def guild_info(v, boardname):
+def guild_info(boardname):
     guild = get_guild(boardname)
 
     return jsonify(guild.json)
@@ -21,7 +21,7 @@ def guild_info(v, boardname):
 @app.route("/api/v1/user/<username>", methods=["GET"])
 @auth_desired
 @api("read")
-def user_info(v, username):
+def user_info(username):
 
-    user = get_user(username, v=v)
+    user = get_user(username)
     return jsonify(user.json)
