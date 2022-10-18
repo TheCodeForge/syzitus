@@ -31,22 +31,32 @@ def get_logged_in_user(db=None):
             #     return None, None
             # if user.admin_level >=3 and nonce>=user.login_nonce:
             #     return user, None
-            return None, None
+            g.user=None
+            g.client=None
+            return
 
         token = token.split()
         if len(token) < 2:
-            return None, None
+            
+            g.user=None
+            g.client=None
+            return
 
         token = token[1]
         if not token:
-            return None, None
+            
+            g.user=None
+            g.client=None
+            return
 
         client = db.query(ClientAuth).filter(
             ClientAuth.access_token == token,
             ClientAuth.access_token_expire_utc > int(time.time())
         ).first()
 
-        x = (client.user, client) if client else (None, None)
+        g.user=client.user
+        g.client=client
+        return
 
 
     elif "user_id" in session:
@@ -54,8 +64,11 @@ def get_logged_in_user(db=None):
         uid = session.get("user_id")
         nonce = session.get("login_nonce", 0)
         if not uid:
-            x= (None, None)
-        v = db.query(User).options(
+            g.user=None
+            g.client=None
+            return
+
+        user= db.query(User).options(
             joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
             joinedload(User.subscriptions).joinedload(Subscription.board)
         #    joinedload(User.notifications)
@@ -64,29 +77,30 @@ def get_logged_in_user(db=None):
             is_deleted=False
             ).first()
 
-        if v and (nonce < v.login_nonce):
-            x= (None, None)
+        if user and (nonce < user.login_nonce):
+            g.user=None
+            g.client=None
+            return
         else:
-            x=(v, None)
+            g.user=user
+            g.client=None
+            return
 
     else:
-        x=(None, None)
+        g.user=None
+        g.client=None
+        return
 
-    if x[0]:
-        x[0].client=x[1]
+def check_ban_evade():
 
-    return x
-
-def check_ban_evade(v):
-
-    if not v or not v.ban_evade:
+    if not g.user or not g.user.ban_evade:
         return
     
-    if random.randint(0,30) < v.ban_evade and not v.is_suspended:
-        v.ban(reason="Evading a site-wide ban")
+    if random.randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
+        g.user.ban(reason="Evading a site-wide ban")
         send_notification(v, "Your Ruqqus account has been permanently suspended for the following reason:\n\n> ban evasion")
 
-        for post in g.db.query(Submission).filter_by(author_id=v.id).all():
+        for post in g.db.query(Submission).filter_by(author_id=g.user.id).all():
             if post.is_banned:
                 continue
 
@@ -105,7 +119,7 @@ def check_ban_evade(v):
 
         g.db.commit()
 
-        for comment in g.db.query(Comment).filter_by(author_id=v.id).all():
+        for comment in g.db.query(Comment).filter_by(author_id=g.user.id).all():
             if comment.is_banned:
                 continue
 
@@ -126,7 +140,7 @@ def check_ban_evade(v):
         abort(403)
 
     else:
-        v.ban_evade +=1
+        g.user.ban_evade +=1
         g.db.add(v)
         g.db.commit()
 
@@ -139,17 +153,12 @@ def auth_desired(f):
 
     def wrapper(*args, **kwargs):
 
-        v, c = get_logged_in_user()
-
-        if c:
-            kwargs["c"] = c
+        get_logged_in_user()
             
-        check_ban_evade(v)
-        
-        g.v=v
+        check_ban_evade(g.user)
 
-        resp = make_response(f(*args, v=v, **kwargs))
-        if v:
+        resp = make_response(f(*args, **kwargs))
+        if g.user:
             resp.headers.add("Cache-Control", "private")
             resp.headers.add(
                 "Access-Control-Allow-Origin",
@@ -168,22 +177,16 @@ def auth_required(f):
 
     def wrapper(*args, **kwargs):
 
-        v, c = get_logged_in_user()
+        get_logged_in_user()
 
         #print(v, c)
 
-        if not v:
+        if not g.user:
             abort(401)
             
         check_ban_evade(v)
 
-        if c:
-            kwargs["c"] = c
-
-        g.v = v
-
-        # an ugly hack to make api work
-        resp = make_response(f(*args, v=v, **kwargs))
+        resp = make_response(f(*args, **kwargs))
 
         resp.headers.add("Cache-Control", "private")
         resp.headers.add(
@@ -201,24 +204,19 @@ def is_not_banned(f):
 
     def wrapper(*args, **kwargs):
 
-        v, c = get_logged_in_user()
+        get_logged_in_user()
 
         #print(v, c)
 
-        if not v:
+        if not g.user:
             abort(401)
             
         check_ban_evade(v)
 
-        if v.is_suspended:
+        if g.user.is_suspended:
             abort(403)
 
-        if c:
-            kwargs["c"] = c
-
-        g.v = v
-
-        resp = make_response(f(*args, v=v, **kwargs))
+        resp = make_response(f(*args, **kwargs))
         resp.headers.add("Cache-Control", "private")
         resp.headers.add(
             "Access-Control-Allow-Origin",
@@ -236,11 +234,9 @@ def tos_agreed(f):
 
     def wrapper(*args, **kwargs):
 
-        v = kwargs['v']
-
         cutoff = int(environ.get("tos_cutoff", 0))
 
-        if v.tos_agreed_utc > cutoff:
+        if g.user.tos_agreed_utc > cutoff:
             return f(*args, **kwargs)
         else:
             return redirect("/help/terms#agreebox")
@@ -256,9 +252,7 @@ def premium_required(f):
 
     def wrapper(*args, **kwargs):
 
-        v=kwargs["v"]
-
-        if not v.has_premium:
+        if not g.user.has_premium:
             abort(403)
 
         return f(*args, **kwargs)
@@ -277,9 +271,7 @@ def no_negative_balance(s):
 
         def wrapper(*args, **kwargs):
 
-            v=kwargs["v"]
-
-            if v.negative_balance_cents:
+            if g.user.negative_balance_cents:
                 if s=="toast":
                     return jsonify({"error":"You can't do that while your account balance is negative. Visit your account settings to bring your balance up to zero."}), 402
                 elif s=="html":
@@ -302,7 +294,6 @@ def is_guildmaster(*perms):
 
         def wrapper(*args, **kwargs):
 
-            v = kwargs["v"]
             boardname = kwargs.get("guildname", kwargs.get("boardname"))
             board_id = kwargs.get("bid")
             bid=request.values.get("bid", request.values.get("board_id"))
@@ -326,7 +317,7 @@ def is_guildmaster(*perms):
                         return jsonify({"error":f"Permission `{perm}` required"}), 403
 
 
-            if v.is_banned and not v.unban_utc:
+            if g.user.is_banned and not g.user.unban_utc:
                 abort(403)
 
             return f(*args, board=board, **kwargs)
@@ -345,23 +336,21 @@ def admin_level_required(x):
 
         def wrapper(*args, **kwargs):
 
-            v, c = get_logged_in_user()
+            get_logged_in_user()
 
-            if c:
+            if g.client:
                 return jsonify({"error": "No admin api access"}), 403
 
-            if not v:
+            if not g.user:
                 abort(401)
 
-            if v.is_banned:
+            if g.user.is_banned:
                 abort(403)
 
-            if v.admin_level < x:
+            if g.user.admin_level < x:
                 abort(403)
 
-            g.v = v
-
-            response = f(*args, v=v, **kwargs)
+            response = f(*args, **kwargs)
 
             if isinstance(response, tuple):
                 resp = make_response(response[0])
@@ -384,7 +373,7 @@ def admin_level_required(x):
 def validate_formkey(f):
     """Always use @auth_required or @admin_level_required above @validate_form"""
 
-    def wrapper(*args, v, **kwargs):
+    def wrapper(*args, **kwargs):
 
         if not request.path.startswith("/api/v1"):
 
@@ -394,10 +383,10 @@ def validate_formkey(f):
 
                 abort(401)
 
-            elif not v.validate_formkey(submitted_key):
+            elif not g.user.validate_formkey(submitted_key):
                 abort(401)
 
-        return f(*args, v=v, **kwargs)
+        return f(*args, **kwargs)
 
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
@@ -441,12 +430,9 @@ def api(*scopes, no_ban=False):
 
             if request.path.startswith(('/api/v1','/api/v2')):
 
-                v = kwargs.get('v')
-                client = kwargs.get('c')
+                if g.client:
 
-                if client:
-
-                    if not v or not client:
+                    if not g.user or not g.client:
                         return jsonify(
                             {"error": "401 Not Authorized. Invalid or Expired Token"}), 401
 
@@ -461,13 +447,13 @@ def api(*scopes, no_ban=False):
                         if not client.__dict__.get(f"scope_{scope}"):
                             return jsonify({"error": f"401 Not Authorized. Scope `{scope}` is required."}), 403
 
-                    if (request.method == "POST" or no_ban) and v.is_suspended:
+                    if (request.method == "POST" or no_ban) and g.user.is_suspended:
                         return jsonify({"error": f"403 Forbidden. The user account is suspended."}), 403
 
-                if not v:
+                if not g.user:
                     return jsonify({"error": f"401 Not Authorized. You must log in."}), 401
 
-                if v.is_suspended:
+                if g.user.is_suspended:
                     return jsonify({"error": f"403 Forbidden. You are banned."}), 403
 
                 if request.method != "GET" and not client:
