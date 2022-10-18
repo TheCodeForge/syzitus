@@ -58,16 +58,16 @@ app.config['DATABASE_URL'] = environ.get(
     "DATABASE_CONNECTION_POOL_URL",
     environ.get("DATABASE_URL"))
 
-app.config['SQLALCHEMY_READ_URIS'] = [
-    environ.get("DATABASE_CONNECTION_READ_01_URL"),
-    environ.get("DATABASE_CONNECTION_READ_02_URL"),
-    environ.get("DATABASE_CONNECTION_READ_03_URL")
-]
+# app.config['SQLALCHEMY_READ_URIS'] = [
+#     environ.get("DATABASE_CONNECTION_READ_01_URL"),
+#     environ.get("DATABASE_CONNECTION_READ_02_URL"),
+#     environ.get("DATABASE_CONNECTION_READ_03_URL")
+# ]
 
 app.config['SECRET_KEY'] = environ.get('MASTER_KEY')
 
 SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain")).lstrip().rstrip()
-ONION_NAME = environ.get("ONION_NAME", "")
+# ONION_NAME = environ.get("ONION_NAME", "")
 
 class DomainMatcher(str):
 
@@ -246,22 +246,22 @@ def retry(f):
     return wrapper
 
 
-class RetryingQuery(_Query):
+# class RetryingQuery(_Query):
 
-    @retry
-    def all(self):
-        return super().all()
+#     @retry
+#     def all(self):
+#         return super().all()
 
-    @retry
-    def count(self):
-        return super().count()
+#     @retry
+#     def count(self):
+#         return super().count()
 
-    @retry
-    def first(self):
-        return super().first()
+#     @retry
+#     def first(self):
+#         return super().first()
 
 #db_session = scoped_session(sessionmaker(class_=RoutingSession))#, query_cls=RetryingQuery))
-db_session=scoped_session(sessionmaker(bind=_engine, query_cls=RetryingQuery))
+db_session=scoped_session(sessionmaker(bind=_engine)) #, query_cls=RetryingQuery))
 
 Base = declarative_base()
 
@@ -379,13 +379,6 @@ def before_request():
         g.system="ios/webview"
     else:
         g.system="other/other"
-
-    #try:
-    #    print(session.get('user_id'), request.remote_addr, request.method, request.path)
-    #except:
-    #    pass
-
-    # g.db.begin_nested()
 
 
 def log_event(name, link):
