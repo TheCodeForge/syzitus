@@ -202,22 +202,21 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
 
         return self.created_utc < cutoff
 
-    def rendered_page(self, comment=None, comment_info=None, v=None):
+    def rendered_page(self, comment=None, comment_info=None):
 
         # check for banned
         if self.deleted_utc > 0:
             template = "submission_deleted.html"
-        elif v and v.admin_level >= 3:
+        elif g.user and g.user.admin_level >= 3:
             template = "submission.html"
         elif self.is_banned:
             template = "submission_banned.html"
         else:
             template = "submission.html"
 
-        private = not self.is_public and not self.is_pinned and not self.board.can_view(
-            v)
+        private = not self.is_public and not self.is_pinned and not self.board.can_view(g.user)
 
-        if private and (not v or not self.author_id == v.id):
+        if private and (not g.user or not self.author_id == g.user.id):
             abort(403)
         elif private:
             self.__dict__["replies"] = []
@@ -230,13 +229,12 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
 
         # return template
         is_allowed_to_comment = self.board.can_comment(
-            v) and not self.is_archived
+            g.user) and not self.is_archived
         
     #    if request.args.get("sort", "Hot") != "new":
     #        self.replies = [x for x in self.replies if x.is_pinned] + [x for x in self.replies if not x.is_pinned]
 
         return render_template(template,
-                               v=v,
                                p=self,
                                sort_method=request.args.get(
                                    "sort", "Hot").capitalize(),
@@ -258,7 +256,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
             domain = domain[4:]
         return domain
 
-    def tree_comments(self, comment=None, v=None):
+    def tree_comments(self, comment=None):
 
         comments = self.__dict__.get('_preloaded_comments',[])
         if not comments:
@@ -312,10 +310,10 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         else:
             return None
 
-    def visibility_reason(self, v):
+    def visibility_reason(self):
 
 
-        if not v or self.author_id == v.id:
+        if not g.user or self.author_id == g.user.id:
             return "this is your content."
         elif self.is_pinned:
             return "a guildmaster has pinned it."
@@ -323,7 +321,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
             return f"you are a guildmaster of +{self.board.name}."
         elif self.board.has_contributor(v):
             return f"you are an approved contributor in +{self.board.name}."
-        elif v.admin_level >= 4:
+        elif g.user.admin_level >= 4:
             return "you are a Ruqqus admin."
 
     def determine_offensive(self):
