@@ -524,10 +524,8 @@ class User(Base, Stndrd, Age_times):
     def karma(self):
         if self.id==1:
             return 503
-        
-        debug(self.energy)
 
-        return (0 or self.energy) - self.post_count
+        return self.energy - self.post_count
 
     @property
     @cache.memoize(timeout=3600)
@@ -536,7 +534,7 @@ class User(Base, Stndrd, Age_times):
         if self.id==1:
             return 0
 
-        return (0 or self.comment_energy) - self.comments.filter(
+        return self.comment_energy - self.comments.filter(
             Comment.parent_submission is not None).filter_by(is_banned=False).count()
 
     @property
@@ -548,7 +546,9 @@ class User(Base, Stndrd, Age_times):
         #g.db.add(self)
         #g.db.commit()
         #return self.stored_karma
-        return max((self.karma + self.comment_karma), -5)
+        value= max((self.karma + self.comment_karma), -5)
+        debug([self.karma, self.comment_karma, value])
+        return value
 
     @property
     def base36id(self):
