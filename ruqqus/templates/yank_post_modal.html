@@ -29,10 +29,10 @@
 
             <div class="h6">Choose where to yank this post.</div>
             <small class="form-text text-muted">Select a guild below to yank this post.</small>
-            <input type="hidden" name="formkey" value="{{ v.formkey }}">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
             <select name="board_id" id="yank-type-dropdown" form="yank-post-form" class="custom-select mt-3" onchange="document.getElementById('yankPostButton').disabled=false;">
               <option disabled selected>Pick a guild</option>
-              {% for b in v.boards_modded %}
+              {% for b in g.user.boards_modded %}
               <option value="{{ b.base36id }}">+{{ b.name }}</option>
               {% endfor %}
             </select>
