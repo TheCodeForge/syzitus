@@ -4,7 +4,7 @@
 
 <div class="col">
 	{% with users=admins %}
-		<h1 class="row">Ruqqus Admins</h1>
+		<h1 class="row">{{ "SITE_NAME" | app_config }} Admins</h1>
 		<div class="row">
 			{% include "user_listing.html" %}
 		</div>
@@ -14,9 +14,9 @@
 
 {% block sidebarblock %}
   <div class="sidebar-section sidebar-about">
-    <div class="title">Ruqqus Admins</div>
+    <div class="title">{{ "SITE_NAME" | app_config }} Admins</div>
     <div class="body">
-      <p>These are the Ruqqus Admins.</p>
+      <p>These are the {{ "SITE_NAME" | app_config }} Admins.</p>
     </div>
   </div>
 {% endblock %}

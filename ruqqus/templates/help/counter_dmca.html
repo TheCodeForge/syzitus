@@ -1,7 +1,7 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - DMCA Counter-Request</title>
+<title>{{ "SITE_NAME" | app_config }} - DMCA Counter-Request</title>
 <meta name="description" content="DMCA Counter-Request">
 <script src="/assets/js/comment_replies.js"></script>
 {% endblock %}
@@ -33,17 +33,17 @@
 {% filter markdown %}
 # DMCA Counter-Request
 
-If any of your content saved to Ruqqus has been removed pursuant to a DMCA Takedown Request filed by a copyright holder, you are entitled to submit a DMCA counter-request explaining why you believe use of the content was acceptable.
+If any of your content saved to {{ "SITE_NAME" | app_config }} has been removed pursuant to a DMCA Takedown Request filed by a copyright holder, you are entitled to submit a DMCA counter-request explaining why you believe use of the content was acceptable.
 
-Use this page to submit a DMCA counter-notice request to Ruqqus.  
+Use this page to submit a DMCA counter-notice request to {{ "SITE_NAME" | app_config }}.  
 
-Abuse of this form may lead to the termination of your Ruqqus account, at the discretion of Ruqqus staff.
+Abuse of this form may lead to the termination of your {{ "SITE_NAME" | app_config }} account, at the discretion of {{ "SITE_NAME" | app_config }} staff.
 
 {% endfilter %}
 
 {% if v and v.is_banned %}
 
-<div>Your Ruqqus account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
+<div>Your {{ "SITE_NAME" | app_config }} account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
 
 {% elif v and v.is_activated %}
 
@@ -71,7 +71,7 @@ Abuse of this form may lead to the termination of your Ruqqus account, at the di
 
 	<label class="mt-5">Required statements</label><br>
 	<input id="swear_goodfaith" type="checkbox" name="swear_goodfaith" value="true" required> I swear, under penalty of perjury, that I have a good-faith belief that the material was removed or disabled as a result of a mistake or misidentification of the material to be removed or disabled.<br>
-	<input id="swear_perjury" type="checkbox" name="consent_jurisdiction" value="true" required> I consent to the jurisdiction of Federal District Court for the judicial district in which my address is located (if in the United States, otherwise the District of Delaware where Ruqqus LLC is registered), and I will accept service of process from the person who provided the DMCA notification or an agent of such person.<br>
+	<input id="swear_perjury" type="checkbox" name="consent_jurisdiction" value="true" required> I consent to the jurisdiction of Federal District Court for the judicial district in which my address is located (if in the United States, otherwise the District of Delaware where {{ "SITE_NAME" | app_config }} LLC is registered), and I will accept service of process from the person who provided the DMCA notification or an agent of such person.<br>
 
 	<input class="btn btn-primary mt-5" type="submit" value="Submit">
 </form>

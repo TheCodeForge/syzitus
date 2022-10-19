@@ -1,8 +1,8 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - Contact</title>
-<meta name="description" content="Contact Ruqqus LLC">
+<title>{{ "SITE_NAME" | app_config }} - Contact</title>
+<meta name="description" content="Contact {{ "SITE_NAME" | app_config }} LLC">
 <script src="/assets/js/comment_replies.js"></script>
 {% endblock %}
 
@@ -34,10 +34,10 @@
     </div>
     {% endif %}
 
-<h1 class="article-title">Contact Ruqqus</h1>
+<h1 class="article-title">Contact {{ "SITE_NAME" | app_config }}</h1>
 {% if v and v.is_activated and not v.is_suspended %}
 
-<p>Use this form to contact Ruqqus LLC.</p>
+<p>Use this form to contact {{ "SITE_NAME" | app_config }} staff.</p>
 
 <label class="mt-3">Your Email</label>
 <input class="form-control" value="{{ v.email }}" readonly="readonly" disabled>
@@ -60,7 +60,7 @@
 
 {% elif v and v.is_suspended %}
 
-<p>Your Ruqqus account has been suspended. You are not permitted to use this form.</p>
+<p>Your {{ "SITE_NAME" | app_config }} account has been suspended. You are not permitted to use this form.</p>
 
 
 {% elif v %}

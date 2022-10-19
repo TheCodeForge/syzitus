@@ -1,8 +1,8 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - FAQ</title>
-<meta name="description" content="Ruqqus FAQ">
+<title>{{ "SITE_NAME" | app_config }} - FAQ</title>
+<meta name="description" content="{{ "SITE_NAME" | app_config }} FAQ">
 {% endblock %}
 
 {% block content %}
@@ -10,21 +10,21 @@
 
 # Developer Help
 
-Tips to help ensure your website works nicely with Ruqqus
+Tips to help ensure your website works nicely with {{ "SITE_NAME" | app_config }}
 
 ## SSL Required
 
-To help protect user privacy and safety, Ruqqus forces HTTPS on all assets uploaded and submitted to Ruqqus. This includes automatic conversion of all "http://" schemas into "https://".
+To help protect user privacy and safety, {{ "SITE_NAME" | app_config }} forces HTTPS on all assets uploaded and submitted to {{ "SITE_NAME" | app_config }}. This includes automatic conversion of all "http://" schemas into "https://".
 
-Make sure your website has a valid SSL certificate in order to ensure that Ruqqus users can navigate to it from Ruqqus. 
+Make sure your website has a valid SSL certificate in order to ensure that {{ "SITE_NAME" | app_config }} users can navigate to it from {{ "SITE_NAME" | app_config }}. 
 
 We will not grant exemptions to https conversion.
 
-## Share to Ruqqus
+## Share to {{ "SITE_NAME" | app_config }}
 
-To create a "share to Ruqqus" button, create an element which has `onclick="window.location.href='https://ruqqus.com/submit?url='+window.location.href"`
+To create a "share to {{ "SITE_NAME" | app_config }}" button, create an element which has `onclick="window.location.href='https://{{ "SITE_NAME" | app_config }}.com/submit?url='+window.location.href"`
 
-Use [Ruqqus branding and assets](/help/press) to style your "share to Ruqqus" button.
+Use [{{ "SITE_NAME" | app_config }} branding and assets](/help/press) to style your "share to {{ "SITE_NAME" | app_config }}" button.
 
 
 ## Thumbnails
@@ -37,7 +37,7 @@ Thumbnail images for posts are determined by using the first successful conditio
 
 ## Applications
 
-To request ruqqus API keys, visit [this page](/help/apps)
+To request {{ "SITE_NAME" | app_config }} API keys, visit [this page](/help/apps)
 
 {% endfilter %}
 {% endblock %}

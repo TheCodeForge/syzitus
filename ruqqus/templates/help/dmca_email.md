@@ -1,10 +1,10 @@
 ##### Username
 
-[@{{ v.username }}]({{ v.permalink | full_link }})
+[@{{ g.user.username }}]({{ g.user.permalink | full_link }})
 
 ##### Email
 
-{{ v.email }}
+{{ g.user.email }}
 
 ##### Your name
 

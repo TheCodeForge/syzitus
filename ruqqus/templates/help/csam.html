@@ -1,7 +1,7 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - The independent social platform</title>
+<title>{{ "SITE_NAME" | app_config }} - The independent social platform</title>
 <meta name="description" content="CSAM.">
 {% endblock %}
 
@@ -10,10 +10,10 @@
 
 {% filter markdown %}
 
-#Ruqqus Child Sexual Abuse Material (CSAM) Policy
+#{{ "SITE_NAME" | app_config }} Child Sexual Abuse Material (CSAM) Policy
 
-**Ruqqus has zero tolerance for content featuring or otherwise promoting child sexual exploitation.**
-It is Ruqqus' belief that that by viewing or sharing/linking to child sexual exploitation material you are contributing to the victimization of the children.  This policy also applies to content which seeks to promote or glorify the child sexual exploitation.
+**{{ "SITE_NAME" | app_config }} has zero tolerance for content featuring or otherwise promoting child sexual exploitation.**
+It is {{ "SITE_NAME" | app_config }}' belief that that by viewing or sharing/linking to child sexual exploitation material you are contributing to the victimization of the children.  This policy also applies to content which seeks to promote or glorify the child sexual exploitation.
 
 # This may include the following :
 
