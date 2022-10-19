@@ -48,7 +48,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         uselist=False,
         innerjoin=True,
         primaryjoin="Submission.id==SubmissionAux.id")
-    author_id = Column(BigInteger, ForeignKey("users.id"), index=True)
+    author_id = Column(BigInteger, ForeignKey("users.id"), index=True, backref="submissions")
     repost_id = Column(BigInteger, ForeignKey("submissions.id"), default=0)
     edited_utc = Column(BigInteger, default=0)
     created_utc = Column(BigInteger, default=0)

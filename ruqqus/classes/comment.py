@@ -77,7 +77,8 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
         "User",
         lazy="joined",
         innerjoin=True,
-        primaryjoin="User.id==Comment.author_id")
+        primaryjoin="User.id==Comment.author_id",
+        backref="comments")
     board = association_proxy("post", "board")
     original_board = relationship(
         "Board", primaryjoin="Board.id==Comment.original_board_id")
