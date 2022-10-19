@@ -1,7 +1,7 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - The independent social platform</title>
+<title>{{ "SITE_NAME" | app_config }} - The independent social platform</title>
 <meta name="description" content="Rules.">
 {% endblock %}
 
@@ -12,31 +12,31 @@
 
 #{{ "SITE_NAME" | app_config }} Content Policy
 
-{{ "SERVER_NAME" | app_config }} is a free speech environment. However, in order to ensure the safety of our users as well as the longevity of the platform, there are a few things you are not permitted to do with the Ruqqus platform.
+{{ "SERVER_NAME" | app_config }} is a free speech environment. However, in order to ensure the safety of our users as well as the longevity of the platform, there are a few things you are not permitted to do with the {{ "SITE_NAME" | app_config }} platform.
 
-By using ruqqus.com, you agree to follow these rules. Violations (in Ruqqus's sole discretion) may lead to the suspension of your ruqqus.com account.
+By using {{ "SERVER_NAME" | app_config }}, you agree to follow these rules. Violations (in {{ "SITE_NAME" | app_config }}'s sole discretion) may lead to the suspension of your {{ "SERVER_NAME" | app_config }} account.
 
 ## 1: Intellectual Property
 
-You may not upload to, embed within, or link out from ruqqus.com:
+You may not upload to, embed within, or link out from {{ "SERVER_NAME" | app_config }}:
 
 1. Copyrighted material that you are not authorized to distribute
 2. Anything not legal to publish within, or export from, the United States of America
 
 ## 2: Digital Safety
 
-You may not upload to, embed within, or link out from ruqqus.com:
+You may not upload to, embed within, or link out from {{ "SERVER_NAME" | app_config }}:
 
 1. Digitally malicious content
 2. URL shorteners
-3. Anything that breaks Ruqqus
+3. Anything that breaks {{ "SITE_NAME" | app_config }}
 
 ## 3: User Safety
 
-You may not use ruqqus.com to do any of the following:
+You may not use {{ "SERVER_NAME" | app_config }} to do any of the following:
 
 1. Threaten, intimidate, or harrass other users
-2. Impersonate Ruqqus staff
+2. Impersonate {{ "SITE_NAME" | app_config }} staff
 3. Solicit, collect, or publish private personal information, either yours or another individual's
 4. Spam
 
@@ -44,7 +44,7 @@ You may not use ruqqus.com to do any of the following:
 
 ## 4: Sexual Content
 
-You may not upload to, embed within, or link out from ruqqus.com:
+You may not upload to, embed within, or link out from {{ "SERVER_NAME" | app_config }}:
 
 1. Sexual or sexually suggestive material not marked "NSFW"
 2. Sexual or sexually suggestive material involving individuals under the age of 18, including fictitious content
@@ -54,7 +54,7 @@ You may not upload to, embed within, or link out from ruqqus.com:
 
 ## 5: IRL Safety
 
-You may not use ruqqus.com to do any of the following:
+You may not use {{ "SERVER_NAME" | app_config }} to do any of the following:
 
 1. Incite, plan, or execute unlawful or violent activity
 2. Engage in fraud
@@ -71,7 +71,7 @@ This includes, but is not limited to:
 
 ## 7: Bots
 
-The following rules apply to clients interacting with Ruqqus in an automated manner ("Bots").
+The following rules apply to clients interacting with {{ "SITE_NAME" | app_config }} in an automated manner ("Bots").
 
 1. Bots may not vote.
 2. Bots must use a unique `User-Agent` header.
