@@ -309,10 +309,10 @@ def api_unban_guild(v, bid):
 @app.route("/api/mod_self/<bid>", methods=["POST"])
 @admin_level_required(4)
 @validate_formkey
-def mod_self_to_guild(v, bid):
+def mod_self_to_guild(bid):
 
     board = get_board(bid)
-    if not board.has_mod(v):
+    if not board.has_mod(g.user):
         mr = ModRelationship(user_id=g.user.id,
                              board_id=board.id,
                              accepted=True,
