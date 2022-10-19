@@ -245,26 +245,12 @@
 {% if not g.user.has_premium %}
 <div class="sidebar-section">
   <div class="title">
-    <i class="fas fa-heart mr-2"></i>Support Ruqqus
+    <i class="fas fa-heart mr-2"></i>Support {{ "SITE_NAME" | app_config }}
   </div>
   <div class="body">
-    <p>Merch and more. Support Ruqqus today!</p>
+    <p>Merch and more. Support {{ "SITE_NAME" | app_config }} today!</p>
 
-    <a href="https://www.bonfire.com/store/ruqqus/" target="blank" class="btn btn-block btn-link text-info text-left text-decoration-none px-1 mt-0">
-      <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x" style="color: #BEE3F8!important; font-size: 2rem!important;"></i>
-        <i class="fas fa-tshirt fa-stack-1x text-info text-base fa-inverse"></i>
-      </span>Awesome T-Shirts
-    </a>
-
-    <a href="https://gumroad.com/l/XpCXQ" target="blank" class="btn btn-block btn-link text-success text-left text-decoration-none px-1 mt-0">
-      <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x" style="color: #9AE6B4!important; font-size: 2rem!important;"></i>
-        <i class="fas fa-laugh fa-stack-1x text-success text-base fa-inverse"></i>
-      </span>Custom Stickers
-    </a>
-
-    <a href="https://github.com/ruqqus/ruqqus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
+    <a href="https://github.com/thecodeforge/ruqqus-reborn" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
       <span class="fa-stack fa-1x ml-n1 mr-2">
         <i class="fas fa-square fa-stack-2x text-gray-300" style="font-size: 2rem!important;"></i>
         <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
@@ -282,8 +268,16 @@
       <span class="fa-stack fa-1x ml-n1 mr-2">
         <i class="fas fa-square fa-stack-2x" style="color: #dabef9!important; font-size: 2rem!important;"></i>
         <i class="fas fa-coins fa-stack-1x text-base fa-inverse" style="color: #805ad5!important;"></i>
-      </span>Ruqqus Premium
+      </span>{{ "SITE_NAME" | app_config }} Premium
     </a>
+
+    <a href="https://github.com/thecodeforge/ruqqus-reborn/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #DC143C!important">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x" style="color: #FC8181!important; font-size: 2rem!important;"></i>
+        <i class="fas fa-bug fa-stack-1x text-base fa-inverse" style="color: #DC143C!important;"></i>
+      </span>Report Bugs
+    </a>
+    
     <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
       <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
       <div class="progress" style="border-radius: 3px;">
