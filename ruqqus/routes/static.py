@@ -155,7 +155,7 @@ def settings_security():
         recovery=" ".join([recovery[i:i+5] for i in range(0,len(recovery),5)])
     else:
         recovery=None
-        
+
     return render_template(
             "settings_security.html",
             mfa_secret=mfa_secret,
@@ -192,7 +192,7 @@ def about_path(path):
 @auth_desired
 def help_path(path):
 	try:
-		return render_template(safe_join("help", path + ".html"))
+		return render_template(safe_join("help/", path + ".html"))
 	except jinja2.exceptions.TemplateNotFound:
 		abort(404)
 
