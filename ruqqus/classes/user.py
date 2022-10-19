@@ -546,8 +546,10 @@ class User(Base, Stndrd, Age_times):
         #g.db.add(self)
         #g.db.commit()
         #return self.stored_karma
+        
+        debug([self.karma, self.comment_karma])
+        
         value= max((self.karma + self.comment_karma), -5)
-        debug([self.karma, self.comment_karma, value])
         return value
 
     @property
