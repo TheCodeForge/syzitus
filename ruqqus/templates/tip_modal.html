@@ -13,16 +13,16 @@
 
 					<div class="d-flex align-items-center justify-content-around w-25 mx-auto mb-2">
 
-						<img id="tip-sender-pfp" src="{{ v.profile_url }}" class="profile-pic-50">
+						<img id="tip-sender-pfp" src="{{ g.user.profile_url }}" class="profile-pic-50">
 						<i class="far fa-long-arrow-right text-muted text-lg mx-3"></i>
 						<img id="tip-recipient-pfp" src="" class="profile-pic-50">
 
 					</div>
-					<div class="h5 mb-0">{% if v.has_premium %}Send a tip{% else %}Get coins to send a tip{% endif %}</div>
+					<div class="h5 mb-0">{% if g.user.has_premium %}Send a tip{% else %}Get coins to send a tip{% endif %}</div>
 					<div class="text-small-extra text-muted mb-3">All tips are anonymous :)</div>
 
 					<div class="position-relative">
-					<div class="bg-white shadow-sm rounded-lg text-left {% if not v.has_premium %}opacity-25{% endif %}">
+					<div class="bg-white shadow-sm rounded-lg text-left {% if not g.user.has_premium %}opacity-25{% endif %}">
 						<div class="px-5 py-4">
 							<div class="font-weight-bold text-muted mb-2">You are tipping</div>
 							<div class="h3 mb-0"><img src="/assets/images/icons/ruqqus-coin.png" class="mt-n1" style="width: 24px;"> 1 <span class="text-muted text-lg">coin</span></div></div><hr class="my-0" style="border-style: dashed;"><div class="px-5 py-4">
@@ -65,7 +65,7 @@
 			</div>
 		</div>
 
-		{% if not v.has_premium %}
+		{% if not g.user.has_premium %}
 		<div class="position-absolute" style="margin-left: auto; margin-right: auto; left: 0; right: 0;bottom: 50%;">
 			<a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1" style="width: 15px;"/>Get coins</a>
 		</div>
@@ -79,13 +79,13 @@
 </div>
 <!-- Footer -->
 <div class="modal-footer bg-white border-top" style="background-image: none!important">
-	<div class="text-small text-muted font-weight-bold">Coin balance:<span class="text-muted"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1" style="width: 15px;"/>{{ v.coin_balance }}</span><a href="/settings/premium" class="font-weight-normal text-purple ml-2">Get more coins</a>
+	<div class="text-small text-muted font-weight-bold">Coin balance:<span class="text-muted"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1" style="width: 15px;"/>{{ g.user.coin_balance }}</span><a href="/settings/premium" class="font-weight-normal text-purple ml-2">Get more coins</a>
 	</div>
 	<button type="button" class="btn btn-link text-muted ml-auto" data-dismiss="modal">Cancel</button>
-	<button type="button" id="sendTipButton" class="btn btn-warning" {% if not v.coin_balance %}disabled{% endif %}>Send Tip<span class="tip-content-type"></span></button>
+	<button type="button" id="sendTipButton" class="btn btn-warning" {% if not g.user.coin_balance %}disabled{% endif %}>Send Tip<span class="tip-content-type"></span></button>
 </div>
 </div>
 </div>
 <!-- Coin balance -->
-<span id="coin-balance" data-model="balance" class="d-none">{{ v.coin_balance }}</span>
+<span id="coin-balance" data-model="balance" class="d-none">{{ g.user.coin_balance }}</span>
 </div>
