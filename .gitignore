@@ -113,5 +113,5 @@ local.txt
 *.scssc
 
 #alembic
-ruqquscache/*
+*/ruqquscache/*
 alembic.ini
