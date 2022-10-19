@@ -14,7 +14,7 @@
           <div class="modal-body">
             <div class="h6">We're sorry something here is wrong.</div>
             <small class="form-text text-muted">Please select a reason for flagging below.</small>
-            <input type="hidden" name="formkey" value="{{ v.formkey }}">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
               <select name="report_type" class="custom-select mt-3">
                 <option disabled selected>
                   Reason for flagging?
