@@ -272,7 +272,7 @@ def sign_up_post():
 
     correct_formkey_hashstr = form_timestamp + submitted_token + agent
 
-    correct_formkey = hmac.new(key=bytes(environ.get("MASTER_KEY"), "utf-16"),
+    correct_formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
                                msg=bytes(correct_formkey_hashstr, "utf-16")
                                ).hexdigest()
 
