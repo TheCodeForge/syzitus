@@ -187,9 +187,9 @@
     {% block _stylesheets %}
 
     {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=2.38.0">
+    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=3.0.0">
     {% else %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=2.38.0">
+    <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=3.0.0">
     {% endif %}
 
     {% endblock %}
@@ -598,7 +598,7 @@
 
 {% include "bootstrap.html" %}
 
-<script src="/assets/js/all_js.js?v=2.38.0" importance="high" ></script>
+<script src="/assets/js/all_js.js?v=3.0.0" importance="high" ></script>
 
 <!-- ClipboardJS -->
 
