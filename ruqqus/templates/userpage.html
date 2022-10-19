@@ -67,11 +67,11 @@
                 {% endif %}
                 {% if u.real_id %}<span class="badge badge-pill text-white badge-info ml-2">{{ u.real_id }}</span>
                 {% endif %}
-                {% if v and v.has_follower(u) %}
+                {% if g.user and g.user.has_follower(u) %}
                 <span class="badge badge-secondary text-small align-middle ml-2">Follows you</span>
                 {% endif %}
                 <div class="profile-actions align-middle d-none ml-2">
-                 {% if v and v.id != u.id %}
+                 {% if g.user and g.user.id != u.id %}
                  <div class="dropdown show d-none">
                   <a href="#" role="button" id="dropdownProfileActionsLink" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
@@ -84,7 +84,7 @@
                 </div>
               </div>
               {% endif %}
-              {% if v and v.id == u.id %}
+              {% if g.user and g.user.id == u.id %}
               <div class="dropdown show d-none">
                 <a href="#" role="button" id="dropdownProfileActionsLink" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
@@ -108,12 +108,12 @@
         {% else %}
         <p class="text-muted">No bio...</p>
         {% endif %}
-        {% if u.bio_html and v %}
+        {% if u.bio_html and g.user %}
         {% endif %}
 
         <div class="d-flex justify-content-between align-items-center">
           <div>
-           {% if v and v.id != u.id and not u.is_private and not u.is_nofollow %}
+           {% if g.user and g.user.id != u.id and not u.is_private and not u.is_nofollow %}
            <div id="button-sub" {% if is_following %}class="d-none"{% endif %}>
             <button class="btn btn-primary" onclick="post('/api/follow/{{ u.username }}', callback=toggleSub)">
               Follow
@@ -127,7 +127,7 @@
               <i class="fas fa-fw bell-icon {% if u.is_following and u.is_following.get_notifs %}fa-bell-on text-purple{% else %}fa-bell{% endif %}"></i>
             </button>
           </div>
-          {% elif v and v.id == u.id %}
+          {% elif g.user and g.user.id == u.id %}
           <a href="/settings/profile" class="btn btn-secondary">Edit profile</a>
           {% endif %}
         </div>
@@ -174,7 +174,7 @@
             <!--{% if u.over_18 %}
             <span class="badge badge-danger text-small align-middle mx-1">nsfw</span>
             {% endif %}-->
-            {% if v and v.has_follower(u) and not v.is_nofollow %}
+            {% if g.user and g.user.has_follower(u) and not g.user.is_nofollow %}
             <span class="badge badge-secondary text-small align-middle mx-1">Follows you</span>
             {% endif %}
           </h1>
@@ -192,10 +192,10 @@
           {% else %}
           {% endfor %}
         </div>
-        {% if v and v.id == u.id %}
+        {% if g.user and g.user.id == u.id %}
         <a href="/settings/profile" class="btn btn-secondary btn-sm">Edit profile</a>
         {% endif %}
-        {% if v and v.id != u.id and not u.is_nofollow %}
+        {% if g.user and g.user.id != u.id and not u.is_nofollow %}
         <div id="button-unsub-mobile" {% if not is_following %}class="d-none"{% endif %}>
           <button class="btn btn-secondary btn-block" onclick="post('/api/unfollow/{{ u.username }}', callback=function(){document.getElementById('button-unsub-mobile').classList.toggle('d-none');document.getElementById('button-sub-mobile').classList.toggle('d-none');})">Unfollow
           </button>
@@ -242,7 +242,7 @@
 </div>
 {% endif %}
 
-{% if not v.has_premium %}
+{% if not g.user.has_premium %}
 <div class="sidebar-section">
   <div class="title">
     <i class="fas fa-heart mr-2"></i>Support Ruqqus
@@ -308,22 +308,22 @@
 {% if u.ban_evade %}
 <p>Ban Evasion Counter: {{ u.ban_evade }}</p>
 {% endif %}
-{% if v.admin_level >=3 and v.admin_level > u.admin_level %}
+{% if g.user.admin_level >=3 and g.user.admin_level > u.admin_level %}
 {% if u.is_suspended %}
 <p>IP: <a href="/admin/ip/{{ u.creation_ip }}" target="_blank">{{ u.creation_ip }}</a></p>
 <p>{{ u.unban_string }}</p>
 <form action="/api/unban_user/{{ u.id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-success" value="Unban user">
 </form>
 <form action="/admin/nuke_user" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="hidden" name="user" value="{{ u.username }}">
   <input type="submit" class="btn btn-danger" value="Nuke User's Content">
 </form>
 {% else %}
 <form action="/api/ban_user/{{ u.id }}" method="post">
-  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input id="user-ban-message" type="text" class="form-control" name="message" placeholder="Ban Message Reason" onchange="document.getElementById('user-ban-submit').disabled=false">
   <input id="user-ban-reason" type="text" class="form-control" name="reason" placeholder="Ban Reason (public)" onchange="document.getElementById('user-ban-submit').disabled=false">
   <input id="user-ban-days" type="number" class="form-control" name="days" placeholder="Days (blank = permanent)">
@@ -335,7 +335,7 @@
 <p>Banned by: <a href="{{ u.banned_by.permalink}}">@{{ u.banned_by.username }}</a></p>
 <p>Reason: {{ u.ban_reason }}</p>
 {% endif %}
-{% if v.admin_level >=4 %}
+{% if g.user.admin_level >=4 %}
 <p>Alts:</p>
 <ul>
   {% for account in u.alts %}
@@ -346,7 +346,7 @@
 
 <a href="javascript:void(0)" class="btn btn-warning w-100" onclick="document.getElementById('demod-user').classList.toggle('d-none')">De-Mod User</a>
 <form action="/admin/demod_user" method="post">
-  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="user" value="{{ u.username }}">
   <input type="submit" class="d-none btn btn-danger" id="demod-user" value="Confirm De-Mod User">
 </form>
@@ -406,7 +406,7 @@
 {% endblock %}
 
 {% block GIFpicker %}
-{% if v %}
+{% if g.user %}
 {% include "gif_modal.html" %}
 {% endif %}
 {% endblock %}
