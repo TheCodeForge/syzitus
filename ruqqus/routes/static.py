@@ -143,7 +143,9 @@ def help_admins():
 @app.route("/settings/security", methods=["GET"])
 @auth_required
 def settings_security():
+
     mfa_secret=pyotp.random_base32() if not g.user.mfa_secret else None
+
     if mfa_secret:
         recovery=f"{mfa_secret}+{g.user.id}+{g.user.original_username}"
         recovery=generate_hash(recovery)
@@ -153,6 +155,7 @@ def settings_security():
         recovery=" ".join([recovery[i:i+5] for i in range(0,len(recovery),5)])
     else:
         recovery=None
+        
     return render_template(
             "settings_security.html",
             mfa_secret=mfa_secret,
