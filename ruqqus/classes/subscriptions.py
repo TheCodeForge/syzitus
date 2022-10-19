@@ -39,11 +39,13 @@ class Follow(Base):
     user = relationship(
         "User",
         uselist=False,
-        primaryjoin="User.id==Follow.user_id")
+        primaryjoin="User.id==Follow.user_id",
+        backref="following")
     target = relationship(
         "User",
         lazy="joined",
-        primaryjoin="User.id==Follow.target_id")
+        primaryjoin="User.id==Follow.target_id",
+        backref="followers")
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
