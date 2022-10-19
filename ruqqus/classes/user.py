@@ -141,14 +141,14 @@ class User(Base, Stndrd, Age_times):
     following = relationship("Follow", primaryjoin="Follow.user_id==User.id")
     followers = relationship("Follow", primaryjoin="Follow.target_id==User.id")
 
-    blocking = relationship(
-        "UserBlock",
-        lazy="dynamic",
-        primaryjoin="User.id==UserBlock.user_id")
-    blocked = relationship(
-        "UserBlock",
-        lazy="dynamic",
-        primaryjoin="User.id==UserBlock.target_id")
+    # blocking = relationship(
+    #     "UserBlock",
+    #     lazy="dynamic",
+    #     primaryjoin="User.id==UserBlock.user_id")
+    # blocked = relationship(
+    #     "UserBlock",
+    #     lazy="dynamic",
+    #     primaryjoin="User.id==UserBlock.target_id")
 
     #_applications = relationship("OauthApp", lazy="dynamic")
     #authorizations = relationship("ClientAuth", lazy="dynamic")

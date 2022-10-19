@@ -18,11 +18,13 @@ class UserBlock(Base, Stndrd, Age_times):
     user = relationship(
         "User",
         innerjoin=True,
-        primaryjoin="User.id==UserBlock.user_id")
+        primaryjoin="User.id==UserBlock.user_id",
+        backref="blocking")
     target = relationship(
         "User",
         innerjoin=True,
-        primaryjoin="User.id==UserBlock.target_id")
+        primaryjoin="User.id==UserBlock.target_id",
+        backref="blocked")
 
     def __repr__(self):
 
