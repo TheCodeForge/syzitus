@@ -60,11 +60,11 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     distinguished_board = relationship("Board", lazy="joined", primaryjoin="Board.id==Submission.gm_distinguish")
     created_str = Column(String(255), default=None)
     stickied = Column(Boolean, default=False)
-    _comments = relationship(
-        "Comment",
-        lazy="dynamic",
-        primaryjoin="Comment.parent_submission==Submission.id",
-        backref="submissions")
+    # _comments = relationship(
+    #     "Comment",
+    #     lazy="dynamic",
+    #     primaryjoin="Comment.parent_submission==Submission.id",
+    #     backref="submissions")
     domain_ref = Column(Integer, ForeignKey("domains.id"))
     domain_obj = relationship("Domain")
     flags = relationship("Flag", backref="submission")
