@@ -543,11 +543,12 @@ class User(Base, Stndrd, Age_times):
     @cache.memoize(timeout=3600)
     def true_score(self):
 
-        self.stored_karma=max((self.karma + self.comment_karma), -5)
+        #self.stored_karma=max((self.karma + self.comment_karma), -5)
 
-        g.db.add(self)
-        g.db.commit()
-        return self.stored_karma
+        #g.db.add(self)
+        #g.db.commit()
+        #return self.stored_karma
+        return max((self.karma + self.comment_karma), -5)
 
     @property
     def base36id(self):
