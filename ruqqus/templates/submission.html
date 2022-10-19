@@ -5,7 +5,7 @@
 {% set score=ups-downs %}
 
 {% block stylesheets %}
-{% if v and v.can_use_darkmode and session.get("dark_mode_enabled") %}
+{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
 <link id="css-link" rel="stylesheet" href="{{ p.board.css_dark_url }}?v=2.38.0">
 {% else %}
 <link id="css-link" rel="stylesheet" href="{{ p.board.css_url }}?v=2.38.0">
@@ -42,9 +42,9 @@
     }
   }
 </script>
-{% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
 <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-{% elif v and v.can_use_darkmode %}
+{% elif g.user and g.user.can_use_darkmode %}
 <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
 {% else %}
 <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
@@ -52,9 +52,9 @@
 {% endblock %}
 
 {% block darkswitchMobile %}
-{% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
 <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
-{% elif v and v.can_use_darkmode %}
+{% elif g.user and g.user.can_use_darkmode %}
 <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
 {% else %}
 <li class="nav-item"><a class="nav-link" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw mr-3"></i>Dark mode</a></li>
@@ -121,7 +121,7 @@
 {% endif %}
 {% endblock %}
 
-{% if v %}
+{% if g.user %}
 {% set voted=p.voted if p.voted else 0 %}
 {% else %}
 {% set voted=-2 %}
@@ -207,7 +207,7 @@
         <div>
           <a href="{{ p.board.permalink }}">
             <span class="h6 text-black mb-0">+{{ p.board.name }}
-              {% if v and v.has_blocked_guild(p.board) %}
+              {% if g.user and g.user.has_blocked_guild(p.board) %}
               <i class="fas fa-eye-slash text-danger align-middle ml-2" data-toggle="tooltip" data-placement="bottom" data-html="true" title="You have hidden this guild from /all. Visit your settings or click the <i class='far fa-ellipsis-h text-small'></i> icon to adjust its visibility."></i>
               {% endif %}
             </span>
@@ -234,16 +234,16 @@
           <a class="dropdown-item" href="{{ p.board.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
           {% endif %}
 
-          {% if v and not v.has_blocked_guild(p.board) %}
+          {% if g.user and not g.user.has_blocked_guild(p.board) %}
           <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ p.board.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
-          {% elif v %}
+          {% elif g.user %}
           <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ p.board.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
           {% endif %}
         </div>
       </div>
     </div>
     <div class="ml-auto">
-      {% if v %}
+      {% if g.user %}
       <div id="button-sub" {% if p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post('/api/subscribe/{{ p.board.name }}', callback=toggleSub)">Join guild</a></div>
       <div id="button-unsub" {% if not p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post('/api/unsubscribe/{{ p.board.name }}', callback=toggleSub)">Leave</a></div>
       {% elif not v %}
@@ -281,33 +281,33 @@
 {% endblock %}
 
 {% block adminpanel %}
-{% if v.admin_level >=3 %}
+{% if g.user.admin_level >=3 %}
 <form action="/api/sticky/{{ p.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="form-control" value="{% if p.stickied %}Un-sticky{% else %}Sticky{% endif %}">
 </form>
 {% endif %}
-{% if v.admin_level >=3 and v.id==p.author_id %}
+{% if g.user.admin_level >=3 and g.user.id==p.author_id %}
 <form action="/api/distinguish/{{ p.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="form-control" value="{% if p.distinguish_level %}Un-distinguish{% else %}Distinguish{% endif %}">
 </form>
 {% endif %}
-{% if v.admin_level >=1 and v.admin_level > p.author.admin_level %}
+{% if g.user.admin_level >=1 and g.user.admin_level > p.author.admin_level %}
 {% if p.is_banned %}
 <form action="/api/unban_post/{{ p.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="form-control" value="Approve Post">
 </form>
 {% else %}
 <form action="/api/ban_post/{{ p.base36id }}", method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input id="post-ban-reason" type="text" class="form-control" name="reason" placeholder="Removal Reason">
   <input type="submit" class="btn btn-warning" value="Remove Post">
 </form>
 {% endif %}
 {% endif %}
-{% if p.deleted_utc > 0 or p.author.is_deleted and v.admin_level >=4 %}
+{% if p.deleted_utc > 0 or p.author.is_deleted and g.user.admin_level >=4 %}
 <p>Author: <a href="{{ p.author.permalink }}">@{{ p.author.username }}</a></p>
 {% endif %}
 {% endblock %}
@@ -325,17 +325,17 @@
       </div>
       <div class="modal-body">
         <ul class="list-group post-actions">
-          {% if v and not v.id==p.author_id and not p.author.is_deleted %}
+          {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
           <button class="btn btn-link btn-block btn-lg text-left text-warning" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="far fa-star text-center text-warning mr-3"></i>Tip</button>
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.board.name }}')" class="d-block"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
           {% endif %}
-          {% if v and v.id==p.author_id %}
+          {% if g.user and g.user.id==p.author_id %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-dismiss="modal" onclick="togglePostEdit('{{ p.base36id }}')"><i class="far fa-edit text-center text-muted mr-3"></i>Edit</button>
 
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" onclick="delete_postModal('{{ p.base36id }}')"><i class="far fa-trash-alt text-center text-muted mr-3"></i>Delete</button>
           {% endif %}
 
-          {% if v and (v.id==p.author_id or v.admin_level>=3 or p.is_guildmaster('content')) %}
+          {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
           {% if not p.board.over_18 %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted" onclick="post('/api/toggle_post_nsfw/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
           {% endif %}
@@ -345,25 +345,25 @@
           {% endif %}
 
           {% endif %}
-          {% if v and v.mods_anything and p.board.name == 'general' %}
+          {% if g.user and g.user.mods_anything and p.board.name == 'general' %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" onclick="yank_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.comment_count }}','{{ p.thumb_url }}','{{ p.title | js_str_escape }}','{{ p.author.permalink }}','{{ p.domain | js_str_escape }}','{{ p.age_string }}')" class="d-block"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
           {% endif %}
-          {% if v %}
-            {% if v.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
+          {% if g.user %}
+            {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
             <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post('/user/kick/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-chess-rook text-center text-muted mr-3"></i>Remove from +{{ p.board.name }}</button>
             {% endif %}
 
-            {% if p.url and p.has_thumb==False and (v.id==p.author_id or v.admin_level>=3) %}
+            {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
             <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post_toast('/retry_thumb/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
             {% endif %}
 
-            {% if v and not v.is_suspended %}
+            {% if g.user and not g.user.is_suspended %}
             <button class="btn btn-link btn-block btn-lg text-left"><a class="text-muted font-weight-bold" href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="far fa-retweet text-center text-muted mr-3"></i>Resubmit</a></button>
               {% endif %}
 
             {% if p.is_guildmaster('content') %}
 
-              {% if v.id == p.author_id %}
+              {% if g.user.id == p.author_id %}
               <button class="btn btn-link btn-block btn-lg text-left text-warning" onclick="post('/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.href = '{{p.permalink}}';})"><i class="far fa-crown text-center text-warning mr-3"></i>Herald</button>
               {% endif %}
 
@@ -376,7 +376,7 @@
               <button class="btn btn-link btn-block btn-lg text-danger text-left" id="kick-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/kick/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.reload(true)})"><i class="far fa-sign-out fa-flip-horizontal text-center text-danger mr-3"></i>Kick</button>
             {% endif %}
 
-            {% if v.admin_level >=3 %}
+            {% if g.user.admin_level >=3 %}
               {% if p.is_banned %}
               <button class="btn btn-link btn-block btn-lg text-success text-left" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="far fa-check text-center text-success mr-3"></i>Approve</button>
               {% else %}
@@ -384,13 +384,13 @@
               {% endif %}
             {% endif %}
 
-            {% if v.admin_level >=4 and p.oauth_app %}
+            {% if g.user.admin_level >=4 and p.oauth_app %}
               <button class="btn btn-link btn-block btn-lg text-muted text-left"  href="{{ p.oauth_app.permalink }}"><a href="{{ p.oauth_app.permalink }}"><i class="far fa-code text-center text-muted mr-3"></i>API App</a></button>
             {% endif %}
 
           {% endif %}
 
-          {% if v and not v.id==p.author_id and  p.deleted_utc == 0 and not p.author.is_deleted %}
+          {% if g.user and not g.user.id==p.author_id and  p.deleted_utc == 0 and not p.author.is_deleted %}
             <button id="block-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger{% if p.is_blocking %} d-none{% endif %}" data-dismiss="modal" onclick="post_toast('/settings/block?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-button-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-button-{{ p.base36id }}').classList.toggle('d-none');})"
             ><i class="fas fa-user-slash text-danger mr-3"></i>Block @{{ p.author.username }}</button>
             <button id="unblock-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger{% if not p.is_blocking %} d-none{% endif %}" data-dismiss="modal" onclick="post_toast('/settings/unblock?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-button-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-button-{{ p.base36id }}').classList.toggle('d-none');})"
@@ -417,7 +417,7 @@
 
   <div class="col-12">
 
-    <div id="post-{{ p.base36id }}" class="card border-0 mt-3 bg-white{% if p.is_banned %} banned{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}">
+    <div id="post-{{ p.base36id }}" class="card border-0 mt-3 bg-white{% if p.is_banned %} banned{% endif %}{% if p.stickied %} stickied{% endif %}{% if g.useroted==1 %} upvoted{% elif g.useroted==-1 %} downvoted{% endif %}">
       <div class="d-flex flex-row-reverse flex-nowrap justify-content-end">
 
         {% if p.thumb_url and not p.embed_url and not p.is_crosspost %}
@@ -490,10 +490,10 @@
 
 
 
-          {% if v and v.id==p.author_id and not v.is_banned %}
+          {% if g.user and g.user.id==p.author_id and not g.user.is_banned %}
           <div id="edit-post-body-{{ p.base36id }}" class="d-none comment-write collapsed child">
             <form id="post-edit-form-{{ p.base36id }}" action="/edit_post/{{ p.base36id }}" method="post" class="input-group">
-              <input type="hidden" name="formkey" value="{{ v.formkey }}">
+              <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
               <input type="hidden" name="current_page" value="{{ request.path }}">
               <textarea name="body" id="post-edit-box-{{ p.base36id }}" form="post-edit-form-{{ p.base36id }}" class="comment-box form-control rounded" onkeydown="textAreaOnKeyDown(event, ()=>{document.getElementById('post-edit-form-{{ p.base36id }}').submit()})" aria-label="With textarea" placeholder="Add text to your post..." rows="3">{{ p.body }}</textarea> 
               <div class="comment-format"> 
@@ -530,18 +530,18 @@
 
                   <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
-                  {% if v and not v.id==p.author_id %}
+                  {% if g.user and not g.user.id==p.author_id %}
                   <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="fas fa-star"></i>Tip</a></li>
                   <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}', '{{ p.author.username }}','{{ p.board.name }}')"><i class="fas fa-flag"></i>Flag</a></li>
                   {% endif %}
 
-                  {% if v and v.id==p.author_id %}
+                  {% if g.user and g.user.id==p.author_id %}
                   <li class="list-inline-item"><a href="javascript:void(0)" onclick="togglePostEdit('{{ p.base36id }}')"><i class="fas fa-edit"></i>Edit</a></li>
 
                   <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" onclick="delete_postModal('{{ p.base36id }}')"><i class="fas fa-trash-alt"></i>Delete</a></li>
                   {% endif %}
 
-                  {% if v and (v.id==p.author_id or v.admin_level>=3 or p.is_guildmaster('content')) %}
+                  {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
 
                   {% if not p.board.over_18 %}
                   <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/api/toggle_post_nsfw/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="fas fa-eye-evil"></i>Toggle NSFW</a></li>
@@ -553,15 +553,15 @@
 
                   {% endif %}
 
-                  {% if v %}
+                  {% if g.user %}
 
-                  {% if v.mods_anything and p.board_id == 1 %}
+                  {% if g.user.mods_anything and p.board_id == 1 %}
                   <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" onclick="yank_postModal('{{ p.base36id }}','{{ p.author.username }}','{{ p.comment_count }}','{{ p.title | js_str_escape }}','{{ p.author.permalink }}','{{ p.domain | js_str_escape }}','{{ p.age_string }}')" class="d-block"><i class="fas fa-hand-lizard"></i>Yank</a></li>
                   {% endif %}
-                  {% if v.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
+                  {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
                   <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/user/kick/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
                   {% endif %}
-                  {% if p.url and p.has_thumb==False and (v.id==p.author_id or v.admin_level>=3) %}
+                  {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
                   <li class="list-inline-item"><a href="javascript:void(0)" onclick="post_toast('/retry_thumb/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="fas fa-image"></i>Retry Thumb</a></li>
 
                   {% endif %}
@@ -574,14 +574,14 @@
                   <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1', callback=function(){window.location.reload(true)})"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Pin</a></li>
                   {% endif %}
 
-                  {% if v.id == p.author_id %}
+                  {% if g.user.id == p.author_id %}
                   <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.href = '{{p.permalink}}';})" class="text-warning"><i class="fas fa-crown text-warning"></i>Herald</a></li>
                   {% endif %}
 
                   <li class="list-inline-item"><a class="text-danger" href="javascript:void(0)" onclick="post('/mod/kick/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
                   {% endif %}
 
-                  {% if v.admin_level >=3 %}
+                  {% if g.user.admin_level >=3 %}
                   {% if p.is_banned or p.active_flags %}
                   <li class="list-inline-item"><a class="text-success" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="fas fa-check text-success"></i>Approve</a></li>
                   {% endif %}
@@ -590,14 +590,14 @@
                   {% endif %}
                   {% endif %}
 
-                  {% if v.admin_level >= 4 and p.oauth_app %}
+                  {% if g.user.admin_level >= 4 and p.oauth_app %}
                   <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i>API App</a></li>
                   {% endif %}
                   {% endif %}
 
-                  {% if v and not v.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i>Resubmit</a></li>{% endif %}
+                  {% if g.user and not g.user.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i>Resubmit</a></li>{% endif %}
 
-                  {% if v and not v.id==p.author_id and not p.author.is_deleted %}
+                  {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
                   <li class="list-inline-item d-none d-md-inline-block">
                   	<div class="dropdown show">
                   		<a href="#" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
@@ -628,14 +628,14 @@
 
           <!-- Voting on "medium" devices or larger, hidden on smaller devices -->
 
-          {% if v %}
+          {% if g.user %}
 
           <div id="voting" class="voting d-none d-md-block mb-auto">
-            <div id="post-{{ p.base36id }}-up" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}"></div>
+            <div id="post-{{ p.base36id }}-up" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if g.useroted==1 %}active{% endif %}"></div>
 
-            <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
+            <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if g.useroted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
-            <div id="post-{{ p.base36id }}-down" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}"></div>
+            <div id="post-{{ p.base36id }}-down" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if g.useroted==-1 %}active{% endif %}"></div>
           </div>
 
           {% else %}
@@ -679,16 +679,16 @@
         <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
         <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
-        {% if v %}
+        {% if g.user %}
         <li class="list-inline-item">
           <a href="#" data-toggle="modal" data-target="#actionsModal">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>
         {% endif %}
-        <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}">
-          {% if v %}
-          <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
+        <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none{% if g.useroted==1 %} upvoted{% elif g.useroted==-1 %} downvoted{% endif %}">
+          {% if g.user %}
+          <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if g.useroted==1 %}active{% endif %}">
           </span>
           {% else %}
           <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
@@ -696,10 +696,10 @@
           </span>
           {% endif %}
 
-          <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
+          <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if g.useroted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
-          {% if v %}
-          <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
+          {% if g.user %}
+          <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if g.useroted==-1 %}active{% endif %}">
           </span>
           {% else %}
           <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
@@ -738,13 +738,13 @@
     </div>
   </div>
 
-  {% if not p.is_banned and is_allowed_to_comment and ((not p.is_blocking and not p.is_blocked) or v.admin_level>=3) %}
+  {% if not p.is_banned and is_allowed_to_comment and ((not p.is_blocking and not p.is_blocked) or g.user.admin_level>=3) %}
   <div id="comment-form-space-{{ p.fullname }}" class="comment-write mb-3">
     <form id="reply-to-{{ p.fullname }}" class="input-group" action="/api/comment" method="post">
-      <input type="hidden" name="formkey" value="{{ v.formkey }}">
+      <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
       <input type="hidden" name="parent_fullname" value="t2_{{ p.base36id }}">
       <input id="reply-form-submission-{{ p.fullname }}" type="hidden" name="submission" value="{{ p.base36id }}">
-      {% if v %}
+      {% if g.user %}
       <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" onkeydown="textAreaOnKeyDown(event, (fullname = '{{ p.fullname }}') => post_comment(fullname))" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
       {% endif %}
       <div class="comment-format">
@@ -758,7 +758,7 @@
           <label class="btn btn-secondary format d-inline-block m-0" for="emoji-reply-btn-{{p.fullname}}">
             <div id="emoji-reply-btn-{{p.fullname}}" onclick="commentForm('reply-form-body-{{p.fullname}}');loadEmojis()" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
           </label> 
-          <label class="format btn btn-secondary m-0 ml-1 {% if v.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
+          <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
                 <div id="filename-show-reply-{{ p.base36id }}"><i class="far fa-image"></i></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" onchange="document.getElementById('filename-show-reply-{{ p.base36id }}').innerHTML=document.getElementById('file-upload-reply-{{ p.fullname }}').files[0].name;" hidden>
           </label>
@@ -799,7 +799,7 @@
     <i class="fas text-gray-500 fa-ghost fa-stack-1x text-lg"></i>
   </span>
   <h2 class="h5">Be the first to comment!</h2>
-  {% if v %}
+  {% if g.user %}
   <p class="text-muted">This comment section is a ghost town...</p>
   {% else %}
   <p class="text-muted">This comment section is a ghost town. <a href="/login?redirect={{ request.path | urlencode}}">Sign in</a></p>
@@ -811,7 +811,7 @@
 
 </div>
 
-{% if v and v.id==p.author_id %}
+{% if g.user and g.user.id==p.author_id %}
 {% include "delete_post_modal.html" %}
 {% else %}
 {% include "tip_modal.html" %}
@@ -835,7 +835,7 @@
 {% endblock %}
 
 {% block GIFpicker %}
-{% if v %}
+{% if g.user %}
 {% include "gif_modal.html" %}
 {% include "emoji_modal.html" %}
 {% endif %}
