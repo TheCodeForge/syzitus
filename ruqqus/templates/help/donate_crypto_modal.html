@@ -1,5 +1,14 @@
 <!-- Crypto Donate Modal -->
 
+
+{% set data={
+  "btc": {
+    "name":"Bitcoin",
+    "address": "abcdef"
+  }
+}
+%}
+
 <div class="modal fade" id="donateCryptoModal" tabindex="-1" role="dialog" aria-labelledby="donateCryptoModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -11,13 +20,13 @@
       </div>
       <div class="modal-body accordion" id="cryptoAccordion">
 
-        <!-- Bitcoin -->
+        {% for x in data %}
 
         <div class="border rounded p-3 mb-3">
 
          <div class="" data-toggle="collapse" href="#bitcoinCollapse" role="button" aria-expanded="true" aria-controls="bitcoinCollapse">
           <i class="fab fa-bitcoin text-lg text-center mr-1" style="color: #F39231; width: 1.25rem;"></i>
-          <span class="h6 text-muted">Bitcoin Address</span>
+          <span class="h6 text-muted">[{{ x | upper }}] {{ data[x]['name'] }}</span>
           <span class="float-right"><i class="fa text-gray-400"></i></span>
         </div>
 
@@ -25,15 +34,17 @@
 
           <div class="mt-3 text-center">
 
-            <!--- qr code img goes here -->
+            <img class="mx-auto d-block w-75" src="{{ data[x]['addr'] | qrcode_img_data }}">
 
             <div class="mt-3">
-              <input class="copy-link form-control mr-3" role="button" value="address pending" data-clipboard-text="address pending" aria-describedby="bitcoinAddress" readonly>
+              <input class="copy-link form-control mr-3" role="button" value="{{ data[x]['address'] }}" data-clipboard-text="{{ data[x]['address'] }}" aria-describedby="bitcoinAddress" readonly>
             </div>
 
           </div>
 
         </div>
+
+        {% endfor %}
 
       </div>
 

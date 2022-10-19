@@ -131,3 +131,22 @@ def crosspost_embed(url):
 def lines_count(x):
 
     return x.count("\n")+1
+
+@app.template_filter('qrcode_img_data')
+def qrcode_filter(x):
+  
+    mem=io.BytesIO()
+    qr=qrcode.QRCode()
+    qr.add_data(x)
+    img=qr.make_image(
+        fill_color=app.config["SITE_COLOR"],
+        back_color="white",
+    )
+    img.save(
+        mem, 
+        format="PNG"
+    )
+    mem.seek(0)
+    
+    data=base64.b64encode(mem.read()).decode('ascii')
+    return f"data:image/png;base64,{data}"
