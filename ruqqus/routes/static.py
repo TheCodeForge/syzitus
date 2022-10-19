@@ -11,7 +11,7 @@ from ruqqus.helpers.markdown import *
 import ruqqus.classes
 from ruqqus.classes import *
 from ruqqus.mail import *
-from ruqqus.__main__ import app, limiter
+from ruqqus.__main__ import app, limiter, debug
 
 # take care of misc pages that never really change (much)
 
@@ -54,6 +54,9 @@ def main_css(file):
 @app.route('/assets/<path:path>')
 @limiter.exempt
 def static_service(path):
+
+	to_send=safe_join('./assets', path)
+	debug(to_send)
 	resp = make_response(send_file(safe_join('./assets', path)))
 	resp.headers.add("Cache-Control", "public")
 
