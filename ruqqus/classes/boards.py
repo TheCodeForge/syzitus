@@ -56,8 +56,8 @@ class Board(Base, Stndrd, Age_times):
 
     #subcat=relationship("SubCategory")
     #moderators=relationship("ModRelationship")
-    subscribers=relationship("Subscription", lazy="dynamic")
-    submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
+    #subscribers=relationship("Subscription", lazy="dynamic")
+    #submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
     #contributors=relationship("ContributorRelationship", lazy="dynamic")
     #bans=relationship("BanRelationship", lazy="dynamic")
     #chatbans=relationship("ChatBan", lazy="dynamic")
