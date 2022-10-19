@@ -17,7 +17,7 @@ from ruqqus.__main__ import app
 @no_negative_balance("toast")
 @api("vote")
 @validate_formkey
-def api_vote_post(pid, x, v):
+def api_vote_post(pid, x):
 
     """
 Cast a vote on a post.
@@ -40,7 +40,7 @@ URL path parameters:
         count=g.db.query(Vote).filter(
             Vote.user_id.in_(
                 tuple(
-                    [v.id]+[x.id for x in v.alts]
+                    [g.user.id]+[x.id for x in g.user.alts]
                     )
                 ),
             Vote.created_utc > (int(time.time())-3600), 
@@ -66,17 +66,17 @@ URL path parameters:
 
     # check for existing vote
     existing = g.db.query(Vote).filter_by(
-        user_id=v.id, submission_id=post.id).first()
+        user_id=g.user.id, submission_id=post.id).first()
     if existing:
         existing.change_to(x)
         g.db.add(existing)
 
     else:
-        vote = Vote(user_id=v.id,
+        vote = Vote(user_id=g.user.id,
                     vote_type=x,
                     submission_id=base36decode(pid),
                     creation_ip=request.remote_addr,
-                    app_id=v.client.application.id if v.client else None
+                    app_id=g.user.client.application.id if g.user.client else None
                     )
 
         g.db.add(vote)
@@ -104,7 +104,7 @@ URL path parameters:
 
     g.db.commit()
 
-    # print(f"Vote Event: @{v.username} vote {x} on post {pid}")
+    # print(f"Vote Event: @{g.user.username} vote {x} on post {pid}")
 
     return "", 204
 
@@ -116,7 +116,7 @@ URL path parameters:
 @no_negative_balance("toast")
 @api("vote")
 @validate_formkey
-def api_vote_comment(cid, x, v):
+def api_vote_comment(cid, x):
 
     """
 Cast a vote on a comment.
@@ -151,17 +151,17 @@ URL path parameters:
 
     # check for existing vote
     existing = g.db.query(CommentVote).filter_by(
-        user_id=v.id, comment_id=comment.id).first()
+        user_id=g.user.id, comment_id=comment.id).first()
     if existing:
         existing.change_to(x)
         g.db.add(existing)
     else:
 
-        vote = CommentVote(user_id=v.id,
+        vote = CommentVote(user_id=g.user.id,
                            vote_type=x,
                            comment_id=base36decode(cid),
                            creation_ip=request.remote_addr,
-                           app_id=v.client.application.id if v.client else None
+                           app_id=g.user.client.application.id if g.user.client else None
                            )
 
         g.db.add(vote)
@@ -182,6 +182,6 @@ URL path parameters:
     g.db.add(comment)
     g.db.commit()
 
-    # print(f"Vote Event: @{v.username} vote {x} on comment {cid}")
+    # print(f"Vote Event: @{g.user.username} vote {x} on comment {cid}")
 
     return make_response(""), 204
