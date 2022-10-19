@@ -494,13 +494,13 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"), backref="notifications")
+    user_id = Column(Integer, ForeignKey("users.id"))
     comment_id = Column(Integer, ForeignKey("comments.id"), default=None)
     submission_id = Column(Integer, ForeignKey("submissions.id"), default=None)
 
     read = Column(Boolean, default=False)
 
-    comment = relationship("Comment", primaryjoin="Notification.comment_id==Comment.id")
+    comment = relationship("Comment", primaryjoin="Notification.comment_id==Comment.id", backref="notifications")
     post = relationship("Submission")
     user=relationship("User", innerjoin=True)
 
