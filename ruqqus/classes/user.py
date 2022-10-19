@@ -165,10 +165,10 @@ class User(Base, Stndrd, Age_times):
     #     primaryjoin="PayPalTxn.user_id==User.id")
 
     # properties defined as SQL server-side functions
-    energy = deferred(Column(Integer, server_default=FetchedValue()))
-    comment_energy = deferred(Column(Integer, server_default=FetchedValue()))
-    referral_count = deferred(Column(Integer, server_default=FetchedValue()))
-    follower_count = deferred(Column(Integer, server_default=FetchedValue()))
+    energy = deferred(Column(Integer, FetchedValue()))
+    comment_energy = deferred(Column(Integer, FetchedValue()))
+    referral_count = deferred(Column(Integer, FetchedValue()))
+    follower_count = deferred(Column(Integer, FetchedValue()))
 
     def __init__(self, **kwargs):
 
