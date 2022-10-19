@@ -32,7 +32,7 @@
 		<div class="comment-write collapsed child p-4">
 			<form id="reply" action="{{ action }}" method="post" class="input-group">
 
-				<input type="hidden" name="formkey" value="{{ v.formkey }}">
+				<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 				{% if parent_fullname %}<input type="hidden" name="parent_fullname" value="{{ parent_fullname }}">{% endif %}
 				{% if parent_submission %}<input type="hidden" name="submission" value="{{ parent_submission }}">{% endif %}

@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 
 {% block stylesheets %}
-{% if v and session.get("dark_mode_enabled") %}
+{% if g.user and session.get("dark_mode_enabled") %}
 <link id="css-link" rel="stylesheet" href="{{ b.css_dark_url }}?v=2.38.0">
 {% else %}
 <link id="css-link" rel="stylesheet" href="{{ b.css_url }}?v=2.38.0">
@@ -10,30 +10,30 @@
 {% endblock %}
 
 {% block adminpanel %}
-{% if v.admin_level >=3 %}
+{% if g.user.admin_level >=3 %}
 {% if b.is_banned %}
 <form action="/api/unban_guild/{{ b.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-success" value="Unban guild">
 </form>
 
 <p class="my-3">Reason: {{ b.ban_reason }}</p>
 
-{% if v.admin_level >=5 %}
+{% if g.user.admin_level >=5 %}
 <form action="/admin/purge_guild_images/{{ b.name }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-danger" value="Purge All Hosted Images">
 </form>
 {% endif %}
 {% else %}
 <form action="/api/ban_guild/{{ b.base36id }}", method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input id="guild-ban-reason" type="text" class="form-control bg-white" name="reason" placeholder="Ban Reason" onchange="document.getElementById('guild-ban-submit').disabled=false;">
   <input id="guild-ban-submit" type="submit" class="btn btn-warning mt-3" value="Ban guild" disabled>
 </form>
-{% if not b.has_mod(v) %}
+{% if not b.has_mod(g.user) %}
 <form action="/api/mod_self/{{ b.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-success mt-3" value="Mod Self">
 </form>
 {% endif %}
@@ -90,7 +90,7 @@
 </div>
 {% endif %}
 
-{% set mod = b.has_mod(v) %}
+{% set mod = b.has_mod(g.user) %}
 
 {% if mod %}
 <div class="sidebar-section sidebar-info">
@@ -141,9 +141,9 @@
     }
   }
 </script>
-{% if v and v.can_use_darkmode and session.get("dark_mode_enabled")%}
+{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
 <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-width-rem text-left mr-3" id="dark-switch"></i>Dark mode</a>
-{% elif v and v.can_use_darkmode %}
+{% elif g.user and g.user.can_use_darkmode %}
 <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-width-rem text-left mr-3" id="dark-switch"></i>Dark mode</a>
 {% else %}
 <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-width-rem text-left mr-3"></i>Dark mode</a>
@@ -152,7 +152,7 @@
 
 {% block PseudoSubmitForm %}
 
-{% if b.can_submit(v) %}
+{% if b.can_submit(g.user) %}
 <!-- Link to submission page from guild -->
 <div class="row no-gutters d-none d-lg-flex mt-3">
   <div class="col">
@@ -165,13 +165,13 @@
         </ul>
       </div>
       <div class="card-body">
-        {% if v and not b.is_subscribed %}
+        {% if g.user and not b.is_subscribed %}
         <a href="/submit?guild={{ b.name | urlencode }}">
           <input type="text" class="form-control"
           placeholder="Share something with this guild..." aria-label="Username"
           aria-describedby="basic-addon1">
         </a>
-        {% elif v and b.is_subscribed %}
+        {% elif g.user and b.is_subscribed %}
         <a href="/submit?guild={{ b.name | urlencode }}">
           <input type="text" class="form-control"
           placeholder="Share something with your guild..." aria-label="Username"
@@ -215,7 +215,7 @@
         <div>
           <a href="{{ b.permalink }}">
             <span class="h6 text-black mb-0">+{{ b.name }}
-              {% if v and v.has_blocked_guild(b) %}
+              {% if g.user and g.user.has_blocked_guild(b) %}
               <i class="fas fa-eye-slash text-danger align-middle ml-2" data-toggle="tooltip" data-placement="bottom" data-html="true" title="You have hidden this guild from /all. Visit your settings or click the <i class='far fa-ellipsis-h text-small'></i> icon to adjust its visibility."></i>
               {% endif %}
             </span>
@@ -248,12 +248,12 @@
         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
         <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
         <a class="dropdown-item" href="{{ b.permalink }}/mod/log"><i class="fas fa-scroll-old"></i>Moderation log</a>
-        {% if b.has_mod(v) %}
+        {% if b.has_mod(g.user) %}
         <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
         {% endif %}
-        {% if v and not v.has_blocked_guild(b) %}
+        {% if g.user and not g.user.has_blocked_guild(b) %}
         <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ b.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
-        {% elif v %}
+        {% elif g.user %}
         <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ b.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
         {% endif %}
       </div>
@@ -305,7 +305,7 @@
       </div>
       {% endblock %}
 
-      {% if v %}
+      {% if g.user %}
       <div id="button-sub" {% if b.is_subscribed %}class="d-none"{% endif %}>
         <button class="btn btn-primary" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">
           Join guild
@@ -360,15 +360,15 @@
         {% endblock %}
         <p class="font-weight-bold">{{ [b.stored_subscriber_count, 0] | max }} member{{ 's' if b.stored_subscriber_count != 1 else '' }}
         </p>
-        {% if b.has_mod(v) %}
+        {% if b.has_mod(g.user) %}
         <a class="btn btn-outline-secondary btn-block text-muted mb-2" href="{{ b.permalink }}/mod/settings">Guild settings</a>
         {% endif %}
 
-        {% if False and b.can_chat(v) %}
+        {% if False and b.can_chat(g.user) %}
         <a class="btn btn-primary btn-block text-white mb-2" href="{{ b.chat_url }}">Chat</a>
         {% endif %}
 
-      {% if v %}
+      {% if g.user %}
         <div id="button-sub-mobile" {% if b.is_subscribed %}class="d-none"{% endif %}>
           <button class="btn btn-primary btn-block" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">
             Join guild

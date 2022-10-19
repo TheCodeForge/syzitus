@@ -39,7 +39,7 @@
 
     </a>
 
-    {% if v and request.path=="/browse" %}
+    {% if g.user and request.path=="/browse" %}
     <div id="button-sub-mobile-{{ b.base36id }}" style="z-index: 2" class="{% if b.has_subscriber(v) %}d-none{% endif %}"><a class="btn btn-primary btn-sm" href="javascript:void(0)" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=function(){document.getElementById('button-unsub-mobile-{{ b.base36id }}').classList.toggle('d-none');document.getElementById('button-sub-mobile-{{ b.base36id }}').classList.toggle('d-none');})">Join</a></div>
     <div id="button-unsub-mobile-{{ b.base36id }}" style="z-index: 2" class="{% if not b.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-secondary btn-sm" href="javascript:void(0)" onclick="post_toast('/api/unsubscribe/{{ b.name }}', callback=function(){document.getElementById('button-unsub-mobile-{{ b.base36id }}').classList.toggle('d-none');document.getElementById('button-sub-mobile-{{ b.base36id }}').classList.toggle('d-none');})">Leave</a></div>
     {% elif not v and request.path=="/browse" %}

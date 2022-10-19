@@ -26,7 +26,7 @@
         <div>
           <a href="{{ b.permalink }}">
           <span class="h6 text-black mb-0">+{{ b.name }}
-            {% if v and v.has_blocked_guild(b) %}
+            {% if g.user and g.user.has_blocked_guild(b) %}
             <i class="fas fa-eye-slash text-danger align-middle ml-2" data-toggle="tooltip" data-placement="bottom" data-html="true" title="You have hidden this guild from /all. Visit your settings or click the <i class='far fa-ellipsis-h text-small'></i> icon to adjust its visibility."></i>
             {% endif %}
           </span>
@@ -59,9 +59,9 @@
         {% if b.has_mod(v) %}
         <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
         {% endif %}
-        {% if v and not v.has_blocked_guild(b) %}
+        {% if g.user and not g.user.has_blocked_guild(b) %}
         <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ b.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
-        {% elif v %}
+        {% elif g.user %}
         <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ b.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
         {% endif %}
       </div>
@@ -71,7 +71,7 @@
     <div class="d-flex align-items-center">
 
 
-      {% if v %}
+      {% if g.user %}
       <div id="button-sub" {% if b.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post_toast('/api/subscribe/{{ b.name }}', callback=toggleSub)">Join guild</a></div>
       <div id="button-unsub" {% if not b.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post_toast('/api/unsubscribe/{{ b.name }}', callback=toggleSub)">Leave</a></div>
       {% elif not v %}
