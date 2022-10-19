@@ -48,7 +48,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         uselist=False,
         innerjoin=True,
         primaryjoin="Submission.id==SubmissionAux.id")
-    author_id = Column(BigInteger, ForeignKey("users.id"), index=True, backref="submissions")
+    author_id = Column(BigInteger, ForeignKey("users.id"), index=True)
     repost_id = Column(BigInteger, ForeignKey("submissions.id"), default=0)
     edited_utc = Column(BigInteger, default=0)
     created_utc = Column(BigInteger, default=0)
@@ -91,12 +91,14 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         "Board",
         lazy="joined",
         innerjoin=True,
-        primaryjoin="Submission.board_id==Board.id")
+        primaryjoin="Submission.board_id==Board.id",
+        backref="submissions")
     author = relationship(
         "User",
         lazy="joined",
         innerjoin=True,
-        primaryjoin="Submission.author_id==User.id")
+        primaryjoin="Submission.author_id==User.id",
+        backref="submissions")
     is_pinned = Column(Boolean, default=False)
     score_best = Column(Float, default=0)
     reports = relationship("Report", backref="submission")
