@@ -104,8 +104,6 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
 
     #flag_count=deferred(Column(Integer, server_default=FetchedValue()))
 
-    board_id = deferred(Column(Integer, server_default=FetchedValue()))
-
     def __init__(self, *args, **kwargs):
 
         if "created_utc" not in kwargs:
@@ -487,6 +485,10 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
         #mention
         else:
             return 3
+    
+    @property
+    def board_id(self):
+        return self.post.board_id
     
 
 class Notification(Base):
