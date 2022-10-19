@@ -119,36 +119,31 @@ Optional query parameters:
 
     if u.is_suspended and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_banned.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That user is banned"}
                 }
 
     if u.is_deleted and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_deleted.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That userpage is private"}
                 }
 
     if u.is_blocking and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocking.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": f"You are blocking @{u.username}."}
                 }
 
     if u.is_blocked and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocked.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "This person is blocking you."}
                 }
 
@@ -157,7 +152,7 @@ Optional query parameters:
     page = int(request.args.get("page", "1"))
     page = max(page, 1)
 
-    ids = u.userpagelisting(v=v, page=page, sort=sort, t=t)
+    ids = u.userpagelisting(page=page, sort=sort, t=t)
 
     # we got 26 items just to see if a next page exists
     next_exists = (len(ids) == 26)
@@ -167,11 +162,10 @@ Optional query parameters:
 
     return {'html': lambda: render_template("userpage.html",
                                             u=u,
-                                            v=v,
                                             listing=listing,
                                             page=page,
                                             next_exists=next_exists,
-                                            is_following=(g.user and u.has_follower(v))),
+                                            is_following=(g.user and u.has_follower(g.user))),
             'api': lambda: jsonify({"data": [x.json for x in listing]})
             }
 
@@ -209,50 +203,43 @@ Optional query parameters:
 
     if u.reserved:
         return {'html': lambda: render_template("userpage_reserved.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": f"That username is reserved for: {u.reserved}"}
                 }
 
     if u.is_suspended and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_banned.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That user is banned"}
                 }
 
     if u.is_deleted and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_deleted.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "That userpage is private"}
                 }
 
     if u.is_blocking and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocking.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": f"You are blocking @{u.username}."}
                 }
 
     if u.is_blocked and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocked.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": "This person is blocking you."}
                 }
 
     page = int(request.args.get("page", "1"))
 
     ids = user.commentlisting(
-        v=v, 
         page=page,
         sort=request.args.get("sort","new"),
         t=request.args.get("t","all")
@@ -264,11 +251,10 @@ Optional query parameters:
 
     listing = get_comments(ids)
 
-    is_following = (g.user and user.has_follower(v))
+    is_following = (g.user and user.has_follower(g.user))
 
     return {"html": lambda: render_template("userpage_comments.html",
                                             u=user,
-                                            v=v,
                                             listing=listing,
                                             page=page,
                                             next_exists=next_exists,
@@ -362,11 +348,11 @@ URL path parameters:
 
 @app.route("/api/agree_tos", methods=["POST"])
 @auth_required
-def api_agree_tos(v):
+def api_agree_tos():
 
     g.user.tos_agreed_utc = int(time.time())
 
-    g.db.add(v)
+    g.db.add(g.user)
 
     return redirect("/help/terms")
 
@@ -389,7 +375,7 @@ def user_profile_uid(uid):
 #@app.get("/api/v2/me/saved")
 @auth_required
 @api("read")
-def saved_listing(v):
+def saved_listing():
 
     print("saved listing")
 
@@ -406,7 +392,6 @@ def saved_listing(v):
     listing = get_posts(ids, sort="new")
 
     return {'html': lambda: render_template("home.html",
-                                            v=v,
                                             listing=listing,
                                             page=page,
                                             next_exists=next_exists
@@ -573,20 +558,20 @@ def info_packet(username, method="html"):
 
 #@app.route("/my_info", methods=["POST"])
 #@limiter.limit("2/day")
-@auth_required
-@validate_formkey
-def my_info_post(v):
+# @auth_required
+# @validate_formkey
+# def my_info_post():
 
-    if not g.user.is_activated:
-        return redirect("/settings/security")
+#     if not g.user.is_activated:
+#         return redirect("/settings/security")
 
-    method=request.values.get("method","html")
-    if method not in ['html','json']:
-        abort(400)
+#     method=request.values.get("method","html")
+#     if method not in ['html','json']:
+#         abort(400)
 
-    gevent.spawn_later(5, info_packet, g.user.username, method=method)
+#     gevent.spawn_later(5, info_packet, g.user.username, method=method)
 
-    return "started"
+#     return "started"
 
 
 
