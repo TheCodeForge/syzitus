@@ -527,7 +527,7 @@ class User(Base, Stndrd, Age_times):
     @property
     @cache.memoize(timeout=3600)  # 1hr cache time for user rep
     def karma(self):
-        return 503 if self.id==1 else int(self.energy) - self.post_count
+        return 503# if self.id==1 else int(self.energy) - self.post_count
 
     @property
     @cache.memoize(timeout=3600)
