@@ -9,9 +9,9 @@ def generate_hash(string):
 
     msg = bytes(string, "utf-16")
 
-    return hmac.new(key=bytes(environ.get("MASTER_KEY"), "utf-16"),
+    return hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
                     msg=msg,
-                    digestmod='md5'
+                    digestmod='sha256'
                     ).hexdigest()
 
 
@@ -23,7 +23,9 @@ def validate_hash(string, hashstr):
 def hash_password(password):
 
     return generate_password_hash(
-        password, method='pbkdf2:sha512', salt_length=8)
+        password, 
+        method='pbkdf2:sha512', 
+        salt_length=8)
 
 def safe_compare(x, y):
     
