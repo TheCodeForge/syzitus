@@ -85,8 +85,8 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     upvotes = Column(Integer, default=1)
     downvotes = Column(Integer, default=0)
 
-    parent_comment = relationship("Comment", remote_side=[id])
-    child_comments = relationship("Comment", remote_side=[parent_comment_id])
+    parent_comment = relationship("Comment", remote_side=[id], backref="child_comments")
+    #child_comments = relationship("Comment", remote_side=[parent_comment_id])
 
     awards = relationship("AwardRelationship", lazy="joined")
 
