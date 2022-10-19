@@ -5,6 +5,8 @@ import time
 import random
 import gevent
 
+from ruqqus.__main__ import app
+
 def generate_hash(string):
 
     msg = bytes(string, "utf-16")
