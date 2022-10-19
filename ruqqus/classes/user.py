@@ -1230,7 +1230,7 @@ class User(Base, Stndrd, Age_times):
 
 
         for badge in BADGE_DEFS.values():
-            if not badge.expr:
+            if not badge.__dict__.get('expr'):
                 continue
                 
             should_have = badge.evaluate(self)
