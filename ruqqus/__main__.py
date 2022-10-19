@@ -41,8 +41,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 _version = "2.38.0"
 
 app = Flask(__name__,
-            template_folder='./templates',
-            static_folder='./static'
+            template_folder='./templates'
             )
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=3)
 app.url_map.strict_slashes = False
