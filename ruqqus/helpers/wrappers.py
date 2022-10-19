@@ -523,4 +523,14 @@ def no_sanctions(f):
     return wrapper
 
 
+def public_cache(f):
 
+    def wrapper(*args, **kwargs):
+
+        resp = f(*args, **kwargs)
+
+        resp.headers.add("Cache-Control", "public")
+
+    wrapper.__name__=f.__name__
+    wrapper.__doc__=f.__doc__
+    return wrapper
