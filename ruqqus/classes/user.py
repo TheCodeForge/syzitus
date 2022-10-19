@@ -94,11 +94,6 @@ class User(Base, Stndrd, Age_times):
     filter_nsfw = Column(Boolean, default=False)
     stored_karma = Column(Integer, default=0)
     stored_subscriber_count=Column(Integer, default=0)
-    """posts_last_checked_utc = Column(Integer, default=0)
-    replies_last_checked_utc = Column(Integer, default=0)
-    mentions_last_checked_utc = Column(Integer, default=0)"""
-
-    auto_join_chat=Column(Boolean, default=False)
 
     coin_balance=Column(Integer, default=0)
     premium_expires_utc=Column(Integer, default=0)
@@ -529,6 +524,8 @@ class User(Base, Stndrd, Age_times):
     def karma(self):
         if self.id==1:
             return 503
+        
+        debug(self.energy)
 
         return (0 or self.energy) - self.post_count
 
