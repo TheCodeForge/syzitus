@@ -17,7 +17,7 @@ from secrets import token_hex
 
 
 from ruqqus.mail import *
-from ruqqus.__main__ import app, limiter
+from ruqqus.__main__ import app, limiter, debug
 
 valid_username_regex = re.compile("^[a-zA-Z0-9_]{3,25}$")
 valid_password_regex = re.compile("^.{8,100}$")
@@ -297,11 +297,11 @@ def sign_up_post():
         return new_signup("New account registration is currently closed. Please come back later.")
 
     if now - int(form_timestamp) < 5:
-        #print(f"signup fail - {username } - too fast")
+        debug(f"signup fail - {username } - too fast")
         return new_signup("There was a problem. Please try again.")
 
     if not hmac.compare_digest(correct_formkey, form_formkey):
-        #print(f"signup fail - {username } - mismatched formkeys")
+        debug(f"signup fail - {username } - mismatched formkeys")
         return new_signup("There was a problem. Please try again.")
 
     # check for matched passwords
@@ -311,11 +311,11 @@ def sign_up_post():
 
     # check username/pass conditions
     if not re.fullmatch(valid_username_regex, username):
-        #print(f"signup fail - {username } - mismatched passwords")
+        debug(f"signup fail - {username } - mismatched passwords")
         return new_signup("Invalid username")
 
     if not re.fullmatch(valid_password_regex, request.form.get("password")):
-        #print(f"signup fail - {username } - invalid password")
+        debug(f"signup fail - {username } - invalid password")
         return new_signup("Password must be between 8 and 100 characters.")
 
     # if not re.match(valid_email_regex, request.form.get("email")):
@@ -341,7 +341,7 @@ def sign_up_post():
 
     if existing_account or (email and g.db.query(
             User).filter(User.email.ilike(email)).first()):
-        # #print(f"signup fail - {username } - email already exists")
+        # debug(f"signup fail - {username } - email already exists")
         return new_signup(
             "An account with that username or email already exists.")
 
@@ -368,7 +368,7 @@ def sign_up_post():
         x = requests.post(url, data=data)
 
         if not x.json()["success"]:
-            #print(x.json())
+            debug(x.json())
             return new_signup("Unable to verify captcha [2].")
 
     # kill tokens
@@ -401,7 +401,7 @@ def sign_up_post():
             )
 
     except Exception as e:
-        #print(e)
+        debug(e)
         return new_signup("Please enter a valid email")
 
     g.db.add(new_user)
@@ -433,7 +433,7 @@ And since we're committed to [open-source](https://github.com/ruqqus/ruqqus) tra
 
     redir = request.form.get("redirect", None)
 
-    # #print(f"Signup event: @{new_user.username}")
+    # debug(f"Signup event: @{new_user.username}")
 
     return redirect("/")
 
