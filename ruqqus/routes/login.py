@@ -225,7 +225,7 @@ def sign_up_get():
     # formkey is a hash of session token, timestamp, and IP address
     formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
                        msg=bytes(formkey_hashstr, "utf-16"),
-                       digestmod='md5'
+                       digestmod='sha512'
                        ).hexdigest()
 
     redir = request.args.get("redirect", None)
@@ -273,7 +273,8 @@ def sign_up_post():
     correct_formkey_hashstr = form_timestamp + submitted_token + agent
 
     correct_formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
-                               msg=bytes(correct_formkey_hashstr, "utf-16")
+                               msg=bytes(correct_formkey_hashstr, "utf-16"),
+                               digestmod="sha512"
                                ).hexdigest()
 
     now = int(time.time())
