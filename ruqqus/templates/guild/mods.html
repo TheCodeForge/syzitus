@@ -75,7 +75,7 @@
 
        <div class="mt-auto">
         {% if me %}
-        <a href="javascript:void(0)" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#stepDownModal" onclick="step_downModal('{{ v.username }}')">Resign</a>
+        <a href="javascript:void(0)" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#stepDownModal" onclick="step_downModal('{{ g.user.username }}')">Resign</a>
         {% endif %}
         {% if me and me.perm_full %}
         <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" data-target="#guildmasterInviteModal"><i class="fas fa-plus mr-2"></i>Add guildmaster</a>
@@ -177,9 +177,9 @@
           </table>
         </div>
 
-	    {% if v and v.admin_level>=4 and not me %}
+	    {% if g.user and g.user.admin_level>=4 and not me %}
 <form action="/api/mod_self/{{ b.base36id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-success mt-3" value="Mod Self">
 </form>
 	    {% endif %}
@@ -209,7 +209,7 @@
 				</div>
 				<div class="modal-body">
 					<p>Users invited to moderate a guild will need to accept their invite. They will receive a notification shortly after you invite them.</p>
-					<input type="hidden" name="formkey" value="{{ v.formkey }}">
+					<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 					<input type="text" name="username" placeholder="enter username" id="invite-username" class="form-control" maxlength=25 required>
 				</div>
 				<div class="modal-footer">
@@ -255,7 +255,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <input name="formkey" type="hidden" value="{{ v.formkey }}">
+        <input name="formkey" type="hidden" value="{{ g.user.formkey }}">
         <input id="edit-perm-username" name="username" type="hidden" value="">
 
         <div class="form-group">
