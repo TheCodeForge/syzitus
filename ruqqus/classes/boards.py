@@ -23,9 +23,9 @@ class Board(Base, Stndrd, Age_times):
     id = Column(Integer, primary_key=True)
     name = Column(String, index=True)
     created_utc = Column(Integer)
-    description = Column(String)
+    description = Column(String, default="")
 
-    description_html=Column(String)
+    description_html=Column(String, default="")
     over_18=Column(Boolean, default=False)
     is_nsfl=Column(Boolean, default=False)
     is_banned=Column(Boolean, default=False)
