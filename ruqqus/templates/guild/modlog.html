@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
 
-{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+{% if g.user and g.user.referral_count and session.get("dark_mode_enabled") %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
 {% else %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
@@ -29,7 +29,7 @@
     <div class="rounded border bg-white mx-auto">
       {% for ma in actions %}
 
-        {% set hide= (ma.user.admin_level and ma.note and ('admin action' in ma.note or 'admin_action' in ma.note) and (not v or not v.admin_level>=2)) %}
+        {% set hide= (ma.user.admin_level and ma.note and ('admin action' in ma.note or 'admin_action' in ma.note) and (not g.user or not g.user.admin_level>=2)) %}
 
         <div id="action-{{ ma.base36id }}" class="position-relative d-flex justify-content-between flex-wrap align-items-center h-min-16 px-3 py-3 mb-3 mb-md-2 bg-white{% if loop.index > 1 %} border-top{% endif %}">
 
