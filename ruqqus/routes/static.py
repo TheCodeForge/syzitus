@@ -94,10 +94,8 @@ def settings_profile(v):
 @app.route("/help/titles", methods=["GET"])
 @auth_desired
 def titles(v):
-	titles = [x for x in g.db.query(Title).order_by(text("id asc")).all()]
 	return render_template("/help/titles.html",
-						   v=v,
-						   titles=titles)
+						   titles=TITLES)
 
 
 @app.route("/help/terms", methods=["GET"])
@@ -113,13 +111,9 @@ def help_terms(v):
 
 @app.route("/help/badges", methods=["GET"])
 @auth_desired
-def badges(v):
-	badges = [
-		x for x in g.db.query(BadgeDef).order_by(
-			text("rank asc, id asc")).all()]
+def badges(v):=
 	return render_template("help/badges.html",
-						   v=v,
-						   badges=badges)
+						   badges=BADGES)
 
 
 @app.route("/help/admins", methods=["GET"])
