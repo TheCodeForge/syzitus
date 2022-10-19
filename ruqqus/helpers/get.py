@@ -18,7 +18,7 @@ def get_user(username, nSession=None, graceful=False):
     if not nSession:
         nSession = g.db
 
-    if g.user:
+    if g.get('user'):
         isblocking = nSession.query(UserBlock).filter(
             UserBlock.user_id == g.user.id).subquery()
 
@@ -98,7 +98,7 @@ def get_account(base36id, nSession=None, graceful=False):
         else:
             return None
 
-    if g.user:
+    if g.get('user'):
         block = nSession.query(UserBlock).filter(
             or_(
                 and_(
@@ -133,7 +133,7 @@ def get_post(pid, graceful=False, nSession=None, no_text=False, **kwargs):
     #     target_submission_id=i
     #     ).subquery()
 
-    if g.user:
+    if g.get('user'):
         vt = nSession.query(Vote).filter_by(
             user_id=g.user.id, submission_id=i).subquery()
         mod = nSession.query(ModRelationship).filter_by(
