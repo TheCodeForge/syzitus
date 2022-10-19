@@ -15,7 +15,7 @@ class Subscription(Base):
     is_active = Column(Boolean, default=True)
     get_notifs=Column(Boolean, default=False)
 
-    user = relationship("User", uselist=False, backref="subscribers")
+    user = relationship("User", uselist=False, backref="subscriptions")
     board = relationship("Board", uselist=False, backref="subscribers")
 
     def __init__(self, *args, **kwargs):
