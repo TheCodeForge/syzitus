@@ -378,7 +378,7 @@ class User(Base, Stndrd, Age_times):
 
         if g.user and g.user.admin_level >= 4:
             pass
-        elif v:
+        elif g.user:
             m = g.db.query(
                 ModRelationship.board_id).filter_by(
                 user_id=g.user.id,
@@ -450,7 +450,7 @@ class User(Base, Stndrd, Age_times):
 
         if g.user and g.user.admin_level >= 4:
             pass
-        elif v:
+        elif g.user:
             m = g.db.query(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False).subquery()
             c = g.user.contributes.subquery()
 
