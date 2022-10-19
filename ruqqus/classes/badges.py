@@ -59,7 +59,7 @@ class Badge(Base):
 
     @property
     def badge(self):
-        return BADGES[self.badge_id]
+        return BADGE_DEFS[self.badge_id]
 
     @property
     def text(self):
