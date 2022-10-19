@@ -150,8 +150,8 @@ class User(Base, Stndrd, Age_times):
         lazy="dynamic",
         primaryjoin="User.id==UserBlock.target_id")
 
-    _applications = relationship("OauthApp", lazy="dynamic")
-    authorizations = relationship("ClientAuth", lazy="dynamic")
+    #_applications = relationship("OauthApp", lazy="dynamic")
+    #authorizations = relationship("ClientAuth", lazy="dynamic")
     #notification_subscriptions = relationship("PostNotificationSubscriptions", lazy="dynamic")
 
     saved_posts=relationship(
@@ -159,10 +159,10 @@ class User(Base, Stndrd, Age_times):
         lazy="dynamic",
         primaryjoin="User.id==SaveRelationship.user_id")
 
-    _transactions = relationship(
-        "PayPalTxn",
-        lazy="dynamic",
-        primaryjoin="PayPalTxn.user_id==User.id")
+    # _transactions = relationship(
+    #     "PayPalTxn",
+    #     lazy="dynamic",
+    #     primaryjoin="PayPalTxn.user_id==User.id")
 
     # properties defined as SQL server-side functions
     energy = deferred(Column(Integer, server_default=FetchedValue()))

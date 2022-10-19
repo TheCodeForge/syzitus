@@ -161,7 +161,3 @@ CATEGORIES={x:Category(
         ) for y in SUBCAT_DATA if SUBCAT_DATA[y]['cat_id']==x}, 
     **CATEGORY_DATA[x]
     ) for x in CATEGORY_DATA}
-
-# from pprint import pprint
-# pprint(CATEGORIES)
-# pprint({x:CATEGORIES[x].__dict__ for x in CATEGORIES})

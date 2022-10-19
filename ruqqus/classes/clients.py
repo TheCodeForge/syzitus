@@ -73,7 +73,7 @@ class ClientAuth(Base, Stndrd):
     refresh_token = Column(String(128))
     access_token_expire_utc = Column(Integer)
 
-    user = relationship("User", lazy="joined")
+    user = relationship("User", lazy="joined", backref="authorizations")
     application = relationship("OauthApp", lazy="joined")
 
     @property
