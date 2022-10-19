@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 import re
 
 
-def get_user(username, v=None, nSession=None, graceful=False):
+def get_user(username, nSession=None, graceful=False):
 
     username = username.replace('\\', '')
     username = username.replace('_', '\_')
@@ -18,14 +18,14 @@ def get_user(username, v=None, nSession=None, graceful=False):
     if not nSession:
         nSession = g.db
 
-    if v:
+    if g.user:
         isblocking = nSession.query(UserBlock).filter(
-            UserBlock.user_id == v.id).subquery()
+            UserBlock.user_id == g.user.id).subquery()
 
         isblocked =  nSession.query(UserBlock).filter(
-            UserBlock.target_id==v.id).subquery()
+            UserBlock.target_id==g.user.id).subquery()
 
-        follow=nSession.query(Follow).filter_by(user_id=v.id).subquery()
+        follow=nSession.query(Follow).filter_by(user_id=g.user.id).subquery()
 
         items=nSession.query(
             User,
@@ -80,7 +80,7 @@ def get_user(username, v=None, nSession=None, graceful=False):
     return user
 
 
-def get_account(base36id, v=None, nSession=None, graceful=False):
+def get_account(base36id, nSession=None, graceful=False):
 
     if not nSession:
         nSession = g.db
@@ -98,26 +98,26 @@ def get_account(base36id, v=None, nSession=None, graceful=False):
         else:
             return None
 
-    if v:
+    if g.user:
         block = nSession.query(UserBlock).filter(
             or_(
                 and_(
-                    UserBlock.user_id == v.id,
+                    UserBlock.user_id == g.user.id,
                     UserBlock.target_id == user.id
                 ),
                 and_(UserBlock.user_id == user.id,
-                     UserBlock.target_id == v.id
+                     UserBlock.target_id == g.user.id
                      )
             )
         ).first()
 
-        user._is_blocking = block and block.user_id == v.id
-        user._is_blocked = block and block.target_id == v.id
+        user._is_blocking = block and block.user_id == g.user.id
+        user._is_blocked = block and block.target_id == g.user.id
 
     return user
 
 
-def get_post(pid, v=None, graceful=False, nSession=None, no_text=False, **kwargs):
+def get_post(pid, graceful=False, nSession=None, no_text=False, **kwargs):
 
     if isinstance(pid, str):
         i = base36decode(pid)
@@ -133,16 +133,16 @@ def get_post(pid, v=None, graceful=False, nSession=None, no_text=False, **kwargs
     #     target_submission_id=i
     #     ).subquery()
 
-    if v:
+    if g.user:
         vt = nSession.query(Vote).filter_by(
-            user_id=v.id, submission_id=i).subquery()
+            user_id=g.user.id, submission_id=i).subquery()
         mod = nSession.query(ModRelationship).filter_by(
-            user_id=v.id, accepted=True, invite_rescinded=False).subquery()
+            user_id=g.user.id, accepted=True, invite_rescinded=False).subquery()
         boardblocks = nSession.query(
-            BoardBlock).filter_by(user_id=v.id).subquery()
-        blocking = v.blocking.subquery()
-        blocked = v.blocked.subquery()
-        sub = nSession.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+            BoardBlock).filter_by(user_id=g.user.id).subquery()
+        blocking = g.user.blocking.subquery()
+        blocked = g.user.blocked.subquery()
+        sub = nSession.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
 
         items = nSession.query(
             Submission,
@@ -172,7 +172,7 @@ def get_post(pid, v=None, graceful=False, nSession=None, no_text=False, **kwargs
         if no_text:
             items=items.options(lazyload(Submission.submission_aux))
 
-        if v.admin_level>=4:
+        if g.user.admin_level>=4:
             items=items.options(joinedload(Submission.oauth_app))
 
         items=items.filter(Submission.id == i
@@ -265,20 +265,20 @@ def get_posts(pids, sort="hot", v=None):
     #     ModAction.target_submission_id.in_(pids)
     #     ).subquery()
 
-    if v:
+    if g.user:
         vt = g.db.query(Vote).filter(
             Vote.submission_id.in_(pids), 
-            Vote.user_id==v.id
+            Vote.user_id==g.user.id
             ).subquery()
 
         mod = g.db.query(ModRelationship).filter_by(
-            user_id=v.id, accepted=True, invite_rescinded=False).subquery()
+            user_id=g.user.id, accepted=True, invite_rescinded=False).subquery()
 
         boardblocks = g.db.query(BoardBlock).filter_by(
-            user_id=v.id).subquery()
-        blocking = v.blocking.subquery()
-        blocked = v.blocked.subquery()
-        subs = g.db.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+            user_id=g.user.id).subquery()
+        blocking = g.user.blocking.subquery()
+        blocked = g.user.blocked.subquery()
+        subs = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
 
         query = g.db.query(
             Submission,
@@ -392,12 +392,12 @@ def get_post_with_comments(pid, sort_type="top", v=None):
         kind="exile_user"
         ).distinct(ModAction.target_comment_id).subquery()
 
-    if v:
-        votes = g.db.query(CommentVote).filter_by(user_id=v.id).subquery()
+    if g.user:
+        votes = g.db.query(CommentVote).filter_by(user_id=g.user.id).subquery()
 
-        blocking = v.blocking.subquery()
+        blocking = g.user.blocking.subquery()
 
-        blocked = v.blocked.subquery()
+        blocked = g.user.blocked.subquery()
 
         comms = g.db.query(
             Comment,
@@ -428,7 +428,7 @@ def get_post_with_comments(pid, sort_type="top", v=None):
         )
 
 
-        if v.admin_level >=4:
+        if g.user.admin_level >=4:
 
             comms=comms.options(joinedload(Comment.oauth_app))
 
@@ -537,7 +537,7 @@ def get_post_with_comments(pid, sort_type="top", v=None):
     return post
 
 
-def get_comment(cid, nSession=None, v=None, graceful=False, no_text=False, **kwargs):
+def get_comment(cid, nSession=None, graceful=False, no_text=False, **kwargs):
 
     if isinstance(cid, str):
         i = base36decode(cid)
@@ -553,16 +553,16 @@ def get_comment(cid, nSession=None, v=None, graceful=False, no_text=False, **kwa
          kind="exile_user"
          ).subquery()
 
-    if v:
-        blocking = v.blocking.subquery()
-        blocked = v.blocked.subquery()
+    if g.user:
+        blocking = g.user.blocking.subquery()
+        blocked = g.user.blocked.subquery()
         vt = nSession.query(CommentVote).filter(
-            CommentVote.user_id == v.id,
+            CommentVote.user_id == g.user.id,
             CommentVote.comment_id == i).subquery()
 
         mod=nSession.query(ModRelationship
             ).filter_by(
-            user_id=v.id,
+            user_id=g.user.id,
             accepted=True
             ).subquery()
 
@@ -594,7 +594,7 @@ def get_comment(cid, nSession=None, v=None, graceful=False, no_text=False, **kwa
         if no_text:
             items=items.options(lazyload(Comment.comment_aux))
 
-        if v.admin_level >=4:
+        if g.user.admin_level >=4:
             items=items.options(joinedload(Comment.oauth_app))
 
         items=items.filter(
@@ -627,17 +627,17 @@ def get_comment(cid, nSession=None, v=None, graceful=False, no_text=False, **kwa
         block = nSession.query(UserBlock).filter(
             or_(
                 and_(
-                    UserBlock.user_id == v.id,
+                    UserBlock.user_id == g.user.id,
                     UserBlock.target_id == x.author_id
                 ),
                 and_(UserBlock.user_id == x.author_id,
-                     UserBlock.target_id == v.id
+                     UserBlock.target_id == g.user.id
                      )
             )
         ).first()
 
-        x._is_blocking = block and block.user_id == v.id
-        x._is_blocked = block and block.target_id == v.id
+        x._is_blocking = block and block.user_id == g.user.id
+        x._is_blocked = block and block.target_id == g.user.id
 
     else:
         q = nSession.query(
@@ -661,7 +661,7 @@ def get_comment(cid, nSession=None, v=None, graceful=False, no_text=False, **kwa
     return x
 
 
-def get_comments(cids, v=None, nSession=None, sort_type=None,
+def get_comments(cids, nSession=None, sort_type=None,
                  load_parent=False, **kwargs):
 
     if not cids:
@@ -679,14 +679,14 @@ def get_comments(cids, v=None, nSession=None, sort_type=None,
         ModAction.target_comment_id.in_(cids)
         ).distinct(ModAction.target_comment_id).subquery()
 
-    if v:
-        votes = nSession.query(CommentVote).filter_by(user_id=v.id).subquery()
+    if g.user:
+        votes = nSession.query(CommentVote).filter_by(user_id=g.user.id).subquery()
 
-        blocking = v.blocking.subquery()
+        blocking = g.user.blocking.subquery()
 
-        blocked = v.blocked.subquery()
+        blocked = g.user.blocked.subquery()
 
-        mod = g.db.query(ModRelationship).filter_by(user_id=v.id, accepted=True).subquery()
+        mod = g.db.query(ModRelationship).filter_by(user_id=g.user.id, accepted=True).subquery()
 
         comms = nSession.query(
             Comment,
@@ -718,7 +718,7 @@ def get_comments(cids, v=None, nSession=None, sort_type=None,
         )
 
 
-        if v.admin_level >=4:
+        if g.user.admin_level >=4:
 
             comms=comms.options(joinedload(Comment.oauth_app))
 
@@ -842,20 +842,19 @@ def get_comments(cids, v=None, nSession=None, sort_type=None,
     return output
 
 
-def get_board(bid,v=None, graceful=False):
+def get_board(bid,graceful=False):
 
     if isinstance(bid, str):
         bid=base36decode(bid)
 
         
-    if v:
-        sub = g.db.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+    if g.user:
+        sub = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
         items = g.db.query(
             Board,
             aliased(Subscription, alias=sub)
             ).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
+            joinedload(Board.moderators).joinedload(ModRelationship.user)
             ).filter(
                 Board.id==bid
             ).join(
@@ -873,7 +872,6 @@ def get_board(bid,v=None, graceful=False):
             
         query = g.db.query(Board).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
             ).filter(
                     Board.id==bid)
         board=query.first()
@@ -888,16 +886,15 @@ def get_board(bid,v=None, graceful=False):
     return board
 
 
-def get_boards(bids, v=None, graceful=False):
+def get_boards(bids, graceful=False):
         
-    if v:
-        sub = g.db.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+    if g.user:
+        sub = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
         items = g.db.query(
             Board,
             aliased(Subscription, alias=sub)
             ).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
             ).filter(
                 Board.id.in_(tuple(bids))
             ).join(
@@ -916,7 +913,6 @@ def get_boards(bids, v=None, graceful=False):
             
         output = g.db.query(Board).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
             ).filter(
                     Board.id.in_(bids)
         ).all()
@@ -935,7 +931,7 @@ def get_boards(bids, v=None, graceful=False):
 
 
 
-def get_guild(name, v=None, graceful=False, db=None):
+def get_guild(name, graceful=False, db=None):
 
     if not db:
         db=g.db
@@ -946,15 +942,14 @@ def get_guild(name, v=None, graceful=False, db=None):
     name = name.replace('_', '\_')
     name = name.replace('%', '')
 
-    if v:
-        sub = g.db.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+    if g.user:
+        sub = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
 
         items = g.db.query(
             Board,
             aliased(Subscription, alias=sub)
             ).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
+            joinedload(Board.moderators).joinedload(ModRelationship.user)
             ).filter(
                     Board.name.ilike(name)
             ).join(
@@ -971,8 +966,7 @@ def get_guild(name, v=None, graceful=False, db=None):
     else:
             
         query = g.db.query(Board).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user),
-            joinedload(Board.subcat).joinedload(SubCategory.category)
+            joinedload(Board.moderators).joinedload(ModRelationship.user)
             ).filter(
                     Board.name.ilike(name)
         )
@@ -1074,7 +1068,7 @@ def get_from_permalink(link, v=None):
         return get_post(post_id, v=v)
 
 
-def get_from_fullname(fullname, v=None, graceful=False):
+def get_from_fullname(fullname, graceful=False):
 
     parts = fullname.split('_')
 
