@@ -21,7 +21,7 @@ IMG_DATA={
     1: {'number': 1, 'state': 'SD', 'text': 'Mount Rushmore, South Dakota'},
     2: {'number': 1, 'state': 'ME', 'text': 'Acadia National Park, Maine'},
     3: {'number': 1, 'state': 'UT', 'text': 'Arches National Park, Utah'},
-    4: {'number': 1, 'state': 'NV', 'text': 'Las Vegas, NV'},
+    4: {'number': 1, 'state': 'NV', 'text': 'Las Vegas, Nevada'},
     5: {'number': 1, 'state': 'NY', 'text': 'Freedom Tower, New York'},
     6: {'number': 1, 'state': 'SC', 'text': 'The Peachoid, South Carolina'},
     7: {'number': 2, 'state': 'NH', 'text': 'Kancamangus Highway, New Hampshire'},
