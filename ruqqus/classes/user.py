@@ -24,7 +24,7 @@ from .board_relationships import *
 from .mix_ins import *
 from .subscriptions import *
 from .userblock import *
-from .badges import BADGES
+from .badges import BADGE_DEFS
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
