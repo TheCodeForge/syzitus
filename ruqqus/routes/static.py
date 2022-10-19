@@ -192,7 +192,9 @@ def about_path(path):
 @auth_desired
 def help_path(path):
 	try:
-		return render_template(safe_join("help/", f"{path}.html"))
+		to_render=safe_join("help/", f"{path}.html")
+		debug(to_render)
+		return render_template(to_render)
 	except jinja2.exceptions.TemplateNotFound:
 		abort(404)
 
