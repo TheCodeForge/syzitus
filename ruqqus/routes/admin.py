@@ -481,7 +481,7 @@ def admin_link_accounts():
 
 @app.route("/admin/<pagename>", methods=["GET"])
 @admin_level_required(3)
-def admin_tools(v, pagename):
+def admin_tools(pagename):
     return render_template(f"admin/{pagename}.html")
 
 
