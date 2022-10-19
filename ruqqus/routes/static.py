@@ -65,6 +65,8 @@ def static_service(path):
 
 	if request.path.endswith('.css'):
 		resp.headers.add("Content-Type", "text/css")
+	elif request.path.endswith(".js"):
+		resp.headers.add("Content-Type", "text/javascript")
 	return resp
 
 
