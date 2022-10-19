@@ -293,7 +293,11 @@ local_ban_cache={}
 IP_BAN_CACHE_TTL = int(environ.get("IP_BAN_CACHE_TTL", 3600))
 UA_BAN_CACHE_TTL = int(environ.get("UA_BAN_CACHE_TTL", 3600))
 
+#debug function
 
+def debug(text):
+    if app.config["DEBUG"]:
+        print(text)
 
 # import and bind all routing functions
 import ruqqus.classes
@@ -456,8 +460,3 @@ def www_redirect(path):
 #for engine in engines["followers"]:
 #    engine.dispose()
 
-
-def debug(text):
-
-    if app.config["DEBUG"]:
-        print(text)
