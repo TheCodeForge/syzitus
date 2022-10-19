@@ -26,12 +26,12 @@ BAN_REASONS = ['',
 
 @app.route("/2faqr/<secret>", methods=["GET"])
 @auth_required
-def mfa_qr(secret, v):
+def mfa_qr(secret):
     x = pyotp.TOTP(secret)
     qr = qrcode.QRCode(
         error_correction=qrcode.constants.ERROR_CORRECT_L
     )
-    qr.add_data(x.provisioning_uri(v.username, issuer_name=app.config["SITE_NAME"]))
+    qr.add_data(x.provisioning_uri(g.user.username, issuer_name=app.config["SITE_NAME"]))
     img = qr.make_image(fill_color="#"+app.config["SITE_COLOR"], back_color="white")
 
     mem = io.BytesIO()
@@ -45,7 +45,7 @@ def mfa_qr(secret, v):
 @app.route("/api/v1/is_available/<name>", methods=["GET"])
 @auth_desired
 @api("read")
-def api_is_available(name, v):
+def api_is_available(name):
 
     name=name.lstrip().rstrip()
 
@@ -71,7 +71,7 @@ def user_uid(uid):
 @app.route("/api/v1/uid/<uid>", methods=["GET"])
 @auth_desired
 @api("read")
-def user_by_uid(uid, v=None):
+def user_by_uid(uid):
     user=get_account(uid)
     
     return redirect(f'/api/v1/user/{user.username}/info')
@@ -87,7 +87,7 @@ def redditor_moment_redirect(username):
 @app.get("/api/v2/users/<username>/submissions")
 @auth_desired
 @api("read")
-def u_username(username, v=None):
+def u_username(username):
     """
 Get posts created by another user.
 
@@ -113,40 +113,39 @@ Optional query parameters:
 
     if u.reserved:
         return {'html': lambda: render_template("userpage_reserved.html",
-                                                u=u,
-                                                v=v),
+                                                u=u),
                 'api': lambda: {"error": f"That username is reserved for: {u.reserved}"}
                 }
 
-    if u.is_suspended and not (v and (v.admin_level >=3 or v.id==u.id)):
+    if u.is_suspended and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_banned.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That user is banned"}
                 }
 
-    if u.is_deleted and not (v and v.admin_level >= 3):
+    if u.is_deleted and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_deleted.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
 
-    if u.is_private and not (v and (v.admin_level >=3 or v.id==u.id)):
+    if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That userpage is private"}
                 }
 
-    if u.is_blocking and not (v and v.admin_level >= 3):
+    if u.is_blocking and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocking.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": f"You are blocking @{u.username}."}
                 }
 
-    if u.is_blocked and not (v and v.admin_level >= 3):
+    if u.is_blocked and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocked.html",
                                                 u=u,
                                                 v=v),
@@ -172,7 +171,7 @@ Optional query parameters:
                                             listing=listing,
                                             page=page,
                                             next_exists=next_exists,
-                                            is_following=(v and u.has_follower(v))),
+                                            is_following=(g.user and u.has_follower(v))),
             'api': lambda: jsonify({"data": [x.json for x in listing]})
             }
 
@@ -215,35 +214,35 @@ Optional query parameters:
                 'api': lambda: {"error": f"That username is reserved for: {u.reserved}"}
                 }
 
-    if u.is_suspended and not (v and (v.admin_level >=3 or v.id==u.id)):
+    if u.is_suspended and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_banned.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That user is banned"}
                 }
 
-    if u.is_deleted and not (v and v.admin_level >= 3):
+    if u.is_deleted and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_deleted.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
 
-    if u.is_private and not (v and (v.admin_level >=3 or v.id==u.id)):
+    if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": "That userpage is private"}
                 }
 
-    if u.is_blocking and not (v and v.admin_level >= 3):
+    if u.is_blocking and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocking.html",
                                                 u=u,
                                                 v=v),
                 'api': lambda: {"error": f"You are blocking @{u.username}."}
                 }
 
-    if u.is_blocked and not (v and v.admin_level >= 3):
+    if u.is_blocked and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: render_template("userpage_blocked.html",
                                                 u=u,
                                                 v=v),
@@ -265,7 +264,7 @@ Optional query parameters:
 
     listing = get_comments(ids, v=v)
 
-    is_following = (v and user.has_follower(v))
+    is_following = (g.user and user.has_follower(v))
 
     return {"html": lambda: render_template("userpage_comments.html",
                                             u=user,
@@ -303,7 +302,7 @@ URL path parameters:
 @app.route("/api/follow/<username>", methods=["POST"])
 @app.post("/api/v2/users/<username>/follow")
 @auth_required
-def follow_user(username, v):
+def follow_user(username):
     """
 Follow another user.
 
@@ -313,14 +312,14 @@ URL path parameters:
 
     target = get_user(username)
 
-    if target.id==v.id:
+    if target.id==g.user.id:
         return jsonify({"error": "You can't follow yourself!"}), 400
 
     # check for existing follow
-    if g.db.query(Follow).filter_by(user_id=v.id, target_id=target.id).first():
+    if g.db.query(Follow).filter_by(user_id=g.user.id, target_id=target.id).first():
         abort(409)
 
-    new_follow = Follow(user_id=v.id,
+    new_follow = Follow(user_id=g.user.id,
                         target_id=target.id)
 
     g.db.add(new_follow)
@@ -337,7 +336,7 @@ URL path parameters:
 @app.route("/api/unfollow/<username>", methods=["POST"])
 @app.delete("/api/v2/users/<username>/follow")
 @auth_required
-def unfollow_user(username, v):
+def unfollow_user(username):
     """
 Unfollow another user.
 
@@ -349,7 +348,7 @@ URL path parameters:
 
     # check for existing follow
     follow = g.db.query(Follow).filter_by(
-        user_id=v.id, target_id=target.id).first()
+        user_id=g.user.id, target_id=target.id).first()
 
     if not follow:
         abort(409)
@@ -365,7 +364,7 @@ URL path parameters:
 @auth_required
 def api_agree_tos(v):
 
-    v.tos_agreed_utc = int(time.time())
+    g.user.tos_agreed_utc = int(time.time())
 
     g.db.add(v)
 
@@ -396,7 +395,7 @@ def saved_listing(v):
 
     page=int(request.args.get("page",1))
 
-    ids=v.saved_idlist(page=page)
+    ids=g.user.saved_idlist(page=page)
 
     next_exists=len(ids)==26
 
@@ -420,7 +419,7 @@ def saved_listing(v):
 @app.post("/api/v2/users/<username>/toggle_bell")
 @auth_required
 @api("update")
-def toggle_user_bell(username, v):
+def toggle_user_bell(username):
     """
 Toggle notifications for new posts by a user. You must be following the user.
 
@@ -432,7 +431,7 @@ URL path parameters:
     if not user:
         return jsonify({"error": f"User '@{username}' not found."}), 404
 
-    follow=g.db.query(Follow).filter_by(user_id=v.id, target_id=user.id).first()
+    follow=g.db.query(Follow).filter_by(user_id=g.user.id, target_id=user.id).first()
     if not follow:
         return jsonify({"error": f"You aren't following @{user.username}"}), 404
 
@@ -578,14 +577,14 @@ def info_packet(username, method="html"):
 @validate_formkey
 def my_info_post(v):
 
-    if not v.is_activated:
+    if not g.user.is_activated:
         return redirect("/settings/security")
 
     method=request.values.get("method","html")
     if method not in ['html','json']:
         abort(400)
 
-    gevent.spawn_later(5, info_packet, v.username, method=method)
+    gevent.spawn_later(5, info_packet, g.user.username, method=method)
 
     return "started"
 
