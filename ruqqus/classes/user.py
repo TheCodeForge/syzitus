@@ -28,7 +28,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
-from ruqqus.__main__ import Base, cache, app
+from ruqqus.__main__ import Base, cache, app, debug
 
 
 class User(Base, Stndrd, Age_times):
