@@ -21,7 +21,7 @@ class OauthApp(Base, Stndrd):
     is_banned = Column(Boolean, default=False)
     description = Column(String(256), default=None)
 
-    author = relationship("User")
+    author = relationship("User", backref="_applications")
 
     def __repr__(self):
         return f"<OauthApp(id={self.id})>"

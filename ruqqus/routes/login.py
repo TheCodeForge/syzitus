@@ -188,7 +188,7 @@ def logout():
 @no_cors
 @auth_desired
 def sign_up_get():
-    if v:
+    if g.user:
         return redirect("/")
 
     agent = request.headers.get("User-Agent", None)
@@ -250,7 +250,7 @@ def sign_up_get():
 @auth_desired
 def sign_up_post():
 
-    if v:
+    if g.user:
         abort(403)
 
     agent = request.headers.get("User-Agent", None)
@@ -512,7 +512,7 @@ def get_reset():
 @app.route("/reset", methods=["POST"])
 @auth_desired
 def post_reset():
-    if v:
+    if g.user:
         return redirect('/')
 
     user_id = request.form.get("user_id")
