@@ -223,7 +223,7 @@ def sign_up_get():
     formkey_hashstr = str(now) + token + agent
 
     # formkey is a hash of session token, timestamp, and IP address
-    formkey = hmac.new(key=bytes(environ.get("MASTER_KEY"), "utf-16"),
+    formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
                        msg=bytes(formkey_hashstr, "utf-16"),
                        digestmod='md5'
                        ).hexdigest()
