@@ -80,45 +80,43 @@ def slurs():
 
 @app.route("/settings", methods=["GET"])
 @auth_required
-def settings(v):
+def settings():
 	return redirect("/settings/profile")
 
 
 @app.route("/settings/profile", methods=["GET"])
 @auth_required
-def settings_profile(v):
-	return render_template("settings_profile.html",
-						   v=v)
+def settings_profile():
+	return render_template("settings_profile.html")
 
 
 @app.route("/help/titles", methods=["GET"])
 @auth_desired
-def titles(v):
+def titles():
 	return render_template("/help/titles.html",
 						   titles=TITLES)
 
 
 @app.route("/help/terms", methods=["GET"])
 @auth_desired
-def help_terms(v):
+def help_terms():
 
 	cutoff = int(environ.get("tos_cutoff", 0))
 
 	return render_template("/help/terms.html",
-						   v=v,
 						   cutoff=cutoff)
 
 
 @app.route("/help/badges", methods=["GET"])
 @auth_desired
-def badges(v):=
+def badges():
 	return render_template("help/badges.html",
 						   badges=BADGES)
 
 
 @app.route("/help/admins", methods=["GET"])
 @auth_desired
-def help_admins(v):
+def help_admins():
 
 	admins = g.db.query(User).filter(
 		User.admin_level > 1,
@@ -132,7 +130,6 @@ def help_admins(v):
 	exadmins = [x for x in exadmins]
 
 	return render_template("help/admins.html",
-						   v=v,
 						   admins=admins,
 						   exadmins=exadmins
 						   )
@@ -140,7 +137,7 @@ def help_admins(v):
 
 @app.route("/settings/security", methods=["GET"])
 @auth_required
-def settings_security(v):
+def settings_security():
     mfa_secret=pyotp.random_base32() if not v.mfa_secret else None
     if mfa_secret:
         recovery=f"{mfa_secret}+{v.id}+{v.original_username}"
@@ -153,7 +150,6 @@ def settings_security(v):
         recovery=None
     return render_template(
             "settings_security.html",
-            v=v,
             mfa_secret=mfa_secret,
             recovery=recovery,
             error=request.args.get("error") or None,
@@ -162,9 +158,8 @@ def settings_security(v):
 
 @app.route("/settings/premium", methods=["GET"])
 @auth_required
-def settings_premium(v):
+def settings_premium():
 	return render_template("settings_premium.html",
-						   v=v,
 						   error=request.args.get("error") or None,
 						   msg=request.args.get("msg") or None
 						   )
@@ -176,8 +171,8 @@ def favicon():
 
 #@app.route("/my_info", methods=["GET"])
 #@auth_required
-#def my_info(v):
-#    return render_template("my_info.html", v=v)
+#def my_info():
+#    return render_template("my_info.html")
 
 
 @app.route("/about/<path:path>")
@@ -189,21 +184,21 @@ def about_path(path):
 @auth_desired
 def help_path(path, v):
 	try:
-		return render_template(safe_join("help", path + ".html"), v=v)
+		return render_template(safe_join("help", path + ".html"))
 	except jinja2.exceptions.TemplateNotFound:
 		abort(404)
 
 
 @app.route("/help", methods=["GET"])
 @auth_desired
-def help_home(v):
-	return render_template("help.html", v=v)
+def help_home():
+	return render_template("help.html")
 
 
 @app.route("/help/submit_contact", methods=["POST"])
 @is_not_banned
 @validate_formkey
-def press_inquiry(v):
+def press_inquiry():
 
 	data = [(x, request.form[x]) for x in request.form if x != "formkey"]
 	data.append(("username", v.username))
@@ -226,12 +221,10 @@ def press_inquiry(v):
 				  )
 	except BaseException:
 		return render_template("/help/press.html",
-							   error="Unable to save your inquiry. Please try again later.",
-							   v=v)
+							   error="Unable to save your inquiry. Please try again later.")
 
 	return render_template("/help/press.html",
-						   msg="Your inquiry has been saved.",
-						   v=v)
+						   msg="Your inquiry has been saved.")
 
 
 @app.route("/info/image_hosts", methods=["GET"])
