@@ -538,7 +538,7 @@ class User(Base, Stndrd, Age_times):
             Comment.parent_submission is not None).filter_by(is_banned=False).count()
 
     @property
-    @cache.memoize(timeout=3600)
+    #@cache.memoize(timeout=3600)
     def true_score(self):
 
         #self.stored_karma=max((self.karma + self.comment_karma), -5)
