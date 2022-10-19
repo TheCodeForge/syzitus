@@ -1,8 +1,8 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - Formatting</title>
-<meta name="description" content="Ruqqus Formatting">
+<title>{{ "SITE_NAME" | app_config }} - Formatting</title>
+<meta name="description" content="{{ "SITE_NAME" | app_config }} Formatting">
 {% endblock %}
 
 {% block content %}
@@ -10,7 +10,7 @@
 
 # Formatting
 
-On Ruqqus, you can use Markdown formatting.
+On {{ "SITE_NAME" | app_config }}, you can use Markdown formatting.
 
 
 ## Inline formatting
@@ -47,13 +47,13 @@ On Ruqqus, you can use Markdown formatting.
   </tr>
   <tr>
     <td>Links</td>
-    <td>[Ruqqus](https://ruqqus.com)</td>
-    <td><a href="https://ruqqus.com">Ruqqus</a></td>
+    <td>[{{ "SITE_NAME" | app_config }}](https://{{ "SITE_NAME" | app_config }}.com)</td>
+    <td><a href="https://{{ "SITE_NAME" | app_config }}.com">{{ "SITE_NAME" | app_config }}</a></td>
   </tr>
   <tr>
     <td>Image embeds*</td>
-    <td>![](https://i.ruqqus.com/post/67x/EaNkUiAv7UQ)</td>
-    <td><a data-target="#expandImageModal" data-toggle="modal" href="https://i.ruqqus.com/post/67x/EaNkUiAv7UQ" onclick="expandDesktopImage('https://i.ruqqus.com/post/67x/EaNkUiAv7UQ');" rel="nofollow" target="_blank"><img class="in-comment-image rounded-sm my-2" rel="nofollow" src="https://i.ruqqus.com/post/67x/EaNkUiAv7UQ" style="max-height: 100px; max-width: 100%;"></a></td>
+    <td>![](https://i.{{ "SITE_NAME" | app_config }}.com/post/67x/EaNkUiAv7UQ)</td>
+    <td><a data-target="#expandImageModal" data-toggle="modal" href="https://i.{{ "SITE_NAME" | app_config }}.com/post/67x/EaNkUiAv7UQ" onclick="expandDesktopImage('https://i.{{ "SITE_NAME" | app_config }}.com/post/67x/EaNkUiAv7UQ');" rel="nofollow" target="_blank"><img class="in-comment-image rounded-sm my-2" rel="nofollow" src="https://i.{{ "SITE_NAME" | app_config }}.com/post/67x/EaNkUiAv7UQ" style="max-height: 100px; max-width: 100%;"></a></td>
   </tr>
 </table>
 
@@ -122,8 +122,8 @@ We also have some custom hooks for mentioning users and guilds. Note that these 
   </thead>
   <tr>
     <td>Username Mention</td>
-    <td>@ruqqus</td>
-    <td><a class="d-inline-block" href="/@ruqqus"><img src="/@ruqqus/pic/profile" class="profile-pic-20 mr-1">@ruqqus</a></td>
+    <td>@{{ "SITE_NAME" | app_config }}</td>
+    <td><a class="d-inline-block" href="/@{{ "SITE_NAME" | app_config }}"><img src="/@{{ "SITE_NAME" | app_config }}/pic/profile" class="profile-pic-20 mr-1">@{{ "SITE_NAME" | app_config }}</a></td>
   </tr>
   <tr>
     <td>Guild Mention</td>
