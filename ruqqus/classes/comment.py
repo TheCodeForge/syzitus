@@ -494,7 +494,7 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), backref="notifications")
     comment_id = Column(Integer, ForeignKey("comments.id"), default=None)
     submission_id = Column(Integer, ForeignKey("submissions.id"), default=None)
 
