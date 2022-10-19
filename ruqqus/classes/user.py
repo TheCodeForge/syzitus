@@ -52,8 +52,8 @@ class User(Base, Stndrd, Age_times):
         "Comment",
         lazy="dynamic",
         primaryjoin="Comment.author_id==User.id")
-    votes = relationship("Vote", lazy="dynamic", backref="users")
-    commentvotes = relationship("CommentVote", lazy="dynamic", backref="users")
+    # votes = relationship("Vote", lazy="dynamic", backref="users")
+    # commentvotes = relationship("CommentVote", lazy="dynamic", backref="users")
     bio = Column(String, default="")
     bio_html = Column(String, default="")
     _badges = relationship("Badge", lazy="dynamic", backref="user")

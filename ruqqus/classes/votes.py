@@ -19,7 +19,7 @@ class Vote(Base):
     creation_ip = Column(String, default=None)
     app_id = Column(Integer, ForeignKey("oauth_apps.id"), default=None)
 
-    user = relationship("User", lazy="subquery")
+    user = relationship("User", lazy="subquery", backref=votes)
     post = relationship("Submission", lazy="subquery")
 
     def __init__(self, *args, **kwargs):
@@ -81,7 +81,7 @@ class CommentVote(Base):
     creation_ip = Column(String, default=None)
     app_id = Column(Integer, ForeignKey("oauth_apps.id"), default=None)
 
-    user = relationship("User", lazy="subquery")
+    user = relationship("User", lazy="subquery", backref=commentvotes)
     comment = relationship("Comment", lazy="subquery")
 
     def __init__(self, *args, **kwargs):
