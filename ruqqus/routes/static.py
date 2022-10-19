@@ -54,7 +54,7 @@ def main_css(file):
 @app.route('/assets/<path:path>')
 @limiter.exempt
 def static_service(path):
-	resp = make_response(send_from_directory('./assets', path))
+	resp = make_response(send_file(safe_join('./assets', path)))
 	resp.headers.add("Cache-Control", "public")
 
 	if request.path.endswith('.css'):
