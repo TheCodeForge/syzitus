@@ -143,9 +143,9 @@ def help_admins():
 @app.route("/settings/security", methods=["GET"])
 @auth_required
 def settings_security():
-    mfa_secret=pyotp.random_base32() if not v.mfa_secret else None
+    mfa_secret=pyotp.random_base32() if not g.user.mfa_secret else None
     if mfa_secret:
-        recovery=f"{mfa_secret}+{v.id}+{v.original_username}"
+        recovery=f"{mfa_secret}+{g.user.id}+{g.user.original_username}"
         recovery=generate_hash(recovery)
         recovery=base36encode(int(recovery,16))
         while len(recovery)<25:
@@ -187,7 +187,7 @@ def about_path(path):
 
 @app.route("/help/<path:path>", methods=["GET"])
 @auth_desired
-def help_path(path, v):
+def help_path(path):
 	try:
 		return render_template(safe_join("help", path + ".html"))
 	except jinja2.exceptions.TemplateNotFound:
@@ -206,8 +206,8 @@ def help_home():
 def press_inquiry():
 
 	data = [(x, request.form[x]) for x in request.form if x != "formkey"]
-	data.append(("username", v.username))
-	data.append(("email", v.email))
+	data.append(("username", g.user.username))
+	data.append(("email", g.user.email))
 
 	data = sorted(data, key=lambda x: x[0])
 
