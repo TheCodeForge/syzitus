@@ -141,7 +141,7 @@ def qrcode_filter(x):
     qr=qrcode.QRCode()
     qr.add_data(x)
     img=qr.make_image(
-        fill_color=app.config["SITE_COLOR"],
+        fill_color=f"#{app.config['SITE_COLOR']}",
         back_color="white",
     )
     img.save(
