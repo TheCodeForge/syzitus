@@ -8,6 +8,7 @@ import re
 from urllib.parse import quote_plus
 import io
 import qrcode
+import base64
 
 from ruqqus.classes.user import User
 from .get import *
