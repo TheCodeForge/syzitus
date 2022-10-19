@@ -104,7 +104,7 @@ Optional query parameters:
 
     # case insensitive search
 
-    u = get_user(username, v=v)
+    u = get_user(username)
 
     # check for wrong cases
 
@@ -163,7 +163,7 @@ Optional query parameters:
     next_exists = (len(ids) == 26)
     ids = ids[0:25]
 
-    listing = get_posts(ids, v=v)
+    listing = get_posts(ids)
 
     return {'html': lambda: render_template("userpage.html",
                                             u=u,
@@ -198,7 +198,7 @@ Optional query parameters:
 
     # case insensitive search
 
-    user = get_user(username, v=v)
+    user = get_user(username)
 
     # check for wrong cases
 
@@ -262,7 +262,7 @@ Optional query parameters:
     next_exists = (len(ids) == 26)
     ids = ids[0:25]
 
-    listing = get_comments(ids, v=v)
+    listing = get_comments(ids)
 
     is_following = (g.user and user.has_follower(v))
 
@@ -289,7 +289,7 @@ URL path parameters:
 * `username` - A user's name.
 """
 
-    user=get_user(username, v=v)
+    user=get_user(username)
 
     if user.is_blocking:
         return jsonify({"error": "You're blocking this user."}), 401
@@ -403,7 +403,7 @@ def saved_listing(v):
 
     print(ids)
 
-    listing = get_posts(ids, v=v, sort="new")
+    listing = get_posts(ids, sort="new")
 
     return {'html': lambda: render_template("home.html",
                                             v=v,
@@ -427,7 +427,7 @@ URL path parameters:
 * `username` - Another user's name
 """
 
-    user=get_user(username, v=v, graceful=True)
+    user=get_user(username, graceful=True)
     if not user:
         return jsonify({"error": f"User '@{username}' not found."}), 404
 
