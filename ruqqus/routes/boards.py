@@ -297,14 +297,14 @@ Optional query parameters:
     #if not board.name == name and not request.path.startswith('/api/v1'):
         #return redirect(request.path.replace(name, board.name))
 
-    if board.is_banned and not (v and g.user.admin_level >= 3):
+    if board.is_banned and not (g.user and g.user.admin_level >= 3):
         return {'html': lambda: (render_template("board_banned.html",
                                                  b=board,
                                                  p=True
                                                  ), 410),
                 'api': lambda: (jsonify({'error': f'410 Gone - +{board.name} is banned.'}), 410)
                 }
-    if board.over_18 and not (v and g.user.over_18) and not session_over18(board):
+    if board.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfw.html",
                                                 t=t,
@@ -330,7 +330,7 @@ Optional query parameters:
     ids = board.idlist(sort=sort,
                        t=t,
                        page=page,
-                       nsfw=(v and g.user.over_18) or session_over18(board),
+                       nsfw=(g.user and g.user.over_18) or session_over18(board),
                        gt=int(request.args.get("utc_greater_than", 0)),
                        lt=int(request.args.get("utc_less_than", 0))
                        )
@@ -339,7 +339,7 @@ Optional query parameters:
     ids = ids[0:25]
 
     if page == 1 and sort != "new" and sort != "old" and not ignore_pinned:
-        if (v and g.user.over_18) or session_over18(board):
+        if (g.user and g.user.over_18) or session_over18(board):
             stickies = g.db.query(Submission.id).filter_by(board_id=board.id,
                                                         is_banned=False,
                                                         is_pinned=True,
@@ -1426,7 +1426,7 @@ def board_edit_css(bid, board):
         if isinstance(rule, cssutils.css.CSSStyleRule):
             
             for property in rule.style.children():
-                for pv in property.propertyValue:
+                for pg.user in property.propertyValue:
                     if isinstance(pv, cssutils.css.URIValue):
                         domain = urlparse(pg.user.uri).netloc
 
@@ -2131,10 +2131,10 @@ Optional query parameters:
     page = int(request.args.get("page", 1))
 
     idlist = b.comment_idlist(page=page,
-                              nsfw=v and g.user.over_18,
-                              nsfl=v and g.user.show_nsfl,
-                              hide_offensive=(v and g.user.hide_offensive) or not g.user,
-                              hide_bot=v and g.user.hide_bot)
+                              nsfw=g.user and g.user.over_18,
+                              nsfl=g.user and g.user.show_nsfl,
+                              hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
+                              hide_bot=g.user and g.user.hide_bot)
 
     next_exists = len(idlist) == 26
 
@@ -2201,7 +2201,7 @@ Optional query parameters
     page=int(request.args.get("page",1))
     board=get_guild(guildname)
 
-    if board.is_banned and not (v and g.user.admin_level>=4):
+    if board.is_banned and not (g.user and g.user.admin_level>=4):
         return {
             "html":lambda:(render_template("board_banned.html", b=board), 403),
             "api":lambda:(jsonify({"error":f"+{board.name} is banned"}), 403)
