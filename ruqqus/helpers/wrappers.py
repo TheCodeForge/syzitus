@@ -528,8 +528,8 @@ def public_cache(f):
     def wrapper(*args, **kwargs):
 
         resp = f(*args, **kwargs)
-
         resp.headers.add("Cache-Control", "public")
+        return resp
 
     wrapper.__name__=f.__name__
     wrapper.__doc__=f.__doc__
