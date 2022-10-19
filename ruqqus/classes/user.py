@@ -532,7 +532,7 @@ class User(Base, Stndrd, Age_times):
     @property
     @cache.memoize(timeout=3600)
     def comment_karma(self):
-        return 404 if self.id==1 else int(self.comment_energy) - self.comments.filter(
+        return 0 if self.id==1 else int(self.comment_energy) - self.comments.filter(
             Comment.parent_submission is not None).filter_by(is_banned=False).count()
 
     @property
