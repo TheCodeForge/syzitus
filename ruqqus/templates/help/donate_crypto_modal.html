@@ -1,0 +1,44 @@
+<!-- Crypto Donate Modal -->
+
+<div class="modal fade" id="donateCryptoModal" tabindex="-1" role="dialog" aria-labelledby="donateCryptoModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Donate with Cryptocurrency</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="far fa-times"></i></span>
+        </button>
+      </div>
+      <div class="modal-body accordion" id="cryptoAccordion">
+
+        <!-- Bitcoin -->
+
+        <div class="border rounded p-3 mb-3">
+
+         <div class="" data-toggle="collapse" href="#bitcoinCollapse" role="button" aria-expanded="true" aria-controls="bitcoinCollapse">
+          <i class="fab fa-bitcoin text-lg text-center mr-1" style="color: #F39231; width: 1.25rem;"></i>
+          <span class="h6 text-muted">Bitcoin Address</span>
+          <span class="float-right"><i class="fa text-gray-400"></i></span>
+        </div>
+
+        <div id="bitcoinCollapse" class="collapse show" data-parent="#cryptoAccordion">
+
+          <div class="mt-3 text-center">
+
+            <!--- qr code img goes here -->
+
+            <div class="mt-3">
+              <input class="copy-link form-control mr-3" role="button" value="address pending" data-clipboard-text="address pending" aria-describedby="bitcoinAddress" readonly>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    
+</div>
+</div>
+</div>
+</div>
