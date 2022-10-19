@@ -29,10 +29,10 @@ valid_password_regex = re.compile("^.{8,100}$")
 @app.route("/login", methods=["GET"])
 @no_cors
 @auth_desired
-def login_get(v):
+def login_get():
 
     redir = request.args.get("redirect", "/")
-    if v:
+    if g.user:
         return redirect(redir)
 
     return render_template("login.html",
@@ -165,14 +165,14 @@ def login_post():
 
 @app.route("/me", methods=["GET"])
 @auth_required
-def me(v):
-    return redirect(v.url)
+def me():
+    return redirect(g.user.url)
 
 
 @app.route("/logout", methods=["POST"])
 @auth_required
 @validate_formkey
-def logout(v):
+def logout():
         
     session["user_id"]=None
     session["session_id"]=None
@@ -187,7 +187,7 @@ def logout(v):
 @app.route("/signup", methods=["GET"])
 @no_cors
 @auth_desired
-def sign_up_get(v):
+def sign_up_get():
     if v:
         return redirect("/")
 
@@ -248,7 +248,7 @@ def sign_up_get(v):
 @app.route("/signup", methods=["POST"])
 @no_cors
 @auth_desired
-def sign_up_post(v):
+def sign_up_post():
 
     if v:
         abort(403)
@@ -511,7 +511,7 @@ def get_reset():
 
 @app.route("/reset", methods=["POST"])
 @auth_desired
-def post_reset(v):
+def post_reset():
     if v:
         return redirect('/')
 
