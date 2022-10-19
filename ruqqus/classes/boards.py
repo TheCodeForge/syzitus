@@ -46,7 +46,7 @@ class Board(Base, Stndrd, Age_times):
     all_opt_out=Column(Boolean, default=False)
     is_siegable=Column(Boolean, default=True)
     is_locked_category = Column(Boolean, default=False)
-    #subcat_id=Column(Integer, ForeignKey("subcategories.id"), default=0)
+    subcat_id=Column(Integer, default=0)
     secondary_color=Column(String(6), default="ffffff")
     public_chat=Column(Boolean, default=False)
     motd = Column(String(1000), default='')
