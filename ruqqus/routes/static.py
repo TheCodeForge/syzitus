@@ -57,10 +57,8 @@ def main_css(file):
 @public_cache
 def static_service(path):
 
-	to_send=safe_join('./assets', path)
-	debug(to_send)
 	try:
-		resp = make_response(send_file(to_send))
+		resp = make_response(send_file(safe_join('./assets', path)))
 	except FileNotFoundError:
 		abort(404)
 	resp.headers.add("Cache-Control", "public")
