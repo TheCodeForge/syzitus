@@ -1853,7 +1853,7 @@ def mod_board_images_delete_banner(bid, board):
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
 
-@app.route("/assets/<board_fullname>/<theme>/<x>.css", methods=["GET"])
+@app.route("/assets/+<board_fullname>/<theme>/<x>.css", methods=["GET"])
 @cache.memoize()
 def board_css(board_fullname, theme, x):
 
