@@ -136,7 +136,7 @@ class User(Base, Stndrd, Age_times):
     #     "ContributorRelationship",
     #     lazy="dynamic",
     #     primaryjoin="ContributorRelationship.user_id==User.id")
-    board_blocks = relationship("BoardBlock", lazy="dynamic")
+    #board_blocks = relationship("BoardBlock", lazy="dynamic")
 
     following = relationship("Follow", primaryjoin="Follow.user_id==User.id")
     followers = relationship("Follow", primaryjoin="Follow.target_id==User.id")
