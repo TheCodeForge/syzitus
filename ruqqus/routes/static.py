@@ -57,7 +57,7 @@ def static_service(path):
 
 	to_send=safe_join('./assets', path)
 	debug(to_send)
-	resp = make_response(send_file(safe_join('./assets', path)))
+	resp = make_response(send_file(to_send))
 	resp.headers.add("Cache-Control", "public")
 
 	if request.path.endswith('.css'):
