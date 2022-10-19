@@ -224,13 +224,15 @@ class ContributorRelationship(Base, Stndrd, Age_times):
 
 class PostRelationship(Base):
 
+    #Documents self-yoink
+
     __tablename__ = "postrels"
     id = Column(BigInteger, primary_key=True)
     post_id = Column(Integer, ForeignKey("submissions.id"))
     board_id = Column(Integer, ForeignKey("boards.id"))
 
     post = relationship("Submission", lazy="subquery")
-    board = relationship("Board", lazy="subquery")
+    board = relationship("Board", lazy="subquery", backref="postrels")
 
     def __repr__(self):
         return f"<PostRel(id={self.id}, pid={self.post_id}, board_id={self.board_id})>"
