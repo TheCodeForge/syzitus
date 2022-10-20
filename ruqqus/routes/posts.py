@@ -754,7 +754,7 @@ Optional file data:
         post_public=not board.is_private,
         repost_id=repost.id if repost else None,
         is_offensive=is_offensive,
-        app_id=g.user.client.application.id if g.user.client else None,
+        app_id=g.client.application.id if g.client else None,
         creation_region=request.headers.get("cf-ipcountry"),
         is_bot = request.headers.get("X-User-Type","").lower()=="bot"
     )
