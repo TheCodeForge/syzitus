@@ -62,8 +62,8 @@ def shop_get_price():
 
 @app.route("/shop/coin_balance", methods=["GET"])
 @auth_required
-def shop_coin_balance(v):
-    return jsonify({"balance":v.coin_balance})
+def shop_coin_balance():
+    return jsonify({"balance":g.user.coin_balance})
 
 
 @app.route("/shop/buy_coins", methods=["POST"])
@@ -71,7 +71,7 @@ def shop_coin_balance(v):
 @is_not_banned
 @no_negative_balance("html")
 @validate_formkey
-def shop_buy_coins(v):
+def shop_buy_coins():
 
     coin_count=int(request.form.get("coin_count",1))
 
@@ -79,7 +79,7 @@ def shop_buy_coins(v):
     promo=get_promocode(code)
 
     new_txn=PayPalTxn(
-        user_id=v.id,
+        user_id=g.user.id,
         created_utc=int(time.time()),
         coin_count=coin_count,
         usd_cents=coins_to_price_cents(coin_count, code=promo),
@@ -101,13 +101,13 @@ def shop_buy_coins(v):
 @no_sanctions
 @is_not_banned
 @validate_formkey
-def shop_negative_balance(v):
+def shop_negative_balance():
 
     new_txn=PayPalTxn(
-        user_id=v.id,
+        user_id=g.user.id,
         created_utc=int(time.time()),
         coin_count=0,
-        usd_cents=v.negative_balance_cents
+        usd_cents=g.user.negative_balance_cents
         )
 
     g.db.add(new_txn)
@@ -123,7 +123,7 @@ def shop_negative_balance(v):
 @app.route("/shop/buy_coins_completed", methods=["GET"])
 @no_sanctions
 @is_not_banned
-def shop_buy_coins_completed(v):
+def shop_buy_coins_completed():
 
     #look up the txn
     id=request.args.get("txid")
@@ -132,8 +132,9 @@ def shop_buy_coins_completed(v):
     id=base36decode(id)
     txn=g.db.query(PayPalTxn
         #).with_for_update(
-        ).filter_by(user_id=v.id, id=id, status=1).first()
-    #v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=v.id).first()
+        ).filter_by(user_id=g.user.id, id=id, status=1).first()
+
+    g.user =g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
 
     if not txn:
         abort(400)
@@ -152,16 +153,15 @@ def shop_buy_coins_completed(v):
     #successful payment - award coins
 
     if txn.coin_count:
-        v.coin_balance += txn.coin_count
+        g.user.coin_balance += txn.coin_count
     else:
-        v.negative_balance_cents -= txn.usd_cents
+        g.user.negative_balance_cents -= txn.usd_cents
 
     g.db.add(v)
     g.db.commit()
 
     return render_template(
         "single_txn.html", 
-        v=v, 
         txns=[txn],
         msg="The Royal Bank has minted your Coins. Here is a copy of your order."
         )
@@ -233,7 +233,7 @@ def gift_post_pid(pid, v):
 
     post=get_post(pid, v=v)
 
-    if post.author_id==v.id:
+    if post.author_id==g.user.id:
         return jsonify({"error":"You can't give awards to yourself."}), 403   
 
     if post.deleted_utc > 0:
@@ -265,24 +265,24 @@ def gift_post_pid(pid, v):
     if coins <0:
         return jsonify({"error":"What are you doing, trying to *charge* someone coins?."}), 400
 
-    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=v.id).first()
+    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
     u=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=u.id).first()
 
-    if not v.coin_balance>=coins:
+    if not g.user.coin_balance>=coins:
         return jsonify({"error":"You don't have that many coins to give!"}), 403
 
 
-    v.coin_balance -= coins
+    g.user.coin_balance -= coins
     u.coin_balance += coins
 
-    g.db.add(v)
+    g.db.add(g.user)
     g.db.add(u)
     g.db.flush()
-    if v.coin_balance<0:
+    if g.user.coin_balance<0:
         g.db.rollback()
         return jsonify({"error":"You don't have that many coins to give!"}), 403
 
-    if not g.db.query(AwardRelationship).filter_by(user_id=v.id, submission_id=post.id).first():
+    if not g.db.query(AwardRelationship).filter_by(user_id=g.user.id, submission_id=post.id).first():
         text=f"Someone liked [your post]({post.permalink}) and has given you a Coin!\n\n"
         if u.premium_expires_utc < int(time.time()):
             text+="Your Coin has been automatically redeemed for one week of [Ruqqus Premium](/settings/premium)."
@@ -296,7 +296,7 @@ def gift_post_pid(pid, v):
 
     #create record - uniqueness constraints prevent duplicate award counting
     new_rel = AwardRelationship(
-        user_id=v.id,
+        user_id=g.user.id,
         submission_id=post.id
         )
     try:
@@ -318,7 +318,7 @@ def gift_comment_pid(cid, v):
 
     comment=get_comment(cid, v=v)
 
-    if comment.author_id==v.id:
+    if comment.author_id==g.user.id:
         return jsonify({"error":"You can't give awards to yourself."}), 403      
 
     if comment.deleted_utc > 0:
@@ -349,22 +349,22 @@ def gift_comment_pid(cid, v):
     if coins <0:
         return jsonify({"error":"What are you doing, trying to *charge* someone coins?."}), 400
 
-    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=v.id).first()
+    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
     u=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=u.id).first()
 
-    if not v.coin_balance>=coins:
+    if not g.user.coin_balance>=coins:
         return jsonify({"error":"You don't have that many coins to give!"}), 403
         
-    v.coin_balance -= coins
+    g.user.coin_balance -= coins
     u.coin_balance += coins
-    g.db.add(v)
+    g.db.add(g.user)
     g.db.add(u)
     g.db.flush()
-    if v.coin_balance<0:
+    if g.user.coin_balance<0:
         g.db.rollback()
         return jsonify({"error":"You don't have that many coins to give!"}), 403
 
-    if not g.db.query(AwardRelationship).filter_by(user_id=v.id, comment_id=comment.id).first():
+    if not g.db.query(AwardRelationship).filter_by(user_id=g.user.id, comment_id=comment.id).first():
         text=f"Someone liked [your comment]({comment.permalink}) and has given you a Coin!\n\n"
         if u.premium_expires_utc < int(time.time()):
             text+="Your Coin has been automatically redeemed for one week of [Ruqqus Premium](/settings/premium)."
@@ -379,7 +379,7 @@ def gift_comment_pid(cid, v):
 
     #create record - uniqe prevents duplicates
     new_rel = AwardRelationship(
-        user_id=v.id,
+        user_id=g.user.id,
         comment_id=comment.id
         )
     try:
@@ -399,7 +399,7 @@ def paypaltxn_txid(txid, v):
 
     txn = get_txid(txid)
 
-    if txn.user_id != v.id and v.admin_level<4:
+    if txn.user_id != g.user.id and g.user.admin_level<4:
         abort(403)
 
     return render_template(
