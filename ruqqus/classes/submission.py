@@ -49,7 +49,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         innerjoin=True,
         primaryjoin="Submission.id==SubmissionAux.id")
     author_id = Column(BigInteger, ForeignKey("users.id"), index=True)
-    repost_id = Column(BigInteger, ForeignKey("submissions.id"), default=0)
+    repost_id = Column(BigInteger, ForeignKey("submissions.id"), default=None)
     edited_utc = Column(BigInteger, default=0)
     created_utc = Column(BigInteger, default=0)
     is_banned = Column(Boolean, default=False)
@@ -65,10 +65,10 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     #     lazy="dynamic",
     #     primaryjoin="Comment.parent_submission==Submission.id",
     #     backref="submissions")
-    domain_ref = Column(Integer, ForeignKey("domains.id"))
+    domain_ref = Column(Integer, ForeignKey("domains.id"), default=None)
     domain_obj = relationship("Domain")
     flags = relationship("Flag", backref="submission")
-    is_approved = Column(Integer, ForeignKey("users.id"), default=0)
+    is_approved = Column(Integer, ForeignKey("users.id"), default=None)
     approved_utc = Column(Integer, default=0)
     board_id = Column(Integer, ForeignKey("boards.id"), default=None, index=True)
     original_board_id = Column(Integer, ForeignKey("boards.id"), default=None)
