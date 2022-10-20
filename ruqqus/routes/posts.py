@@ -280,7 +280,6 @@ Required form data:
 @limiter.limit("6/minute")
 @is_not_banned
 @no_negative_balance("html")
-#@tos_agreed
 #@validate_formkey
 def get_post_title():
 
@@ -318,7 +317,6 @@ def get_post_title():
 @limiter.limit("6/minute")
 @is_not_banned
 @no_negative_balance('html')
-@tos_agreed
 @api("create")
 def submit_post():
     """

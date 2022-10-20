@@ -287,7 +287,6 @@ def post_pid_comment_cid_noboard(pid, cid, anything=None):
 @limiter.limit("6/minute")
 @is_not_banned
 @no_negative_balance('toast')
-@tos_agreed
 @api("create")
 def api_comment(v):
     """
