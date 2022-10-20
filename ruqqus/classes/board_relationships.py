@@ -21,13 +21,9 @@ class ModRelationship(Base, Age_times):
     perm_config = Column(Boolean, default=False)
     perm_access = Column(Boolean, default=False)
     perm_full = Column(Boolean, default=False)
-    #perm_chat = Column(Boolean, default=False)
-    #permRules = Column(Boolean, default=False)
-    #permTitles = Column(Boolean, default=False)
-    #permLodges = Column(Boolean, default=False)
 
-    user = relationship("User", lazy="joined", backref="moderates")
-    board = relationship("Board", lazy="joined", backref="moderators")
+    user = relationship("User", lazy="joined", backref="moderates", viewonly=True)
+    board = relationship("Board", lazy="joined", backref="moderators", viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
@@ -76,7 +72,6 @@ class ModRelationship(Base, Age_times):
             'perm_access':self.perm_full or self.perm_access,
             'perm_appearance':self.perm_full or self.perm_appearance,
             'perm_full':self.perm_full
-            #'perm_chat': self.perm_full or self.perm_chat
         }
 
 
@@ -107,12 +102,13 @@ class BanRelationship(Base, Stndrd, Age_times):
         "User",
         lazy="joined",
         primaryjoin="User.id==BanRelationship.user_id",
-        backref="banned_from")
+        viewonly=True)
     banning_mod = relationship(
         "User",
         lazy="joined",
-        primaryjoin="User.id==BanRelationship.banning_mod_id")
-    board = relationship("Board", backref="bans")
+        primaryjoin="User.id==BanRelationship.banning_mod_id",
+        viewonly=True)
+    board = relationship("Board", viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
@@ -204,13 +200,14 @@ class ContributorRelationship(Base, Stndrd, Age_times):
     user = relationship(
         "User",
         lazy="joined",
-        primaryjoin="User.id==ContributorRelationship.user_id",
-        backref="contributes")
+        primaryjoin="User.id==ContributorRelationship.user_id", 
+        viewonly=True)
     approving_mod = relationship(
         "User",
         lazy='joined',
-        primaryjoin="User.id==ContributorRelationship.approving_mod_id")
-    board = relationship("Board", lazy="subquery", backref="contributors")
+        primaryjoin="User.id==ContributorRelationship.approving_mod_id",
+        viewonly=True)
+    board = relationship("Board", lazy="subquery", backref="contributors", viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
@@ -231,8 +228,8 @@ class PostRelationship(Base):
     post_id = Column(Integer, ForeignKey("submissions.id"))
     board_id = Column(Integer, ForeignKey("boards.id"))
 
-    post = relationship("Submission", lazy="subquery")
-    board = relationship("Board", lazy="subquery", backref="postrels")
+    post = relationship("Submission", lazy="subquery", viewonly=True)
+    board = relationship("Board", lazy="subquery", viewonly=True)
 
     def __repr__(self):
         return f"<PostRel(id={self.id}, pid={self.post_id}, board_id={self.board_id})>"

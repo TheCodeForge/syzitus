@@ -54,12 +54,11 @@ class Board(Base, Stndrd, Age_times):
     css_nonce=Column(Integer, default=0)
     css=deferred(Column(String(65536), default=''))
 
-    #subcat=relationship("SubCategory")
-    #moderators=relationship("ModRelationship")
-    #subscribers=relationship("Subscription", lazy="dynamic")
-    #submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
-    #contributors=relationship("ContributorRelationship", lazy="dynamic")
-    #bans=relationship("BanRelationship", lazy="dynamic")
+    moderators=relationship("ModRelationship")
+    subscribers=relationship("Subscription", lazy="dynamic")
+    submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
+    contributors=relationship("ContributorRelationship", lazy="dynamic")
+    bans=relationship("BanRelationship", lazy="dynamic")
     #chatbans=relationship("ChatBan", lazy="dynamic")
     #postrels=relationship("PostRelationship", lazy="dynamic")
 
