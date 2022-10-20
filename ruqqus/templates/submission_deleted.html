@@ -3,7 +3,7 @@
 
 
 {% set score=p.score_fuzzed %}
-{% if v %}
+{% if g.user %}
 {% set voted=v.vote_status_on_post(p) %}
 {% set adjust=voted %}
 {% else %}
@@ -55,10 +55,10 @@
       </div>
     </div>
     <div class="ml-auto">
-      {% if v %}
+      {% if g.user %}
       <div id="button-sub" {% if p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post('/api/subscribe/{{ p.board.name }}', callback=toggleSub)">Join guild</a></div>
       <div id="button-unsub" {% if not p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post('/api/unsubscribe/{{ p.board.name }}', callback=toggleSub)">Leave</a></div>
-      {% elif not v %}
+      {% elif not g.user %}
       <a class="btn btn-primary" href="/signup">Join guild</a>
       {% endif %}
     </div>
@@ -143,7 +143,7 @@
 
             <!-- Voting on "medium" devices or larger, hidden on smaller devices -->
 
-            {% if v %}
+            {% if g.user %}
 
             <div id="voting" class="voting d-none d-md-block mb-auto">
               <div id="post-{{ p.base36id }}-up" class="arrow-up mx-auto">
@@ -180,7 +180,7 @@
               <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
               <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
-              {% if v %}
+              {% if g.user %}
               <li class="list-inline-item">
                 <a href="#" data-toggle="modal" data-target="#actionsModal">
                   <i class="fas fa-ellipsis-h"></i>
@@ -236,7 +236,7 @@
           </div>
         </div>
 
-        {% if not v and p.comment_count >= 2 %}
+        {% if not g.user and p.comment_count >= 2 %}
         <div class="card border-0 bg-light mt-4">
           <div class="card-body">
             <h5 class="card-title">Jump in the discussion.</h5>
@@ -259,7 +259,7 @@
        <div class="comment-section text-center py-7">
         <i class="fad fa-ghost text-gray-500 mb-4" style="
         font-size: 3.5rem;"></i>
-        {% if v %}
+        {% if g.user %}
         <div class="h6 text-gray-500">This comment section is a ghost town. Be the first to comment!</div>
         {% else %}
         <div class="h6 text-gray-500">This comment section is a ghost town. <a href="/login">Sign in</a> to comment!</div>
