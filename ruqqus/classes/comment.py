@@ -75,7 +75,7 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     flags = relationship("CommentFlag", backref="comment")
     author = relationship(
         "User",
-        lazy="joined",
+        lazy="dynamic",
         innerjoin=True,
         primaryjoin="User.id==Comment.author_id",
         backref="_comments")
