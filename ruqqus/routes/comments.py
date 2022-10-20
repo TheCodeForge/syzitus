@@ -380,7 +380,7 @@ Optional file data:
 
     # check for archive and ban state
     post = get_post(parent_id)
-    if post.is_archived or not post.board.can_comment(v):
+    if post.is_archived or not post.board.can_comment(g.user):
 
         return jsonify({"error": "You can't comment on this."}), 403
 
@@ -605,7 +605,7 @@ Required form data:
     if c.is_banned or c.deleted_utc > 0:
         abort(403)
 
-    if c.board.has_ban(v):
+    if c.board.has_ban(g.user):
         abort(403)
 
     body = request.form.get("body", "")[0:10000]
