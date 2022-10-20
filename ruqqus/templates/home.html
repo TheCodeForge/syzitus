@@ -301,6 +301,13 @@
           </span>Report Bugs
         </a>
 
+        <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
+          <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
+          <div class="progress" style="border-radius: 3px;">
+            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ g.timestamp | coin_goal }}%;" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        
       </div>
 
     </div>
