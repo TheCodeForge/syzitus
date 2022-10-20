@@ -23,7 +23,7 @@ def get_logged_in_user(db=None):
 
             #let admins hit api/v1 from browser
             x=session.get('user_id')
-            nonce=request.session.get('login_nonce')
+            nonce=session.get('login_nonce')
             if not x or not nonce:
                 g.user=None
                 g.client=None
