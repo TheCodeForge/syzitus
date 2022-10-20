@@ -811,8 +811,6 @@ def get_comments(cids,msort_type=None, load_parent=False, **kwargs):
     if load_parent:
         parents=get_comments(
             [x.parent_comment_id for x in output if x.parent_comment_id], 
-            v=v, 
-            g.db=g.db, 
             load_parent=False
             )
 
