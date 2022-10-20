@@ -1018,7 +1018,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def available_titles(self):
-        return [i for i in TITLES if title.expr(self)]
+        return [x for x in TITLES if x.expr(self)]
 
     @property
     def can_make_guild(self):
