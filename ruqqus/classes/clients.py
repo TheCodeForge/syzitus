@@ -73,8 +73,8 @@ class ClientAuth(Base, Stndrd):
     refresh_token = Column(String(128))
     access_token_expire_utc = Column(Integer)
 
-    user = relationship("User", lazy="joined", backref="authorizations")
-    application = relationship("OauthApp", lazy="joined")
+    user = relationship("User", lazy="joined", viewonly=True)
+    application = relationship("OauthApp", lazy="joined", viewonly=True)
 
     @property
     def scopelist(self):

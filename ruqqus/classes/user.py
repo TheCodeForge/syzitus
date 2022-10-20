@@ -145,7 +145,7 @@ class User(Base, Stndrd, Age_times):
         primaryjoin="User.id==UserBlock.target_id")
 
     #_applications = relationship("OauthApp", lazy="dynamic")
-    #authorizations = relationship("ClientAuth", lazy="dynamic")
+    authorizations = relationship("ClientAuth", lazy="dynamic")
     #notification_subscriptions = relationship("PostNotificationSubscriptions", lazy="dynamic")
 
     saved_posts=relationship(
