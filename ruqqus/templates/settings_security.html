@@ -72,7 +72,7 @@
 
           <div class="footer">
 
-            <input type="hidden" name="formkey" value="{{ v.formkey }}">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
             <input type="hidden" name="now" value="1563891643">
 
             <div class="d-flex">
@@ -95,7 +95,7 @@
       <div class="settings-section rounded">
 
         <form  action="/settings/security" method="post">
-          <input type="hidden" name="formkey" value="{{ v.formkey }}">
+          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
           <div class="body">
 
@@ -105,11 +105,11 @@
 
               <div class="w-lg-100">
 
-                <input class="form-control" id="new_email" {% if v.email %}placeholder="{{ v.email }}"{% else %}placeholder="Your email"{% endif %}
+                <input class="form-control" id="new_email" {% if g.user.email %}placeholder="{{ g.user.email }}"{% else %}placeholder="Your email"{% endif %}
                 aria-describedby="new_email" type="email" name="new_email" required>
-                {% if v.email and not v.is_activated %}
+                {% if g.user.email and not g.user.is_activated %}
                 <div class="text-danger text-small-extra mt-1" id="email-verify-text">Email not verified. You will not be able to recover your account with this email until you verify it. <u><a href="javascript:void(0)" onclick="post('/api/verify_email');emailVerifyText();" class="text-danger">Verify now.</a></u></div>
-                {% elif not v.email %}
+                {% elif not g.user.email %}
                 <div class="text-danger text-small-extra mt-1" id="email-verify-text">Add an email to secure your account in case you forget your password.</div>
                 {% endif %}
 
@@ -139,7 +139,7 @@
 
           <div class="d-flex">
 
-            {% if v.email %}
+            {% if g.user.email %}
             <input class="btn btn-primary ml-auto"
             type="submit" value="Update email">
             {% else %}
@@ -190,7 +190,7 @@
   <div class="settings-section rounded">
 
     <form  action="/settings/log_out_all_others" method="post">
-      <input type="hidden" name="formkey" value="{{ v.formkey }}">
+      <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
       <div class="body">
 
@@ -239,7 +239,7 @@
 
   <div class="footer">
 
-    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
     <div class="d-flex">
 
@@ -276,7 +276,7 @@
       </div>
       <div class="" id="deleteFormContainer">
         <form id="deleteAccountForm" method="post" action="/settings/delete_account">
-          <input type="hidden" name="formkey" value="{{ v.formkey }}">
+          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
           <div class="modal-body body">
 
             <div class="d-lg-flex">
@@ -291,7 +291,7 @@
 
             </div>
 
-            {% if v.mfa_secret %}
+            {% if g.user.mfa_secret %}
             <div class="d-lg-flex mt-3">
 
               <label for="delete-mfa" class="w-lg-25" id="email-password-label">Two-Factor Code</label>

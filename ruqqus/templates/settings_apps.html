@@ -12,7 +12,7 @@
 
 <h2 class="h5">Your API Applications</h2>
 
-{% for app in v.applications %}
+{% for app in g.user.applications %}
 
 <form id="edit-app-{{ app.id }}" action="/edit_app/{{ app.id }}" method="post">
 	<div class="settings-section rounded">
@@ -21,7 +21,7 @@
                 <label for="over18"><a href="{{ app.permalink }}">{{ app.app_name }}</a></label>
             </div>
             <div class="body w-lg-100">
-				<input type="hidden" name="formkey" value="{{ v.formkey }}">
+				<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 				<label for="edit-{{ app.id }}-name" class="mb-0 w-lg-25">App Name</label>
 				<input id="edit-{{ app.id }}-name" class="form-control" type="text" name="name" value="{{ app.app_name }}">
 
@@ -53,7 +53,7 @@
 
 <h2 class="h5">Your Authorized Applications</h2>
 
-{% for auth in v.authorizations.all() %}
+{% for auth in g.user.authorizations.all() %}
 
 	<div id="auth-{{ auth.base36id }}" class="settings-section rounded">
 		<div class="d-lg-flex">
@@ -61,7 +61,7 @@
                 <label for="over18">{{ auth.application.app_name }}</label>
             </div>
             <div class="body w-lg-100">
-				<input type="hidden" name="formkey" value="{{ v.formkey }}">
+				<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 				<label class="mb-0 w-lg-25">Permissions</label>
 				<input class="form-control" type="text" name="name" value="{{ auth.scopelist }}" readonly="readonly">
 				<label class="mb-0 w-lg-25">Description</label>
@@ -84,9 +84,9 @@
 	<div class="settings-section rounded">
 		<div class="d-lg-flex">
 			<div class="body w-lg-100">
-				<input type="hidden" name="formkey" value="{{ v.formkey }}">
+				<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 				<label for="form-username">Username</label>
-				<input type="text" id="form-username" class="form-control" name="username" value="{{ v.username }}" readonly>
+				<input type="text" id="form-username" class="form-control" name="username" value="{{ g.user.username }}" readonly>
 				<label for="form-appname">Application Name</label>
 				<input type="text" id="form-appname" class="form-control" name="name" required>
 				<label for="form-redirect">Redirect URI</label>

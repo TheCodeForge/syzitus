@@ -16,7 +16,7 @@
 
 
 
-                {% if v.negative_balance_cents %}
+                {% if g.user.negative_balance_cents %}
           <h2 id="ruqqus-premium" class="h5">Payments</h2>
 
           <div class="settings-section rounded">
@@ -25,11 +25,11 @@
                 <label for="buypremium">Account Balance</label>
               </div>
               <div class="body w-lg-100">
-                  <p class="font-weight-bold text-danger">-${{ v.negative_balance_cents/100 }}</p>
+                  <p class="font-weight-bold text-danger">-${{ g.user.negative_balance_cents/100 }}</p>
                   <p>Your account balance is negative. You will not be able to participate on {{ 'SITE_NAME' | app_config }} until you bring your balance up to zero.</p>
                   <form action="/shop/negative_balance" method="post">
-                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
-                    <input id="buy-coin-btn" type="submit" class="btn btn-primary mt-2" value="Pay ${{ v.negative_balance_cents/100 }}">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+                    <input id="buy-coin-btn" type="submit" class="btn btn-primary mt-2" value="Pay ${{ g.user.negative_balance_cents/100 }}">
                   </form>
               </div>
             </div>
@@ -49,13 +49,13 @@
               </div>
               <div class="body w-lg-100">
                   <p>Coins are auto-redeemed for one week of premium account time.</p>
-                  {% if v.has_premium and v.coin_balance >=1 %}
-                  <p class="text-muted">Current balance: <span class="text-black font-weight-bold">{{ v.coin_balance }} Coin{{ '' if v.coin_balance==1 else 's' }}</span></p>
-                  <p class="text-muted">Next renewal after: <span class="text-black font-weight-bold">{{ v.renew_premium_time }} UTC</span></p>
+                  {% if g.user.has_premium and g.user.coin_balance >=1 %}
+                  <p class="text-muted">Current balance: <span class="text-black font-weight-bold">{{ g.user.coin_balance }} Coin{{ '' if g.user.coin_balance==1 else 's' }}</span></p>
+                  <p class="text-muted">Next renewal after: <span class="text-black font-weight-bold">{{ g.user.renew_premium_time }} UTC</span></p>
 
-                  {% elif v.has_premium %}
+                  {% elif g.user.has_premium %}
                   <p class="text-muted">Current balance: <span class="text-black font-weight-bold">0 Coins</span></p>
-                  <p class="text-muted">Premium expires: <span class="text-black font-weight-bold">{{ v.renew_premium_time }} UTC</span>. Buy some Coins to continue with Premium.</p>
+                  <p class="text-muted">Premium expires: <span class="text-black font-weight-bold">{{ g.user.renew_premium_time }} UTC</span>. Buy some Coins to continue with Premium.</p>
 
                   {% else %}
                   <p class="text-muted">Current balance: <span class="text-black font-weight-bold">0 Coins</span></p>
@@ -87,7 +87,7 @@
                   </div>
 
                   <form action="/shop/buy_coins" method="post">
-                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <label for="select-coins">Select Package</label>
                     <select id="select-coins" name="coin_count" class="form-control" onchange="coin_quote()">
                       <option value="1">1 Coin</option>
@@ -98,7 +98,7 @@
                     </select>
                     <label for="promo-code">Promo Code</label>
                     <input id="promo-code" class="form-control" type="text" placeholder="Optional" name="promo" oninput="coin_quote()">
-                    {% if not v.has_premium %}
+                    {% if not g.user.has_premium %}
                       <p class="text-small-extra text-muted">Note that the first coin of your purchase will be automatically redeemed.</p>
                     {% endif %}
                     <p id="promo-text" class="text-small text-danger"></p>

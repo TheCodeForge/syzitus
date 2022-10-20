@@ -13,7 +13,7 @@
 
           <h2 id="ruqqus-premium" class="h5">Purchase History</h2>
 
-          {% with txns = v.txn_history %}
+          {% with txns = g.user.txn_history %}
           {% include "txn_listing.html" %}
           {% endwith %}
 
