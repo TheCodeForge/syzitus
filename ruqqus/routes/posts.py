@@ -505,7 +505,7 @@ Optional file data:
                 "api": lambda: (jsonify({"error": f"403 Forbidden - +{board.name} has been banned."}))
                 }
 
-    if board.has_ban():
+    if board.has_ban(g.user):
         return {"html": lambda: (render_template("submit.html",
                                                  error=f"You are exiled from +{board.name}.",
                                                  title=title,
