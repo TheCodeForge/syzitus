@@ -369,6 +369,9 @@ def before_request():
     if not session.get("session_id"):
         session["session_id"] = secrets.token_hex(16)
 
+    #default user to none
+    g.user=None
+
     ua=request.headers.get("User-Agent","")
     if "CriOS/" in ua:
         g.system="ios/chrome"
@@ -384,23 +387,23 @@ def before_request():
         g.system="other/other"
 
 
-def log_event(name, link):
+# def log_event(name, link):
 
-    x = requests.get(link)
+#     x = requests.get(link)
 
-    if x.status_code != 200:
-        return
+#     if x.status_code != 200:
+#         return
 
-    text = f'> **{name}**\r> {link}'
+#     text = f'> **{name}**\r> {link}'
 
-    url = os.environ.get("DISCORD_WEBHOOK")
-    headers = {"Content-Type": "application/json"}
-    data = {"username": "ruqqus",
-            "content": text
-            }
+#     url = os.environ.get("DISCORD_WEBHOOK")
+#     headers = {"Content-Type": "application/json"}
+#     data = {"username": "ruqqus",
+#             "content": text
+#             }
 
-    x = requests.post(url, headers=headers, json=data)
-    print(x.status_code)
+#     x = requests.post(url, headers=headers, json=data)
+#     print(x.status_code)
 
 
 @app.after_request
