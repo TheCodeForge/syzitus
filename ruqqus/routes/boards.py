@@ -162,7 +162,6 @@ def api_board_available(name):
 @is_not_banned
 @no_negative_balance("html")
 @api("create")
-@validate_formkey
 def create_board_post():
     """
 Create a Guild
@@ -467,7 +466,6 @@ URL path parameters:
 @auth_required
 @is_guildmaster('content')
 @api("guildmaster")
-@validate_formkey
 def mod_kick_bid_pid(guildname, pid, board):
     """
 Kick a post from your guild.
@@ -510,7 +508,6 @@ URL path parameters:
 @auth_required
 @is_guildmaster('content')
 @api("guildmaster")
-@validate_formkey
 def mod_accept_bid_pid(guildname, pid, board):
     """
 Dismiss reports on submission and keep it in your guild.
@@ -547,7 +544,6 @@ URL path parameters:
 @auth_required
 @is_guildmaster('access')
 @api("guildmaster")
-@validate_formkey
 def mod_ban_bid_user(guildname, board):
     """
 Exile a user from a Guild
@@ -654,7 +650,6 @@ Optional form data:
 @auth_required
 @is_guildmaster('access')
 @api("guildmaster")
-@validate_formkey
 def mod_unban_bid_user(guildname, username, board):
     """
 Un-exile a user from a Guild
@@ -690,7 +685,6 @@ URL path parameters:
 @app.patch("/api/v2/me/submissions/<pid>/unyank")
 @auth_required
 @api("update")
-@validate_formkey
 def user_kick_pid(pid):
     """
 Un-yank your post back to +general
@@ -744,7 +738,6 @@ URL path parameters:
 #@app.patch("/api/v2/guilds/<guildname>/submissions/<pid>/yank")
 @auth_required
 @is_guildmaster("content")
-@validate_formkey
 @api("guildmaster")
 def mod_take_pid(pid, board):
 
@@ -838,7 +831,6 @@ def mod_take_pid(pid, board):
 @app.route("/mod/invite_mod/<bid>", methods=["POST"])
 @auth_required
 @is_guildmaster("full")
-@validate_formkey
 def mod_invite_username(bid, board):
 
     username = request.form.get("username", '').lstrip('@')
@@ -903,7 +895,6 @@ def mod_invite_username(bid, board):
 @app.route("/mod/<bid>/rescind/<username>", methods=["POST"])
 @auth_required
 @is_guildmaster("full")
-@validate_formkey
 def mod_rescind_bid_username(bid, username, board):
 
     user = get_user(username)
@@ -930,7 +921,6 @@ def mod_rescind_bid_username(bid, username, board):
 @app.route("/mod/accept/<bid>", methods=["POST"])
 @app.route("/api/v1/accept_invite/<bid>", methods=["POST"])
 @auth_required
-@validate_formkey
 @api("guildmaster")
 def mod_accept_board(bid):
 
@@ -972,7 +962,6 @@ def mod_accept_board(bid):
 @app.route("/mod/<bid>/step_down", methods=["POST"])
 @auth_required
 @is_guildmaster()
-@validate_formkey
 def mod_step_down(bid, board):
 
 
@@ -1006,7 +995,6 @@ def mod_step_down(bid, board):
 @app.route("/mod/<bid>/remove/<username>", methods=["POST"])
 @auth_required
 @is_guildmaster("full")
-@validate_formkey
 def mod_remove_username(bid, username, board):
 
     user = get_user(username)
@@ -1044,7 +1032,6 @@ def mod_remove_username(bid, username, board):
 @app.route("/mod/is_banned/<bid>/<username>", methods=["GET"])
 @auth_required
 @is_guildmaster("access")
-@validate_formkey
 def mod_is_banned_board_username(bid, username, board):
 
     user = get_user(username)
@@ -1063,7 +1050,6 @@ def mod_is_banned_board_username(bid, username, board):
 @app.route("/mod/<bid>/settings/over_18", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_nsfw(bid, board):
 
     # nsfw
@@ -1084,7 +1070,6 @@ def mod_bid_settings_nsfw(bid, board):
 @app.route("/mod/<bid>/settings/opt_out", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_optout(bid, board):
 
     # nsfw
@@ -1104,7 +1089,6 @@ def mod_bid_settings_optout(bid, board):
 @app.route("/mod/<bid>/settings/disallowbots", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_disallowbots(bid, board):
 
     # toggle disallowing bots setting
@@ -1125,7 +1109,6 @@ def mod_bid_settings_disallowbots(bid, board):
 @app.route("/mod/<bid>/settings/public_chat", methods=["POST"])
 @auth_required
 @is_guildmaster("config", "chat")
-@validate_formkey
 def mod_bid_settings_public_chat(bid, board):
 
     # nsfw
@@ -1145,7 +1128,6 @@ def mod_bid_settings_public_chat(bid, board):
 @app.route("/mod/<bid>/settings/restricted", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_restricted(bid, board):
 
     # toggle restricted setting
@@ -1169,7 +1151,6 @@ def mod_bid_settings_restricted(bid, board):
 @app.route("/mod/<bid>/settings/private", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_private(bid, board):
 
     # toggle privacy setting
@@ -1196,7 +1177,6 @@ def mod_bid_settings_private(bid, board):
 @app.route("/mod/<bid>/settings/name", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_name(bid, board):
     # name capitalization
     new_name = request.form.get("guild_name", "").lstrip("+")
@@ -1221,7 +1201,6 @@ def mod_bid_settings_name(bid, board):
 @app.route("/mod/<bid>/settings/description", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def mod_bid_settings_description(bid, board):
     # board description
     description = request.form.get("description")
@@ -1247,7 +1226,6 @@ def mod_bid_settings_description(bid, board):
 @app.route("/mod/<bid>/settings/banner", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_settings_toggle_banner(bid, board):
     # toggle show/hide banner
     board.hide_banner_data = bool(
@@ -1756,7 +1734,6 @@ def all_mod_queue():
 @app.route("/mod/<bid>/images/profile", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_board_images_profile(bid, board):
 
     if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated:
@@ -1787,7 +1764,6 @@ def mod_board_images_profile(bid, board):
 @app.route("/mod/<bid>/images/banner", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_board_images_banner(bid, board):
 
     if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated:
@@ -1818,7 +1794,6 @@ def mod_board_images_banner(bid, board):
 @app.route("/mod/<bid>/delete/profile", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_board_images_delete_profile(bid, board):
 
     board.del_profile()
@@ -1837,7 +1812,6 @@ def mod_board_images_delete_profile(bid, board):
 @app.route("/mod/<bid>/delete/banner", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_board_images_delete_banner(bid, board):
 
     board.del_banner()
@@ -1901,7 +1875,6 @@ def board_css(board_fullname, theme, x):
 @app.route("/mod/<bid>/color", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
-@validate_formkey
 def mod_board_color(bid, board):
 
     color = str(request.form.get("color", "")).strip()
@@ -1961,7 +1934,6 @@ def mod_board_color(bid, board):
 @auth_required
 @is_guildmaster("access")
 @api("guildmaster")
-@validate_formkey
 def mod_approve_bid_user(guildname, board):
     """
 Approve a user as a Contributor in a Guild
@@ -2019,7 +1991,6 @@ Required form data:
 @auth_required
 @is_guildmaster("access")
 @api("guildmaster")
-@validate_formkey
 def mod_unapprove_bid_user(bid, board):
     """
 Un-approve a user as a Contributor in a Guild
@@ -2069,7 +2040,6 @@ def guild_profile(guild):
 @auth_required
 @is_guildmaster("content")
 @api("guildmaster")
-@validate_formkey
 def mod_toggle_post_pin(guildname, pid, x, board):
     """
 Set pin status on a post
@@ -2154,7 +2124,6 @@ Optional query parameters:
 @app.route("/mod/<bid>/category/<category>", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-@validate_formkey
 def change_guild_category(v, board, bid, category):
 
     category = int(category)
@@ -2267,7 +2236,6 @@ URL path parameters:
 @app.route("/+<guildname>/mod/edit_perms", methods=["POST"])
 @auth_required
 @is_guildmaster("full")
-@validate_formkey
 def board_mod_perms_change(guildname, board):
 
     user=get_user(request.form.get("username"))
@@ -2354,7 +2322,6 @@ def board_mod_perms_change(guildname, board):
 @auth_required
 @is_guildmaster('chat')
 @api("guildmaster")
-@validate_formkey
 def mod_unchatban_bid_user(bid, board):
 
     user = get_user(request.values.get("username"))
@@ -2381,7 +2348,6 @@ def mod_unchatban_bid_user(bid, board):
 
 @app.route("/siege_guild", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def siege_guild():
 
     now = int(time.time())

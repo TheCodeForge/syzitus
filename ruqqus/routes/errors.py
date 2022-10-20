@@ -185,7 +185,6 @@ def error_503(e):
 
 @app.route("/allow_nsfw_logged_in/<bid>", methods=["POST"])
 @auth_required
-@validate_formkey
 def allow_nsfw_logged_in(bid):
 
     cutoff = int(time.time()) + 3600
@@ -223,7 +222,6 @@ def allow_nsfw_logged_out(bid):
 
 @app.route("/allow_nsfl_logged_in/<bid>", methods=["POST"])
 @auth_required
-@validate_formkey
 def allow_nsfl_logged_in(bid):
 
     cutoff = int(time.time()) + 3600

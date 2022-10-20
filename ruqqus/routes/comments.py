@@ -288,7 +288,6 @@ def post_pid_comment_cid_noboard(pid, cid, anything=None):
 @is_not_banned
 @no_negative_balance('toast')
 @tos_agreed
-@validate_formkey
 @api("create")
 def api_comment(v):
     """
@@ -587,7 +586,6 @@ Optional file data:
 @app.route("/edit_comment/<cid>", methods=["POST"])
 @app.patch("/api/v2/comments/<cid>")
 @is_not_banned
-@validate_formkey
 @api("update")
 def edit_comment(cid):
     """
@@ -730,7 +728,6 @@ Required form data:
 @app.route("/api/v1/delete/comment/<cid>", methods=["POST"])
 @app.delete("/api/v2/comments/<cid>")
 @auth_required
-@validate_formkey
 @api("delete")
 def delete_comment(cid):
     """
@@ -787,7 +784,6 @@ def embed_comment_cid(cid, pid=None):
 @auth_required
 @is_guildmaster("content")
 @api("guildmaster")
-@validate_formkey
 def mod_toggle_comment_pin(guildname, cid, board):
     """
 Toggle pin status on a top-level comment.

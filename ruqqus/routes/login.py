@@ -171,7 +171,6 @@ def me():
 
 @app.route("/logout", methods=["POST"])
 @auth_required
-@validate_formkey
 def logout():
         
     session["user_id"]=None
@@ -220,20 +219,12 @@ def sign_up_get():
     session["signup_token"] = token
     ip = request.remote_addr
 
-    formkey_hashstr = str(now) + token + agent
-
-    # formkey is a hash of session token, timestamp, and IP address
-    formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
-                       msg=bytes(formkey_hashstr, "utf-16"),
-                       digestmod='sha512'
-                       ).hexdigest()
-
     redir = request.args.get("redirect", None)
 
     error = request.args.get("error", None)
 
     return render_template("sign_up.html",
-                           formkey=formkey,
+                           formkey=make_logged_out_formkey(),
                            now=now,
                            i=random_image(),
                            redirect=redir,
@@ -262,20 +253,6 @@ def sign_up_post():
     #    return render_template("sign_up_tor.html",
     #        i=random_image()
     #    )
-
-    form_timestamp = request.form.get("now", '0')
-    form_formkey = request.form.get("formkey", "none")
-
-    submitted_token = session.get("signup_token", "")
-    if not submitted_token:
-        abort(400)
-
-    correct_formkey_hashstr = form_timestamp + submitted_token + agent
-
-    correct_formkey = hmac.new(key=bytes(app.config["SECRET_KEY"], "utf-16"),
-                               msg=bytes(correct_formkey_hashstr, "utf-16"),
-                               digestmod="sha512"
-                               ).hexdigest()
 
     now = int(time.time())
 

@@ -187,7 +187,6 @@ def submit_get():
 @is_not_banned
 @no_negative_balance("html")
 @api("update")
-@validate_formkey
 def edit_post(pid):
     """
 Edit your post text.
@@ -320,7 +319,6 @@ def get_post_title():
 @is_not_banned
 @no_negative_balance('html')
 @tos_agreed
-@validate_formkey
 @api("create")
 def submit_post():
     """
@@ -981,7 +979,6 @@ Optional file data:
 @app.delete("/api/v2/submissions/<pid>")
 @auth_required
 @api("delete")
-@validate_formkey
 def delete_post_pid(pid):
     """
 Delete your post.
@@ -1041,7 +1038,6 @@ def embed_post_pid(pid):
 @app.patch("/api/v2/submissions/<pid>/toggle_nsfw")
 @is_not_banned
 @api("update")
-@validate_formkey
 def toggle_post_nsfw(pid):
     """
 Toggle "NSFW" status on a post.
@@ -1081,7 +1077,6 @@ URL path parameters:
 @app.patch("/api/v2/submissions/<pid>/toggle_nsfl")
 @is_not_banned
 @api("update")
-@validate_formkey
 def toggle_post_nsfl(pid):
     """
 Toggle "NSFL" status on a post.
@@ -1120,7 +1115,6 @@ URL path parameters:
 @app.put("/api/v2/submissions/<pid>/thumb")
 @is_not_banned
 @api("identity")
-@validate_formkey
 def retry_thumbnail(pid):
     """
 Retry thumbnail scraping on your post.
@@ -1152,7 +1146,6 @@ URL path parameters:
 @app.route("/save_post/<base36id>", methods=["POST"])
 #@app.post("/api/v2/submissions/<base36id>/save")
 @auth_required
-@validate_formkey
 def save_post(base36id):
 
     post=get_post(base36id)
@@ -1174,7 +1167,6 @@ def save_post(base36id):
 @app.route("/unsave_post/<base36id>", methods=["POST"])
 #@app.delete("/api/v2/submissions/<base36id>/save")
 @auth_required
-@validate_formkey
 def unsave_post(base36id):
 
     post=get_post(base36id)

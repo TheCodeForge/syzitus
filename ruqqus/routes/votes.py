@@ -16,7 +16,6 @@ from ruqqus.__main__ import app
 @is_not_banned
 @no_negative_balance("toast")
 @api("vote")
-@validate_formkey
 def api_vote_post(pid, x):
 
     """
@@ -115,7 +114,6 @@ URL path parameters:
 @is_not_banned
 @no_negative_balance("toast")
 @api("vote")
-@validate_formkey
 def api_vote_comment(cid, x):
 
     """

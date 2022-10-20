@@ -20,7 +20,6 @@ def legal_1(v):
 
 @app.route("/legal/2", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def legal_2(v):
 
     if request.form.get("username") != v.username:
@@ -48,7 +47,6 @@ def legal_2(v):
 
 @app.route("/legal/final", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def legal_final(v):
 
     if request.form.get("username") != v.username:
@@ -81,7 +79,6 @@ def legal_final(v):
 
 @app.route("/help/dmca", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def dmca_post(v):
 
     data = {x: request.form[x] for x in request.form if x != "formkey"}
@@ -168,7 +165,6 @@ def dmca_post(v):
 
 @app.route("/help/counter_dmca", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def counter_dmca_post(v):
 
     data = [(x, request.form[x]) for x in request.form if x != "formkey"]

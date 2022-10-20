@@ -207,7 +207,6 @@ def help_home():
 
 @app.route("/help/submit_contact", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def press_inquiry():
 
     data = [(x, request.form[x]) for x in request.form if x != "formkey"]

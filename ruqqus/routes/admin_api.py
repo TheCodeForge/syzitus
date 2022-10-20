@@ -23,7 +23,6 @@ from ruqqus.__main__ import app, cache
 
 @app.route("/api/ban_user/<user_id>", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def ban_user(user_id):
 
     user = g.db.query(User).filter_by(id=user_id).first()
@@ -66,7 +65,6 @@ def ban_user(user_id):
 
 @app.route("/api/unban_user/<user_id>", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def unban_user(user_id):
 
     user = g.db.query(User).filter_by(id=user_id).first()
@@ -85,7 +83,6 @@ def unban_user(user_id):
 
 @app.route("/api/ban_post/<post_id>", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def ban_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
@@ -123,7 +120,6 @@ def ban_post(post_id):
 
 @app.route("/api/unban_post/<post_id>", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def unban_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
@@ -152,7 +148,6 @@ def unban_post(post_id):
 
 @app.route("/api/distinguish/<post_id>", methods=["POST"])
 @admin_level_required(1)
-@validate_formkey
 def api_distinguish_post(post_id):
 
     post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
@@ -278,7 +273,6 @@ def admin_distinguish_comment(c_id):
 
 @app.route("/api/ban_guild/<bid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def api_ban_guild(v, bid):
 
     board = get_board(bid)
@@ -293,7 +287,6 @@ def api_ban_guild(v, bid):
 
 @app.route("/api/unban_guild/<bid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def api_unban_guild(v, bid):
 
     board = get_board(bid)
@@ -308,7 +301,6 @@ def api_unban_guild(v, bid):
 
 @app.route("/api/mod_self/<bid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def mod_self_to_guild(bid):
 
     board = get_board(bid)
@@ -542,7 +534,6 @@ def multiple_plots(**kwargs):
 
 @app.route("/admin/csam_nuke/<pid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_csam_nuke(pid):
 
     post = get_post(pid)
@@ -578,7 +569,6 @@ def admin_csam_nuke(pid):
 
 @app.route("/admin/dump_cache", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def admin_dump_cache(v):
 
     cache.clear()
@@ -589,7 +579,6 @@ def admin_dump_cache(v):
 
 @app.route("/admin/ban_domain", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_ban_domain(v):
 
     domain=request.form.get("domain",'').lstrip().rstrip()
@@ -625,7 +614,6 @@ def admin_ban_domain(v):
 
 @app.route("/admin/nuke_user", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_nuke_user(v):
 
     user=get_user(request.form.get("user"))
@@ -672,7 +660,6 @@ def admin_nuke_user(v):
 
 @app.route("/admin/demod_user", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_demod_user(v):
 
     user=get_user(request.form.get("user"))
@@ -695,7 +682,6 @@ def admin_demod_user(v):
 
 @app.route("/admin/signature", methods=["POST"])
 @admin_level_required(5)
-@validate_formkey
 def admin_sig_generate(v):
 
     file=request.files["file"]

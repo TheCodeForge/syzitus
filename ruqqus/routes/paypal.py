@@ -70,7 +70,6 @@ def shop_coin_balance():
 @no_sanctions
 @is_not_banned
 @no_negative_balance("html")
-@validate_formkey
 @user_update_lock
 def shop_buy_coins():
 
@@ -101,7 +100,6 @@ def shop_buy_coins():
 @app.route("/shop/negative_balance", methods=["POST"])
 @no_sanctions
 @is_not_banned
-@validate_formkey
 @user_update_lock
 def shop_negative_balance():
 
@@ -229,7 +227,6 @@ def paypal_webhook_handler():
 @no_sanctions
 @is_not_banned
 @no_negative_balance("toast")
-@validate_formkey
 @user_update_lock
 def gift_post_pid(pid):
 
@@ -315,7 +312,6 @@ def gift_post_pid(pid):
 @no_sanctions
 @is_not_banned
 @no_negative_balance("toast")
-@validate_formkey
 @user_update_lock
 def gift_comment_pid(cid):
 

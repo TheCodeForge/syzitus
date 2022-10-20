@@ -23,7 +23,6 @@ valid_password_regex = re.compile("^.{8,100}$")
 
 @app.route("/settings/profile", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_profile_post():
 
     updated = False
@@ -171,7 +170,6 @@ def settings_profile_post():
 
 @app.route("/settings/security", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_security_post():
 
     if request.form.get("new_password"):
@@ -278,7 +276,6 @@ def settings_security_post():
 
 @app.route("/settings/dark_mode/<x>", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_dark_mode(x):
 
     try:
@@ -303,7 +300,6 @@ def settings_dark_mode(x):
 
 @app.route("/settings/log_out_all_others", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_log_out_others():
 
     submitted_password = request.form.get("password", "")
@@ -329,7 +325,6 @@ def settings_log_out_others():
 
 @app.route("/settings/images/profile", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def settings_images_profile():
     if g.user.can_upload_avatar:
         g.user.set_profile(request.files["profile"])
@@ -354,7 +349,6 @@ def settings_images_profile():
 
 @app.route("/settings/images/banner", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def settings_images_banner():
     if g.user.can_upload_banner:
         g.user.set_banner(request.files["banner"])
@@ -379,7 +373,6 @@ def settings_images_banner():
 
 @app.route("/settings/delete/profile", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_delete_profile():
 
     g.user.del_profile()
@@ -391,7 +384,6 @@ def settings_delete_profile():
 
 @app.route("/settings/new_feedkey", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_new_feedkey():
 
     g.user.feed_nonce += 1
@@ -404,7 +396,6 @@ def settings_new_feedkey():
 
 @app.route("/settings/delete/banner", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_delete_banner():
 
     g.user.del_banner()
@@ -416,7 +407,6 @@ def settings_delete_banner():
 
 @app.route("/settings/toggle_collapse", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_toggle_collapse():
 
     session["sidebar_collapsed"] = not session.get("sidebar_collapsed", False)
@@ -426,7 +416,6 @@ def settings_toggle_collapse():
 
 @app.route("/settings/read_announcement", methods=["POST"])
 @auth_required
-@validate_formkey
 def update_announcement():
 
     g.user.read_announcement_utc = int(time.time())
@@ -438,7 +427,6 @@ def update_announcement():
 @app.route("/settings/delete_account", methods=["POST"])
 @is_not_banned
 @no_negative_balance("html")
-@validate_formkey
 def delete_account():
 
     if not g.user.verifyPass(request.form.get("password", "")) or (
@@ -539,7 +527,6 @@ def settings_blockedguilds():
 
 @app.route("/settings/block", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_block_user():
 
     user = get_user(request.values.get("username"), graceful=True)
@@ -574,7 +561,6 @@ def settings_block_user():
 
 @app.route("/settings/unblock", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_unblock_user():
 
     user = get_user(request.values.get("username"))
@@ -594,7 +580,6 @@ def settings_unblock_user():
 
 @app.route("/settings/block_guild", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_block_guild():
 
     board = get_guild(request.values.get("board"), graceful=True)
@@ -621,7 +606,6 @@ def settings_block_guild():
 
 @app.route("/settings/unblock_guild", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_unblock_guild():
 
     board = get_guild(request.values.get("board"), graceful=True)
@@ -649,7 +633,6 @@ def settings_apps():
 
 @app.route("/settings/remove_discord", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_remove_discord():
 
     if g.user.admin_level>1:
@@ -677,7 +660,6 @@ def settings_purchase_history():
 
 @app.route("/settings/name_change", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_name_change():
 
     if g.user.admin_level:
@@ -764,7 +746,6 @@ def settings_name_change():
 
 @app.route("/settings/badges", methods=["POST"])
 @auth_required
-@validate_formkey
 def settings_badge_recheck():
 
     g.user.refresh_selfset_badges()

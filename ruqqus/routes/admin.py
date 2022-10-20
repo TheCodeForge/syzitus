@@ -140,7 +140,6 @@ def badge_grant_get():
 
 @app.route("/badge_grant", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def badge_grant_post():
 
     user = get_user(request.form.get("username"), graceful=True)
@@ -461,7 +460,6 @@ def alt_votes_get():
 
 @app.route("/admin/link_accounts", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_link_accounts():
 
     u1 = int(request.form.get("u1"))
@@ -647,7 +645,6 @@ def admin_domain_domain(domain_name, v):
 
 @app.route("/admin/category", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_category_lock():
 
     board=get_guild(request.form.get("board"))
@@ -841,7 +838,6 @@ def admin_siege_count():
 
 @app.route("/admin/purge_guild_images/<boardname>", methods=["POST"])
 @admin_level_required(5)
-@validate_formkey
 def admin_purge_guild_images(boardname, v):
 
     #Iterates through all posts in guild with thumbnail, and nukes thumbnails and i.ruqqus uploads
@@ -885,7 +881,6 @@ def admin_purge_guild_images(boardname, v):
 
 @app.route("/admin/image_ban", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_image_ban():
 
     i=request.files['file']
@@ -922,7 +917,6 @@ def admin_image_ban():
 
 @app.route("/admin/ipban", methods=["POST"])
 @admin_level_required(7)
-@validate_formkey
 def admin_ipban():
 
     #bans all non-Tor IPs associated with a given account
@@ -943,7 +937,6 @@ def admin_ipban():
 
 @app.route("/admin/user_ipban", methods=["POST"])
 @admin_level_required(7)
-@validate_formkey
 def admin_user_ipban():
 
     #bans all non-Tor IPs associated with a given account
@@ -1037,7 +1030,6 @@ def print_(*x):
 
 @app.route("/admin/siege_guild", methods=["POST"])
 @admin_level_required(3)
-@validate_formkey
 def admin_siege_guild():
 
     now = int(time.time())

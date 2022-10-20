@@ -97,7 +97,6 @@ def oauth_authorize_prompt(v):
 
 @app.route("/oauth/authorize", methods=["POST"])
 @auth_required
-@validate_formkey
 def oauth_authorize_post(v):
 
     client_id = request.form.get("client_id")
@@ -266,7 +265,6 @@ def request_api_keys(v):
 
 @app.route("/delete_app/<aid>", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def delete_oauth_app(v, aid):
 
     aid = base36decode(aid)
@@ -283,7 +281,6 @@ def delete_oauth_app(v, aid):
 
 @app.route("/edit_app/<aid>", methods=["POST"])
 @is_not_banned
-@validate_formkey
 def edit_oauth_app(v, aid):
 
     aid = int(aid)
@@ -312,7 +309,6 @@ Get information about the currently authenticated user. Does not include email o
 
 @app.route("/admin/app/approve/<aid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_app_approve(v, aid):
 
     app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
@@ -326,7 +322,6 @@ def admin_app_approve(v, aid):
 
 @app.route("/admin/app/revoke/<aid>", methods=["POST"])
 @admin_level_required(4)
-@validate_formkey
 def admin_app_revoke(v, aid):
 
     app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
@@ -436,7 +431,6 @@ def reroll_oauth_tokens(aid, v):
 
 @app.route("/oauth/rescind/<aid>", methods=["POST"])
 @auth_required
-@validate_formkey
 def oauth_rescind_app(aid, v):
 
     aid = base36decode(aid)
