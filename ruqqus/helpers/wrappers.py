@@ -110,14 +110,14 @@ def check_ban_evade():
     
     if random.randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
         g.user.ban(reason="Evading a site-wide ban")
-        send_notification(g.user, "Your Ruqqus account has been permanently suspended for the following reason:\n\n> ban evasion")
+        send_notification(g.user, f"Your {{ "SITE_NAME" | app_config }} account has been permanently suspended for the following reason:\n\n> ban evasion")
 
         for post in g.db.query(Submission).filter_by(author_id=g.user.id).all():
             if post.is_banned:
                 continue
 
             post.is_banned=True
-            post.ban_reason="Ban evasion. This submission's owner was banned from Ruqqus on another account."
+            post.ban_reason=f"Ban evasion. This submission's owner was banned from {{ "SITE_NAME" | app_config }} on another account."
             g.db.add(post)
 
             ma=ModAction(
@@ -136,7 +136,7 @@ def check_ban_evade():
                 continue
 
             comment.is_banned=True
-            comment.ban_reason="Ban evasion. This comment's owner was banned from Ruqqus on another account."
+            comment.ban_reason=f"Ban evasion. This comment's owner was banned from {{ "SITE_NAME" | app_config }} on another account."
             g.db.add(comment)
 
             ma=ModAction(
