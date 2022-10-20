@@ -261,8 +261,8 @@ class BoardBlock(Base, Stndrd, Age_times):
     board_id = Column(Integer, ForeignKey("boards.id"))
     created_utc = Column(Integer)
 
-    user = relationship("User", backref="board_blocks")
-    board = relationship("Board")
+    user = relationship("User", viewonly=True)
+    board = relationship("Board", viewonly=True)
 
     def __repr__(self):
         return f"<BoardBlock(id={self.id}, uid={self.user_id}, board_id={self.board_id})>"
