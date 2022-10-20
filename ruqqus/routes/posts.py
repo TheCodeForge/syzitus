@@ -542,17 +542,17 @@ Optional file data:
         ).join(
             Submission.submission_aux
         ).filter(
-            #or_(
-            #    and_(
+            or_(
+               and_(
                     Submission.author_id == g.user.id,
                     SubmissionAux.title.op('<->')(title) < app.config["SPAM_SIMILARITY_THRESHOLD"],
                     Submission.created_utc > cutoff
-            #    ),
-            #    and_(
-            #        SubmissionAux.title.op('<->')(title) < app.config["SPAM_SIMILARITY_THRESHOLD"]/2,
-            #        Submission.created_utc > cutoff
-            #    )
-            #)
+               ),
+               and_(
+                   SubmissionAux.title.op('<->')(title) < app.config["SPAM_SIMILARITY_THRESHOLD"]/2,
+                   Submission.created_utc > cutoff
+               )
+            )
     ).all()
 
     if url:
