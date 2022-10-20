@@ -8,7 +8,7 @@ import random
 from ruqqus.classes import *
 from .get import *
 from .alerts import send_notification
-from ruqqus.__main__ import Base, app, g
+from ruqqus.__main__ import Base, app, g, debug
 
 
 def get_logged_in_user():
