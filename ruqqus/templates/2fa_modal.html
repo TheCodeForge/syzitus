@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{% if mfa_secret %}Setup two-step login{% elif mfa_secret and not v.email %}Email required for two-step login{% else %}Disable two-step login{% endif %}</h5>
+        <h5 class="modal-title">{% if mfa_secret %}Setup two-step login{% elif mfa_secret and not g.user.email %}Email required for two-step login{% else %}Disable two-step login{% endif %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="far fa-times"></i></span>
         </button>
@@ -12,7 +12,7 @@
       {% if mfa_secret %}
       <div>
         <form action="/settings/security" method="post">
-          <input type="hidden" name="formkey" value="{{ v.formkey }}">
+          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
           <input type="hidden" name="2fa_secret" value="{{ mfa_secret }}">
           <div class="modal-body">
             <p>
@@ -44,7 +44,7 @@
       {% else %}
       <div>
         <form action="/settings/security" method="post">
-          <input type="hidden" name="formkey" value="{{ v.formkey }}">
+          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
           <input type="hidden" name="2fa_secret" value="{{ mfa_secret }}">
           <div class="modal-body">
 
