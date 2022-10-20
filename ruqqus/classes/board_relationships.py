@@ -22,8 +22,8 @@ class ModRelationship(Base, Age_times):
     perm_access = Column(Boolean, default=False)
     perm_full = Column(Boolean, default=False)
 
-    user = relationship("User", lazy="joined", backref="moderates", viewonly=True)
-    board = relationship("Board", lazy="joined", backref="moderators", viewonly=True)
+    user = relationship("User", lazy="joined", viewonly=True)
+    board = relationship("Board", lazy="joined", viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
