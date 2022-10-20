@@ -406,7 +406,7 @@ def log_event(name, link):
 @app.after_request
 def after_request(response):
 
-    debug(request.url_rule)
+    debug([request.path, request.url_rule])
 
     try:
         g.db.commit()
