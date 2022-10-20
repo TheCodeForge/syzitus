@@ -280,7 +280,7 @@ def premium_required(f):
 
     def wrapper(*args, **kwargs):
 
-        if not g.user.has_premium:
+        if not g.user or not g.user.has_premium:
             abort(403)
 
         return f(*args, **kwargs)
@@ -369,7 +369,7 @@ def admin_level_required(x):
             validate_csrf_token()
 
             if g.client:
-                return jsonify({"error": "No admin api access"}), 403
+                return jsonify({"error": "No admin api client access"}), 403
 
             if not g.user:
                 abort(401)
