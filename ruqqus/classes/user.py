@@ -844,8 +844,11 @@ class User(Base, Stndrd, Age_times):
     @property
     def post_count(self):
 
-        return self.submissions.filter_by(is_banned=False).count()
+        debug("in post count")
 
+        value= self.submissions.filter_by(is_banned=False).count()
+        debug(value)
+        return value
     @property
     def comment_count(self):
 
