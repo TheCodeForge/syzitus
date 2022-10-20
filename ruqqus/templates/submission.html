@@ -148,7 +148,6 @@
 <meta property="og:site_name" content="{{ p.board.permalink | full_link }}" />
 
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@ruqqus">
 <meta name="twitter:title" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}} comments on {{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
 <meta name="twitter:creator" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}}">
 <meta name="twitter:description" content="{{ comment_info.body }}" />
@@ -160,7 +159,7 @@
 {% endif %}
 
 {% else %}
-<title>{{ p.title | safe}} - Ruqqus</title>
+<title>{{ p.title | safe}} - {{ "SITE_NAME" | app_config }}</title>
 
 
 <meta property="og:article:author" content="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}" />
