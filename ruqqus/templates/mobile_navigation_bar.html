@@ -3,7 +3,7 @@
     <div class="row fixed-bottom bg-white border-top p-2" id="mobile-bottom-navigation-bar"
     style="z-index: 100; bottom: 0px; transition: bottom cubic-bezier(0, 0, 0.2, 1) 220ms;">
 
-{% if v %}
+{% if g.user %}
         <div class="col px-0">
             <a href="/" class="text-decoration-none" role="button">
                 <div class="text-center {% if request.path=='/' %}text-purple{% else %}text-muted{% endif %}">
@@ -29,7 +29,7 @@
                 </div>
             </a>
         </div>
-{% if v %}
+{% if g.user %}
         <div class="col px-0">
             <a href="/mine/guilds" class="text-decoration-none" role="button">
                 <div class="text-center {% if request.path=='/mine' %}text-purple{% else %}text-muted{% endif %}">
