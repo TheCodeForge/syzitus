@@ -28,7 +28,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
-from ruqqus.__main__ import Base, cache, app, debug
+from ruqqus.__main__ import Base, cache, app
 
 
 class User(Base, Stndrd, Age_times):
@@ -542,8 +542,6 @@ class User(Base, Stndrd, Age_times):
         #g.db.add(self)
         #g.db.commit()
         #return self.stored_karma
-        
-        debug(self.karma)
    
         
         value= max((self.karma + self.comment_karma), -5)
@@ -835,22 +833,17 @@ class User(Base, Stndrd, Age_times):
                 )
             ).count()
 
-
-
-
     @property
     def post_count(self):
 
-        debug("in post count")
-
-        value= self.submissions.filter_by(is_banned=False).count()
-        debug(value)
-        return value
+        return self.submissions.filter_by(is_banned=False).count()
     @property
     def comment_count(self):
 
         return self.comments.filter(Comment.parent_submission!=None).filter_by(
-            is_banned=False, deleted_utc=0).count()
+            is_banned=False, 
+            deleted_utc=0
+            ).count()
 
     @property
     @lazy
