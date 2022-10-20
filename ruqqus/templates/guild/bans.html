@@ -79,7 +79,7 @@
 									<i class="fas fa-ellipsis-h text-muted"></i>
 								</a>
 								<div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
-									<a class="dropdown-item" href="javascript:void(0)" onclick="post('/mod/unexile/{{ b.name }}/{{ ban.user.username }}?formkey={{ v.formkey }}', callback=function(){window.location.reload(true)})"><i class="fas fa-check"></i>Pardon</a>
+									<a class="dropdown-item" href="javascript:void(0)" onclick="post('/mod/unexile/{{ b.name }}/{{ ban.user.username }}?formkey={{ g.user.formkey }}', callback=function(){window.location.reload(true)})"><i class="fas fa-check"></i>Pardon</a>
 								</div>
 							</div>
 						</td>
@@ -137,7 +137,7 @@
 				</div>
 				<div class="modal-body">
 					<p>Users exiled from a guild will receive a notification shortly after you exile them.</p>
-					<input type="hidden" name="formkey" value="{{ v.formkey }}">
+					<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 					<input type="text" name="username" placeholder="enter username" id="exile-username" class="form-control" maxlength=25 required>
 				</div>
 				<div class="modal-footer">

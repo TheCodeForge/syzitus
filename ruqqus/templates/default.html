@@ -184,7 +184,6 @@
 
     <!-- Ruqqus CSS -->
     
-    {% block _stylesheets %}
 
     {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
     <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=3.0.0">
@@ -192,6 +191,7 @@
     <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=3.0.0">
     {% endif %}
 
+    {% block _stylesheets %}
     {% endblock %}
 
     <!-- Font Awesome -->
