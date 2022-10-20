@@ -768,7 +768,7 @@
   </div>
   {% endif %}
 
-  {% if not v and not p.is_banned %}
+  {% if not g.user and not p.is_banned %}
   <div class="comment-write mb-3">
     <textarea class="comment-box form-control rounded" name="body" aria-label="With textarea" placeholder="Add your comment..." rows="1" onclick="location.href='/login?redirect={{ request.path | urlencode}}';"></textarea>
   </div>
