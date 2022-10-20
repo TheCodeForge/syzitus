@@ -229,7 +229,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def title(self):
-        return TITLES[self.title_id]
+        return TITLES.get(self.title_id)
     
 
     @cache.memoize(timeout=300)
