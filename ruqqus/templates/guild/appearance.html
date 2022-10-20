@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
 
-{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+{% if v and g.user.referral_count and session.get("dark_mode_enabled") %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
 {% else %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
@@ -45,7 +45,7 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", url, true);
         var form = new FormData()
-        form.append("formkey", "{{ v.formkey }}");
+        form.append("formkey", "{{ g.user.formkey }}");
         item=document.getElementById(type);
         button=document.getElementById(id);
         if (item.type=="checkbox") {
@@ -115,7 +115,7 @@
               <div class="d-flex">
 
                  <form action="/mod/{{ b.base36id }}/color" id="color-form" method="post" class="color-picker" style="line-height: 0">
-                    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
                     {% for color in [('SITE_COLOR' | app_config | lower),'2a96f3','62ca56','eb4963','f39731','30409f','3e98a7','e4432d','7b9ae4','ec72de','7f8fa6'] %}
                     <input type="radio" name="color" id="color-{{ color }}" value="{{ color }}" {% if b.color == color %}checked{% endif %} onclick="document.getElementById('color-form').submit()"/>
@@ -139,7 +139,7 @@
               <div class="d-flex">
               
                 <form action="/mod/{{ b.base36id }}/color" id="color-code-form" method="post">
-                   <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
                    <input class="form-control" type="text" name="color" id="color-code" value="{{ b.color }}">
                    <label class="btn btn-secondary text-capitalize mr-2 mt-2 mb-0">Update<input type="text" for="color-code" onclick="form.submit()" hidden=""></label>
@@ -170,7 +170,7 @@
               <div>
 
                <form action="/mod/{{ b.base36id }}/images/profile" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                 <label class="btn btn-secondary text-capitalize mr-2 mb-0">
                   Update<input type="file" hidden name="profile" onchange="form.submit()">
                 </label>
@@ -181,7 +181,7 @@
             {% if b.has_profile %}
             <div>
               <form action="/mod/{{ b.base36id }}/delete/profile" method="post">
-                <input type="hidden" name="formkey" value="{{ v.formkey }}">
+                <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                 <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
               </form>
             </div>
@@ -214,7 +214,7 @@
             <div>
 
              <form action="/mod/{{ b.base36id }}/images/banner" method="post" enctype="multipart/form-data">
-              <input type="hidden" name="formkey" value="{{ v.formkey }}">
+              <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
               <label class="btn btn-secondary text-capitalize mr-2 mb-0">
                 Update<input type="file" hidden name="banner" onchange="form.submit()">
               </label>
@@ -225,7 +225,7 @@
           {% if b.has_banner %}
           <div>
             <form action="/mod/{{ b.base36id }}/delete/banner" method="post">
-              <input type="hidden" name="formkey" value="{{ v.formkey }}">
+              <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
               <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
             </form>
           </div>
