@@ -368,17 +368,6 @@
                 <label for="chatswitch">Automatically Join Chats</label>
               </div>
 
-              <div class="body w-lg-100">
-
-                <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="chatswitch" name="join_chat"{% if g.user.auto_join_chat%} checked{% endif %} onchange="post_toast('/settings/profile?join_chat='+document.getElementById('chatswitch').checked)">
-                  <label class="custom-control-label" for="chatswitch"></label>
-                </div>
-
-                <span class="text-small-extra text-muted">Automatically join Guild chat channels.</span>
-
-              </div>
-
             </div>
           </div>
           </div>
