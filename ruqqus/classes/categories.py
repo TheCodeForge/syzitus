@@ -3,7 +3,7 @@ from ruqqus.helpers.security import *
 from ruqqus.helpers.lazy import lazy
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from ruqqus.__main__ import db_session, Base, cache
+from ruqqus.__main__ import Base, cache, debug
 from .mix_ins import *
 import time
 
