@@ -368,12 +368,12 @@ Optional file data:
         return jsonify(
             {"error": "You can't comment on things that have been deleted."}), 403
 
-    if parent.is_blocking and not g.user.admin_level>=3 and not parent.board.has_mod(v, "content"):
+    if parent.is_blocking and not g.user.admin_level>=3 and not parent.board.has_mod(g.user, "content"):
         return jsonify(
             {"error": "You can't reply to users that you're blocking."}
             ), 403
 
-    if parent.is_blocked and not g.user.admin_level>=3 and not parent.board.has_mod(v, "content"):
+    if parent.is_blocked and not g.user.admin_level>=3 and not parent.board.has_mod(g.user, "content"):
         return jsonify(
             {"error": "You can't reply to users that are blocking you."}
             ), 403
@@ -410,7 +410,7 @@ Optional file data:
 
         if len(similar_comments) > threshold:
             text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
-            send_notification(v, text)
+            send_notification(g.user, text)
 
             g.user.ban(reason="Spamming.",
                   days=1)
@@ -695,7 +695,7 @@ Required form data:
 
     if len(similar_comments) > threshold:
         text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
-        send_notification(v, text)
+        send_notification(g.user, text)
 
         g.user.ban(reason="Spamming.",
               include_alts=True,
