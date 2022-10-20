@@ -12,12 +12,12 @@ BOT_TOKEN = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
 
 
 ROLES={
-    "banned":  "700694275905814591",
-    "member":  "727255602648186970",
-    "nick":    "730493039176450170",
-    "linked":  "779872346219610123",
-    "realid":  "779904545194508290",
-    "premium": "780084870176702484",
+    "banned":  environ.get("DISCORD_BANNED_ROLE_ID",'').rstrip(),
+    "member":  environ.get("DISCORD_MEMBER_ROLE_ID",'').rstrip(),
+    "nick":    environ.get("DISCORD_NICK_ROLE_ID",'').rstrip(),
+    "linked":  environ.get("DISCORD_LINKED_ROLE_ID",'').rstrip(),
+    "realid":  environ.get("DISCORD_REALID_ROLE_ID",'').rstrip(),
+    "premium": environ.get("DISCORD_PREMIUM_ROLE_ID",'').rstrip(),
 }
 
 CHANNELS={
