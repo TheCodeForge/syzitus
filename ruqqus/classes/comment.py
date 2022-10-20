@@ -502,9 +502,9 @@ class Notification(Base):
 
     read = Column(Boolean, default=False)
 
-    comment = relationship("Comment", primaryjoin="Notification.comment_id==Comment.id", backref="notifications")
+    comment = relationship("Comment", primaryjoin="Notification.comment_id==Comment.id")
     post = relationship("Submission")
-    user=relationship("User", innerjoin=True)
+    user=relationship("User", innerjoin=True, backref="notifications")
 
     def __repr__(self):
 
