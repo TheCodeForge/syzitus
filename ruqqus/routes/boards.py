@@ -988,6 +988,8 @@ def mod_step_down(bid, board):
         board.all_opt_out = False
         g.db.add(board)
 
+    g.db.commit()
+
     return "", 204
 
 
