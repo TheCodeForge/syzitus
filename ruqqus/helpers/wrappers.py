@@ -13,31 +13,68 @@ from ruqqus.__main__ import Base, app, g
 
 def get_logged_in_user():
 
+    if "user_id" in session:
+
+        uid = session.get("user_id")
+        nonce = session.get("login_nonce", 0)
+        if not uid:
+            g.user=None
+            g.client=None
+            return
+
+        user=g.db.query(User).options(
+            joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
+            joinedload(User.subscriptions).joinedload(Subscription.board),
+            joinedload(User.notifications)
+            ).filter_by(
+            id=uid,
+            is_deleted=False
+            ).first()
+
+        if request.path.startswith("/api/") and user.admin_level<3:
+            g.user=None
+            g.client=None
+            return
+
+        if user and (nonce < user.login_nonce):
+            g.user=None
+            g.client=None
+            return
+        else:
+            g.user=user
+            g.client=None
+            return
+
+
     if request.path.startswith("/api/v1"):
 
         token = request.headers.get("Authorization")
         if not token:
+            
+            g.user=None
+            g.client=None
+            return
 
-            #let admins hit api/v1 from browser
-            x=session.get('user_id')
-            nonce=session.get('login_nonce')
-            if not x or not nonce:
-                g.user=None
-                g.client=None
-                return
-            user=g.db.query(User).filter_by(id=x).first()
-            if not user:
-                g.user=None
-                g.client=None
-                return
-            if user.admin_level >=3 and nonce>=user.login_nonce:
-                g.user=user
-                g.client=None
-                return
-            else:
-                g.user=None
-                g.client=None
-                return
+            # #let admins hit api/v1 from browser
+            # x=session.get('user_id')
+            # nonce=session.get('login_nonce')
+            # if not x or not nonce:
+            #     g.user=None
+            #     g.client=None
+            #     return
+            # user=g.db.query(User).filter_by(id=x).first()
+            # if not user:
+            #     g.user=None
+            #     g.client=None
+            #     return
+            # if user.admin_level >=3 and nonce>=user.login_nonce:
+            #     g.user=user
+            #     g.client=None
+            #     return
+            # else:
+            #     g.user=None
+            #     g.client=None
+            #     return
 
         token = token.split()
         if len(token) < 2:
@@ -62,38 +99,9 @@ def get_logged_in_user():
         g.client=client
         return
 
-
-    elif "user_id" in session:
-
-        uid = session.get("user_id")
-        nonce = session.get("login_nonce", 0)
-        if not uid:
-            g.user=None
-            g.client=None
-            return
-
-        user=g.db.query(User).options(
-            joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
-            joinedload(User.subscriptions).joinedload(Subscription.board),
-            joinedload(User.notifications)
-            ).filter_by(
-            id=uid,
-            is_deleted=False
-            ).first()
-
-        if user and (nonce < user.login_nonce):
-            g.user=None
-            g.client=None
-            return
-        else:
-            g.user=user
-            g.client=None
-            return
-
-    else:
-        g.user=None
-        g.client=None
-        return
+    g.user=None
+    g.client=None
+    return
 
 def check_ban_evade():
 
