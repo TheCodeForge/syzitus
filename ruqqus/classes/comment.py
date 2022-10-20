@@ -75,10 +75,9 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     flags = relationship("CommentFlag", backref="comment")
     author = relationship(
         "User",
-        lazy="dynamic",
+        lazy="joined",
         innerjoin=True,
-        primaryjoin="User.id==Comment.author_id",
-        backref="_comments")
+        primaryjoin="User.id==Comment.author_id")
     board = association_proxy("post", "board")
     original_board = relationship(
         "Board", primaryjoin="Board.id==Comment.original_board_id")
