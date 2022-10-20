@@ -26,8 +26,6 @@ class ModAction(Base, Stndrd, Age_times):
     user = relationship("User", lazy="joined", primaryjoin="User.id==ModAction.user_id")
     target_user = relationship("User", lazy="joined", primaryjoin="User.id==ModAction.target_user_id")
     board = relationship("Board", lazy="joined")
-    #target_lodge = relationship("Lodge", lazy="joined")
-    #target_rule = relationship("Rule", lazy="joined")
     target_post = relationship("Submission", lazy="joined")
     target_comment = relationship("Comment", lazy="joined")
 
