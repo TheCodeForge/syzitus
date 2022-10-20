@@ -46,8 +46,7 @@ class User(Base, Stndrd, Age_times):
     submissions = relationship(
         "Submission",
         lazy="dynamic",
-        primaryjoin="Submission.author_id==User.id",
-        backref="author_rel")
+        primaryjoin="Submission.author_id==User.id")
     comments = relationship(
         "Comment",
         lazy="dynamic",
