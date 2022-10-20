@@ -103,6 +103,38 @@ def get_logged_in_user():
     g.client=None
     return
 
+#this isn't a wrapper; it's just called by them
+def validate_csrf_token():
+
+    if request.method not in ["POST", "PUT", "PATCH", "DELETE"]:
+        debug("req does not need csrf")
+        return
+
+    if request.path.startswith("/api/v2/") and g.user:
+        debug("req is api call, does not need csrf")
+
+    submitted_key = request.values.get("formkey", "none")
+
+    #logged in users
+    if g.user:
+        if not g.user.validate_formkey(submitted_key):
+            debug('logged in user, failed token')
+            abort(401)
+
+    else:
+        #logged out users
+        t=int(request.values.get("time", 0))
+
+        if g.timestamp-t > 3600:
+            debug('logged out user, token expired')
+            abort(401)
+
+        if not validate_hash(f"{t}+{session['session_id']}", submitted_key):
+            debug('logged out user, invalid token')
+            abort(401)
+
+    debug("successful csrf")
+
 def check_ban_evade():
 
     if not g.user or not g.user.ban_evade:
@@ -169,6 +201,8 @@ def auth_desired(f):
             
         check_ban_evade()
 
+        validate_csrf_token()
+
         resp = make_response(f(*args, **kwargs))
         if g.user:
             resp.headers.add("Cache-Control", "private")
@@ -191,7 +225,7 @@ def auth_required(f):
 
         get_logged_in_user()
 
-        #print(g.user, c)
+        validate_csrf_token()
 
         if not g.user:
             abort(401)
@@ -218,8 +252,6 @@ def is_not_banned(f):
 
         get_logged_in_user()
 
-        #print(g.user, c)
-
         if not g.user:
             abort(401)
             
@@ -227,6 +259,8 @@ def is_not_banned(f):
 
         if g.user.is_suspended:
             abort(403)
+
+        validate_csrf_token()
 
         resp = make_response(f(*args, **kwargs))
         resp.headers.add("Cache-Control", "private")
@@ -244,14 +278,10 @@ def is_not_banned(f):
 
 def tos_agreed(f):
 
+    debug(f"function {f.__name__} still has deprecated decorator tos_agreed")
+
     def wrapper(*args, **kwargs):
-
-        cutoff = int(environ.get("tos_cutoff", 0))
-
-        if g.user.tos_agreed_utc > cutoff:
-            return f(*args, **kwargs)
-        else:
-            return redirect("/help/terms#agreebox")
+        return f(*args, **kwargs)
 
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
@@ -350,6 +380,8 @@ def admin_level_required(x):
 
             get_logged_in_user()
 
+            validate_csrf_token()
+
             if g.client:
                 return jsonify({"error": "No admin api access"}), 403
 
@@ -384,19 +416,9 @@ def admin_level_required(x):
 
 def validate_formkey(f):
     """Always use @auth_required or @admin_level_required above @validate_form"""
+    debug(f"function {f.__name__} still has deprecated wrapper validate_formkey")
 
     def wrapper(*args, **kwargs):
-
-        if not request.path.startswith("/api/v1"):
-
-            submitted_key = request.values.get("formkey", "none")
-
-            if not submitted_key:
-
-                abort(401)
-
-            elif not g.user.validate_formkey(submitted_key):
-                abort(401)
 
         return f(*args, **kwargs)
 
