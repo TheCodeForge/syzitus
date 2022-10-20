@@ -22,9 +22,7 @@ valid_password_regex = re.compile("^.{8,100}$")
 
 
 @app.route("/settings/profile", methods=["POST"])
-@app.route("/api/vue/settings/profile", methods=["POST"])
 @auth_required
-@api()
 @validate_formkey
 def settings_profile_post():
 
