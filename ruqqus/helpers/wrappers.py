@@ -8,13 +8,10 @@ import random
 from ruqqus.classes import *
 from .get import *
 from .alerts import send_notification
-from ruqqus.__main__ import Base, app, db_session
+from ruqqus.__main__ import Base, app,g.db_session
 
 
-def get_logged_in_user(db=None):
-
-    if not db:
-        db=g.db
+def get_logged_in_user():
 
     if request.path.startswith("/api/v1"):
 
@@ -55,7 +52,7 @@ def get_logged_in_user(db=None):
             g.client=None
             return
 
-        client = db.query(ClientAuth).filter(
+        client =g.db.query(ClientAuth).filter(
             ClientAuth.access_token == token,
             ClientAuth.access_token_expire_utc > int(time.time())
         ).first()
@@ -74,7 +71,7 @@ def get_logged_in_user(db=None):
             g.client=None
             return
 
-        user= db.query(User).options(
+        user=g.db.query(User).options(
             joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
             joinedload(User.subscriptions).joinedload(Subscription.board),
             joinedload(User.notifications)
@@ -436,7 +433,7 @@ def api(*scopes, no_ban=False):
 
             if request.path.startswith(('/api/v1','/api/v2')):
 
-                if g.client or (g.user and g.user.admin_level>3):
+                if g.client:
 
                     if not g.user or not g.client:
                         return jsonify(
@@ -461,9 +458,6 @@ def api(*scopes, no_ban=False):
 
                 if g.user.is_suspended:
                     return jsonify({"error": f"403 Forbidden. You are banned."}), 403
-
-                if request.method != "GET" and not client:
-                    return jsonify({"error": f"401 Not Authorized. You must use an OAuth access token to create or edit content."}), 401
                     
 
                 result = f(*args, **kwargs)
