@@ -40,12 +40,12 @@ class Follow(Base):
         "User",
         uselist=False,
         primaryjoin="User.id==Follow.user_id",
-        backref="following")
+        viewonly=True)
     target = relationship(
         "User",
         lazy="joined",
         primaryjoin="User.id==Follow.target_id",
-        backref="followers")
+        viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
