@@ -408,16 +408,6 @@ def after_request(response):
 
     debug([g.user, request.path, request.url_rule])
 
-    try:
-        g.db.commit()
-        g.db.close()
-    except AttributeError:
-        pass
-    except BaseException:
-        g.db.rollback()
-        g.db.close()
-        abort(500)
-
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth"
                          )
@@ -449,6 +439,9 @@ def after_request(response):
     # except AttributeError:
     #     pass
 
+    if g.db.dirty:
+        g.db.commit()
+    g.db.close()
     return response
 
 
