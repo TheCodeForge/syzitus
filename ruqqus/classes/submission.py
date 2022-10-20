@@ -56,7 +56,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     deleted_utc = Column(Integer, default=0)
     purged_utc = Column(Integer, default=0)
     distinguish_level = Column(Integer, default=0)
-    gm_distinguish = Column(Integer, ForeignKey("boards.id"), default=0)
+    gm_distinguish = Column(Integer, ForeignKey("boards.id"), default=None)
     distinguished_board = relationship("Board", lazy="joined", primaryjoin="Board.id==Submission.gm_distinguish")
     created_str = Column(String(255), default=None)
     stickied = Column(Boolean, default=False)
