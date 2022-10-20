@@ -21,7 +21,7 @@ ROLES={
 }
 
 CHANNELS={
-    "log": "599260022492495882"
+    "log": environ.get("DISCORD_LOG_CHANNEL_ID",'').rstrip()
 }
 
 def discord_wrap(f):
