@@ -22,15 +22,21 @@ def get_logged_in_user(db=None):
         if not token:
 
             #let admins hit api/v1 from browser
-            # x=request.session.get('user_id')
-            # nonce=request.session.get('login_nonce')
-            # if not x or not nonce:
-            #     return None, None
-            # user=g.db.query(User).filter_by(id=x).first()
-            # if not user:
-            #     return None, None
-            # if user.admin_level >=3 and nonce>=user.login_nonce:
-            #     return user, None
+            x=request.session.get('user_id')
+            nonce=request.session.get('login_nonce')
+            if not x or not nonce:
+                g.user=None
+                g.client=None
+                return
+            user=g.db.query(User).filter_by(id=x).first()
+            if not user:
+                g.user=None
+                g.client=None
+                return
+            if user.admin_level >=3 and nonce>=user.login_nonce:
+                g.user=user
+                g.client=None
+                return
             g.user=None
             g.client=None
             return
