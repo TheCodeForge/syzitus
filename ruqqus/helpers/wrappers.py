@@ -273,20 +273,6 @@ def is_not_banned(f):
     wrapper.__doc__ = f.__doc__
     return wrapper
 
-# Require tos agreement
-
-
-def tos_agreed(f):
-
-    debug(f"function {f.__name__} still has deprecated decorator tos_agreed")
-
-    def wrapper(*args, **kwargs):
-        return f(*args, **kwargs)
-
-    wrapper.__name__ = f.__name__
-    wrapper.__doc__ = f.__doc__
-    return wrapper
-
 def premium_required(f):
 
     #decorator that enforces valid premium status
@@ -412,19 +398,6 @@ def admin_level_required(x):
         return wrapper
 
     return wrapper_maker
-
-
-def validate_formkey(f):
-    """Always use @auth_required or @admin_level_required above @validate_form"""
-    debug(f"function {f.__name__} still has deprecated wrapper validate_formkey")
-
-    def wrapper(*args, **kwargs):
-
-        return f(*args, **kwargs)
-
-    wrapper.__name__ = f.__name__
-    wrapper.__doc__ = f.__doc__
-    return wrapper
 
 def user_update_lock(f):
 
