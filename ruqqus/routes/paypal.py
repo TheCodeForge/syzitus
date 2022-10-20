@@ -157,7 +157,7 @@ def shop_buy_coins_completed():
     else:
         g.user.negative_balance_cents -= txn.usd_cents
 
-    g.db.add(v)
+    g.db.add(g.user)
     g.db.commit()
 
     return render_template(
@@ -229,9 +229,9 @@ def paypal_webhook_handler():
 @is_not_banned
 @no_negative_balance("toast")
 @validate_formkey
-def gift_post_pid(pid, v):
+def gift_post_pid(pid):
 
-    post=get_post(pid, v=v)
+    post=get_post(pid)
 
     if post.author_id==g.user.id:
         return jsonify({"error":"You can't give awards to yourself."}), 403   
@@ -248,7 +248,7 @@ def gift_post_pid(pid, v):
     if post.author.is_banned and not post.author.unban_utc:
         return jsonify({"error":"You can't give awards to banned accounts"}), 403
 
-    u=get_user(post.author.username, v=v)
+    u=get_user(post.author.username)
 
     if u.is_blocking:
         return jsonify({"error":"You can't give awards to someone you're blocking."}), 403
@@ -314,9 +314,9 @@ def gift_post_pid(pid, v):
 @is_not_banned
 @no_negative_balance("toast")
 @validate_formkey
-def gift_comment_pid(cid, v):
+def gift_comment_pid(cid):
 
-    comment=get_comment(cid, v=v)
+    comment=get_comment(cid)
 
     if comment.author_id==g.user.id:
         return jsonify({"error":"You can't give awards to yourself."}), 403      
@@ -333,7 +333,7 @@ def gift_comment_pid(cid, v):
     if comment.author.is_banned and not comment.author.unban_utc:
         return jsonify({"error":"You can't give awards to banned accounts"}), 403
 
-    u=get_user(comment.author.username, v=v)
+    u=get_user(comment.author.username)
 
     if u.is_blocking:
         return jsonify({"error":"You can't give awards to someone you're blocking."}), 403
@@ -395,7 +395,7 @@ def gift_comment_pid(cid, v):
 
 @app.route("/paypaltxn/<txid>")
 @auth_required
-def paypaltxn_txid(txid, v):
+def paypaltxn_txid(txid):
 
     txn = get_txid(txid)
 
@@ -404,6 +404,5 @@ def paypaltxn_txid(txid, v):
 
     return render_template(
         "single_txn.html", 
-        v=v, 
         txns=[txn]
         )
