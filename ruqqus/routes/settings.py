@@ -33,7 +33,7 @@ def settings_profile_post():
         g.user.over_18 = request.values.get("over18", None) == 'true'
         cache.delete_memoized(User.idlist, g.user)
 
-    if request.values.https://ruqqusreborn.herokuapp.com/feeds/@codeforge/019f1fb33d9af3e746a1fd184ee26cc36b0150fd85cdb2512a33ec2d99934bed/hotget("hide_offensive",
+    if request.values.get("hide_offensive",
                           g.user.hide_offensive) != g.user.hide_offensive:
         updated = True
         g.user.hide_offensive = request.values.get("hide_offensive", None) == 'true'
