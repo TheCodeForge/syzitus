@@ -149,7 +149,7 @@ def settings_security():
     if mfa_secret:
         recovery=f"{mfa_secret}+{g.user.id}+{g.user.original_username}"
         recovery=generate_hash(recovery)
-        recovery=base36encode(int(recovery,16))
+        recovery=base36encode(int(recovery,16) % 0xFFFFFFFFFFFFFFFFFFFFFFFFF)
         while len(recovery)<25:
             recovery="0"+recovery
         recovery=" ".join([recovery[i:i+5] for i in range(0,len(recovery),5)])
