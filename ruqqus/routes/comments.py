@@ -478,7 +478,7 @@ Optional file data:
                 is_offensive=is_offensive,
                 original_board_id=parent_post.board_id,
                 is_bot=is_bot,
-                app_id=g.user.client.application.id if g.user.client else None,
+                app_id=g.client.application.id if g.client else None,
                 creation_region=request.headers.get("cf-ipcountry")
                 )
 
