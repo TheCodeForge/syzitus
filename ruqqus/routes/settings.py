@@ -65,9 +65,9 @@ def settings_profile_post():
         updated = True
         g.user.is_nofollow = request.values.get("nofollow", None) == 'true'
 
-    if request.values.get("join_chat", g.user.auto_join_chat) != g.user.auto_join_chat:
-        updated = True
-        g.user.auto_join_chat = request.values.get("join_chat", None) == 'true'
+    # if request.values.get("join_chat", g.user.auto_join_chat) != g.user.auto_join_chat:
+    #     updated = True
+    #     g.user.auto_join_chat = request.values.get("join_chat", None) == 'true'
 
     if request.values.get("bio") is not None:
         bio = request.values.get("bio")[0:256]
