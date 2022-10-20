@@ -256,7 +256,6 @@ class Board(Base, Stndrd, Age_times):
         else:
             return m
 
-
         return False
 
     def has_mod_record(self, user, perm=None):

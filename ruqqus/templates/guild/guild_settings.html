@@ -68,7 +68,7 @@
 {% block subNav %}
 
   {% if '+' in request.path %}
-  {% set mod = b.has_mod(v) %}
+  {% set mod = b.has_mod(g.user) %}
   <!-- Desktop -->
   <div class="container-fluid bg-white sticky d-none d-md-block">
     <div class="row box-shadow-bottom">
