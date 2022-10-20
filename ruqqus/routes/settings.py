@@ -26,57 +26,56 @@ valid_password_regex = re.compile("^.{8,100}$")
 @auth_required
 @api()
 @validate_formkey
-def settings_profile_post(v):
+def settings_profile_post():
 
     updated = False
 
-    if request.values.get("over18", v.over_18) != v.over_18:
+    if request.values.get("over18", g.user.over_18) != g.user.over_18:
         updated = True
-        v.over_18 = request.values.get("over18", None) == 'true'
+        g.user.over_18 = request.values.get("over18", None) == 'true'
         cache.delete_memoized(User.idlist, v)
 
     if request.values.get("hide_offensive",
-                          v.hide_offensive) != v.hide_offensive:
+                          g.user.hide_offensive) != g.user.hide_offensive:
         updated = True
-        v.hide_offensive = request.values.get("hide_offensive", None) == 'true'
+        g.user.hide_offensive = request.values.get("hide_offensive", None) == 'true'
         cache.delete_memoized(User.idlist, v)
 		
     if request.values.get("hide_bot",
-                          v.hide_bot) != v.hide_bot:
+                          g.user.hide_bot) != g.user.hide_bot:
         updated = True
-        v.hide_bot = request.values.get("hide_bot", None) == 'true'
+        g.user.hide_bot = request.values.get("hide_bot", None) == 'true'
         cache.delete_memoized(User.idlist, v)
 
-    if request.values.get("show_nsfl", v.show_nsfl) != v.show_nsfl:
+    if request.values.get("show_nsfl", g.user.show_nsfl) != g.user.show_nsfl:
         updated = True
-        v.show_nsfl = request.values.get("show_nsfl", None) == 'true'
+        g.user.show_nsfl = request.values.get("show_nsfl", None) == 'true'
         cache.delete_memoized(User.idlist, v)
 
-    if request.values.get("filter_nsfw", v.filter_nsfw) != v.filter_nsfw:
+    if request.values.get("filter_nsfw", g.user.filter_nsfw) != g.user.filter_nsfw:
         updated = True
-        v.filter_nsfw = not request.values.get("filter_nsfw", None) == 'true'
+        g.user.filter_nsfw = not request.values.get("filter_nsfw", None) == 'true'
         cache.delete_memoized(User.idlist, v)
 
-    if request.values.get("private", v.is_private) != v.is_private:
+    if request.values.get("private", g.user.is_private) != g.user.is_private:
         updated = True
-        v.is_private = request.values.get("private", None) == 'true'
+        g.user.is_private = request.values.get("private", None) == 'true'
 
-    if request.values.get("nofollow", v.is_nofollow) != v.is_nofollow:
+    if request.values.get("nofollow", g.user.is_nofollow) != g.user.is_nofollow:
         updated = True
-        v.is_nofollow = request.values.get("nofollow", None) == 'true'
+        g.user.is_nofollow = request.values.get("nofollow", None) == 'true'
 
-    if request.values.get("join_chat", v.auto_join_chat) != v.auto_join_chat:
+    if request.values.get("join_chat", g.user.auto_join_chat) != g.user.auto_join_chat:
         updated = True
-        v.auto_join_chat = request.values.get("join_chat", None) == 'true'
+        g.user.auto_join_chat = request.values.get("join_chat", None) == 'true'
 
     if request.values.get("bio") is not None:
         bio = request.values.get("bio")[0:256]
 
         bio=preprocess(bio)
 
-        if bio == v.bio:
+        if bio == g.user.bio:
             return {"html":lambda:render_template("settings_profile.html",
-                                   v=v,
                                    error="You didn't change anything"),
 		    "api":lambda:jsonify({"error":"You didn't change anything"})
 		   }
@@ -97,20 +96,19 @@ def settings_profile_post(v):
                 
             #auto ban for digitally malicious content
             if any([x.reason==4 for x in bans]):
-                v.ban(days=30, reason="Digitally malicious content is not allowed.")
+                g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             return jsonify({"error": reason}), 401
 
-        v.bio = bio
-        v.bio_html=bio_html
-        g.db.add(v)
+        g.user.bio = bio
+        g.user.bio_html=bio_html
+        g.db.add(g.user)
         
         #seo profile spam
-        if int(time.time())-v.created_utc < 60*60*24 and not v.post_count and not v.comment_count and BeautifulSoup(bio_html).find('a'):
-            v.ban(reason="seo spam")
+        if int(time.time())-g.user.created_utc < 60*60*24 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
+            g.user.ban(reason="seo spam")
         
         
         return {"html":lambda:render_template("settings_profile.html",
-                               v=v,
                                msg="Your bio has been updated."),
 		"api":lambda:jsonify({"message":"Your bio has been updated."})}
 
@@ -118,17 +116,15 @@ def settings_profile_post(v):
 
         filters=request.values.get("filters")[0:1000].lstrip().rstrip()
 
-        if filters==v.custom_filter_list:
+        if filters==g.user.custom_filter_list:
             return {"html":lambda:render_template("settings_profile.html",
-                                   v=v,
                                    error="You didn't change anything"),
 		    "api":lambda:jsonify({"error":"You didn't change anything"})
 		   }
 
-        v.custom_filter_list=filters
-        g.db.add(v)
+        g.user.custom_filter_list=filters
+        g.db.add(g.user)
         return {"html":lambda:render_template("settings_profile.html",
-                               v=v,
                                msg="Your custom filters have been updated."),
 		"api":lambda:jsonify({"message":"Your custom filters have been updated"})}
 
@@ -138,12 +134,12 @@ def settings_profile_post(v):
     if x:
         x = int(x)
         if x == 0:
-            v.title_id = None
+            g.user.title_id = None
             updated = True
         elif x > 0:
             title = get_title(x)
             if bool(eval(title.qualification_expr)):
-                v.title_id = title.id
+                g.user.title_id = title.id
                 updated = True
             else:
                 return jsonify({"error": f"You don't meet the requirements for title `{title.text}`."}), 403
@@ -153,7 +149,7 @@ def settings_profile_post(v):
     defaultsorting = request.values.get("defaultsorting")
     if defaultsorting:
         if defaultsorting in ["hot", "new", "old", "activity", "disputed", "top"]:
-            v.defaultsorting = defaultsorting
+            g.user.defaultsorting = defaultsorting
             updated = True
         else:
             abort(400)
@@ -161,13 +157,13 @@ def settings_profile_post(v):
     defaulttime = request.values.get("defaulttime")
     if defaulttime:
         if defaulttime in ["day", "week", "month", "year", "all"]:
-            v.defaulttime = defaulttime
+            g.user.defaulttime = defaulttime
             updated = True
         else:
             abort(400)
 
     if updated:
-        g.db.add(v)
+        g.db.add(g.user)
 
         return jsonify({"message": "Your settings have been updated."})
 
@@ -178,7 +174,7 @@ def settings_profile_post(v):
 @app.route("/settings/security", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_security_post(v):
+def settings_security_post():
 
     if request.form.get("new_password"):
         if request.form.get(
@@ -191,20 +187,21 @@ def settings_security_post(v):
             return redirect("/settings/security?error=" + 
                             escape("Password must be between 8 and 100 characters."))
 
-        if not v.verifyPass(request.form.get("old_password")):
+        if not g.user.verifyPass(request.form.get("old_password")):
             return render_template(
-                "settings_security.html", v=v, error="Incorrect password")
+                "settings_security.html",
+                error="Incorrect password")
 
-        v.passhash = v.hash_password(request.form.get("new_password"))
+        g.user.passhash = g.user.hash_password(request.form.get("new_password"))
 
-        g.db.add(v)
+        g.db.add(g.user)
 
         return redirect("/settings/security?msg=" +
                         escape("Your password has been changed."))
 
     if request.form.get("new_email"):
 
-        if not v.verifyPass(request.form.get('password')):
+        if not g.user.verifyPass(request.form.get('password')):
             return redirect("/settings/security?error=" +
                             escape("Invalid password."))
 
@@ -215,12 +212,12 @@ def settings_security_post(v):
             gmail_username=gmail_username.split("+")[0]
             gmail_username=gmail_username.replace('.','')
             new_email=f"{gmail_username}@gmail.com"
-        if new_email == v.email:
+        if new_email == g.user.email:
             return redirect("/settings/security?error=" +
                             escape("That email is already yours!"))
 
         # check to see if email is in use
-        existing = g.db.query(User).filter(User.id != v.id,
+        existing = g.db.query(User).filter(User.id != g.user.id,
                                            func.lower(User.email) == new_email.lower()).first()
         if existing:
             return redirect("/settings/security?error=" +
@@ -230,16 +227,15 @@ def settings_security_post(v):
 
         now = int(time.time())
 
-        token = generate_hash(f"{new_email}+{v.id}+{now}")
-        params = f"?email={quote(new_email)}&id={v.id}&time={now}&token={token}"
+        token = generate_hash(f"{new_email}+{g.user.id}+{now}")
+        params = f"?email={quote(new_email)}&id={g.user.id}&time={now}&token={token}"
 
         link = url + params
 
         send_mail(to_address=new_email,
                   subject="Verify your email address.",
                   html=render_template("email/email_change.html",
-                                       action_url=link,
-                                       v=v)
+                                       action_url=link)
                   )
 
         return redirect("/settings/security?msg=" + escape(
@@ -247,7 +243,7 @@ def settings_security_post(v):
 
     if request.form.get("2fa_token", ""):
 
-        if not v.verifyPass(request.form.get('password')):
+        if not g.user.verifyPass(request.form.get('password')):
             return redirect("/settings/security?error=" +
                             escape("Invalid password or token."))
 
@@ -257,26 +253,26 @@ def settings_security_post(v):
             return redirect("/settings/security?error=" +
                             escape("Invalid password or token."))
 
-        v.mfa_secret = secret
-        g.db.add(v)
+        g.user.mfa_secret = secret
+        g.db.add(g.user)
 
         return redirect("/settings/security?msg=" +
                         escape("Two-factor authentication enabled."))
 
     if request.form.get("2fa_remove", ""):
 
-        if not v.verifyPass(request.form.get('password')):
+        if not g.user.verifyPass(request.form.get('password')):
             return redirect("/settings/security?error=" +
                             escape("Invalid password or token."))
 
         token = request.form.get("2fa_remove")
 
-        if not v.validate_2fa(token) and not safe_compare(v.mfa_removal_code, token.lower().replace(' ','')):
+        if not g.user.validate_2fa(token) and not safe_compare(g.user.mfa_removal_code, token.lower().replace(' ','')):
             return redirect("/settings/security?error=" +
                             escape("Invalid password or token."))
 
-        v.mfa_secret = None
-        g.db.add(v)
+        g.user.mfa_secret = None
+        g.db.add(g.user)
 
         return redirect("/settings/security?msg=" +
                         escape("Two-factor authentication disabled."))
@@ -295,13 +291,13 @@ def settings_dark_mode(x, v):
     if x not in [0, 1]:
         abort(400)
 
-    if not v.can_use_darkmode:
+    if not g.user.can_use_darkmode:
         session["dark_mode_enabled"] = False
         abort(403)
     else:
         # print(f"current cookie is {session.get('dark_mode_enabled')}")
         session["dark_mode_enabled"] = x
-        # print(f"set dark mode @{v.username} to {x}")
+        # print(f"set dark mode @{g.user.username} to {x}")
         # print(f"cookie is now {session.get('dark_mode_enabled')}")
         session.modified = True
         return "", 204
@@ -310,110 +306,120 @@ def settings_dark_mode(x, v):
 @app.route("/settings/log_out_all_others", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_log_out_others(v):
+def settings_log_out_others():
 
     submitted_password = request.form.get("password", "")
 
-    if not v.verifyPass(submitted_password):
-        return render_template("settings_security.html",
-                               v=v, error="Incorrect Password"), 401
+    if not g.user.verifyPass(submitted_password):
+        return render_template(
+            "settings_security.html",
+            error="Incorrect Password"
+            ), 401
 
     # increment account's nonce
-    v.login_nonce += 1
+    g.user.login_nonce += 1
 
     # update cookie accordingly
-    session["login_nonce"] = v.login_nonce
+    session["login_nonce"] = g.user.login_nonce
 
-    g.db.add(v)
+    g.db.add(g.user)
 
-    return render_template("settings_security.html", v=v,
-                           msg="All other devices have been logged out")
+    return render_template(
+        "settings_security.html",
+        msg="All other devices have been logged out")
 
 
 @app.route("/settings/images/profile", methods=["POST"])
 @is_not_banned
 @validate_formkey
-def settings_images_profile(v):
-    if v.can_upload_avatar:
-        v.set_profile(request.files["profile"])
+def settings_images_profile():
+    if g.user.can_upload_avatar:
+        g.user.set_profile(request.files["profile"])
 
         # anti csam
         new_thread = threading.Thread(target=check_csam_url,
-                                      args=(v.profile_url,
+                                      args=(g.user.profile_url,
                                             v,
                                             lambda: board.del_profile()
                                             )
                                       )
         new_thread.start()
 
-        return render_template("settings_profile.html",
-                               v=v, msg="Profile picture successfully updated.")
+        return render_template(
+            "settings_profile.html",
+            msg="Profile picture successfully updated.")
 
-    return render_template("settings_profile.html", v=v,
-                           msg="Avatars require 300 reputation.")
+    return render_template(
+        "settings_profile.html",
+        msg="Avatars require 300 reputation.")
 
 
 @app.route("/settings/images/banner", methods=["POST"])
 @is_not_banned
 @validate_formkey
-def settings_images_banner(v):
-    if v.can_upload_banner:
-        v.set_banner(request.files["banner"])
+def settings_images_banner():
+    if g.user.can_upload_banner:
+        g.user.set_banner(request.files["banner"])
 
         # anti csam
         new_thread = threading.Thread(target=check_csam_url,
-                                      args=(v.banner_url,
+                                      args=(g.user.banner_url,
                                             v,
                                             lambda: board.del_banner()
                                             )
                                       )
         new_thread.start()
 
-        return render_template("settings_profile.html",
-                               v=v, msg="Banner successfully updated.")
+        return render_template(
+            "settings_profile.html",
+            msg="Banner successfully updated.")
 
-    return render_template("settings_profile.html", v=v,
-                           msg="Banners require 500 reputation.")
+    return render_template(
+        "settings_profile.html",
+        msg="Banners require 500 reputation.")
 
 
 @app.route("/settings/delete/profile", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_delete_profile(v):
+def settings_delete_profile():
 
-    v.del_profile()
+    g.user.del_profile()
 
-    return render_template("settings_profile.html", v=v,
-                           msg="Profile picture successfully removed.")
+    return render_template(
+        "settings_profile.html",
+        msg="Profile picture successfully removed.")
 
 
 @app.route("/settings/new_feedkey", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_new_feedkey(v):
+def settings_new_feedkey():
 
-    v.feed_nonce += 1
-    g.db.add(v)
+    g.user.feed_nonce += 1
+    g.db.add(g.user)
 
-    return render_template("settings_profile.html", v=v,
-                           msg="Your new custom RSS Feed Token has been generated.")
+    return render_template(
+        "settings_profile.html",
+        msg="Your new custom RSS Feed Token has been generated.")
 
 
 @app.route("/settings/delete/banner", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_delete_banner(v):
+def settings_delete_banner():
 
-    v.del_banner()
+    g.user.del_banner()
 
-    return render_template("settings_profile.html", v=v,
-                           msg="Banner successfully removed.")
+    return render_template(
+        "settings_profile.html",
+        msg="Banner successfully removed.")
 
 
 @app.route("/settings/toggle_collapse", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_toggle_collapse(v):
+def settings_toggle_collapse():
 
     session["sidebar_collapsed"] = not session.get("sidebar_collapsed", False)
 
@@ -423,10 +429,10 @@ def settings_toggle_collapse(v):
 @app.route("/settings/read_announcement", methods=["POST"])
 @auth_required
 @validate_formkey
-def update_announcement(v):
+def update_announcement():
 
-    v.read_announcement_utc = int(time.time())
-    g.db.add(v)
+    g.user.read_announcement_utc = int(time.time())
+    g.db.add(g.user)
 
     return "", 204
 
@@ -435,44 +441,44 @@ def update_announcement(v):
 @is_not_banned
 @no_negative_balance("html")
 @validate_formkey
-def delete_account(v):
+def delete_account():
 
-    if not v.verifyPass(request.form.get("password", "")) or (
-            v.mfa_secret and not v.validate_2fa(request.form.get("twofactor", ""))):
-        return render_template("settings_security.html", v=v,
-                               error="Invalid password or token" if v.mfa_secret else "Invalid password")
+    if not g.user.verifyPass(request.form.get("password", "")) or (
+            g.user.mfa_secret and not g.user.validate_2fa(request.form.get("twofactor", ""))):
+        return render_template("settings_security.html", 
+                               error="Invalid password or token" if g.user.mfa_secret else "Invalid password")
 
 
-    remove_user(v)
+    remove_user(g.user)
 
-    v.discord_id=None
-    v.is_deleted = True
-    v.login_nonce += 1
-    v.delete_reason = request.form.get("delete_reason", "")
-    v.patreon_id=None
-    v.patreon_pledge_cents=0
-    v.del_banner()
-    v.del_profile()
-    g.db.add(v)
+    g.user.discord_id=None
+    g.user.is_deleted = True
+    g.user.login_nonce += 1
+    g.user.delete_reason = request.form.get("delete_reason", "")
+    g.user.patreon_id=None
+    g.user.patreon_pledge_cents=0
+    g.user.del_banner()
+    g.user.del_profile()
+    g.db.add(g.user)
 
-    mods = g.db.query(ModRelationship).filter_by(user_id=v.id).all()
+    mods = g.db.query(ModRelationship).filter_by(user_id=g.user.id).all()
     for mod in mods:
         g.db.delete(mod)
 
-    bans = g.db.query(BanRelationship).filter_by(user_id=v.id).all()
+    bans = g.db.query(BanRelationship).filter_by(user_id=g.user.id).all()
     for ban in bans:
         g.db.delete(ban)
 
     contribs = g.db.query(ContributorRelationship).filter_by(
-        user_id=v.id).all()
+        user_id=g.user.id).all()
     for contrib in contribs:
         g.db.delete(contrib)
 
-    blocks = g.db.query(UserBlock).filter_by(target_id=v.id).all()
+    blocks = g.db.query(UserBlock).filter_by(target_id=g.user.id).all()
     for block in blocks:
         g.db.delete(block)
 
-    for b in v.boards_modded:
+    for b in g.user.boards_modded:
         if b.mods_count == 0:
             b.is_private = False
             b.restricted_posting = False
@@ -483,8 +489,8 @@ def delete_account(v):
     session.pop("session_id", None)
 
     #deal with throwaway spam - auto nuke content if account age below threshold
-    if int(time.time()) - v.created_utc < 60*60*12:
-        for post in v.submissions:
+    if int(time.time()) - g.user.created_utc < 60*60*12:
+        for post in g.user.submissions:
             post.is_banned=True
 
             new_ma=ModAction(
@@ -498,7 +504,7 @@ def delete_account(v):
             g.db.add(post)
             g.db.add(new_ma)
 
-        for comment in v.comments:
+        for comment in g.user.comments:
             comment.is_banned=True
             new_ma=ModAction(
                 user_id=1,
@@ -517,38 +523,36 @@ def delete_account(v):
 
 @app.route("/settings/blocks", methods=["GET"])
 @auth_required
-def settings_blockedpage(v):
+def settings_blockedpage():
 
-    #users=[x.target for x in v.blocked]
+    #users=[x.target for x in g.user.blocked]
 
-    return render_template("settings_blocks.html",
-                           v=v)
+    return render_template("settings_blocks.html")
 
 
 @app.route("/settings/filters", methods=["GET"])
 @auth_required
-def settings_blockedguilds(v):
+def settings_blockedguilds():
 
-    #users=[x.target for x in v.blocked]
+    #users=[x.target for x in g.user.blocked]
 
-    return render_template("settings_guildfilter.html",
-                           v=v)
+    return render_template("settings_guildfilter.html")
 
 
 @app.route("/settings/block", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_block_user(v):
+def settings_block_user():
 
     user = get_user(request.values.get("username"), graceful=True)
 
     if not user:
         return jsonify({"error": "That user doesn't exist."}), 404
 
-    if user.id == v.id:
+    if user.id == g.user.id:
         return jsonify({"error": "You can't block yourself."}), 409
 
-    if v.has_block(user):
+    if g.user.has_block(user):
         return jsonify({"error": f"You have already blocked @{user.username}."}), 409
 
     if user.id == 1:
@@ -557,15 +561,15 @@ def settings_block_user(v):
     if user.is_deleted:
         return jsonify({"error": "That account has been deactivated"}), 410
     
-    new_block = UserBlock(user_id=v.id,
+    new_block = UserBlock(user_id=g.user.id,
                           target_id=user.id,
                           created_utc=int(time.time())
                           )
     g.db.add(new_block)
 
-    cache.delete_memoized(v.idlist)
-    #cache.delete_memoized(Board.idlist, v=v)
-    cache.delete_memoized(frontlist, v=v)
+    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(Board.idlist, v=g.user)
+    cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"@{user.username} blocked."})
 
@@ -573,19 +577,19 @@ def settings_block_user(v):
 @app.route("/settings/unblock", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_unblock_user(v):
+def settings_unblock_user():
 
     user = get_user(request.values.get("username"))
 
-    x = v.has_block(user)
+    x = g.user.has_block(user)
     if not x:
         abort(409)
 
     g.db.delete(x)
 
-    cache.delete_memoized(v.idlist)
-    #cache.delete_memoized(Board.idlist, v=v)
-    cache.delete_memoized(frontlist, v=v)
+    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(Board.idlist, v=g.user)
+    cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"@{user.username} unblocked."})
 
@@ -593,26 +597,26 @@ def settings_unblock_user(v):
 @app.route("/settings/block_guild", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_block_guild(v):
+def settings_block_guild():
 
     board = get_guild(request.values.get("board"), graceful=True)
 
     if not board:
         return jsonify({"error": "That guild doesn't exist."}), 404
 
-    if v.has_blocked_guild(board):
+    if g.user.has_blocked_guild(board):
         return jsonify({"error": f"You have already blocked +{board.name}."}), 409
 
-    new_block = BoardBlock(user_id=v.id,
+    new_block = BoardBlock(user_id=g.user.id,
                            board_id=board.id,
                            created_utc=int(time.time())
                            )
     g.db.add(new_block)
     g.db.commit()
 
-    cache.delete_memoized(v.idlist)
-    #cache.delete_memoized(Board.idlist, v=v)
-    cache.delete_memoized(frontlist, v=v)
+    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(Board.idlist, v=g.user)
+    cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"+{board.name} added to filter"})
 
@@ -620,100 +624,94 @@ def settings_block_guild(v):
 @app.route("/settings/unblock_guild", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_unblock_guild(v):
+def settings_unblock_guild():
 
     board = get_guild(request.values.get("board"), graceful=True)
 
-    x = v.has_blocked_guild(board)
+    x = g.user.has_blocked_guild(board)
     if not x:
         abort(409)
 
     g.db.delete(x)
     g.db.commit()
 
-    cache.delete_memoized(v.idlist)
-    #cache.delete_memoized(Board.idlist, v=v)
-    cache.delete_memoized(frontlist, v=v)
+    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(Board.idlist, v=g.user)
+    cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"+{board.name} removed from filter"})
 
 
 @app.route("/settings/apps", methods=["GET"])
 @auth_required
-def settings_apps(v):
+def settings_apps():
 
-    return render_template("settings_apps.html", v=v)
+    return render_template("settings_apps.html", v=g.user)
 
 
 @app.route("/settings/remove_discord", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_remove_discord(v):
+def settings_remove_discord():
 
-    if v.admin_level>1:
-        return render_template("settings_filters.html", v=v, error="Admins can't disconnect Discord.")
+    if g.user.admin_level>1:
+        return render_template("settings_filters.html",  error="Admins can't disconnect Discord.")
 
-    remove_user(v)
+    remove_user(g.user)
 
-    v.discord_id=None
-    g.db.add(v)
+    g.user.discord_id=None
+    g.db.add(g.user)
     g.db.commit()
 
     return redirect("/settings/profile")
 
 @app.route("/settings/content", methods=["GET"])
 @auth_required
-def settings_content_get(v):
+def settings_content_get():
 
-    return render_template("settings_filters.html", v=v)
+    return render_template("settings_filters.html", v=g.user)
 
 @app.route("/settings/purchase_history", methods=["GET"])
 @auth_required
-def settings_purchase_history(v):
+def settings_purchase_history():
 
-    return render_template("settings_txnlist.html", v=v)
+    return render_template("settings_txnlist.html", v=g.user)
 
 @app.route("/settings/name_change", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_name_change(v):
+def settings_name_change():
 
-    if v.admin_level:
+    if g.user.admin_level:
         return render_template("settings_profile.html",
-                           v=v,
                            error="Admins can't change their name.")
 
 
     new_name=request.form.get("name").lstrip().rstrip()
 
     #make sure name is different
-    if new_name==v.username:
+    if new_name==g.user.username:
         return render_template("settings_profile.html",
-                           v=v,
                            error="You didn't change anything")
 
     #can't change name on verified ID accounts
-    if v.real_id:
+    if g.user.real_id:
         return render_template("settings_profile.html",
-                           v=v,
                            error="Your ID is verified so you can't change your username.")
 
     #7 day cooldown
-    if v.name_changed_utc > int(time.time()) - 60*60*24*7:
+    if g.user.name_changed_utc > int(time.time()) - 60*60*24*7:
         return render_template("settings_profile.html",
-                           v=v,
-                           error=f"You changed your name {(int(time.time()) - v.name_changed_utc)//(60*60*24)} days ago. You need to wait 7 days between name changes.")
+                           error=f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait 7 days between name changes.")
 
     #costs 3 coins
-    if v.coin_balance < 20:
+    if g.user.coin_balance < 20:
         return render_template("settings_profile.html",
-                           v=v,
-                           error=f"Username changes cost 20 Coins. You only have a balance of {v.coin_balance} Coins")
+                           error=f"Username changes cost 20 Coins. You only have a balance of {g.user.coin_balance} Coins")
 
     #verify acceptability
     if not re.match(valid_username_regex, new_name):
         return render_template("settings_profile.html",
-                           v=v,
                            error=f"That isn't a valid username.")
 
     #verify availability
@@ -728,42 +726,40 @@ def settings_name_change(v):
             )
         ).first()
 
-    if x and x.id != v.id:
+    if x and x.id != g.user.id:
         return render_template("settings_profile.html",
-                           v=v,
                            error=f"Username `{new_name}` is already in use.")
 
     #all reqs passed
 
     #check user avatar/banner for rename if needed
-    if v.has_profile and v.profile_url.startswith("https://i.ruqqus.com/users/"):
-        upload_from_url(f"uid/{v.base36id}/profile-{v.profile_nonce}.png", f"{v.profile_url}")
-        v.profile_set_utc=int(time.time())
-        g.db.add(v)
+    if g.user.has_profile and g.user.profile_url.startswith("https://i.ruqqus.com/users/"):
+        upload_from_url(f"uid/{g.user.base36id}/profile-{g.user.profile_nonce}.png", f"{g.user.profile_url}")
+        g.user.profile_set_utc=int(time.time())
+        g.db.add(g.user)
         g.db.commit()
 
-    if v.has_banner and v.banner_url.startswith("https://i.ruqqus.com/users/"):
-        upload_from_url(f"uid/{v.base36id}/banner-{v.banner_nonce}.png", f"{v.banner_url}")
-        v.banner_set_utc=int(time.time())
-        g.db.add(v)
+    if g.user.has_banner and g.user.banner_url.startswith("https://i.ruqqus.com/users/"):
+        upload_from_url(f"uid/{g.user.base36id}/banner-{g.user.banner_nonce}.png", f"{g.user.banner_url}")
+        g.user.banner_set_utc=int(time.time())
+        g.db.add(g.user)
         g.db.commit()
 
 
     #do name change and deduct coins
 
-    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=v.id).first()
+    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
 
-    v.username=new_name
-    v.coin_balance-=20
-    v.name_changed_utc=int(time.time())
+    g.user.username=new_name
+    g.user.coin_balance-=20
+    g.user.name_changed_utc=int(time.time())
 
     set_nick(v, new_name)
 
-    g.db.add(v)
+    g.db.add(g.user)
     g.db.commit()
 
     return render_template("settings_profile.html",
-                       v=v,
                        msg=f"Username changed successfully. 20 Coins have been deducted from your balance.")
 
 
@@ -771,8 +767,8 @@ def settings_name_change(v):
 @app.route("/settings/badges", methods=["POST"])
 @auth_required
 @validate_formkey
-def settings_badge_recheck(v):
+def settings_badge_recheck():
 
-    v.refresh_selfset_badges()
+    g.user.refresh_selfset_badges()
 
     return jsonify({"message":"Badges Refreshed"})
