@@ -5,10 +5,10 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="{% block pagedesc %}Ruqqus - the free speech social platform{% endblock %}">
+    <meta name="description" content="{% block pagedesc %}{{ 'SITE_NAME' | app_config }} - the free speech social platform{% endblock %}">
     <meta name="author" content="">
 
-    <title>{% block pagetitle %}Ruqqus - the open, free-speech social platform{% endblock %}</title>
+    <title>{% block pagetitle %}{{ 'SITE_NAME' | app_config }} - the open, free-speech social platform{% endblock %}</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
 
@@ -45,9 +45,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/help/terms">Terms</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mailto:info@ruqqus.com">Contact</a>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -65,7 +62,7 @@
                     <div class="col-10 col-md-7">
 
                     <div class="mb-5">
-                        <a href="/" class="text-decoration-none"><span class="h3 text-primary">ruqqus</span></a>
+                        <a href="/" class="text-decoration-none"><span class="h3 text-primary">{{ "S3_BUCKET" | app_config }}</span></a>
                     </div>
 
                     <h1 class="h2">{% block authtitle %}{% endblock %}</h1>

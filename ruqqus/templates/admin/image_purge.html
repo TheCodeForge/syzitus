@@ -10,7 +10,7 @@
 
 {% block content %}
 <h1>S3 Image Purge</h1>
-<p>Paste an i.ruqqus.com link here to delete the image and purge it from cache</p>
+<p>Paste a {{ "S3_BUCKET" | app_config }} link here to delete the image and purge it from cache</p>
 
 <form action="/admin/image_purge" method="post" class="mb-6">
 	<label for="link-input">S3 Link</label>
