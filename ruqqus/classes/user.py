@@ -1018,17 +1018,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def available_titles(self):
-
-        locs = {"v": self,
-                "Board": Board,
-                "Submission": Submission
-                }
-
-        titles = [
-            i for i in g.db.query(Title).order_by(
-                text("id asc")).all() if eval(
-                i.qualification_expr, {}, locs)]
-        return titles
+        return [i for i in TITLES if title.expr(self)]=
 
     @property
     def can_make_guild(self):
