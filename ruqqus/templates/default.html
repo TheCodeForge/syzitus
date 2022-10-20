@@ -185,7 +185,7 @@
     <!-- Ruqqus CSS -->
     
 
-    {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
+    {% if g.user and session.get("dark_mode_enabled") %}
     <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=3.0.0">
     {% else %}
     <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=3.0.0">

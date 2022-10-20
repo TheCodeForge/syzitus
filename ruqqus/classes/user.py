@@ -1110,12 +1110,6 @@ class User(Base, Stndrd, Age_times):
         return 503 if self.id==1 else max(self.karma + self.comment_karma, -5)
 
     @property
-    def can_use_darkmode(self):
-        return True
-        # return self.referral_count or self.has_earned_darkmode or
-        # self.has_badge(16) or self.has_badge(17)
-
-    @property
     def is_valid(self):
         if self.is_banned and self.unban_utc==0:
             return False
