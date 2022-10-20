@@ -436,7 +436,7 @@ def api(*scopes, no_ban=False):
 
             if request.path.startswith(('/api/v1','/api/v2')):
 
-                if g.client:
+                if g.client or (g.user and g.user.admin_level>3):
 
                     if not g.user or not g.client:
                         return jsonify(
