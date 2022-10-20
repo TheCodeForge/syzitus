@@ -288,7 +288,7 @@ def post_pid_comment_cid_noboard(pid, cid, anything=None):
 @is_not_banned
 @no_negative_balance('toast')
 @api("create")
-def api_comment(v):
+def api_comment():
     """
 Create a comment
 
