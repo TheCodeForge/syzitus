@@ -77,22 +77,17 @@ URL path parameters:
 * `pid` - The base 36 post id
 """
     
-    post = get_post(
-        pid,
-        v=v
-        )
+    post = get_post(pid)
     board = post.board
 
-    if board.is_banned and not (v and v.admin_level > 3):
+    if board.is_banned and not (v and g.user.admin_level > 3):
         return render_template("board_banned.html",
-                               v=v,
                                b=board,
                                p=True)
 
-    if post.over_18 and not (v and v.over_18) and not session_over18(board):
+    if post.over_18 and not (v and g.user.over_18) and not session_over18(board):
         t = int(time.time())
         return {"html":lambda:render_template("errors/nsfw.html",
-                               v=v,
                                t=t,
                                lo_formkey=make_logged_out_formkey(t),
                                board=post.board
@@ -104,14 +99,13 @@ URL path parameters:
 
 
     return {
-        "html":lambda:post.rendered_page(v=v),
+        "html":lambda:post.rendered_page(),
         "api":lambda:jsonify(post.json)
         }
 
 
 @app.route("/+<boardname>/post/<pid>/", methods=["GET"])
 @app.route("/+<boardname>/post/<pid>/<anything>", methods=["GET"])
-@app.route("/api/v1/post/<pid>", methods=["GET"])
 @app.get("/api/v2/submissions/<pid>/comments")
 @auth_desired
 @api("read")
@@ -127,7 +121,7 @@ Optional query parameters:
 """
     
     post = get_post_with_comments(
-        pid, v=v, sort_type=request.args.get(
+        pid, sort_type=request.args.get(
             "sort", "top"))
 
     board = post.board
@@ -136,16 +130,14 @@ Optional query parameters:
     if boardname and not boardname == board.name:
         return redirect(post.permalink)
 
-    if board.is_banned and not (v and v.admin_level > 3):
+    if board.is_banned and not (v and g.user.admin_level > 3):
         return render_template("board_banned.html",
-                               v=v,
                                b=board,
                                p=True)
 
-    if post.over_18 and not (v and v.over_18) and not session_over18(board):
+    if post.over_18 and not (v and g.user.over_18) and not session_over18(board):
         t = int(time.time())
         return {"html":lambda:render_template("errors/nsfw.html",
-                               v=v,
                                t=t,
                                lo_formkey=make_logged_out_formkey(t),
                                board=post.board
@@ -157,7 +149,7 @@ Optional query parameters:
     post.tree_comments()
 
     return {
-        "html":lambda:post.rendered_page(v=v),
+        "html":lambda:post.rendered_page(),
         "api":lambda:jsonify({"data":[x.json for x in post.replies]})
         }
 
@@ -169,7 +161,7 @@ Optional query parameters:
 @api("read")
 def post_base36id_noboard(base36id, anything=None, v=None):
     
-    post=get_post_with_comments(base36id, v=v, sort_type=request.args.get("sort","top"))
+    post=get_post_with_comments(base36id, sort_type=request.args.get("sort","top"))
 
     #board=post.board
     return redirect(post.permalink)
@@ -179,14 +171,13 @@ def post_base36id_noboard(base36id, anything=None, v=None):
 @app.route("/submit", methods=["GET"])
 @is_not_banned
 @no_negative_balance("html")
-def submit_get(v):
+def submit_get():
 
     board = request.args.get("guild")
     b = get_guild(board, graceful=True) if board else None
 
 
     return render_template("submit.html",
-                           v=v,
                            b=b
                            )
 
@@ -197,7 +188,7 @@ def submit_get(v):
 @no_negative_balance("html")
 @api("update")
 @validate_formkey
-def edit_post(pid, v):
+def edit_post(pid):
     """
 Edit your post text.
 
@@ -210,13 +201,13 @@ Required form data:
 
     p = get_post(pid)
 
-    if not p.author_id == v.id:
+    if not p.author_id == g.user.id:
         abort(403)
 
     if p.is_banned:
         abort(403)
 
-    if p.board.has_ban(v):
+    if p.board.has_ban():
         abort(403)
 
     body = request.form.get("body", "")
@@ -236,7 +227,7 @@ Required form data:
             
         #auto ban for digitally malicious content
         if any([x.reason==4 for x in bans]):
-            v.ban(days=30, reason="Digitally malicious content is not allowed.")
+            g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             abort(403)
             
         return {"error": reason}, 403
@@ -262,7 +253,7 @@ Required form data:
             if badlink.autoban:
                 text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
                 send_notification(v, text)
-                v.ban(days=1, reason="spam")
+                g.user.ban(days=1, reason="spam")
 
                 return redirect('/notifications')
             else:
@@ -292,7 +283,7 @@ Required form data:
 @no_negative_balance("html")
 #@tos_agreed
 #@validate_formkey
-def get_post_title(v):
+def get_post_title():
 
     url = request.args.get("url", None)
     if not url:
@@ -323,7 +314,6 @@ def get_post_title(v):
 
 
 @app.route("/submit", methods=['POST'])
-@app.route("/api/v1/submit", methods=["POST"])
 @app.route("/api/vue/submit", methods=["POST"])
 @app.post("/api/v2/submissions")
 @limiter.limit("6/minute")
@@ -332,7 +322,7 @@ def get_post_title(v):
 @tos_agreed
 @validate_formkey
 @api("create")
-def submit_post(v):
+def submit_post():
     """
 Create a post
 
@@ -366,7 +356,6 @@ Optional file data:
 
     if not title:
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error="Please enter a better title.",
                                                  title=title,
                                                  url=url,
@@ -379,7 +368,6 @@ Optional file data:
 
     # if len(title)<10:
     #     return render_template("submit.html",
-    #                            v=v,
     #                            error="Please enter a better title.",
     #                            title=title,
     #                            url=url,
@@ -390,7 +378,6 @@ Optional file data:
 
     elif len(title) > 250:
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error="250 character limit for titles.",
                                                  title=title[0:250],
                                                  url=url,
@@ -405,7 +392,6 @@ Optional file data:
     if not (parsed_url.scheme and parsed_url.netloc) and not request.form.get(
             "body") and not request.files.get("file", None):
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error="Please enter a url or some text.",
                                                  title=title,
                                                  url=url,
@@ -436,7 +422,7 @@ Optional file data:
     # check for duplicate
     dup = g.db.query(Submission).join(Submission.submission_aux).filter(
 
-        Submission.author_id == v.id,
+        Submission.author_id == g.user.id,
         Submission.deleted_utc == 0,
         Submission.board_id == board.id,
         SubmissionAux.title == title,
@@ -461,14 +447,13 @@ Optional file data:
         if not domain_obj.can_submit:
           
             if domain_obj.reason==4:
-                v.ban(days=30, reason="Digitally malicious content")
+                g.user.ban(days=30, reason="Digitally malicious content")
             elif domain_obj.reason==9:
-                v.ban(days=7, reason="Engaging in illegal activity")
+                g.user.ban(days=7, reason="Engaging in illegal activity")
             elif domain_obj.reason==7:
-                v.ban(reason="Sexualizing minors")
+                g.user.ban(reason="Sexualizing minors")
 
             # return {"html": lambda: (render_template("submit.html",
-            #                                          v=v,
             #                                          error=BAN_REASONS[domain_obj.reason],
             #                                          title=title,
             #                                          url=url,
@@ -503,7 +488,6 @@ Optional file data:
     if not board:
 
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error=f"Please enter a Guild to submit to.",
                                                  title=title,
                                                  url=url, body=request.form.get(
@@ -516,7 +500,6 @@ Optional file data:
     if board.is_banned:
 
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error=f"+{board.name} has been banned.",
                                                  title=title,
                                                  url=url, body=request.form.get(
@@ -526,9 +509,8 @@ Optional file data:
                 "api": lambda: (jsonify({"error": f"403 Forbidden - +{board.name} has been banned."}))
                 }
 
-    if board.has_ban(v):
+    if board.has_ban():
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error=f"You are exiled from +{board.name}.",
                                                  title=title,
                                                  url=url, body=request.form.get(
@@ -539,9 +521,8 @@ Optional file data:
                 }
 
     if (board.restricted_posting or board.is_private) and not (
-            board.can_submit(v)):
+            board.can_submit(g.user)):
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error=f"You are not an approved contributor for +{board.name}.",
                                                  title=title,
                                                  url=url,
@@ -567,7 +548,7 @@ Optional file data:
         ).filter(
             #or_(
             #    and_(
-                    Submission.author_id == v.id,
+                    Submission.author_id == g.user.id,
                     SubmissionAux.title.op('<->')(title) < app.config["SPAM_SIMILARITY_THRESHOLD"],
                     Submission.created_utc > cutoff
             #    ),
@@ -586,7 +567,7 @@ Optional file data:
         ).filter(
             #or_(
             #    and_(
-                    Submission.author_id == v.id,
+                    Submission.author_id == g.user.id,
                     SubmissionAux.url.op('<->')(url) < app.config["SPAM_URL_SIMILARITY_THRESHOLD"],
                     Submission.created_utc > cutoff
             #    ),
@@ -600,9 +581,9 @@ Optional file data:
         similar_urls = []
 
     threshold = app.config["SPAM_SIMILAR_COUNT_THRESHOLD"]
-    if v.age >= (60 * 60 * 24 * 7):
+    if g.user.age >= (60 * 60 * 24 * 7):
         threshold *= 3
-    elif v.age >= (60 * 60 * 24):
+    elif g.user.age >= (60 * 60 * 24):
         threshold *= 2
 
     if max(len(similar_urls), len(similar_posts)) >= threshold:
@@ -610,10 +591,10 @@ Optional file data:
         text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
         send_notification(v, text)
 
-        v.ban(reason="Spamming.",
+        g.user.ban(reason="Spamming.",
               days=1)
 
-        for alt in v.alts:
+        for alt in g.user.alts:
             if not alt.is_suspended:
                 alt.ban(reason="Spamming.", days=1)
 
@@ -637,7 +618,6 @@ Optional file data:
     if len(str(body)) > 10000:
 
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error="10000 character limit for text body.",
                                                  title=title,
                                                  url=url,
@@ -651,7 +631,6 @@ Optional file data:
     if len(url) > 2048:
 
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error="2048 character limit for URLs.",
                                                  title=title,
                                                  url=url,
@@ -680,11 +659,10 @@ Optional file data:
             
         #auto ban for digitally malicious content
         if any([x.reason==4 for x in bans]):
-            v.ban(days=30, reason="Digitally malicious content is not allowed.")
+            g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             abort(403)
             
         return {"html": lambda: (render_template("submit.html",
-                                                 v=v,
                                                  error=reason,
                                                  title=title,
                                                  url=url,
@@ -719,13 +697,12 @@ Optional file data:
             if badlink.autoban:
                 text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
                 send_notification(v, text)
-                v.ban(days=1, reason="spam")
+                g.user.ban(days=1, reason="spam")
 
                 return redirect('/notifications')
             else:
 
                 return {"html": lambda: (render_template("submit.html",
-                                                         v=v,
                                                          error=f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}.",
                                                          title=title,
                                                          url=url,
@@ -756,7 +733,7 @@ Optional file data:
 		'api': lambda:({"error":"This content has already been posted", "repost":repost.json}, 409)
 	       }
 
-    if request.files.get('file') and not v.can_submit_image:
+    if request.files.get('file') and not g.user.can_submit_image:
         abort(403)
 
     # offensive
@@ -767,7 +744,7 @@ Optional file data:
             break
 
     new_post = Submission(
-        author_id=v.id,
+        author_id=g.user.id,
         domain_ref=domain_obj.id if domain_obj else None,
         board_id=board.id,
         original_board_id=board.id,
@@ -781,7 +758,7 @@ Optional file data:
         post_public=not board.is_private,
         repost_id=repost.id if repost else None,
         is_offensive=is_offensive,
-        app_id=v.client.application.id if v.client else None,
+        app_id=g.user.client.application.id if g.user.client else None,
         creation_region=request.headers.get("cf-ipcountry"),
         is_bot = request.headers.get("X-User-Type","").lower()=="bot"
     )
@@ -799,7 +776,7 @@ Optional file data:
     g.db.add(new_post_aux)
     g.db.flush()
 
-    vote = Vote(user_id=v.id,
+    vote = Vote(user_id=g.user.id,
                 vote_type=1,
                 submission_id=new_post.id
                 )
@@ -812,14 +789,13 @@ Optional file data:
     if request.files.get('file'):
 
         #check file size
-        if request.content_length > 16 * 1024 * 1024 and not v.has_premium:
+        if request.content_length > 16 * 1024 * 1024 and not g.user.has_premium:
             g.db.rollback()
             abort(413)
 
         file = request.files['file']
         if not file.content_type.startswith('image/'):
             return {"html": lambda: (render_template("submit.html",
-                                                         v=v,
                                                          error=f"Image files only.",
                                                          title=title,
                                                          body=request.form.get(
@@ -872,7 +848,7 @@ Optional file data:
     g.db.commit()
 
     # spin off thumbnail generation and csam detection as  new threads
-    if (new_post.url or request.files.get('file')) and (v.is_activated or request.headers.get('cf-ipcountry')!="T1"):
+    if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
         new_thread = gevent.spawn(
             thumbnail_thread,
             new_post.base36id
@@ -891,7 +867,7 @@ Optional file data:
     for mention in soup.find_all("a", href=re.compile("^/@(\w+)"), limit=3):
         username = mention["href"].split("@")[1]
         user = g.db.query(User).filter_by(username=username).first()
-        if user and not v.any_block_exists(user) and user.id != v.id: 
+        if user and not g.user.any_block_exists(user) and user.id != g.user.id: 
             notify_users.add(user.id)
     
     # print(f"Content Event: @{new_post.author.username} post
@@ -906,23 +882,23 @@ Optional file data:
         Subscription.board_id==new_post.board_id, 
         Subscription.is_active==True,
         Subscription.get_notifs==True,
-        Subscription.user_id != v.id,
+        Subscription.user_id != g.user.id,
         Subscription.user_id.notin_(
-            g.db.query(UserBlock.user_id).filter_by(target_id=v.id).subquery()
+            g.db.query(UserBlock.user_id).filter_by(target_id=g.user.id).subquery()
             )
         )
 
     follow_uids=g.db.query(
         Follow.user_id
         ).options(lazyload('*')).filter(
-        Follow.target_id==v.id,
+        Follow.target_id==g.user.id,
         Follow.get_notifs==True,
-        Follow.user_id!=v.id,
+        Follow.user_id!=g.user.id,
         Follow.user_id.notin_(
-            g.db.query(UserBlock.user_id).filter_by(target_id=v.id).subquery()
+            g.db.query(UserBlock.user_id).filter_by(target_id=g.user.id).subquery()
             ),
         Follow.user_id.notin_(
-            g.db.query(UserBlock.target_id).filter_by(user_id=v.id).subquery()
+            g.db.query(UserBlock.target_id).filter_by(user_id=g.user.id).subquery()
             )
         ).join(Follow.target).filter(
         User.is_private==False,
@@ -982,7 +958,7 @@ Optional file data:
 # @app.route("/api/nsfw/<pid>/<x>", methods=["POST"])
 # @auth_required
 # @validate_formkey
-# def api_nsfw_pid(pid, x, v):
+# def api_nsfw_pid(pid, x):
 
 #     try:
 #         x=bool(int(x))
@@ -991,7 +967,7 @@ Optional file data:
 
 #     post=get_post(pid)
 
-#     if not v.admin_level >=3 and not post.author_id==v.id and not post.board.has_mod(v):
+#     if not g.user.admin_level >=3 and not post.author_id==g.user.id and not post.board.has_mod():
 #         abort(403)
 
 #     post.over_18=x
@@ -1002,12 +978,11 @@ Optional file data:
 
 
 @app.route("/delete_post/<pid>", methods=["POST"])
-@app.route("/api/v1/delete_post/<pid>", methods=["POST"])
 @app.delete("/api/v2/submissions/<pid>")
 @auth_required
 @api("delete")
 @validate_formkey
-def delete_post_pid(pid, v):
+def delete_post_pid(pid):
     """
 Delete your post.
 
@@ -1016,7 +991,7 @@ URL path parameters:
 """
 
     post = get_post(pid)
-    if not post.author_id == v.id:
+    if not post.author_id == g.user.id:
         abort(403)
         
     if post.is_deleted:
@@ -1063,12 +1038,11 @@ def embed_post_pid(pid):
 
 
 @app.route("/api/toggle_post_nsfw/<pid>", methods=["POST"])
-@app.route("/api/v1/toggle_post_nsfw/<pid>", methods=["POST"])
 @app.patch("/api/v2/submissions/<pid>/toggle_nsfw")
 @is_not_banned
 @api("update")
 @validate_formkey
-def toggle_post_nsfw(pid, v):
+def toggle_post_nsfw(pid):
     """
 Toggle "NSFW" status on a post.
 
@@ -1079,9 +1053,9 @@ URL path parameters:
 
     post = get_post(pid)
 
-    mod=post.board.has_mod(v)
+    mod=post.board.has_mod(g.user)
 
-    if not post.author_id == v.id and not v.admin_level >= 3 and not mod:
+    if not post.author_id == g.user.id and not g.user.admin_level >= 3 and not mod:
         abort(403)
 
     if post.board.over_18 and post.over_18:
@@ -1090,10 +1064,10 @@ URL path parameters:
     post.over_18 = not post.over_18
     g.db.add(post)
 
-    if post.author_id!=v.id:
+    if post.author_id!=g.user.id:
         ma=ModAction(
             kind="set_nsfw" if post.over_18 else "unset_nsfw",
-            user_id=v.id,
+            user_id=g.user.id,
             target_submission_id=post.id,
             board_id=post.board.id,
             note = None if mod else "admin action"
@@ -1104,12 +1078,11 @@ URL path parameters:
 
 
 @app.route("/api/toggle_post_nsfl/<pid>", methods=["POST"])
-@app.route("/api/v1/toggle_post_nsfl/<pid>", methods=["POST"])
 @app.patch("/api/v2/submissions/<pid>/toggle_nsfl")
 @is_not_banned
 @api("update")
 @validate_formkey
-def toggle_post_nsfl(pid, v):
+def toggle_post_nsfl(pid):
     """
 Toggle "NSFL" status on a post.
 
@@ -1119,9 +1092,9 @@ URL path parameters:
 
     post = get_post(pid)
 
-    mod=post.board.has_mod(v)
+    mod=post.board.has_mod(g.user)
 
-    if not post.author_id == v.id and not v.admin_level >= 3 and not mod:
+    if not post.author_id == g.user.id and not g.user.admin_level >= 3 and not mod:
         abort(403)
 
     if post.board.is_nsfl and post.is_nsfl:
@@ -1130,10 +1103,10 @@ URL path parameters:
     post.is_nsfl = not post.is_nsfl
     g.db.add(post)
 
-    if post.author_id!=v.id:
+    if post.author_id!=g.user.id:
         ma=ModAction(
             kind="set_nsfl" if post.is_nsfl else "unset_nsfl",
-            user_id=v.id,
+            user_id=g.user.id,
             target_submission_id=post.id,
             board_id=post.board.id,
             note = None if mod else "admin action"
@@ -1148,7 +1121,7 @@ URL path parameters:
 @is_not_banned
 @api("identity")
 @validate_formkey
-def retry_thumbnail(pid, v):
+def retry_thumbnail(pid):
     """
 Retry thumbnail scraping on your post.
 
@@ -1156,9 +1129,9 @@ URL path parameters:
 * `pid` - The base 36 post id.
 """
 
-    post = get_post(pid, v=v)
+    post = get_post(pid)
 
-    if post.author_id != v.id and v.admin_level < 3:
+    if post.author_id != g.user.id and g.user.admin_level < 3:
         return jsonify({"error": "That isn't your post."}), 403
 
     if post.is_archived:
@@ -1180,12 +1153,12 @@ URL path parameters:
 #@app.post("/api/v2/submissions/<base36id>/save")
 @auth_required
 @validate_formkey
-def save_post(base36id, v):
+def save_post(base36id):
 
     post=get_post(base36id)
 
     new_save=SaveRelationship(
-        user_id=v.id,
+        user_id=g.user.id,
         submission_id=post.id)
 
     g.db.add(new_save)
@@ -1202,11 +1175,11 @@ def save_post(base36id, v):
 #@app.delete("/api/v2/submissions/<base36id>/save")
 @auth_required
 @validate_formkey
-def unsave_post(base36id, v):
+def unsave_post(base36id):
 
     post=get_post(base36id)
 
-    save=g.db.query(SaveRelationship).filter_by(user_id=v.id, submission_id=post.id).first()
+    save=g.db.query(SaveRelationship).filter_by(user_id=g.user.id, submission_id=post.id).first()
 
     g.db.delete(save)
 
