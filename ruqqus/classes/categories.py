@@ -160,5 +160,3 @@ CATEGORIES={x:Category(
     **CATEGORY_DATA[x]
     ) for x in CATEGORY_DATA
 }
-
-debug(CATEGORIES[1].__dict__)
