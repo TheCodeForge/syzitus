@@ -133,7 +133,7 @@ class Board(Base, Stndrd, Age_times):
 
     @cache.memoize(timeout=60)
     def idlist(self, sort=None, page=1, t=None,
-               hide_offensive=True, hide_bot=False, v=None, nsfw=False, **kwargs):
+               hide_offensive=True, hide_bot=False, nsfw=False, **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
                                                                            #is_pinned=False,
@@ -158,7 +158,7 @@ class Board(Base, Stndrd, Age_times):
             posts = posts.filter_by(is_nsfl=False)
 
         if self.is_private:
-            if v and (self.can_view(v) or v.admin_level >= 4):
+            if v and (self.can_view(g.user) or v.admin_level >= 4):
                 pass
             elif v:
                 posts = posts.filter(or_(Submission.post_public == True,
@@ -168,7 +168,7 @@ class Board(Base, Stndrd, Age_times):
             else:
                 posts = posts.filter_by(post_public=True)
 
-        if v and not self.has_mod(v) and v.admin_level <= 3:
+        if v and not self.has_mod(g.user) and v.admin_level <= 3:
             # blocks
             blocking = g.db.query(
                 UserBlock.target_id).filter_by(
@@ -560,7 +560,7 @@ class Board(Base, Stndrd, Age_times):
             posts = posts.filter_by(is_nsfl=False)
 
         if self.is_private:
-            if v and (self.can_view(v) or v.admin_level >= 4):
+            if v and (self.can_view(g.user) or v.admin_level >= 4):
                 pass
             elif v:
                 posts = posts.filter(or_(Submission.post_public == True,
@@ -580,7 +580,7 @@ class Board(Base, Stndrd, Age_times):
         if v and v.hide_bot and not self.has_mod(v, "content"):
             comments = comments.filter_by(is_bot=False)
 
-        if v and not self.has_mod(v) and v.admin_level <= 3:
+        if v and not self.has_mod(g.user) and v.admin_level <= 3:
             # blocks
             blocking = g.db.query(
                 UserBlock.target_id).filter_by(
