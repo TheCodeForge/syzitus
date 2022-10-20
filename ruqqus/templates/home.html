@@ -312,7 +312,7 @@
 
     </div>
 
-    {% if request.path=="/all" or (request.path=="/" and not v) %}
+    {% if request.path=="/all" or (request.path=="/" and not g.user) %}
     <div class="sidebar-section">
       <div class="title">
         <i class="fas fa-shapes mr-2"></i>Categories
