@@ -143,46 +143,46 @@ class Board(Base, Stndrd, Age_times):
         if not nsfw:
             posts = posts.filter_by(over_18=False)
 
-        if v and v.hide_offensive:
+        if g.user and g.user.hide_offensive:
             posts = posts.filter(
                 or_(
                     Submission.is_offensive==False,
-                    Submission.author_id==v.id
+                    Submission.author_id==g.user.id
                 )
             )
 			
-        if v and v.hide_bot and not self.has_mod(v, "content"):
+        if g.user and g.user.hide_bot and not self.has_mod(v, "content"):
             posts = posts.filter_by(is_bot=False)
 
-        if v and not v.show_nsfl:
+        if g.user and not g.user.show_nsfl:
             posts = posts.filter_by(is_nsfl=False)
 
         if self.is_private:
-            if v and (self.can_view(g.user) or v.admin_level >= 4):
+            if g.user and (self.can_view(g.user) or g.user.admin_level >= 4):
                 pass
             elif v:
                 posts = posts.filter(or_(Submission.post_public == True,
-                                         Submission.author_id == v.id
+                                         Submission.author_id == g.user.id
                                          )
                                      )
             else:
                 posts = posts.filter_by(post_public=True)
 
-        if v and not self.has_mod(g.user) and v.admin_level <= 3:
+        if g.user and not self.has_mod(g.user) and g.user.admin_level <= 3:
             # blocks
             blocking = g.db.query(
                 UserBlock.target_id).filter_by(
-                user_id=v.id).subquery()
+                user_id=g.user.id).subquery()
             # blocked = g.db.query(
             #     UserBlock.user_id).filter_by(
-            #     target_id=v.id).subquery()
+            #     target_id=g.user.id).subquery()
 
             posts = posts.filter(
                 Submission.author_id.notin_(blocking) #,
             #    Submission.author_id.notin_(blocked)
             )
 
-        if t == None and v: t = v.defaulttime
+        if t == None and v: t = g.user.defaulttime
         if t:
             now = int(time.time())
             if t == 'day':
@@ -207,7 +207,7 @@ class Board(Base, Stndrd, Age_times):
             posts = posts.filter(Submission.created_utc < lt)
 
         if sort == None:
-            if v: sort = v.defaultsorting
+            if v: sort = g.user.defaultsorting
             else: sort = "hot"
 
         if sort != "new" and sort != "old": posts.filter_by(is_pinned=False)
@@ -555,15 +555,15 @@ class Board(Base, Stndrd, Age_times):
         if not nsfw:
             posts = posts.filter_by(over_18=False)
 
-        if v and not v.show_nsfl:
+        if g.user and not g.user.show_nsfl:
             posts = posts.filter_by(is_nsfl=False)
 
         if self.is_private:
-            if v and (self.can_view(g.user) or v.admin_level >= 4):
+            if g.user and (self.can_view(g.user) or g.user.admin_level >= 4):
                 pass
             elif v:
                 posts = posts.filter(or_(Submission.post_public == True,
-                                         Submission.author_id == v.id
+                                         Submission.author_id == g.user.id
                                          )
                                      )
             else:
@@ -573,27 +573,27 @@ class Board(Base, Stndrd, Age_times):
 
         comments = g.db.query(Comment).options(lazyload('*'))
 
-        if v and v.hide_offensive:
+        if g.user and g.user.hide_offensive:
             comments = comments.filter_by(is_offensive=False)
 			
-        if v and v.hide_bot and not self.has_mod(v, "content"):
+        if g.user and g.user.hide_bot and not self.has_mod(v, "content"):
             comments = comments.filter_by(is_bot=False)
 
-        if v and not self.has_mod(g.user) and v.admin_level <= 3:
+        if g.user and not self.has_mod(g.user) and g.user.admin_level <= 3:
             # blocks
             blocking = g.db.query(
                 UserBlock.target_id).filter_by(
-                user_id=v.id).subquery()
+                user_id=g.user.id).subquery()
             blocked = g.db.query(
                 UserBlock.user_id).filter_by(
-                target_id=v.id).subquery()
+                target_id=g.user.id).subquery()
 
             comments = comments.filter(
                 Comment.author_id.notin_(blocking),
                 Comment.author_id.notin_(blocked)
             )
 
-        if not v or not v.admin_level >= 3:
+        if not g.user or not g.user.admin_level >= 3:
             comments = comments.filter_by(is_banned=False).filter(Comment.deleted_utc == 0)
 
         comments = comments.join(
