@@ -541,7 +541,7 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
         blocked = g.user.blocked.subquery()
         vt = g.db.query(CommentVote).filter(
             CommentVote.user_id == g.user.id,
-            CommentVote.comment_id == i).subquery()
+            CommentVote.comment_id == cid).subquery()
 
         mod=g.db.query(ModRelationship
             ).filter_by(
