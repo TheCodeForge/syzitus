@@ -71,6 +71,7 @@ def shop_coin_balance():
 @is_not_banned
 @no_negative_balance("html")
 @validate_formkey
+@user_update_lock
 def shop_buy_coins():
 
     coin_count=int(request.form.get("coin_count",1))
@@ -101,6 +102,7 @@ def shop_buy_coins():
 @no_sanctions
 @is_not_banned
 @validate_formkey
+@user_update_lock
 def shop_negative_balance():
 
     new_txn=PayPalTxn(
@@ -123,6 +125,7 @@ def shop_negative_balance():
 @app.route("/shop/buy_coins_completed", methods=["GET"])
 @no_sanctions
 @is_not_banned
+@user_update_lock
 def shop_buy_coins_completed():
 
     #look up the txn
@@ -133,8 +136,6 @@ def shop_buy_coins_completed():
     txn=g.db.query(PayPalTxn
         #).with_for_update(
         ).filter_by(user_id=g.user.id, id=id, status=1).first()
-
-    g.user =g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
 
     if not txn:
         abort(400)
@@ -229,6 +230,7 @@ def paypal_webhook_handler():
 @is_not_banned
 @no_negative_balance("toast")
 @validate_formkey
+@user_update_lock
 def gift_post_pid(pid):
 
     post=get_post(pid)
@@ -314,6 +316,7 @@ def gift_post_pid(pid):
 @is_not_banned
 @no_negative_balance("toast")
 @validate_formkey
+@user_update_lock
 def gift_comment_pid(cid):
 
     comment=get_comment(cid)

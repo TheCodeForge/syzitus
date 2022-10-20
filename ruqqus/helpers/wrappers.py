@@ -404,6 +404,18 @@ def validate_formkey(f):
     wrapper.__doc__ = f.__doc__
     return wrapper
 
+def user_update_lock(f):
+
+    def wrapper(*args, **kwargs):
+
+        #user below authentication to make user be with for update
+        g.user =g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
+
+        return f(*args, **kwargs)
+
+    wrapper.__name__=f.__name__
+    wrapper.__doc__=f.__doc__
+    return wrapper
 
 def no_cors(f):
     """
