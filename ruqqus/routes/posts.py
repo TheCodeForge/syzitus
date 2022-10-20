@@ -69,7 +69,7 @@ def post_redirect(boardname, pid):
 @app.get("/api/v2/submissions/<pid>")
 @auth_desired
 @api("read")
-def post_base36id_no_comments(pid,v=None):
+def post_base36id_no_comments(pid):
     """
 Get a single submission (without comments).
 
@@ -80,12 +80,12 @@ URL path parameters:
     post = get_post(pid)
     board = post.board
 
-    if board.is_banned and not (v and g.user.admin_level > 3):
+    if board.is_banned and not (g.user and g.user.admin_level > 3):
         return render_template("board_banned.html",
                                b=board,
                                p=True)
 
-    if post.over_18 and not (v and g.user.over_18) and not session_over18(board):
+    if post.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
         t = int(time.time())
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
@@ -109,7 +109,7 @@ URL path parameters:
 @app.get("/api/v2/submissions/<pid>/comments")
 @auth_desired
 @api("read")
-def post_base36id_with_comments(pid, boardname=None, anything=None, v=None):
+def post_base36id_with_comments(pid, boardname=None, anything=None):
     """
 Get the comment tree for a submission.
 
@@ -130,12 +130,12 @@ Optional query parameters:
     if boardname and not boardname == board.name:
         return redirect(post.permalink)
 
-    if board.is_banned and not (v and g.user.admin_level > 3):
+    if board.is_banned and not (g.user and g.user.admin_level > 3):
         return render_template("board_banned.html",
                                b=board,
                                p=True)
 
-    if post.over_18 and not (v and g.user.over_18) and not session_over18(board):
+    if post.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
         t = int(time.time())
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
@@ -159,7 +159,7 @@ Optional query parameters:
 @app.route("/post/<base36id>/<anything>", methods=["GET"])
 @auth_desired
 @api("read")
-def post_base36id_noboard(base36id, anything=None, v=None):
+def post_base36id_noboard(base36id, anything=None):
     
     post=get_post_with_comments(base36id, sort_type=request.args.get("sort","top"))
 
