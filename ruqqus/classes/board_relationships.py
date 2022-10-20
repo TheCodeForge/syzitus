@@ -207,7 +207,7 @@ class ContributorRelationship(Base, Stndrd, Age_times):
         lazy='joined',
         primaryjoin="User.id==ContributorRelationship.approving_mod_id",
         viewonly=True)
-    board = relationship("Board", lazy="subquery", backref="contributors", viewonly=True)
+    board = relationship("Board", lazy="subquery", viewonly=True)
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
