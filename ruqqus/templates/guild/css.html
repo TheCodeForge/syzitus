@@ -4,7 +4,7 @@
 
 {% block stylesheets %}
 
-{% if v and v.referral_count and session.get("dark_mode_enabled") %}
+{% if v and and session.get("dark_mode_enabled") %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
 {% else %}
 <link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
@@ -70,7 +70,7 @@
           <h2 class="h5" id="guild-css-block" name="guild_css">Guild Styling</h2>
 
 
-          {% set mod = b.has_mod(v) %}
+          {% set mod = b.has_mod(g.user) %}
           {% if mod and mod.perm_config and mod.perm_appearance %}
           <p class="text-small text-muted">Edit the guild's css file.</p>
 
