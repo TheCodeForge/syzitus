@@ -149,7 +149,7 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
             joinedload(Submission.submission_aux),
             joinedload(Submission.author),
             Load(User).lazyload('*'),
-            joinedload(Submission.author,
+            joinedload(Submission.author),
             Load(Board).lazyload('*'),
             joinedload(Submission.board),
             joinedload(Submission.original_board),
