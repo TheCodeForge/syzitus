@@ -8,7 +8,7 @@ import random
 from ruqqus.classes import *
 from .get import *
 from .alerts import send_notification
-from ruqqus.__main__ import Base, app,g.db_session
+from ruqqus.__main__ import Base, app, g
 
 
 def get_logged_in_user():
@@ -34,9 +34,10 @@ def get_logged_in_user():
                 g.user=user
                 g.client=None
                 return
-            g.user=None
-            g.client=None
-            return
+            else:
+                g.user=None
+                g.client=None
+                return
 
         token = token.split()
         if len(token) < 2:
