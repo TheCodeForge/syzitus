@@ -59,7 +59,7 @@ class Badge(Base):
 
     @property
     def badge(self):
-        return BADGES[self.badge_id]
+        return BADGE_DEFS[self.badge_id]
 
     @property
     def text(self):
@@ -157,7 +157,7 @@ BADGE_DATA={
         "kind": 1,
         "rank": 1,
         "icon": "recruit-1.png",
-        "expr": lambda x: x.referral_count >=1 and x.referral_count <10
+        "expr": lambda x: x.referral_count and x.referral_count >=1 and x.referral_count <10
     },
     8: {
         "name":"Recruiter II",
@@ -165,7 +165,7 @@ BADGE_DATA={
         "kind": 1,
         "rank": 1,
         "icon": "recruit-10.png",
-        "expr": lambda x: x.referral_count >=10 and x.referral_count <100
+        "expr": lambda x: x.referral_count and x.referral_count >=10 and x.referral_count <100
     },
     9: {
         "name":"Recruiter III",
@@ -173,7 +173,7 @@ BADGE_DATA={
         "kind": 1,
         "rank": 1,
         "icon": "recruit-100.png",
-        "expr": lambda x: x.referral_count >=100 and x.referral_count <1000
+        "expr": lambda x: x.referral_count and x.referral_count >=100 and x.referral_count <1000
     },
     10: {
         "name":"Recruiter IV",
@@ -181,7 +181,7 @@ BADGE_DATA={
         "kind": 1,
         "rank": 1,
         "icon": "recruit-1000.png",
-        "expr": lambda x: x.referral_count >=100
+        "expr": lambda x: x.referral_count and x.referral_count >=100
     },
     11: {
         "name":"Sitebreaker",

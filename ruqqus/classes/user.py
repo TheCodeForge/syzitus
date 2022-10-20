@@ -24,11 +24,11 @@ from .board_relationships import *
 from .mix_ins import *
 from .subscriptions import *
 from .userblock import *
-from .badges import BADGE_DEFS
+from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
-from ruqqus.__main__ import Base, cache, app
+from ruqqus.__main__ import Base, cache, app, debug
 
 
 class User(Base, Stndrd, Age_times):
@@ -94,11 +94,6 @@ class User(Base, Stndrd, Age_times):
     filter_nsfw = Column(Boolean, default=False)
     stored_karma = Column(Integer, default=0)
     stored_subscriber_count=Column(Integer, default=0)
-    """posts_last_checked_utc = Column(Integer, default=0)
-    replies_last_checked_utc = Column(Integer, default=0)
-    mentions_last_checked_utc = Column(Integer, default=0)"""
-
-    auto_join_chat=Column(Boolean, default=False)
 
     coin_balance=Column(Integer, default=0)
     premium_expires_utc=Column(Integer, default=0)
@@ -165,10 +160,10 @@ class User(Base, Stndrd, Age_times):
     #     primaryjoin="PayPalTxn.user_id==User.id")
 
     # properties defined as SQL server-side functions
-    energy = deferred(Column(Integer, server_default=FetchedValue()))
-    comment_energy = deferred(Column(Integer, server_default=FetchedValue()))
-    referral_count = deferred(Column(Integer, server_default=FetchedValue()))
-    follower_count = deferred(Column(Integer, server_default=FetchedValue()))
+    energy = deferred(Column(Integer, FetchedValue()))
+    comment_energy = deferred(Column(Integer, FetchedValue()))
+    referral_count = deferred(Column(Integer, FetchedValue()))
+    follower_count = deferred(Column(Integer, FetchedValue()))
 
     def __init__(self, **kwargs):
 
@@ -378,7 +373,7 @@ class User(Base, Stndrd, Age_times):
 
         if g.user and g.user.admin_level >= 4:
             pass
-        elif v:
+        elif g.user:
             m = g.db.query(
                 ModRelationship.board_id).filter_by(
                 user_id=g.user.id,
@@ -450,7 +445,7 @@ class User(Base, Stndrd, Age_times):
 
         if g.user and g.user.admin_level >= 4:
             pass
-        elif v:
+        elif g.user:
             m = g.db.query(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False).subquery()
             c = g.user.contributes.subquery()
 
@@ -530,7 +525,7 @@ class User(Base, Stndrd, Age_times):
         if self.id==1:
             return 503
 
-        return (0 or self.energy) - self.post_count
+        return self.energy - self.post_count
 
     @property
     @cache.memoize(timeout=3600)
@@ -539,18 +534,23 @@ class User(Base, Stndrd, Age_times):
         if self.id==1:
             return 0
 
-        return (0 or self.comment_energy) - self.comments.filter(
-            Comment.parent_submission is not None).filter_by(is_banned=False).count()
+        return self.comment_energy - self.comment_count
 
     @property
-    @cache.memoize(timeout=3600)
+    #@cache.memoize(timeout=3600)
     def true_score(self):
 
-        self.stored_karma=max((self.karma + self.comment_karma), -5)
+        #self.stored_karma=max((self.karma + self.comment_karma), -5)
 
-        g.db.add(self)
-        g.db.commit()
-        return self.stored_karma
+        #g.db.add(self)
+        #g.db.commit()
+        #return self.stored_karma
+        
+        debug(self.karma)
+   
+        
+        value= max((self.karma + self.comment_karma), -5)
+        return value
 
     @property
     def base36id(self):
@@ -1230,7 +1230,7 @@ class User(Base, Stndrd, Age_times):
 
 
         for badge in BADGE_DEFS.values():
-            if not badge.expr:
+            if not badge.__dict__.get('expr'):
                 continue
                 
             should_have = badge.evaluate(self)
