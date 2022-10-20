@@ -28,6 +28,9 @@ def discord_wrap(f):
 
     def wrapper(*args, **kwargs):
 
+        if not CLIENT_ID:
+            return
+
         user=args[0]
         if not user.discord_id:
             return
@@ -42,6 +45,9 @@ def discord_wrap(f):
 def req_wrap(f):
 
     def wrapper(*args, **kwargs):
+
+        if not CLIENT_ID:
+            return
 
         thread=threading.Thread(target=f, args=args, kwargs=kwargs)
         thread.start()
@@ -118,6 +124,3 @@ def set_nick(user, nick):
     headers = {"Authorization": f"Bot {BOT_TOKEN}"}
     data={"nick": nick}
     requests.patch(url, headers=headers, json=data)
-
-
-
