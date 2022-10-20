@@ -92,7 +92,6 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         lazy="joined",
         innerjoin=True,
         primaryjoin="Submission.board_id==Board.id",
-        backref="submissions",
         viewonly=True)
     author = relationship(
         "User",
