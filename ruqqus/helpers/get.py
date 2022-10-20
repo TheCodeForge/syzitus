@@ -374,7 +374,7 @@ def get_posts(pids, sort="hot", v=None):
 
 def get_post_with_comments(pid, sort_type="top", v=None):
 
-    post = get_post(pid, v=v)
+    post = get_post(pid)
 
     exile=g.db.query(ModAction
         ).options(
@@ -1021,14 +1021,14 @@ def get_from_permalink(link, v=None):
         name = re.search("/@(\w+)", link)
         if name:
             name=name.group(1)
-            return get_user(name, v=v)
+            return get_user(name)
 
     if "+" in link:
 
         x = re.search("/\+(\w+)$", link)
         if x:
             name=x.group(1)
-            return get_guild(name, v=v)
+            return get_guild(name)
 
     ids = re.search("/\+\w+/post/(\w+)/[^/]+(/(\w+))?", link)
 
@@ -1036,10 +1036,10 @@ def get_from_permalink(link, v=None):
     comment_id = ids.group(3)
 
     if comment_id:
-        return get_comment(comment_id, v=v)
+        return get_comment(comment_id)
 
     else:
-        return get_post(post_id, v=v)
+        return get_post(post_id)
 
 
 def get_from_fullname(fullname, graceful=False):
@@ -1056,11 +1056,11 @@ def get_from_fullname(fullname, graceful=False):
     b36 = parts[1]
 
     if kind == 't1':
-        return get_account(b36, v=v, graceful=graceful)
+        return get_account(b36, graceful=graceful)
     elif kind == 't2':
-        return get_post(b36, v=v, graceful=graceful)
+        return get_post(b36,  graceful=graceful)
     elif kind == 't3':
-        return get_comment(b36, v=v, graceful=graceful)
+        return get_comment(b36, graceful=graceful)
     elif kind == 't4':
         return get_board(b36, graceful=graceful)
 
