@@ -22,7 +22,7 @@ def get_logged_in_user(db=None):
         if not token:
 
             #let admins hit api/v1 from browser
-            x=request.session.get('user_id')
+            x=session.get('user_id')
             nonce=request.session.get('login_nonce')
             if not x or not nonce:
                 g.user=None
@@ -76,8 +76,8 @@ def get_logged_in_user(db=None):
 
         user= db.query(User).options(
             joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
-            joinedload(User.subscriptions).joinedload(Subscription.board)
-        #    joinedload(User.notifications)
+            joinedload(User.subscriptions).joinedload(Subscription.board),
+            joinedload(User.notifications)
             ).filter_by(
             id=uid,
             is_deleted=False
