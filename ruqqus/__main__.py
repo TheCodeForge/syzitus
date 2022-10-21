@@ -424,8 +424,8 @@ def after_request(response):
     if not request.path.startswith("/embed/"):
         response.headers.add("X-Frame-Options", "deny")
 
-    
-    if not g.user:
+
+    if not g.get('user'):
         response.headers.add("Cache-Control", "public")
 
     # signups - hit discord webhook
