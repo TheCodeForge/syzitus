@@ -276,12 +276,8 @@ def sign_up_post():
     if app.config["DISABLE_SIGNUPS"]:
         return new_signup("New account registration is currently closed. Please come back later.")
 
-    if now - int(form_timestamp) < 5:
+    if now - int(request.form.get(time,0)) < 5:
         debug(f"signup fail - {username } - too fast")
-        return new_signup("There was a problem. Please try again.")
-
-    if not hmac.compare_digest(correct_formkey, form_formkey):
-        debug(f"signup fail - {username } - mismatched formkeys")
         return new_signup("There was a problem. Please try again.")
 
     # check for matched passwords
