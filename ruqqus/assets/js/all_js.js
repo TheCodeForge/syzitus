@@ -1072,6 +1072,7 @@ function post_toast(url, callback) {
   xhr.withCredentials=true;
 
   xhr.onload = function() {
+    if (xhr.status==201){return}
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
