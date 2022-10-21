@@ -408,7 +408,6 @@ URL path parameters:
     return "", 204
 
 @app.route("/mod/distinguish_comment/<guildname>/<cid>", methods=["POST"])
-@app.route("/api/v1/distinguish_comment/<guildname>/<cid>", methods=["POST"])
 @app.patch("/api/v2/guilds/<guildname>/comments/<cid>/herald")
 @auth_required
 @is_guildmaster('content')
@@ -430,7 +429,7 @@ URL path parameters:
         abort(403)
 
     if comment.gm_distinguish:
-        comment.gm_distinguish = 0
+        comment.gm_distinguish = None
     else:
         comment.gm_distinguish = board.id
 
