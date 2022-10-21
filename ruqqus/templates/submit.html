@@ -76,13 +76,14 @@
 
             <div class="col col-md-6 p-3 py-md-0">
 
+                {% block form %}
+
                 <h1 class="d-none d-md-block">Create a post</h1>
 
                 <h2 class="h3 d-md-none">Create a post</h2>
 
                 <div class="body">
 
-                    {% block form %}
                     <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
 
 
@@ -156,7 +157,7 @@
                             <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
                         </div>
                     </form>
-                    {% endform %}
+                    {% endblock %}
 
                 </div>
 
