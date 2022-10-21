@@ -409,7 +409,7 @@ def before_request():
 @app.after_request
 def after_request(response):
 
-    debug([g.user, request.path, request.url_rule])
+    debug([g.get('user'), request.path, request.url_rule])
 
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth"
