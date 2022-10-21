@@ -358,7 +358,7 @@ def before_request():
 
     ua_banned, response_tuple = get_useragent_ban_response(
         request.headers.get("User-Agent", "NoAgent"))
-    if ua_banned and request.path != "/robots.txt":
+    if ua_banned:
         return response_tuple
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
