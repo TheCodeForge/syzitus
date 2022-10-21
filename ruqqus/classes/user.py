@@ -1133,7 +1133,19 @@ class User(Base, Stndrd, Age_times):
         g.db.flush()
 
         #send message
-        text = f'Your {app.config["SITE_NAME"]} account has been{"" if admin else " automatically"} { f'suspended for {days} day{"s" if days>1 else ""}' if days else "terminated" }{ f' for the following reason:\n\n> {reason}' if reason else '.'}'
+        if days:
+            action=f"suspended for {days} day{'s' if days>1 else ''}"
+        else:
+            action="terminated"
+
+        if reason:
+            action += f"for the following reason:\n\n> {reason}"
+        else:
+            action += "."
+
+        if not admin:
+            action=f"automatically {action}"
+        text = f'Your {app.config["SITE_NAME"]} account has been {action}'
         send_notification(self, text)
 
         if days > 0:
