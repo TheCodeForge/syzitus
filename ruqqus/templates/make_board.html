@@ -48,11 +48,14 @@
                     <div class="input-group">
                       <select id="category-selector" name="category" class="form-control" >
                         <option value="0" selected disabled>Select a Category</option>
-                        {% for category in categories %}
-                            <option disabled>{{ category.name }}</option>
+                        {% for c in categories %}
+                        {% set category=categories[c] %}
+                            <option disabled>=== {{ category.name }} ===</option>
 
-                            {% for subcat in category.subcats %}
+                            {% for s in category.subcats %}
+                            {% set subcat=category.subcats[s] %}
                               <option value="{{ subcat.id }}"> - {{ subcat.name }}</option>
+                            }
                             {% endfor %}
                         {% endfor %}
                       </select>
@@ -84,7 +87,7 @@
 
             </div>
 
-            <!-- Right Sidebar (hidden on devices smaller than "large") -->
+            <!-- Right Sidebar (hidden on devices smaller than "large")
 
             <div class="col sidebar text-left d-none d-lg-block pt-3">
 
@@ -115,7 +118,7 @@
                             </div>
                         </ol>
                     </div>
-                </div>
+                </div>-->
 
                 {% include "footer.html" %}
 
