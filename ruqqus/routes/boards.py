@@ -403,6 +403,8 @@ URL path parameters:
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return "", 204
 
 @app.route("/mod/distinguish_comment/<guildname>/<cid>", methods=["POST"])
@@ -450,6 +452,8 @@ URL path parameters:
                 )
 
     html=str(BeautifulSoup(html, features="html.parser").find(id=f"comment-{comment.base36id}-only"))
+
+    g.db.commit()
 
     return jsonify({"html":html})
 
@@ -527,6 +531,8 @@ URL path parameters:
         board_id=board.id
         )
     g.db.add(ma)
+
+    g.db.commit()
 
     return "", 204
 
@@ -670,6 +676,8 @@ URL path parameters:
         board_id=board.id
         )
     g.db.add(ma)
+
+    g.db.commit()
 
     return "", 204
 
@@ -818,6 +826,8 @@ def mod_take_pid(pid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -882,6 +892,8 @@ def mod_invite_username(bid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -908,6 +920,8 @@ def mod_rescind_bid_username(bid, username, board):
         board_id=board.id
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 
@@ -947,9 +961,9 @@ def mod_accept_board(bid):
         board_id=board.id
         )
     g.db.add(ma)
-
-    g.db.commit()
     
+    g.db.commit()
+
     return "", 204
 
 @app.route("/mod/<bid>/step_down", methods=["POST"])
@@ -1021,6 +1035,8 @@ def mod_remove_username(bid, username, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -1059,6 +1075,8 @@ def mod_bid_settings_nsfw(bid, board):
         note=f"over_18={board.over_18}"
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 
@@ -1079,6 +1097,8 @@ def mod_bid_settings_optout(bid, board):
         note=f"all_opt_out={board.all_opt_out}"
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 @app.route("/mod/<bid>/settings/disallowbots", methods=["POST"])
@@ -1099,6 +1119,8 @@ def mod_bid_settings_disallowbots(bid, board):
         note=f"disallow_bots={board.disallowbots}"
     )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 @app.route("/mod/<bid>/settings/public_chat", methods=["POST"])
@@ -1118,6 +1140,8 @@ def mod_bid_settings_public_chat(bid, board):
         note=f"public_chat={board.public_chat}"
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 @app.route("/mod/<bid>/settings/restricted", methods=["POST"])
@@ -1140,6 +1164,8 @@ def mod_bid_settings_restricted(bid, board):
         note=f"restricted={board.restricted_posting}"
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 
@@ -1164,7 +1190,7 @@ def mod_bid_settings_private(bid, board):
         note=f"private={board.is_private}"
         )
     g.db.add(ma)
-
+    g.db.commit()
 
     return "", 204
 
@@ -1176,22 +1202,24 @@ def mod_bid_settings_name(bid, board):
     # name capitalization
     new_name = request.form.get("guild_name", "").lstrip("+")
 
-    if new_name.lower() == board.name.lower():
-        board.name = new_name
-        g.db.add(board)
+    if new_name.lower() != board.name.lower():
+
+        return jsonify({"error": "Name spelling may not be changed"}), 422
+
+    board.name = new_name
+    g.db.add(board)
 
 
-        ma=ModAction(
-            kind="update_settings",
-            user_id=g.user.id,
-            board_id=board.id,
-            note=f"name={board.name}"
-            )
-        g.db.add(ma)
-        return "", 204
-    else:
-        return "", 422
+    ma=ModAction(
+        kind="update_settings",
+        user_id=g.user.id,
+        board_id=board.id,
+        note=f"name={board.name}"
+        )
+    g.db.add(ma)
+    g.db.commit()
 
+    return "", 204
 
 @app.route("/mod/<bid>/settings/description", methods=["POST"])
 @auth_required
@@ -1215,6 +1243,8 @@ def mod_bid_settings_description(bid, board):
         note=f"update description"
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 
@@ -1229,6 +1259,8 @@ def mod_settings_toggle_banner(bid, board):
             False) == 'true')
 
     g.db.add(board)
+    g.db.commit()
+
     return "", 204
 
 
@@ -1542,6 +1574,8 @@ URL path parameters:
     board.stored_subscriber_count = board.subscriber_count
     g.db.add(board)
 
+    g.db.commit()
+
     return jsonify({"message": f"Joined +{board.name}"}), 200
 
 
@@ -1576,6 +1610,8 @@ URL path parameters:
     board.rank_trending = board.trending_rank
     board.stored_subscriber_count = board.subscriber_count
     g.db.add(board)
+
+    g.db.commit()
 
     return jsonify({"message": f"Left +{board.name}"}), 200
 
@@ -1693,6 +1729,8 @@ def mod_board_images_profile(bid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
 
@@ -1723,6 +1761,8 @@ def mod_board_images_banner(bid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
 
@@ -1741,6 +1781,8 @@ def mod_board_images_delete_profile(bid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
 
@@ -1758,6 +1800,8 @@ def mod_board_images_delete_banner(bid, board):
         note=f"removed banner image"
         )
     g.db.add(ma)
+
+    g.db.commit()
 
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
@@ -1861,6 +1905,8 @@ def mod_board_color(bid, board):
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(f"/+{board.name}/mod/appearance?msg=Success")
 
 
@@ -1888,7 +1934,7 @@ Required form data:
     if board.has_ban(user):
         return jsonify({"error": f"@{user.username} is exiled from +{board.name} and can't currently be approved."}), 409
     if board.has_contributor(user):
-        return jsonify({"error": f"@{user.username} is already an approved user."})
+        return jsonify({"error": f"@{user.username} is already an approved user."}), 409
 
     # check for an existing deactivated approval
     existing_contrib = g.db.query(ContributorRelationship).filter_by(
@@ -1917,6 +1963,8 @@ Required form data:
         target_user_id=user.id
         )
     g.db.add(ma)
+
+    g.db.commit()
 
     return "", 204
 
@@ -1957,6 +2005,8 @@ Required form data:
         target_user_id=user.id
         )
     g.db.add(ma)
+    g.db.commit()
+
     return "", 204
 
 
@@ -2011,6 +2061,8 @@ URL path parameters:
         target_submission_id=post.id
     )
     g.db.add(ma)
+
+    g.db.commit()
 
     return "", 204
 
@@ -2080,6 +2132,8 @@ def change_guild_category(v, board, bid, category):
         note=f"category={sc.category.name} / {sc.name}"
     )
     g.db.add(ma)
+
+    g.db.commit()
 
     return jsonify({"message": f"Category changed to {sc.category.name} / {sc.name}"})
 
@@ -2201,54 +2255,9 @@ def board_mod_perms_change(guildname, board):
     )
     g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(f"{board.permalink}/mod/mods")
-
-# @app.route("/mod/chatban/<bid>", methods=["POST"])
-# @app.route("/api/v1/chatban/<bid>", methods=["POST"])
-# @auth_required
-# @is_guildmaster('chat')
-# @api("guildmaster")
-# @validate_formkey
-# def mod_chatban_bid_user(bid, board):
-
-#     user = get_user(request.values.get("username"), graceful=True)
-
-#     if not user:
-#         return jsonify({"error": "That user doesn't exist."}), 404
-
-#     if user.id == g.user.id:
-#         return jsonify({"error": "You can't chatban yourself."}), 409
-
-#     if g.db.query(ChatBan).filter_by(user_id=user.id, board_id=board.id, is_active=True).first():
-#         return jsonify({"error": f"@{user.username} is already chatbanned from +{board.name}."}), 409
-
-#     if board.has_contributor(user):
-#         return jsonify({"error": f"@{user.username} is an approved contributor to +{board.name} and can't currently be chatbanned."}), 409
-
-#     if board.has_mod(user):
-#         return jsonify({"error": "You can't chatban other guildmasters."}), 409
-
-#     new_ban = BanRelationship(user_id=user.id,
-#                               board_id=board.id,
-#                               banning_mod_id=g.user.id,
-#                               is_active=True)
-#     g.db.add(new_ban)
-
-#     ma=ModAction(
-#         kind="chatban_user",
-#         user_id=g.user.id,
-#         target_user_id=user.id,
-#         board_id=board.id
-#         )
-#     g.db.add(ma)
-
-#     g.db.commit()
-
-
-#     if request.args.get("toast"):
-#         return jsonify({"message": f"@{user.username} was exiled from +{board.name}"})
-#     else:
-#         return "", 204
 
 
 @app.route("/mod/unchatban/<bid>", methods=["POST"])
@@ -2495,6 +2504,8 @@ def siege_guild():
             note="siege"
         )
         g.db.add(ma)        
+
+    g.db.commit()
 
     return redirect(f"/+{guild.name}/mod/mods")
 

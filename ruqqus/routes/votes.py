@@ -7,10 +7,9 @@ from ruqqus.helpers.sanitize import *
 from ruqqus.helpers.get import *
 from ruqqus.classes import *
 from flask import *
-from ruqqus.__main__ import app
+from ruqqus.__main__ import app, debug
 
 
-@app.route("/api/v1/vote/post/<pid>/<x>", methods=["POST"])
 @app.route("/api/vote/post/<pid>/<x>", methods=["POST"])
 @app.post("/api/v2/submissions/<pid>/votes/<x>")
 @is_not_banned
@@ -35,18 +34,18 @@ URL path parameters:
 
     x = int(x)
 
-    if x==-1:
-        count=g.db.query(Vote).filter(
-            Vote.user_id.in_(
-                tuple(
-                    [g.user.id]+[x.id for x in g.user.alts]
-                    )
-                ),
-            Vote.created_utc > (int(time.time())-3600), 
-            Vote.vote_type==-1
-            ).count()
-        if count >=15:
-            return jsonify({"error": "You're doing that too much. Try again later."}), 403
+    # if x==-1:
+    #     count=g.db.query(Vote).filter(
+    #         Vote.user_id.in_(
+    #             tuple(
+    #                 [g.user.id]+[x.id for x in g.user.alts]
+    #                 )
+    #             ),
+    #         Vote.created_utc > (int(time.time())-3600), 
+    #         Vote.vote_type==-1
+    #         ).count()
+    #     if count >=15:
+    #         return jsonify({"error": "You're doing that too much. Try again later."}), 403
 
     post = get_post(pid, v=v, no_text=True)
 
@@ -103,12 +102,9 @@ URL path parameters:
 
     g.db.commit()
 
-    # print(f"Vote Event: @{g.user.username} vote {x} on post {pid}")
-
     return "", 204
 
 
-@app.route("/api/v1/vote/comment/<cid>/<x>", methods=["POST"])
 @app.route("/api/vote/comment/<cid>/<x>", methods=["POST"])
 @app.post("/api/v2/comments/<cid>/votes/<x>")
 @is_not_banned
@@ -179,7 +175,5 @@ URL path parameters:
 
     g.db.add(comment)
     g.db.commit()
-
-    # print(f"Vote Event: @{g.user.username} vote {x} on comment {cid}")
 
     return make_response(""), 204

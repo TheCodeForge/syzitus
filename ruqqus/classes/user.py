@@ -109,13 +109,13 @@ class User(Base, Stndrd, Age_times):
     profile_upload_region=deferred(Column(String(2)))
     banner_upload_region=deferred(Column(String(2)))
     
-    color=Column(String(6), default="805ad5")
-    secondary_color=Column(String(6), default="ffff00")
-    signature=Column(String(280), default='')
-    signature_html=Column(String(512), default="")
+    # color=Column(String(6), default="805ad5")
+    # secondary_color=Column(String(6), default="ffff00")
+    # signature=Column(String(280), default='')
+    # signature_html=Column(String(512), default="")
 
     #stuff to support name changes
-    original_username=deferred(Column(String(255)))
+    original_username=deferred(Column(String(255), index=True))
     name_changed_utc=deferred(Column(Integer, default=0))
 
 
@@ -161,6 +161,23 @@ class User(Base, Stndrd, Age_times):
     comment_energy =    deferred(Column(Integer, server_default=FetchedValue()))
     referral_count =    deferred(Column(Integer, server_default=FetchedValue()))
     follower_count =    deferred(Column(Integer, server_default=FetchedValue()))
+
+    __table_args__=(
+        Index(
+            "users_username_trgm_idx", "username",
+            postgresql_using="gin",
+            postgresql_ops={
+                'username':'gin_trgm_ops'
+                }
+            ),
+        Index(
+            "users_original_username_trgm_idx", "original_username",
+            postgresql_using="gin",
+            postgresql_ops={
+                'original_username':'gin_trgm_ops'
+                }
+            )
+        )
 
     def __init__(self, **kwargs):
 

@@ -819,9 +819,7 @@ Optional file data:
             )
         g.db.add(new_notif)
 
-
     g.db.commit()
-
 
     return {"html": lambda: (jsonify({"redirect":new_post.permalink}), 301),
             "api": lambda: jsonify(new_post.json)
@@ -894,6 +892,8 @@ URL path parameters:
             post.is_image = False
             g.db.add(post)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -944,6 +944,8 @@ URL path parameters:
             )
         g.db.add(ma)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -981,6 +983,8 @@ URL path parameters:
             note = None if mod else "admin action"
             )
         g.db.add(ma)
+
+    g.db.commit()
 
     return "", 204
 
@@ -1035,6 +1039,8 @@ def save_post(base36id):
     except:
         abort(422)
 
+    g.db.commit()
+
     return "", 204
 
 
@@ -1048,5 +1054,7 @@ def unsave_post(base36id):
     save=g.db.query(SaveRelationship).filter_by(user_id=g.user.id, submission_id=post.id).first()
 
     g.db.delete(save)
+
+    g.db.commit()
 
     return "", 204

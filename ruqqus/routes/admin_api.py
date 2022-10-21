@@ -323,6 +323,7 @@ def mod_self_to_guild(bid):
             note="admin action"
         )
         g.db.add(ma)
+        g.db.commit()
 
     return redirect(f"/+{board.name}/mod/mods")
 

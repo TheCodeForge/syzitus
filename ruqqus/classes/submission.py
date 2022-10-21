@@ -36,6 +36,23 @@ class SubmissionAux(Base):
     meta_title=Column(String(512), default="")
     meta_description=Column(String(1024), default="")
 
+    __table_args__=(
+        Index(
+            "submissions_aux_url_trgm_idx", "url",
+            postgresql_using="gin",
+            postgresql_ops={
+                'url':'gin_trgm_ops'
+                }
+            ),
+        Index(
+            "submissions_aux_title_trgm_idx", "title",
+            postgresql_using="gin",
+            postgresql_ops={
+                'title':'gin_trgm_ops'
+                }
+            )
+        )
+
 
 class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
 

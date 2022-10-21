@@ -442,11 +442,8 @@ def after_request(response):
     # except AttributeError:
     #     pass
 
-    debug(g.db.dirty)
-
-    if g.db.dirty:
-        g.db.commit()
     g.db.close()
+
     return response
 
 

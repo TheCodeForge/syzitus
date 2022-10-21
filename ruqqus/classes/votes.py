@@ -19,6 +19,8 @@ class Vote(Base):
     creation_ip = Column(String, default=None)
     app_id = Column(Integer, ForeignKey("oauth_apps.id"), default=None)
 
+    unique_votes = UniqueConstraint("user_id", "submission_id")
+
     user = relationship("User", lazy="subquery", backref="votes")
     post = relationship("Submission", lazy="subquery")
 
@@ -80,6 +82,8 @@ class CommentVote(Base):
     created_utc = Column(Integer, default=0)
     creation_ip = Column(String, default=None)
     app_id = Column(Integer, ForeignKey("oauth_apps.id"), default=None)
+
+    unique_votes = UniqueConstraint("user_id", "comment_id")
 
     user = relationship("User", lazy="subquery", backref="commentvotes")
     comment = relationship("Comment", lazy="subquery")

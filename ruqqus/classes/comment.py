@@ -24,6 +24,16 @@ class CommentAux(Base):
     body_html = Column(String(20000))
     ban_reason = Column(String(256), default='')
 
+    __table_args__=(
+        Index(
+            "comments_aux_body_trgm_idx", "body",
+            postgresql_using="gin",
+            postgresql_ops={
+                'body':'gin_trgm_ops'
+                }
+            ),
+        )
+
 
 class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
 
@@ -101,6 +111,9 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
 
     rank_fiery = deferred(Column(Float, server_default=FetchedValue()))
     rank_hot = deferred(Column(Float, server_default=FetchedValue()))
+
+
+
 
     #flag_count=deferred(Column(Integer, server_default=FetchedValue()))
 

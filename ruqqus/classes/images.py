@@ -51,6 +51,16 @@ class BadPic(Base):
     __tablename__="badpics"
     id = Column(BigInteger, primary_key=True)
     description=Column(String(255), default=None)
-    phash=Column(String(64))
+    phash=Column(String(64), index=True)
     ban_reason=Column(String(64))
     ban_time=Column(Integer)
+
+    __table_args__=(
+        Index(
+            "badpics_phash_trgm_idx", "phash",
+            postgresql_using="gin",
+            postgresql_ops={
+                'phash':'gin_trgm_ops'
+                }
+            ),
+        )
