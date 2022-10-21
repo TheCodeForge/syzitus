@@ -117,6 +117,7 @@ def help_terms():
 def badges():
     return render_template("help/badges.html",
                            badges=list(BADGE_DEFS.values())
+                           )
 
 
 @app.route("/help/admins", methods=["GET"])
