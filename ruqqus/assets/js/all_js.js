@@ -728,7 +728,7 @@ function switch_css() {
   if (css.href.includes("/assets/style/main.css")) {
     post("/settings/dark_mode/1",
       callback=function(){
-        css.href="/assets/style/main_dark.css?v=3.0.0";
+        css.href="/assets/style/main_dark.css?v=3.0.1";
         dswitch.classList.remove("fa-toggle-off");
         dswitch.classList.add("fa-toggle-on");
         dswitchmobile.classList.remove("fa-toggle-off");
@@ -741,7 +741,7 @@ function switch_css() {
   else {
     post("/settings/dark_mode/0",
       callback=function(){
-        css.href="/assets/style/main.css?v=3.0.0";
+        css.href="/assets/style/main.css?v=3.0.1";
         dswitch.classList.remove("fa-toggle-on");
         dswitch.classList.add("fa-toggle-off");
         dswitchmobile.classList.remove("fa-toggle-on");
@@ -2409,19 +2409,11 @@ var cattoggle=function(id){
   card.classList.toggle('selected');
 }
 
-var all_cats=function(page) {
-  var x=document.getElementsByClassName('cat-check');
-  for(i=0;i<x.length;i++){
-    x[i].checked=true;
-  };
-  
-  var y=document.getElementsByClassName('cat-group');
-  for(i=0;i<y.length;i++){
-    y[i].checked=true;
-  };
-
-  togglecat('hot', reload=true, delay=0, page=page)  
-}
+$('#show-all-cats-btn').click(function(){
+  $('.cat-check').prop('checked',true);
+  $('.cat-group').prop('checked',true);
+  togglecat('hot', reload=true, delay=0, page='/')
+})
 
 
 //mobile prompt
