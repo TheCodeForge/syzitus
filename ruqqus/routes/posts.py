@@ -269,6 +269,7 @@ Required form data:
             break
 
     g.db.add(p)
+    g.db.commit()
 
     return redirect(p.permalink)
 
