@@ -99,7 +99,7 @@ def settings_profile():
 @auth_desired
 def titles():
     return render_template("/help/titles.html",
-                           titles=TITLES)
+                           titles=list(TITLES.values())
 
 
 @app.route("/help/terms", methods=["GET"])
