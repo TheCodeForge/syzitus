@@ -189,6 +189,7 @@ def api_sticky_post(post_id):
         g.db.add(already_stickied)
 
     g.db.add(post)
+    g.db.commit()
 
     return (redirect(post.permalink), post)
 
@@ -214,6 +215,7 @@ def api_ban_comment(c_id):
         note="admin action"
         )
     g.db.add(ma)
+    g.db.commit()
     return "", 204
 
 
@@ -224,7 +226,6 @@ def api_unban_comment(c_id):
     comment = g.db.query(Comment).filter_by(id=base36decode(c_id)).first()
     if not comment:
         abort(404)
-    g.db.add(comment)
 
     if comment.is_banned:
         ma=ModAction(
@@ -240,6 +241,8 @@ def api_unban_comment(c_id):
     comment.is_approved = g.user.id
     comment.approved_utc = int(time.time())
 
+    g.db.add(comment)
+    g.db.commit()
 
     return "", 204
 
@@ -281,6 +284,7 @@ def api_ban_guild(v, bid):
     board.ban_reason = request.form.get("reason", "")
 
     g.db.add(board)
+    g.db.commit()
 
     return redirect(board.permalink)
 
@@ -295,6 +299,7 @@ def api_unban_guild(v, bid):
     board.ban_reason = ""
 
     g.db.add(board)
+    g.db.commit()
 
     return redirect(board.permalink)
 
