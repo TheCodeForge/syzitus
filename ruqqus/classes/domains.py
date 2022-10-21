@@ -1,5 +1,5 @@
 from sqlalchemy import *
-from ruqqus.__main__ import Base, cache
+from ruqqus.__main__ import Base, cache, app
 
 reasons = {
     1: "URL shorteners are not allowed.",
@@ -8,8 +8,8 @@ reasons = {
     5: "Spam",
     6: "Doxxing is not allowed.",
     7: "Sexualizing minors is strictly prohibited.",
-    8: 'User safety - This site is a Ruqqus clone which is still displaying "Ruqqus" as its site name.',
-    9: "You may not use Ruqqus to engage in or plan unlawful activity."
+    8: f'User safety - This site is a {app.config["SITE_NAME"]} clone which is still displaying "{app.config["SITE_NAME"]}" as its site name.',
+    9: f'You may not use {app.config["SITE_NAME"]} to engage in or plan unlawful activity.'
 }
 
 

@@ -1122,15 +1122,19 @@ class User(Base, Stndrd, Age_times):
     
 
     def ban(self, admin=None, reason=None,  days=0):
-        
-        admin=admin if admin else g.db.query(User).filter_by(id=1).first()
 
         self.is_banned = admin.id if admin else 1
+
         if reason:
             self.ban_reason = reason
 
+
         g.db.add(self)
         g.db.flush()
+
+        #send message
+        text = f'Your {app.config["SITE_NAME"]} account has been{"" if admin else " automatically"} { f'suspended for {days} day{"s" if days>1}' if days else "terminated" }{ f' for the following reason:\n\n> {reason}' if reason else '.'}'
+        send_notification(self, text)
 
         if days > 0:
             ban_time = int(time.time()) + (days * 86400)
@@ -1155,10 +1159,7 @@ class User(Base, Stndrd, Age_times):
                     #b.all_opt_out = False
                     g.db.add(b)
 
-        try:
-            g.db.add(self)
-        except:
-            pass
+        g.db.add(self)
         
         discord_ban_action = f"{days} Day Ban" if days else "Perm Ban"
         discord_log_event(discord_ban_action, self, admin, reason=reason)

@@ -250,14 +250,11 @@ Required form data:
                 BadLink.link)).first()
         if badlink:
             if badlink.autoban:
-                text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
-                send_notification(v, text)
                 g.user.ban(days=1, reason="spam")
-
                 return redirect('/notifications')
             else:
 
-                return {"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}
+                return {"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}, 400
 
 
     p.body = body
@@ -351,16 +348,7 @@ Optional file data:
         board = get_guild('general')
 
     if not title:
-        return {"html": lambda: (render_template("submit.html",
-                                                 error="Please enter a better title.",
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 400),
-                "api": lambda: ({"error": "Please enter a better title"}, 400)
-                }
+        return jsonify({"error": "Please enter a better title"}), 400
 
     # if len(title)<10:
     #     return render_template("submit.html",
@@ -373,30 +361,12 @@ Optional file data:
 
 
     elif len(title) > 250:
-        return {"html": lambda: (render_template("submit.html",
-                                                 error="250 character limit for titles.",
-                                                 title=title[0:250],
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 400),
-                "api": lambda: ({"error": "250 character limit for titles"}, 400)
-                }
+        return jsonify({"error": "250 character limit for titles"}), 400
 
     parsed_url = urlparse(url)
     if not (parsed_url.scheme and parsed_url.netloc) and not request.form.get(
             "body") and not request.files.get("file", None):
-        return {"html": lambda: (render_template("submit.html",
-                                                 error="Please enter a url or some text.",
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 400),
-                "api": lambda: ({"error": "`url` or `body` parameter required."}, 400)
-                }
+        return jsonify({"error": "`url` or `body` required"}), 400
 
     # sanitize title
     title = bleach.clean(title, tags=[])
@@ -449,16 +419,7 @@ Optional file data:
             elif domain_obj.reason==7:
                 g.user.ban(reason="Sexualizing minors")
 
-            # return {"html": lambda: (render_template("submit.html",
-            #                                          error=BAN_REASONS[domain_obj.reason],
-            #                                          title=title,
-            #                                          url=url,
-            #                                          body=request.form.get(
-            #                                              "body", ""),
-            #                                          b=board
-            #                                          ), 400),
-            #         "api": lambda: ({"error": BAN_REASONS[domain_obj.reason]}, 400)
-            #         }
+            return jsonify({"redirect":"/notifications"}), 301
 
         # check for embeds
         if domain_obj.embed_function:
@@ -482,55 +443,20 @@ Optional file data:
     board = get_guild(board_name, graceful=True)
 
     if not board:
-
-        return {"html": lambda: (render_template("submit.html",
-                                                 error=f"Please enter a Guild to submit to.",
-                                                 title=title,
-                                                 url=url, body=request.form.get(
-                                                     "body", ""),
-                                                 b=None
-                                                 ), 403),
-                "api": lambda: (jsonify({"error": f"403 Forbidden - +{board.name} has been banned."}))
-                }
+        return jsonify({"error": f"That guild doesn't exist."}), 400
 
     if board.is_banned:
-
-        return {"html": lambda: (render_template("submit.html",
-                                                 error=f"+{board.name} has been banned.",
-                                                 title=title,
-                                                 url=url, body=request.form.get(
-                                                     "body", ""),
-                                                 b=None
-                                                 ), 403),
-                "api": lambda: (jsonify({"error": f"403 Forbidden - +{board.name} has been banned."}))
-                }
+        return jsonify({"error": f"+{board.name} is banned."}), 403
 
     if board.has_ban(g.user):
-        return {"html": lambda: (render_template("submit.html",
-                                                 error=f"You are exiled from +{board.name}.",
-                                                 title=title,
-                                                 url=url, body=request.form.get(
-                                                     "body", ""),
-                                                 b=None
-                                                 ), 403),
-                "api": lambda: (jsonify({"error": f"403 Not Authorized - You are exiled from +{board.name}"}), 403)
-                }
+        return jsonify({"error": f"You are exiled from +{board.name}."}), 403
 
     if (board.restricted_posting or board.is_private) and not (
             board.can_submit(g.user)):
-        return {"html": lambda: (render_template("submit.html",
-                                                 error=f"You are not an approved contributor for +{board.name}.",
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=None
-                                                 ), 403),
-                "api": lambda: (jsonify({"error": f"403 Not Authorized - You are not an approved contributor for +{board.name}"}), 403)
-                }
+        return jsonify({"error": f"You are not an approved contributor for +{board.name}."}), 403
 
     if board.disallowbots and request.headers.get("X-User-Type")=="Bot":
-        return {"api": lambda: (jsonify({"error": f"403 Not Authorized - +{board.name} disallows bots from posting and commenting!"}), 403)}
+        return jsonify({"error": f"403 Not Authorized - +{board.name} disallows bots."}), 403
 
     # similarity check
     now = int(time.time())
@@ -584,9 +510,6 @@ Optional file data:
 
     if max(len(similar_urls), len(similar_posts)) >= threshold:
 
-        text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
-        send_notification(v, text)
-
         g.user.ban(reason="Spamming.",
               days=1)
 
@@ -608,34 +531,14 @@ Optional file data:
                     )
             g.db.add(ma)
         g.db.commit()
-        return redirect("/notifications")
+        return jsonify({"redirect":"/notifications"}), 301
 
     # catch too-long body
     if len(str(body)) > 10000:
-
-        return {"html": lambda: (render_template("submit.html",
-                                                 error="10000 character limit for text body.",
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 400),
-                "api": lambda: ({"error": "10000 character limit for text body."}, 400)
-                }
+        return jsonify({"error": f"10000 character limit for text body"}), 400
 
     if len(url) > 2048:
-
-        return {"html": lambda: (render_template("submit.html",
-                                                 error="2048 character limit for URLs.",
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 400),
-                "api": lambda: ({"error": "2048 character limit for URLs."}, 400)
-                }
+        return jsonify({"error": f"2048 character limit for URL"}), 400
 
     # render text
 
@@ -658,16 +561,7 @@ Optional file data:
             g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             abort(403)
             
-        return {"html": lambda: (render_template("submit.html",
-                                                 error=reason,
-                                                 title=title,
-                                                 url=url,
-                                                 body=request.form.get(
-                                                     "body", ""),
-                                                 b=board
-                                                 ), 403),
-                "api": lambda: ({"error": reason}, 403)
-                }
+        return jsonify({"redirect":"/notifications"}) 301
 
     # check spam
     soup = BeautifulSoup(body_html, features="html.parser")
@@ -691,23 +585,12 @@ Optional file data:
                 BadLink.link)).first()
         if badlink:
             if badlink.autoban:
-                text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
-                send_notification(v, text)
                 g.user.ban(days=1, reason="spam")
 
                 return redirect('/notifications')
             else:
 
-                return {"html": lambda: (render_template("submit.html",
-                                                         error=f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}.",
-                                                         title=title,
-                                                         url=url,
-                                                         body=request.form.get(
-                                                             "body", ""),
-                                                         b=board
-                                                         ), 400),
-                        "api": lambda: ({"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}, 400)
-                        }
+                return jsonify({"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}), 400
 
     # check for embeddable video
     domain = parsed_url.netloc
@@ -725,9 +608,10 @@ Optional file data:
         repost = None
 
     if repost and request.values.get("no_repost"):
-        return {'html':lambda:redirect(repost.permalink),
-		'api': lambda:({"error":"This content has already been posted", "repost":repost.json}, 409)
-	       }
+        return {
+            'html':lambda:(jsonify({"redirect":repost.permalink}),301)
+            'api': lambda:({"error":"This content has already been posted", "repost":repost.json}, 409)
+        }
 
     if request.files.get('file') and not g.user.can_submit_image:
         abort(403)
@@ -791,15 +675,8 @@ Optional file data:
 
         file = request.files['file']
         if not file.content_type.startswith('image/'):
-            return {"html": lambda: (render_template("submit.html",
-                                                         error=f"Image files only.",
-                                                         title=title,
-                                                         body=request.form.get(
-                                                             "body", ""),
-                                                         b=board
-                                                         ), 400),
-                        "api": lambda: ({"error": f"Image files only"}, 400)
-                        }
+            g.db.rollback()
+            return jsonify({"error": "Image files only"}), 400
 
         name = f'post/{new_post.base36id}/{secrets.token_urlsafe(8)}'
         upload_file(name, file)
@@ -835,7 +712,7 @@ Optional file data:
             
         csam_thread=threading.Thread(target=check_csam_url, 
                                      args=(f"https://{BUCKET}/{name}", 
-                                           v, 
+                                           g.user, 
                                            del_function
                                           )
                                     )
@@ -866,12 +743,9 @@ Optional file data:
         if user and not g.user.any_block_exists(user) and user.id != g.user.id: 
             notify_users.add(user.id)
     
-    # print(f"Content Event: @{new_post.author.username} post
-    # {new_post.base36id}")
+    debug(f"Content Event: @{new_post.author.username} post {new_post.permalink}")
 
     #Bell notifs
-
-
     board_uids = g.db.query(
         Subscription.user_id
         ).options(lazyload('*')).filter(
@@ -944,10 +818,12 @@ Optional file data:
             submission_id=new_post.id
             )
         g.db.add(new_notif)
+
+    
     g.db.commit()
 
 
-    return {"html": lambda: redirect(new_post.permalink),
+    return {"html": lambda: jsonify({"redirect":new_post.permalink}), 301,
             "api": lambda: jsonify(new_post.json)
             }
 
@@ -999,7 +875,7 @@ URL path parameters:
     g.db.add(post)
 
     # clear cache
-    cache.delete_memoized(User.userpagelisting, v, sort="new")
+    cache.delete_memoized(User.userpagelisting, g.user, sort="new")
     cache.delete_memoized(Board.idlist, post.board)
 
     if post.age >= 3600 * 6:
