@@ -447,7 +447,7 @@ def api(*scopes, no_ban=False):
 
         def wrapper(*args, **kwargs):
 
-            if request.path.startswith(('/api/v1','/api/v2')):
+            if request.path.startswith('/api/v2'):
 
                 if g.client:
 
