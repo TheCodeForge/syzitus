@@ -609,7 +609,7 @@ Optional file data:
 
     if repost and request.values.get("no_repost"):
         return {
-            'html':lambda:(jsonify({"redirect":repost.permalink}),301)
+            'html':lambda:(jsonify({"redirect":repost.permalink}),301),
             'api': lambda:({"error":"This content has already been posted", "repost":repost.json}, 409)
         }
 
