@@ -47,7 +47,7 @@ URL path parameters:
     #     if count >=15:
     #         return jsonify({"error": "You're doing that too much. Try again later."}), 403
 
-    post = get_post(pid, v=v, no_text=True)
+    post = get_post(pid, no_text=True)
 
     if post.is_blocking:
         return jsonify({"error":"You can't vote on posts made by users who you are blocking."}), 403
@@ -129,7 +129,7 @@ URL path parameters:
 
     x = int(x)
 
-    comment = get_comment(cid, v=v, no_text=True)
+    comment = get_comment(cid, no_text=True)
 
     if comment.is_blocking:
         return jsonify({"error":"You can't vote on comments made by users who you are blocking."}), 403
