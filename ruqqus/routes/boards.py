@@ -252,7 +252,7 @@ Optional form data:
     cache.delete_memoized(guild_ids, sort="new")
 
     return {
-        "html":lambda:(jsonify{"redirect":new_board.permalink},301),
+        "html":lambda:(jsonify({"redirect":new_board.permalink}),301),
         "api": lambda:(jsonify{new_post.json})
         }
 
