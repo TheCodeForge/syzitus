@@ -158,18 +158,18 @@
        </div>
        {% endif %}
 
-       <div id="comment-{{ c.base36id }}-actions" class="comment-actions{% if g.user.voted==1 %} upvoted{% elif g.useroted==-1 %} downvoted{% endif %}">
+       <div id="comment-{{ c.base36id }}-actions" class="comment-actions{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}">
         <ul class="list-inline text-right text-md-left">
 
           {% if g.user and request.path.startswith('/@')%}
           
-          {% if g.useroted==1 %}
+          {% if voted==1 %}
           <li class="list-inline-item arrow-up d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-up active"></li>
           {% endif %}
           
           {% elif g.user %}
 
-          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-up {% if g.useroted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
           </li>
 
           {% else %}
@@ -179,17 +179,17 @@
           {% endif %}
 
           <li class="list-inline-item d-none d-md-inline-block mr-2">
-            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if g.user.voted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}">{{ score }}</span></span>
+            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}">{{ score }}</span></span>
           </li>
 
           {% if g.user and request.path.startswith('/@') %}
           
-          {% if g.useroted==-1 %}
+          {% if voted==-1 %}
           <li class="list-inline-item arrow-down d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-down active"></li>
           {% endif %}
           
           {% elif g.user %}
-          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-down {% if g.useroted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
           </li>
 
           {% else %}
@@ -302,26 +302,26 @@
           <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ c.base36id }}" data-focus="false"><i class="fas fa-ellipsis-h"></i></a>
         </li>
         {% if g.user and request.path.startswith('/@') %}
-        {% if g.useroted==1 %}
+        {% if voted==1 %}
         <li class="list-inline-item arrow-up d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up active">
         </li>{% endif %}
         {% elif g.user %}
-        <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up {% if g.useroted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
+        <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
         </li>
         {% else %}
         <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-inline-block d-md-none mr-2" onclick="location.href='/login';">
         </li>
         {% endif %}
         <li class="list-inline-item d-inline-block d-md-none mr-2">
-            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if g.useroted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}">{{ score }}</span></span>
+            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}">{{ score }}</span></span>
         </li>
         {% if g.user and request.path.startswith('/@') %}
-        {% if g.useroted==-1 %}
+        {% if voted==-1 %}
         <li class="list-inline-item arrow-down d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up active">
         </li>{% endif %}
 
         {% elif g.user %}
-        <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-down {% if g.useroted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
+        <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
         </li>
         {% else %}
         <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-inline-block d-md-none" onclick="location.href='/login';">
