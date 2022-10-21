@@ -206,7 +206,7 @@ Required form data:
     if p.is_banned:
         abort(403)
 
-    if p.board.has_ban():
+    if p.board.has_ban(g.user):
         abort(403)
 
     body = request.form.get("body", "")
