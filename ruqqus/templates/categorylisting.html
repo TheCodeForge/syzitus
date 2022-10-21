@@ -27,7 +27,8 @@
     </div>
     <input type="checkbox" class="d-none cat-group" id="group-{{ cat.base36id }}" data-group="{{ cat.id }}"{% if cat.id in session.get('groupids',[]) %} checked{% endif %}>
     <div class="d-none">
-      {% for subcat in cat.subcats %}
+      {% for s in cat.subcats %}
+      {% set subcat=cat.subcats[s] %}
           <input type="checkbox" class="cat-check group-{{ cat.base36id }}" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}"{% if cat.id in session.get('groupids',[]) %} checked{% endif %}>
       {% endfor %}
     </div>
