@@ -962,6 +962,7 @@ class User(Base, Stndrd, Age_times):
         self.profile_set_utc=int(time.time())
         self.profile_upload_region=request.headers.get("cf-ipcountry")
         g.db.add(self)
+        g.db.commit()
 
     def set_banner(self, file):
 
@@ -976,24 +977,21 @@ class User(Base, Stndrd, Age_times):
         self.banner_upload_region=request.headers.get("cf-ipcountry")
 
         g.db.add(self)
+        g.db.commit()
 
     def del_profile(self):
 
         aws.delete_file(name=f"uid/{self.base36id}/profile-{self.profile_nonce}.png")
         self.has_profile = False
-        try:
-            g.db.add(self)
-        except:
-            pass
+        g.db.add(self)
+        g.db.commit()
 
     def del_banner(self):
 
         aws.delete_file(name=f"uid/{self.base36id}/banner-{self.banner_nonce}.png")
         self.has_banner = False
-        try:
-            g.db.add(self)
-        except:
-            pass
+        g.db.add(self)
+        g.db.commit()
 
     @property
     def banner_url(self):

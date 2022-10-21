@@ -99,6 +99,7 @@ def settings_profile_post():
         g.user.bio = bio
         g.user.bio_html=bio_html
         g.db.add(g.user)
+        g.db.commit()
         
         #seo profile spam
         if int(time.time())-g.user.created_utc < 60*60*24 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
@@ -119,6 +120,7 @@ def settings_profile_post():
 
         g.user.custom_filter_list=filters
         g.db.add(g.user)
+        g.db.commit()
         return jsonify({"message":"Your filters have been updated."})
 
 
@@ -157,6 +159,7 @@ def settings_profile_post():
 
     if updated:
         g.db.add(g.user)
+        g.db.commit()
 
         return jsonify({"message": "Your settings have been updated."})
 
@@ -187,9 +190,9 @@ def settings_security_post():
         g.user.passhash = g.user.hash_password(request.form.get("new_password"))
 
         g.db.add(g.user)
+        g.db.commit()
 
-        return redirect("/settings/security?msg=" +
-                        escape("Your password has been changed."))
+        return jsonify({"message":"Your password has been changed."})
 
     if request.form.get("new_email"):
 
@@ -230,8 +233,7 @@ def settings_security_post():
                                        action_url=link)
                   )
 
-        return redirect("/settings/security?msg=" + escape(
-            "Check your email and click the verification link to complete the email change."))
+        return jsonify({"message":f"Check your {new_email} inbox and click the link to verify it and complete the email change."})
 
     if request.form.get("2fa_token", ""):
 
@@ -247,9 +249,9 @@ def settings_security_post():
 
         g.user.mfa_secret = secret
         g.db.add(g.user)
+        g.db.commit()
 
-        return redirect("/settings/security?msg=" +
-                        escape("Two-factor authentication enabled."))
+        return jsonify({"message":f"Two-factor authentication enabled."})
 
     if request.form.get("2fa_remove", ""):
 
@@ -260,14 +262,13 @@ def settings_security_post():
         token = request.form.get("2fa_remove")
 
         if not g.user.validate_2fa(token) and not safe_compare(g.user.mfa_removal_code, token.lower().replace(' ','')):
-            return redirect("/settings/security?error=" +
-                            escape("Invalid password or token."))
+            return jsonify({"error":f"Invalid password or token."}), 401
 
         g.user.mfa_secret = None
         g.db.add(g.user)
+        g.db.commit()
 
-        return redirect("/settings/security?msg=" +
-                        escape("Two-factor authentication disabled."))
+        return jsonify({"message":f"Two-factor authentication disabled."})
 
 
 @app.route("/settings/dark_mode/<x>", methods=["POST"])
@@ -313,58 +314,47 @@ def settings_log_out_others():
     session["login_nonce"] = g.user.login_nonce
 
     g.db.add(g.user)
+    g.db.commit()
 
-    return render_template(
-        "settings_security.html",
-        msg="All other devices have been logged out")
+    return jsonify({"message":"All other devices have been logged out"})
 
 
 @app.route("/settings/images/profile", methods=["POST"])
 @is_not_banned
 def settings_images_profile():
-    if g.user.can_upload_avatar:
-        g.user.set_profile(request.files["profile"])
+    if not g.user.can_upload_avatar:
+        return jsonify({"error":"Profile pictures require 300 Reputation"}), 401
 
-        # anti csam
-        new_thread = threading.Thread(target=check_csam_url,
-                                      args=(g.user.profile_url,
-                                            v,
-                                            lambda: board.del_profile()
-                                            )
-                                      )
-        new_thread.start()
+    g.user.set_profile(request.files["profile"])
 
-        return render_template(
-            "settings_profile.html",
-            msg="Profile picture successfully updated.")
+    # anti csam
+    new_thread = threading.Thread(target=check_csam_url,
+                                  args=(g.user.profile_url,
+                                        v,
+                                        lambda: board.del_profile()
+                                        )
+                                  )
+    new_thread.start()
 
-    return render_template(
-        "settings_profile.html",
-        msg="Avatars require 300 reputation.")
-
+    return jsonify({"message":"Profile picture successfully updated."})
 
 @app.route("/settings/images/banner", methods=["POST"])
 @is_not_banned
 def settings_images_banner():
-    if g.user.can_upload_banner:
-        g.user.set_banner(request.files["banner"])
+    if not g.user.can_upload_banner:
+        jsonify({"error":"Profile banners require 500 Reputation."}), 401
+    g.user.set_banner(request.files["banner"])
 
-        # anti csam
-        new_thread = threading.Thread(target=check_csam_url,
-                                      args=(g.user.banner_url,
-                                            v,
-                                            lambda: board.del_banner()
-                                            )
-                                      )
-        new_thread.start()
+    # anti csam
+    new_thread = threading.Thread(target=check_csam_url,
+                                  args=(g.user.banner_url,
+                                        v,
+                                        lambda: board.del_banner()
+                                        )
+                                  )
+    new_thread.start()
 
-        return render_template(
-            "settings_profile.html",
-            msg="Banner successfully updated.")
-
-    return render_template(
-        "settings_profile.html",
-        msg="Banners require 500 reputation.")
+    return jsonify({"message":"Banner picture successfully updated."})
 
 
 @app.route("/settings/delete/profile", methods=["POST"])
@@ -373,9 +363,7 @@ def settings_delete_profile():
 
     g.user.del_profile()
 
-    return render_template(
-        "settings_profile.html",
-        msg="Profile picture successfully removed.")
+    return jsonify({"message":"Profile picture successfully removed."})
 
 
 @app.route("/settings/new_feedkey", methods=["POST"])
@@ -384,10 +372,9 @@ def settings_new_feedkey():
 
     g.user.feed_nonce += 1
     g.db.add(g.user)
+    g.db.commit()
 
-    return render_template(
-        "settings_profile.html",
-        msg="Your new custom RSS Feed Token has been generated.")
+    return jsonify({"message":"RSS feed token cycled."})
 
 
 @app.route("/settings/delete/banner", methods=["POST"])
@@ -396,9 +383,7 @@ def settings_delete_banner():
 
     g.user.del_banner()
 
-    return render_template(
-        "settings_profile.html",
-        msg="Banner successfully removed.")
+    return jsonify({"message":"Profile banner successfully removed."})
 
 
 @app.route("/settings/toggle_collapse", methods=["POST"])
@@ -416,6 +401,7 @@ def update_announcement():
 
     g.user.read_announcement_utc = int(time.time())
     g.db.add(g.user)
+    g.db.commit()
 
     return "", 204
 
@@ -547,6 +533,7 @@ def settings_block_user():
                           created_utc=int(time.time())
                           )
     g.db.add(new_block)
+    g.db.commit()
 
     cache.delete_memoized(g.user.idlist)
     #cache.delete_memoized(Board.idlist, v=g.user)
@@ -566,6 +553,7 @@ def settings_unblock_user():
         abort(409)
 
     g.db.delete(x)
+    g.db.commit()
 
     cache.delete_memoized(g.user.idlist)
     #cache.delete_memoized(Board.idlist, v=g.user)
@@ -656,39 +644,33 @@ def settings_purchase_history():
 
 @app.route("/settings/name_change", methods=["POST"])
 @auth_required
+@user_update_lock
 def settings_name_change():
 
     if g.user.admin_level:
-        return render_template("settings_profile.html",
-                           error="Admins can't change their name.")
-
+        return jsonify({"error":"Admins can't change their name."}), 403
 
     new_name=request.form.get("name").lstrip().rstrip()
 
     #make sure name is different
     if new_name==g.user.username:
-        return render_template("settings_profile.html",
-                           error="You didn't change anything")
+        return jsonify({"error":"You didn't change anything."}), 400
 
     #can't change name on verified ID accounts
     if g.user.real_id:
-        return render_template("settings_profile.html",
-                           error="Your ID is verified so you can't change your username.")
+        return jsonify({"error":"Verified ID users can't change their name."}), 403
 
     #7 day cooldown
     if g.user.name_changed_utc > int(time.time()) - 60*60*24*7:
-        return render_template("settings_profile.html",
-                           error=f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait 7 days between name changes.")
+        return jsonify({"error":f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait 7 days between name changes."}), 401
 
-    #costs 3 coins
+    #costs 20 coins
     if g.user.coin_balance < 20:
-        return render_template("settings_profile.html",
-                           error=f"Username changes cost 20 Coins. You only have a balance of {g.user.coin_balance} Coins")
+        return jsonify({"error":f"Username changes cost 20 coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
 
     #verify acceptability
     if not re.match(valid_username_regex, new_name):
-        return render_template("settings_profile.html",
-                           error=f"That isn't a valid username.")
+        return jsonify({"error":"That isn't a valid username."}), 403
 
     #verify availability
     name=new_name.replace('_','\_')
@@ -703,41 +685,22 @@ def settings_name_change():
         ).first()
 
     if x and x.id != g.user.id:
-        return render_template("settings_profile.html",
-                           error=f"Username `{new_name}` is already in use.")
+        return jsonify({"error":f"The username `{name}` is already in use."}), 403
 
     #all reqs passed
 
-    #check user avatar/banner for rename if needed
-    if g.user.has_profile and g.user.profile_url.startswith("https://i.ruqqus.com/users/"):
-        upload_from_url(f"uid/{g.user.base36id}/profile-{g.user.profile_nonce}.png", f"{g.user.profile_url}")
-        g.user.profile_set_utc=int(time.time())
-        g.db.add(g.user)
-        g.db.commit()
-
-    if g.user.has_banner and g.user.banner_url.startswith("https://i.ruqqus.com/users/"):
-        upload_from_url(f"uid/{g.user.base36id}/banner-{g.user.banner_nonce}.png", f"{g.user.banner_url}")
-        g.user.banner_set_utc=int(time.time())
-        g.db.add(g.user)
-        g.db.commit()
-
-
     #do name change and deduct coins
-
-    v=g.db.query(User).with_for_update().options(lazyload('*')).filter_by(id=g.user.id).first()
 
     g.user.username=new_name
     g.user.coin_balance-=20
     g.user.name_changed_utc=int(time.time())
 
-    set_nick(v, new_name)
+    set_nick(g.user, new_name)
 
     g.db.add(g.user)
     g.db.commit()
-
-    return render_template("settings_profile.html",
-                       msg=f"Username changed successfully. 20 Coins have been deducted from your balance.")
-
+    
+    return jsonify({"message":"Username changed successfully."})
 
 
 @app.route("/settings/badges", methods=["POST"])
