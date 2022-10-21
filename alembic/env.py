@@ -5,6 +5,8 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from pprint import pprint
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -25,6 +27,18 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+
+def include_object(object, name, type_, reflected, compare_to):
+
+    if type=="sequence" and reflected==True:
+        return False
+
+    if type_ == "column" and str(object.__dict__.get("server_default"))=="FetchedValue()":
+        #print(object.__dict__["key"], object.__dict__.get("server_default"))
+        return False
+
+    return True
 
 
 def run_migrations_offline() -> None:
@@ -66,7 +80,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, 
+            target_metadata=target_metadata,
+            include_object=include_object
         )
 
         with context.begin_transaction():
