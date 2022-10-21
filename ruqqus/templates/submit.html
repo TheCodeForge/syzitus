@@ -72,19 +72,19 @@
 
     <!-- Page Content -->
 
-    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
+    <div class="container">
 
-        <div class="container">
+        <div class="row justify-content-center mb-4 pb-7">
 
-            <div class="row justify-content-center mb-4 pb-7">
+            <div class="col col-md-6 p-3 py-md-0">
 
-                <div class="col col-md-6 p-3 py-md-0">
+                <h1 class="d-none d-md-block">Create a post</h1>
 
-                    <h1 class="d-none d-md-block">Create a post</h1>
+                <h2 class="h3 d-md-none">Create a post</h2>
 
-                    <h2 class="h3 d-md-none">Create a post</h2>
+                <div class="body">
+                    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
 
-                    <div class="body">
 
                         <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
@@ -155,62 +155,61 @@
                             <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
                             <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
                         </div>
-
-
-                    </div>
-
-                </div>
-
-                <!-- Right Sidebar (hidden on devices smaller than "large") -->
-
-                {% set rules={
-                    "Intellectual Property": "Do not upload content that you are not authorized to distribute.",
-                    "Digital Safety": "Do not upload or link anything that is digitally malicious or illegal.",
-                    "User Safety": "You may not harm or threaten other users or impersonate site staff.",
-                    "Adult Content": "Adult content must be marked as such.",
-                    "Evil": "You may not use the site to advance ontologically evil causes."
-                } %}
-
-                <div class="col sidebar text-left d-none d-lg-block pt-3">
-
-                    <div class="sidebar-section sidebar-rules">
-                        <div class="title bg-purple"><a href="/help/rules" target="_blank"><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</a></div>
-                        <div class="body">
-                            <ol class="pl-0 mb-0">
-                                {% for rule in rules %}
-                                <li>
-                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="ruleCollapse1">{{ rule}}<span class="float-right"><i class="fa"></i></span>
-                                    </a>
-                                </li>
-                                <div id="ruleCollapse-{{ loop.index }}" class="collapse">
-                                    <p style="padding: 0 0 0 22px;">{{ rules[rule] }}</p>
-                                </div>
-                                {% endfor %}
-                            </ol>
-                        </div>
-                    </div>
-
-                    {% include "footer.html" %}
+                    </form>
 
                 </div>
 
             </div>
 
+            <!-- Right Sidebar (hidden on devices smaller than "large") -->
+
+            {% set rules={
+                "Intellectual Property": "Do not upload content that you are not authorized to distribute.",
+                "Digital Safety": "Do not upload or link anything that is digitally malicious or illegal.",
+                "User Safety": "You may not harm or threaten other users or impersonate site staff.",
+                "Adult Content": "Adult content must be marked as such.",
+                "Evil": "You may not use the site to advance ontologically evil causes."
+            } %}
+
+            <div class="col sidebar text-left d-none d-lg-block pt-3">
+
+                <div class="sidebar-section sidebar-rules">
+                    <div class="title bg-purple"><a href="/help/rules" target="_blank"><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</a></div>
+                    <div class="body">
+                        <ol class="pl-0 mb-0">
+                            {% for rule in rules %}
+                            <li>
+                                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="ruleCollapse1">{{ rule}}<span class="float-right"><i class="fa"></i></span>
+                                </a>
+                            </li>
+                            <div id="ruleCollapse-{{ loop.index }}" class="collapse">
+                                <p style="padding: 0 0 0 22px;">{{ rules[rule] }}</p>
+                            </div>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+
+                {% include "footer.html" %}
+
+            </div>
+
         </div>
 
-        <div class="container">
-            <div class="row fixed-bottom bg-white border-top p-3" id="" style="z-index: 100; bottom: 0px; transition: bottom 220ms cubic-bezier(0, 0, 0.2, 1) 0s;">
-                <div class="col">
-                    <a href="/" class="btn btn-secondary">Cancel</a>
-                </div>
-                <div class="col text-right">
-                    {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
-                    <button class="btn btn-purple" id="create_button" type="submit" disabled>Post</button>
-                </div>
+    </div>
+
+    <div class="container">
+        <div class="row fixed-bottom bg-white border-top p-3" id="" style="z-index: 100; bottom: 0px; transition: bottom 220ms cubic-bezier(0, 0, 0.2, 1) 0s;">
+            <div class="col">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+            </div>
+            <div class="col text-right">
+                {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
+                <button class="btn btn-purple" id="create_button" type="submit" disabled>Post</button>
             </div>
         </div>
+    </div>
 
-    </form>
 
     {% endblock %}
 
