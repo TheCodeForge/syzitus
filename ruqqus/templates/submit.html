@@ -68,8 +68,6 @@
     <!-- Navigation -->
     {% include "header.html" %}
 
-    {% block form %}
-
     <!-- Page Content -->
 
     <div class="container">
@@ -83,6 +81,8 @@
                 <h2 class="h3 d-md-none">Create a post</h2>
 
                 <div class="body">
+
+                    {% block form %}
                     <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
 
 
@@ -156,6 +156,7 @@
                             <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
                         </div>
                     </form>
+                    {% endform %}
 
                 </div>
 
@@ -205,13 +206,10 @@
             </div>
             <div class="col text-right">
                 {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
-                <button class="btn btn-purple" id="create_button" type="submit" disabled>Post</button>
+                <button class="btn btn-purple toast-form-submit" data-form="submitform">Post</button>
             </div>
         </div>
     </div>
-
-
-    {% endblock %}
 
     {% include "bootstrap.html" %}
 
