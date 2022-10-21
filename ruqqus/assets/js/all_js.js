@@ -1055,7 +1055,7 @@ function post_response(url, callback, errortext) {
 
 // sub/unsub
 
-function toggleSub(){
+function toggleSub(xhr){
   document.getElementById('button-unsub').classList.toggle('d-none');
   document.getElementById('button-sub').classList.toggle('d-none');
   document.getElementById('button-unsub-modal').classList.toggle('d-none');
@@ -1077,7 +1077,7 @@ function post_toast(url, callback) {
         $('#toast-post-success').toast('dispose');
         $('#toast-post-success').toast('show');
         document.getElementById('toast-post-success-text').innerText = JSON.parse(xhr.response)["message"];
-        callback(xhr)
+        callback(xhr);
         return true
 
       } else if (xhr.status >= 300 && xhr.status < 400) {
