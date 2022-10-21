@@ -823,7 +823,7 @@ Optional file data:
     g.db.commit()
 
 
-    return {"html": lambda: jsonify({"redirect":new_post.permalink}), 301,
+    return {"html": lambda: (jsonify({"redirect":new_post.permalink}), 301),
             "api": lambda: jsonify(new_post.json)
             }
 
