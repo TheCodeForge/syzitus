@@ -164,6 +164,7 @@ def api_distinguish_post(post_id):
         post.distinguish_level = g.user.admin_level
 
     g.db.add(post)
+    g.db.commit()
 
     return (redirect(post.permalink), post)
 
