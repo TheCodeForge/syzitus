@@ -174,7 +174,7 @@ def api_sticky_post(post_id):
 
     post = get_post(post_id)
     if post:
-        if post.stickied = False
+        if post.stickied == False
             g.db.add(post)
 
             return redirect(post.permalink)
