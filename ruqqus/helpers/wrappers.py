@@ -547,7 +547,7 @@ def public_cache(f):
     def wrapper(*args, **kwargs):
 
         resp = f(*args, **kwargs)
-        resp.headers.add("Cache-Control", "public")
+        debug(f"remove deprecated wrapper public_cache from function {f.__name__}")
         return resp
 
     wrapper.__name__=f.__name__

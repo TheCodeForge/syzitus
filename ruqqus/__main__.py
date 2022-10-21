@@ -414,16 +414,19 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth"
                          )
-    response.headers.add("Cache-Control",
-                         "maxage=600")
+    # response.headers.add("Cache-Control",
+    #                      "maxage=600")
     response.headers.add("Strict-Transport-Security", "max-age=31536000")
     response.headers.add("Referrer-Policy", "same-origin")
     # response.headers.add("X-Content-Type-Options","nosniff")
     response.headers.add("Feature-Policy",
                          "geolocation 'none'; midi 'none'; notifications 'none'; push 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; vibrate 'none'; fullscreen 'none'; payment 'none';")
     if not request.path.startswith("/embed/"):
-        response.headers.add("X-Frame-Options",
-                             "deny")
+        response.headers.add("X-Frame-Options", "deny")
+
+    
+    if not g.user:
+        response.headers.add("Cache-Control", "public")
 
     # signups - hit discord webhook
     # if request.method == "POST" and response.status_code in [
