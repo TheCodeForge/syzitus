@@ -1447,7 +1447,7 @@ def board_get_css(guildname):
 
     board=get_guild(guildname)
 
-    css=f"@media (min-width: 992px) \{\n{board.css}\n\}"
+    css="@media (min-width: 992px) {\n"+ board.css + "\n}"
 
     resp=make_response(css)
     resp.headers.add("Content-Type", "text/css")
