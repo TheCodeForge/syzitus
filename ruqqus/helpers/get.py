@@ -125,7 +125,7 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
     #     target_submission_id=i
     #     ).subquery()
 
-    if g.get('user'):
+    if g.user:
         vt = g.db.query(Vote).filter_by(
             user_id=g.user.id, submission_id=i).subquery()
         mod = g.db.query(ModRelationship).filter_by(
@@ -209,8 +209,6 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
         x._is_blocked = items[5] or 0
         x.board._is_subscribed=items[6] or 0
         # x._is_exiled_for=items[5] or 0
-
-        debug(x._voted)
 
     else:
         items = g.db.query(
