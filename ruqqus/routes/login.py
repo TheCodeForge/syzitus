@@ -74,7 +74,11 @@ def check_for_alts(current_id):
 @no_cors
 @app.route("/login", methods=["POST"])
 @limiter.limit("6/minute")
+@auth_desired
 def login_post():
+
+    if g.user:
+        abort(400)
 
     username = request.form.get("username")
 
