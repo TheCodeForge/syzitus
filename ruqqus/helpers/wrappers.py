@@ -479,7 +479,10 @@ def api(*scopes, no_ban=False):
                 result = f(*args, **kwargs)
 
                 if isinstance(result, dict):
-                    resp = result['api']()
+                    try:
+                        resp = result['api']()
+                    except KeyError:
+                        resp=result
                 else:
                     resp = result
 
