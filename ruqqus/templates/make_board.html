@@ -7,15 +7,6 @@
 {% block pagetitle %}Create a Guild{% endblock %}
 {% block subtitle %}Launch your own guild on {{ 'SITE_NAME' | app_config }}{% endblock %}
 {% block sidebar %}{% endblock %}
-{% block stylesheets %}
-
-{% if v and v.referral_count and session.get("dark_mode_enabled") %}
-<link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css">
-{% else %}
-<link id="css-link" rel="stylesheet" href="/assets/style/main.css">
-{% endif %}
-
-{% endblock %}
 
 {% block form %}
 
