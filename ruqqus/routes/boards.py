@@ -390,7 +390,7 @@ URL path parameters:
         abort(403)
 
     if post.gm_distinguish:
-        post.gm_distinguish = 0
+        post.gm_distinguish = None
     else:
         post.gm_distinguish = board.id
     g.db.add(post)
