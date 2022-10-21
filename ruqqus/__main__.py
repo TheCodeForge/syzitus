@@ -147,6 +147,7 @@ app.config["TENOR_KEY"]=environ.get("TENOR_KEY",'').lstrip().rstrip()
 
 app.config["GUILD_CREATION_REQ"]=int(environ.get("GUILD_CREATION_REQ", "500").lstrip().rstrip())
 app.config["MAX_GUILD_COUNT"]=int(environ.get("MAX_GUILD_COUNT", "10").lstrip().rstrip())
+app.config['UPLOAD_IMAGE_REP']=int(environ.get("UPLOAD_IMAGE_REP",10).lstrip().rstrip())
 
 app.config["DEBUG"]=bool(int(environ.get("DEBUG", 0)))
 
