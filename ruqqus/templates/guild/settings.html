@@ -149,11 +149,14 @@
                     {% if not b.subcat %}
                       <option value="0" selected disabled>Select a Category</option>
                     {% endif %}
-                    {% for category in categories %}
+                    {% for c in categories %}
+                    {% set category=categories[c] %}
                         <option disabled>{{ category.name }}</option>
 
-                        {% for subcat in category.subcats %}
+                        {% for s in category.subcats %}
+                        {% set subcat=category.subcats[s] %}
                           <option value="{{ subcat.id }}"{% if subcat.id==b.subcat_id %} selected{% endif %}> - {{ subcat.name }}</option>
+                        }
                         {% endfor %}
                     {% endfor %}
                   </select>
