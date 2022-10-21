@@ -723,8 +723,7 @@ Required form data:
     return jsonify({"html": c.body_html})
 
 
-@app.route("/delete/comment/<cid>", methods=["POST"])
-@app.route("/api/v1/delete/comment/<cid>", methods=["POST"])
+@app.post("/delete/comment/<cid>")
 @app.delete("/api/v2/comments/<cid>")
 @auth_required
 @api("delete")
@@ -748,12 +747,12 @@ URL path parameters:
     c.deleted_utc = int(time.time())
 
     g.db.add(c)
+    g.db.commit()
 
 
     cache.delete_memoized(User.commentlisting)
 
-    return {"html": lambda: ("", 204),
-            "api": lambda: ("", 204)}
+    return "", 204
 
 
 @app.route("/embed/comment/<cid>", methods=["GET"])
@@ -819,6 +818,8 @@ URL path parameters:
         target_comment_id=comment.id
     )
     g.db.add(ma)
+
+    g.db.commit()
 
     html=render_template(
                 "comments.html",
