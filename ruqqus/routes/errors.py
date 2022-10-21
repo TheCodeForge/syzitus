@@ -28,15 +28,14 @@ def error_wrapper(f):
 @error_wrapper
 def error_401(e):
 
-    path = request.path
-    qs = urlencode(dict(request.args))
-    argval = quote(f"{path}?{qs}", safe='')
-    output = f"/login?redirect={argval}"
+    # path = request.path
+    # qs = urlencode(dict(request.args))
+    # argval = quote(f"{path}?{qs}", safe='')
+    # output = f"/login?redirect={argval}"
 
-    if request.path.startswith("/api/v1/"):
-        return jsonify({"error": "401 Not Authorized"}), 401
-    else:
-        return redirect(output)
+    return{"html": lambda: (render_template('errors/401.html'), 401),
+           "api": lambda: (jsonify({"error": "401 Not Authorized"}), 401)
+           }
 
 @app.errorhandler(PaymentRequired)
 @error_wrapper
