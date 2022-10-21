@@ -50,7 +50,7 @@
                         <option value="0" selected disabled>Select a Category</option>
                         {% for c in categories %}
                         {% set category=categories[c] %}
-                            <option disabled>=== {{ category.name }} ===</option>
+                            <option disabled>{{ category.name.upper() }}</option>
 
                             {% for s in category.subcats %}
                             {% set subcat=category.subcats[s] %}
