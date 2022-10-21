@@ -529,6 +529,9 @@ def get_post_with_comments(pid, sort_type="top", v=None):
 
 def get_comment(cid, graceful=False, no_text=False, **kwargs):
 
+    if isinstance(cid, str):
+        cid=base36decode(cid)
+
     exile = g.db.query(ModAction
          ).options(
          lazyload('*')
@@ -581,7 +584,7 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
             items=items.options(joinedload(Comment.oauth_app))
 
         items=items.filter(
-            Comment.id == i
+            Comment.id == cid
         ).join(
             vt, 
             vt.c.comment_id == Comment.id, 
@@ -632,7 +635,7 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
             exile,
             and_(exile.c.target_comment_id==Comment.id, exile.c.board_id==Comment.original_board_id),
             isouter=True
-        ).filter(Comment.id == i).first()
+        ).filter(Comment.id == cid).first()
 
         if not q and not graceful:
             abort(404)
