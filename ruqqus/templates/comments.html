@@ -158,7 +158,7 @@
        </div>
        {% endif %}
 
-       <div id="comment-{{ c.base36id }}-actions" class="comment-actions{% if g.useroted==1 %} upvoted{% elif g.useroted==-1 %} downvoted{% endif %}">
+       <div id="comment-{{ c.base36id }}-actions" class="comment-actions{% if g.user.voted==1 %} upvoted{% elif g.useroted==-1 %} downvoted{% endif %}">
         <ul class="list-inline text-right text-md-left">
 
           {% if g.user and request.path.startswith('/@')%}
@@ -179,7 +179,7 @@
           {% endif %}
 
           <li class="list-inline-item d-none d-md-inline-block mr-2">
-            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if g.useroted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}">{{ score }}</span></span>
+            <span class="points" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"><span id="comment-score-{{ c.base36id }}" class="score comment-score-{{ c.base36id }} {% if g.user.voted==1 %}score-up{% elif g.useroted==-1%}score-down{% endif %}">{{ score }}</span></span>
           </li>
 
           {% if g.user and request.path.startswith('/@') %}
