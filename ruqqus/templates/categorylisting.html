@@ -47,7 +47,7 @@
   <div class="row">
     <div class="mr-3 ml-auto mb-5 mt-3">
       {% if g.user %}
-      <a href="javascript:void(0)" onclick="all_cats()" class="btn btn-secondary ml-auto mr-2">Show all</a>
+      <a href="javascript:void(0)" id="show-all-cats-btn" class="btn btn-secondary ml-auto mr-2">Show all</a>
       <a href="javascript:void(0)" onclick="togglecat('hot', reload=true, delay=0)" class="btn btn-primary">Apply Selections</a>
       {% else %}
       <a href="javascript:void(0)" onclick="all_cats('/')" class="btn btn-secondary ml-auto mr-2">Show all</a>
