@@ -1072,28 +1072,20 @@ function post_toast(url, callback) {
   xhr.withCredentials=true;
 
   xhr.onload = function() {
-    if (xhr.status==204) {}
-      else if (xhr.status >= 200 && xhr.status < 300) {
-        $('#toast-post-success').toast('dispose');
-        $('#toast-post-success').toast('show');
-        document.getElementById('toast-post-success-text').innerText = JSON.parse(xhr.response)["message"];
-        callback(xhr);
-        return true
-
-      } else if (xhr.status >= 300 && xhr.status < 400) {
-        window.location.href = JSON.parse(xhr.response)["redirect"]
-      } else {
         data=JSON.parse(xhr.response);
+    data=JSON.parse(xhr.response);
+    if (xhr.status >= 200 && xhr.status < 300) {
+      $('#toast-success .toast-text').text(data['message']);
+      $('#toast-success').toast('show')
+    } else if (xhr.status >= 300 && xhr.status < 400 ) {
+      window.location.href=data['redirect']
+    } else {
+      $('#toast-error .toast-text').text(data['error']);
+      $('#toast-error').toast('show')
+    }
+  };
 
-        $('#toast-post-error').toast('dispose');
-        $('#toast-post-error').toast('show');
-        document.getElementById('toast-post-error-text').innerText = data["error"];
-        return false
-
-      }
-    };
-
-    xhr.send(form);
+  xhr.send(form);
 
   }
 
