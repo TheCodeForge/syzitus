@@ -150,12 +150,13 @@
                         <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are Ruqqus communities. Enter a guild you would like your post to belong to."></i></label>
                         <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
 
+                        {% if g.user.over_18 %}
                         <label for="over_18" class="text-danger mt-3">NSFW?</label>
-
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
                             <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
                         </div>
+                        {% endif %}
                     </form>
                     {% endblock %}
 
