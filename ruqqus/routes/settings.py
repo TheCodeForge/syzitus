@@ -105,9 +105,7 @@ def settings_profile_post():
             g.user.ban(reason="seo spam")
         
         
-        return {"html":lambda:render_template("settings_profile.html",
-                               msg="Your bio has been updated."),
-		"api":lambda:jsonify({"message":"Your bio has been updated."})}
+        return jsonify({"message":"Your bio has been updated."})
 
     if request.values.get("filters") is not None:
 
@@ -121,9 +119,7 @@ def settings_profile_post():
 
         g.user.custom_filter_list=filters
         g.db.add(g.user)
-        return {"html":lambda:render_template("settings_profile.html",
-                               msg="Your custom filters have been updated."),
-		"api":lambda:jsonify({"message":"Your custom filters have been updated"})}
+        return jsonify({"message":"Your filters have been updated."})
 
 
 
