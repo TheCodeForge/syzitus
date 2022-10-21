@@ -10,8 +10,11 @@ import time
 
 class Category(Stndrd):
 
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+
+    def __init__(self, id):
+
+        self.id=id
+        self.__dict__.update(**CATEGORY_DATA[self.id])
     
     @property
     def json(self):
@@ -24,12 +27,14 @@ class Category(Stndrd):
 class SubCategory(Stndrd):
 
 
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    def __init__(self, id):
+
+        self.id=id
+        self.__dict__.update(**SUBCAT_DATA[self.id])
 
     @property
     def category(self):
-        return CATEGORIES[self.cat_id]
+        return Category(self.cat_id)
 
     @property
     def visible(self):
