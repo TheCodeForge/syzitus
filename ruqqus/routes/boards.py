@@ -251,7 +251,10 @@ Optional form data:
     # clear cache
     cache.delete_memoized(guild_ids, sort="new")
 
-    return redirect(new_board.permalink)
+    return {
+        "html":lambda:(jsonify{"redirect":new_board.permalink},301),
+        "api": lambda:(jsonify{new_post.json})
+        }
 
 
 @app.route("/r/<name>")
