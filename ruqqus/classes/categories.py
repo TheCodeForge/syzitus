@@ -15,6 +15,11 @@ class Category(Stndrd):
 
         self.id=id
         self.__dict__.update(**CATEGORY_DATA[self.id])
+
+    @property
+    def subcats(self):
+        return {x:SubCategory(id=x) for x in SUBCAT_DATA if SUBCAT_DATA[x]['cat_id']==self.id}
+    
     
     @property
     def json(self):
@@ -155,13 +160,4 @@ SUBCAT_DATA={
     86: {'cat_id': 11, 'name': 'World'}
  }
 
-CATEGORIES={x:Category(
-    id=x, 
-    subcats={y:SubCategory(
-        id=y, 
-        **SUBCAT_DATA[y]
-        ) for y in SUBCAT_DATA if SUBCAT_DATA[y]['cat_id']==x
-    }, 
-    **CATEGORY_DATA[x]
-    ) for x in CATEGORY_DATA
-}
+CATEGORIES={x:Category(id=x) for x in CATEGORY_DATA}
