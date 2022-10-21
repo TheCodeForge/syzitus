@@ -100,6 +100,7 @@ def settings_profile():
 def titles():
     return render_template("/help/titles.html",
                            titles=list(TITLES.values())
+                           )
 
 
 @app.route("/help/terms", methods=["GET"])
