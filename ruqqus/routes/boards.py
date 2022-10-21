@@ -248,6 +248,8 @@ Optional form data:
         )
     g.db.add(ma)
 
+    g.db.commit()
+
     # clear cache
     cache.delete_memoized(guild_ids, sort="new")
 
