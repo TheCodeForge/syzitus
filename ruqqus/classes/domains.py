@@ -17,7 +17,7 @@ class Domain(Base):
 
     __tablename__ = "domains"
     id = Column(Integer, primary_key=True)
-    domain = Column(String)
+    domain = Column(String, index=True)
     can_submit = Column(Boolean, default=True)
     can_comment = Column(Boolean, default=True)
     reason = Column(Integer, default=0)
