@@ -236,11 +236,11 @@ def sign_up_get():
 
 @app.route("/signup", methods=["POST"])
 @no_cors
-@auth_desired
+#@auth_desired
 def sign_up_post():
 
-    if g.user:
-        abort(403)
+    # if g.user:
+    #     abort(403)
 
     agent = request.headers.get("User-Agent", None)
     if not agent:
