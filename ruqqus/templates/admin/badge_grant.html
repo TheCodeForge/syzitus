@@ -36,7 +36,7 @@
 <h1>Badge Grant</h2>
 
 <form action="/badge_grant", method="post">
-<input type="hidden" name="formkey" value="{{ v.formkey }}">
+<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 
 <label for="input-username">Username</label><br>
