@@ -122,7 +122,7 @@
 {% endblock %}
 
 {% if g.user %}
-{% set voted=p.voted if p.voted else 0 %}
+{% set voted=p.voted %}
 {% else %}
 {% set voted=-2 %}
 {% endif %}
