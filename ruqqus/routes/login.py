@@ -347,9 +347,6 @@ def sign_up_post():
             debug(x.json())
             return new_signup("Unable to verify captcha [2].")
 
-    # kill tokens
-    session.pop("signup_token")
-
     # get referral
     ref_id = int(request.form.get("referred_by", 0))
 
