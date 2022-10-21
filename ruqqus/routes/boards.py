@@ -1411,7 +1411,7 @@ def board_edit_css(bid, board):
                         domain = urlparse(pg.user.uri).netloc
 
                         if domain != app.config["S3_BUCKET"]:
-                            return jsonify({"error":"No external links allowed."}), 422
+                            return jsonify({"error": f"No external links allowed. Assets may only be hosted on {app.config['S3_BUCKET']}"}), 422
 
         if getattr(rule, "children", None):
             for child in rule.children():
@@ -1447,9 +1447,7 @@ def board_get_css(guildname):
 
     board=get_guild(guildname)
 
-    css="@media (min-width: 992px) {\n" + board.css +"\n}"
-
-
+    css=f"@media (min-width: 992px) \{\n{board.css}\n\}"
 
     resp=make_response(css)
     resp.headers.add("Content-Type", "text/css")
