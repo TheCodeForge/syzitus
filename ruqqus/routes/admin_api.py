@@ -172,10 +172,9 @@ def api_distinguish_post(post_id):
 @admin_level_required(3)
 def api_sticky_post(post_id):
 
-    post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
+    post = get_post(post_id)
     if post:
-        if post.stickied:
-            post.stickied = False
+        if post.stickied = False
             g.db.add(post)
 
             return redirect(post.permalink)
