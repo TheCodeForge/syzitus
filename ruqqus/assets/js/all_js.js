@@ -1075,7 +1075,8 @@ function post_toast(url, callback) {
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
-      $('#toast-success').toast('show')
+      $('#toast-success').toast('show');
+      callback();
     } else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
     } else {
