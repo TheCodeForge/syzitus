@@ -4,6 +4,7 @@ from flask import g
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from urllib.parse import urlparse
+from ruqqus.__main__ import debug
 
 import re
 
@@ -208,6 +209,8 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
         x._is_blocked = items[5] or 0
         x.board._is_subscribed=items[6] or 0
         # x._is_exiled_for=items[5] or 0
+
+        debug(x._voted)
 
     else:
         items = g.db.query(
