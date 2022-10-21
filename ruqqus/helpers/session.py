@@ -17,9 +17,9 @@ def session_isnsfl(board):
     return session.get('show_nsfl', {}).get(board.base36id, 0) >= now
 
 
-def make_logged_out_formkey(t):
+def make_logged_out_formkey():
 
-    s = f"{t}+{session['session_id']}"
+    s = f"{g.timestamp}+{session['session_id']}"
 
     return generate_hash(s)
 
