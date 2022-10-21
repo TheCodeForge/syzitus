@@ -647,7 +647,7 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
     return x
 
 
-def get_comments(cids,msort_type=None, load_parent=False, **kwargs):
+def get_comments(cids, sort_type=None, load_parent=False, **kwargs):
 
     if not cids:
         return []
