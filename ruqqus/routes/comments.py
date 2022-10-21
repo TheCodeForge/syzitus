@@ -167,7 +167,7 @@ Optional query parameters:
                 joinedload(Comment.comment_aux),
                 joinedload(Comment.author),
                 Load(User).lazyload('*'),
-                Load(User).joinedload(User.title),
+                Load(User),
                 joinedload(Comment.post),
                 Load(Submission).lazyload('*'),
                 Load(Submission).joinedload(Submission.submission_aux),
@@ -226,7 +226,7 @@ Optional query parameters:
                 Comment,
                 aliased(ModAction, alias=exile)
             ).options(
-                joinedload(Comment.author).joinedload(User.title)
+                joinedload(Comment.author)
             ).filter(
                 Comment.parent_comment_id.in_(current_ids)
             ).join(
