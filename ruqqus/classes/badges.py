@@ -212,6 +212,20 @@ BADGE_DATA={
         "rank": 5,
         "icon": "year-2.png",
         "expr": lambda x: x.age_string=="2 years ago"
+    },
+    15: {
+        "name":"Alpha User",
+        "description":f"Joined {app.config['SITE_NAME']} in alpha phase",
+        "kind": 3,
+        "rank": 4,
+        "icon": "alpha.png"
+    },
+    16: {
+        "name":"Beta User",
+        "description":f"Joined {app.config['SITE_NAME']} in alpha phase",
+        "kind": 3,
+        "rank": 4,
+        "icon": "beta.png"
     }
 }
 
