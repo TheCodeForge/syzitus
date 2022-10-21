@@ -121,8 +121,7 @@ def admin_home():
 @admin_level_required(4)
 def badge_grant_get():
 
-    badge_types = g.db.query(BadgeDef).filter_by(
-        kind=3).order_by(BadgeDef.rank).all()
+    badge_types = [x for x in BADGE_DEFS.values()]
 
     errors = {"already_owned": "That user already has that badge.",
               "no_user": "That user doesn't exist."
