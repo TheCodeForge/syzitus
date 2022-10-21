@@ -278,7 +278,6 @@ Required form data:
 @limiter.limit("6/minute")
 @is_not_banned
 @no_negative_balance("html")
-#@validate_formkey
 def get_post_title():
 
     url = request.args.get("url", None)
@@ -828,7 +827,6 @@ Optional file data:
 
 # @app.route("/api/nsfw/<pid>/<x>", methods=["POST"])
 # @auth_required
-# @validate_formkey
 # def api_nsfw_pid(pid, x):
 
 #     try:
