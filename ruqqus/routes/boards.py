@@ -255,7 +255,7 @@ Optional form data:
 
     return {
         "html":lambda:(jsonify({"redirect":new_board.permalink}),301),
-        "api": lambda:(jsonify{new_post.json})
+        "api": lambda:jsonify(new_board.json)
         }
 
 
