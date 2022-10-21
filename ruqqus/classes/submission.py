@@ -461,7 +461,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
 
     @property
     def user_title(self):
-        return self._title if "_title" in self.__dict__ else self.author.title
+        return self.author.title
 
     @property
     def title(self):
