@@ -216,11 +216,11 @@ Optional form data:
                                message="You need to select a category."
                                ), 400
     if subcat not in CATEGORY_DATA:
-    return render_template(
-        "message.html",
-        title="Category required.",
-        message="Invalid category."
-        ), 400     
+        return render_template(
+            "message.html",
+            title="Category required.",
+            message="Invalid category."
+            ), 400     
 
 
     with CustomRenderer() as renderer:
