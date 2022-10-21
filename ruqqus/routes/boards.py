@@ -19,7 +19,7 @@ from ruqqus.helpers.aws import check_csam_url
 from ruqqus.classes import *
 from .front import guild_ids
 #from ruqqus.classes.rules import *
-from ruqqus.classes.categories import CATEGORIES, CATEGORY_DATA
+from ruqqus.classes.categories import CATEGORIES, CATEGORY_DATA, SUBCAT_DATA
 from flask import *
 
 from ruqqus.__main__ import app, limiter, cache
@@ -202,7 +202,7 @@ Optional form data:
     if not subcat:
         return jsonify({"error": 'You need to select a category.'}), 400
 
-    if subcat not in CATEGORY_DATA:
+    if subcat not in SUBCAT_DATA:
         return jsonify({"error": 'You need to select a valid category.'}), 400
 
 
@@ -1225,64 +1225,6 @@ def mod_settings_toggle_banner(bid, board):
 
     g.db.add(board)
     return "", 204
-
-
-# @app.route("/mod/<bid>/settings/add_rule", methods=["POST"])
-# @auth_required
-# @is_guildmaster("full")
-# @validate_formkey
-# def mod_add_rule(bid, board):
-#     # board description
-#     rule = request.form.get("rule1")
-#     rule2 = request.form.get("rule2")
-#     if not rule2:
-#         with CustomRenderer() as renderer:
-#             rule_md = renderer.render(mistletoe.Document(rule))
-#         rule_html = sanitize(rule_md, linkgen=True)
-
-#         new_rule = Rules(board_id=bid, rule_body=rule, rule_html=rule_html)
-#         g.db.add(new_rule)
-
-#     else:
-#         """
-#         im guessing here we should
-#         do a loop for
-#         adding multiple rules
-#         """
-#         pass
-
-#     return "", 204
-
-
-# @app.route("/mod/<bid>/settings/edit_rule", methods=["POST"])
-# @auth_required
-# @is_guildmaster("full")
-# @validate_formkey
-# def mod_edit_rule(bid, board):
-#     r = base36decode(request.form.get("rid"))
-#     r = g.db.query(Rules).filter_by(id=r)
-
-#     if not r:
-#         abort(500)
-
-#     if board.is_banned:
-#         abort(403)
-
-#     if board.has_ban(g.user):
-#         abort(403)
-
-#     body = request.form.get("body", "")
-#     with CustomRenderer() as renderer:
-#         body_md = renderer.render(mistletoe.Document(body))
-#     body_html = sanitize(body_md, linkgen=True)
-
-#     r.rule_body = body
-#     r.rule_html = body_html
-#     r.edited_utc = int(time.time())
-
-#     g.db.add(r)
-
-#     return "", 204
 
 
 @app.route("/+<guildname>/mod/settings", methods=["GET"])
