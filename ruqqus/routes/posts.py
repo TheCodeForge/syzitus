@@ -561,7 +561,7 @@ Optional file data:
             g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             abort(403)
             
-        return jsonify({"redirect":"/notifications"}) 301
+        return jsonify({"redirect":"/notifications"}), 301
 
     # check spam
     soup = BeautifulSoup(body_html, features="html.parser")
@@ -819,7 +819,7 @@ Optional file data:
             )
         g.db.add(new_notif)
 
-    
+
     g.db.commit()
 
 

@@ -1145,6 +1145,7 @@ class User(Base, Stndrd, Age_times):
 
         if not admin:
             action=f"automatically {action}"
+
         text = f'Your {app.config["SITE_NAME"]} account has been {action}'
         send_notification(self, text)
 
@@ -1189,6 +1190,8 @@ class User(Base, Stndrd, Age_times):
         
         discord_log_event("Unban", self, g.v, reason=self.ban_reason)
 
+        text = f'Your {app.config["SITE_NAME"]} account has been reinstated. Please review the [Terms of Service](/help/terms) and [Rules](/help/rules), and avoid breaking them in the future.'
+        send_notification(self, text)
 
     @property
     def is_suspended(self):
