@@ -39,7 +39,7 @@ def searchparse(text):
 
 
 @cache.memoize(300)
-def searchlisting(criteria, v=None, page=1, t="None", sort="top", b=None):
+def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
     posts = g.db.query(Submission).options(
                 lazyload('*')
@@ -109,32 +109,32 @@ def searchlisting(criteria, v=None, page=1, t="None", sort="top", b=None):
             # not_(SubmissionAux.url.ilike("http://%/%"+domain))
 
 
-    if not (v and v.over_18):
+    if not (g.user and g.user.over_18):
         posts = posts.filter(Submission.over_18 == False)
 
-    if v and v.hide_offensive:
+    if g.user and g.user.hide_offensive:
         posts = posts.filter(Submission.is_offensive == False)
 		
-    if v and v.hide_bot:
+    if g.user and g.user.hide_bot:
         posts = posts.filter(Submission.is_bot == False)
 
-    if not(v and v.admin_level >= 3):
+    if not(g.user and g.user.admin_level >= 3):
         posts = posts.filter(
             Submission.deleted_utc == 0,
             Submission.is_banned == False,
             )
 
-    if v and v.admin_level >= 4:
+    if g.user and g.user.admin_level >= 4:
         pass
     elif v:
         m = g.db.query(ModRelationship.board_id).filter_by(
-            user_id=v.id, invite_rescinded=False).subquery()
+            user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
             ContributorRelationship.board_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
         posts = posts.filter(
             or_(
-                Submission.author_id == v.id,
+                Submission.author_id == g.user.id,
                 Submission.post_public == True,
                 Submission.board_id.in_(m),
                 Submission.board_id.in_(c)
@@ -143,10 +143,10 @@ def searchlisting(criteria, v=None, page=1, t="None", sort="top", b=None):
 
         blocking = g.db.query(
             UserBlock.target_id).filter_by(
-            user_id=v.id).subquery()
+            user_id=g.user.id).subquery()
         blocked = g.db.query(
             UserBlock.user_id).filter_by(
-            target_id=v.id).subquery()
+            target_id=g.user.id).subquery()
 
         posts = posts.filter(
             Submission.author_id.notin_(blocking),
@@ -201,7 +201,7 @@ def searchlisting(criteria, v=None, page=1, t="None", sort="top", b=None):
 @app.route("/api/vue/search")
 @auth_desired
 @api("read")
-def search(v, search_type="posts"):
+def search(search_type="posts"):
 
     query = request.args.get("q", '').lstrip().rstrip()
 
@@ -219,14 +219,14 @@ def search(v, search_type="posts"):
         boards = g.db.query(Board).filter(
             Board.name.ilike(f'%{term}%'))
 
-        if not(v and v.over_18):
+        if not(g.user and g.user.over_18):
             boards = boards.filter_by(over_18=False)
 
-        if not (v and v.admin_level >= 3):
+        if not (g.user and g.user.admin_level >= 3):
             boards = boards.filter_by(is_banned=False)
 
         if v:
-            joined = g.db.query(Subscription).filter_by(user_id=v.id, is_active=True).subquery()
+            joined = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
 
             boards=boards.join(
                 joined,
@@ -256,7 +256,6 @@ def search(v, search_type="posts"):
         boards = boards[0:25]
 
         return {"html":lambda:render_template("search_boards.html",
-                               v=v,
                                query=query,
                                total=total,
                                page=page,
@@ -278,7 +277,7 @@ def search(v, search_type="posts"):
             User.username.ilike(f'%{term}%'))
         
         
-        if not (v and v.admin_level >= 3):
+        if not (g.user and g.user.admin_level >= 3):
             users=users.filter(
             User.is_private==False,
             User.is_deleted==False,
@@ -302,7 +301,6 @@ def search(v, search_type="posts"):
         
         
         return {"html":lambda:render_template("search_users.html",
-                       v=v,
                        query=query,
                        total=total,
                        page=page,
@@ -323,14 +321,14 @@ def search(v, search_type="posts"):
         # posts search
 
         criteria=searchparse(query)
-        total, ids = searchlisting(criteria, v=v, page=page, t=t, sort=sort)
+        total, ids = searchlisting(criteria, page=page, t=t, sort=sort)
 
         next_exists = (len(ids) == 26)
         ids = ids[0:25]
 
-        posts = get_posts(ids, v=v)
+        posts = get_posts(ids)
 
-        if v and v.admin_level>3 and "domain" in criteria:
+        if g.user and g.user.admin_level>3 and "domain" in criteria:
             domain=criteria['domain']
             domain_obj=get_domain(domain)
         else:
@@ -338,7 +336,6 @@ def search(v, search_type="posts"):
             domain_obj=None
 
         return {"html":lambda:render_template("search.html",
-                               v=v,
                                query=query,
                                total=total,
                                page=page,
@@ -369,7 +366,7 @@ def search_guild(name, v, search_type="posts"):
         abort(404)
 
     if b.is_banned:
-        return render_template("board_banned.html", v=v, b=b)
+        return render_template("board_banned.html", b=b)
 
     page=max(1, int(request.args.get("page", 1)))
 
@@ -380,15 +377,14 @@ def search_guild(name, v, search_type="posts"):
 
     #posts search
 
-    total, ids = searchlisting(searchparse(query), v=v, page=page, t=t, sort=sort, b=b)
+    total, ids = searchlisting(searchparse(query), page=page, t=t, sort=sort, b=b)
 
     next_exists=(len(ids)==26)
     ids=ids[0:25]
 
-    posts=get_posts(ids, v=v)
+    posts=get_posts(ids)
 
     return render_template("search.html",
-                   v=v,
                    query=query,
                    total=total,
                    page=page,
