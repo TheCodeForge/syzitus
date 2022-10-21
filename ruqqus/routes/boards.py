@@ -173,28 +173,20 @@ Optional form data:
 * `description` - Guild description
     """
 
+
     if not g.user.can_make_guild:
-        return render_template("make_board.html",
-                               title="Unable to make board",
-                               error="You need more Reputation before you can make a Guild."
-                               )
+        return jsonify({"error": f'You need {app.config["GUILD_CREATION_REQ"]} Reputation before you can make a Guild.'}), 401
 
     board_name = request.form.get("name")
     board_name = board_name.lstrip("+")
     description = request.form.get("description")
 
     if not re.match(valid_board_regex, board_name):
-        return render_template("make_board.html",
-                               error="Guild names must be 3-25 letters or numbers.",
-                               description=description
-                               )
+        return jsonify({"error": 'Guild names must be 3-25 letters or numbers.'}), 400
 
     # check name
     if get_guild(board_name, graceful=True):
-        return render_template("make_board.html",
-                               error="That Guild already exists.",
-                               description=description
-                               )
+        return jsonify({"error": f'The guild +{board_name} already exists.'}), 400
 
     # check # recent boards made by user
     cutoff = int(time.time()) - 60 * 60 * 24
@@ -204,23 +196,14 @@ Optional form data:
         Board.creator_id.in_(user_ids),
         Board.created_utc >= cutoff).all()
     if g.user.admin_level<3 and len([x for x in recent]) >= 2:
-        return render_template("message.html",
-                               title="You need to wait a bit.",
-                               message="You can only create up to 2 guilds per day. Try again later."
-                               ), 429
+        return jsonify({"error": 'You can only create up to 2 guilds per day. Try again later.'}), 429
 
     subcat=int(request.form.get("category",0))
     if not subcat:
-        return render_template("message.html",
-                               title="Category required.",
-                               message="You need to select a category."
-                               ), 400
+        return jsonify({"error": 'You need to select a category.'}), 400
+
     if subcat not in CATEGORY_DATA:
-        return render_template(
-            "message.html",
-            title="Category required.",
-            message="Invalid category."
-            ), 400     
+        return jsonify({"error": 'You need to select a valid category.'}), 400
 
 
     with CustomRenderer() as renderer:

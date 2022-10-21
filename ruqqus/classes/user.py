@@ -1007,7 +1007,7 @@ class User(Base, Stndrd, Age_times):
         elif app.config["GUILD_CREATION_REQ"]==0:
             return self.can_join_gms
             
-        return (self.has_premium or self.admin_level>=3 or self.true_score >= 250) and self.can_join_gms
+        return (self.has_premium or self.admin_level>=3 or self.true_score >= app.config["GUILD_CREATION_REQ"]) and self.can_join_gms
 
     @property
     def can_join_gms(self):
