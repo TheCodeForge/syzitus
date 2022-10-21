@@ -11,7 +11,7 @@ from .mix_ins import *
 from ruqqus.helpers.base36 import *
 from ruqqus.helpers.lazy import lazy
 import ruqqus.helpers.aws as aws
-from ruqqus.__main__ import Base, cache, app
+from ruqqus.__main__ import Base, cache, app, debug
 from .votes import Vote, CommentVote
 from .domains import Domain
 from .flags import Flag
@@ -454,7 +454,9 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
 
     @property
     def voted(self):
-        return self._voted if "_voted" in self.__dict__ else 0
+        value= self.__dict__.get("_voted", 0)
+        debug(value)
+
 
     @property
     def user_title(self):
