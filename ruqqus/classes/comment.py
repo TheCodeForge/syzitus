@@ -93,8 +93,8 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     original_board = relationship(
         "Board", primaryjoin="Board.id==Comment.original_board_id")
 
-    upvotes = Column(Integer, default=1)
-    downvotes = Column(Integer, default=0)
+    upvotes = Column(Integer, default=1, nullable=False)
+    downvotes = Column(Integer, default=0, nullable=False)
 
     parent_comment = relationship("Comment", remote_side=[id], backref="child_comments")
     #child_comments = relationship("Comment", remote_side=[parent_comment_id])

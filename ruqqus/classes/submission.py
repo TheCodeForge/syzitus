@@ -121,8 +121,8 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     reports = relationship("Report", backref="submission")
     is_bot = Column(Boolean, default=False)
 
-    upvotes = Column(Integer, default=1)
-    downvotes = Column(Integer, default=0)
+    upvotes = Column(Integer, default=1, nullable=False)
+    downvotes = Column(Integer, default=0, nullable=False)
     creation_region=Column(String(2), default=None)
 
     app_id=Column(Integer, ForeignKey("oauth_apps.id"), default=None)
