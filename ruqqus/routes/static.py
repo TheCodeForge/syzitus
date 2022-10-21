@@ -17,7 +17,6 @@ from ruqqus.__main__ import app, limiter, debug
 
 @app.route("/assets/style/<file>.css", methods=["GET"])
 @cache.memoize()
-@public_cache
 def main_css(file):
 
     #print(file, color)
@@ -54,7 +53,6 @@ def main_css(file):
 
 @app.get('/assets/<path:path>')
 @limiter.exempt
-@public_cache
 def static_service(path):
 
     #try:
