@@ -163,41 +163,29 @@
 
                 <!-- Right Sidebar (hidden on devices smaller than "large") -->
 
+                {% set rules={
+                    "Intellectual Property": "Do not upload content that you are not authorized to distribute.",
+                    "Digital Safety": "Do not upload or link anything that is digitally malicious or illegal.",
+                    "User Safety": "You may not harm other users or impersonate site staff.",
+                    "Adult Content": "Adult content must be marked as such.",
+                    "Evil": "You may not use the site to advance ontologically evil causes."
+                } %}
+
                 <div class="col sidebar text-left d-none d-lg-block pt-3">
 
                     <div class="sidebar-section sidebar-rules">
                         <div class="title bg-purple"><span><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</span></div>
                         <div class="body">
-                            <ol class="pl-0 mb-0">   
+                            <ol class="pl-0 mb-0">
+                                {% for rule in rules %}
                                 <li>
-                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse1" role="button" aria-expanded="false" aria-controls="ruleCollapse1">Comply with US law<span class="float-right"><i class="fa"></i></span>
+                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="ruleCollapse1">{{ rule}}<span class="float-right"><i class="fa"></i></span>
                                     </a>
                                 </li>
-                                <div id="ruleCollapse1" class="collapse">
-                                    <p style="padding: 0 0 0 22px;">Do not post copyrighted material that you are not authorized to distribute. Do not post anything not legal to publish within, or export from, the United States of America.</p>
+                                <div id="ruleCollapse-{{ loop.index }}" class="collapse">
+                                    <p style="padding: 0 0 0 22px;">{{ rules[rule] }}</p>
                                 </div>
-                                <li>
-                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse2" role="button" aria-expanded="false" aria-controls="ruleCollapse2">Do not harass other users<span class="float-right"><i class="fa"></i></span>
-                                    </a>
-                                </li>
-                                <div id="ruleCollapse2" class="collapse">
-                                    <p style="padding: 0 0 0 22px;">Do not harass or threaten others on Ruqqus. You are not allowed to share or publish personal information, either yours or another person.</p>
-                                </div>
-                                <li>
-                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse3" role="button" aria-expanded="false" aria-controls="ruleCollapse3">No inciting violence<span class="float-right"><i class="fa"></i></span>
-                                    </a>
-                                </li>
-                                <div id="ruleCollapse3" class="collapse">
-                                    <p style="padding: 0 0 0 22px;">No incitement, planning or execution of unlawful or violent activity. This does not include the exercise of human rights that may be considered unlawful in a user's home country but protected in the United States.</p>
-                                </div>
-                                <li>
-                                    <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse4" role="button" aria-expanded="false" aria-controls="ruleCollapse4">Check for duplicates
-                                        <span class="float-right"><i class="fa"></i></span>
-                                    </a>
-                                </li>
-                                <div id="ruleCollapse4" class="collapse">
-                                    <p style="padding: 0 0 0 22px;">Nobody likes reposts. Please make sure the content you're posting hasn't been posted on Ruqqus before.</p>
-                                </div>
+                                {% endfor %}
                             </ol>
                         </div>
                     </div>
