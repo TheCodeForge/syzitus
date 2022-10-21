@@ -215,6 +215,12 @@ Optional form data:
                                title="Category required.",
                                message="You need to select a category."
                                ), 400
+    if subcat not in CATEGORY_DATA:
+    return render_template(
+        "message.html",
+        title="Category required.",
+        message="Invalid category."
+        ), 400     
 
 
     with CustomRenderer() as renderer:
@@ -228,7 +234,7 @@ Optional form data:
                       description_html=description_html,
                       over_18=bool(request.form.get("over_18", "")),
                       creator_id=g.user.id,
-                      subcat_id=subcat.id
+                      subcat_id=subcat
                       )
 
     g.db.add(new_board)
@@ -2133,7 +2139,7 @@ def change_guild_category(v, board, bid, category):
     if board.is_locked_category:
         return jsonify({"error": "You can't do that right now."}), 403
 
-    board.subcat_id=sc.id
+    board.subcat_id=category
     g.db.add(board)
     g.db.flush()
 
