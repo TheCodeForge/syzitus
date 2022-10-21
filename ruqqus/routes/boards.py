@@ -210,7 +210,6 @@ Optional form data:
                                ), 429
 
     subcat=int(request.form.get("category",0))
-    subcat=g.db.query(SubCategory).filter_by(id=subcat).first()
     if not subcat:
         return render_template("message.html",
                                title="Category required.",
@@ -2128,8 +2127,7 @@ def change_guild_category(v, board, bid, category):
 
     category = int(category)
 
-    sc=g.db.query(SubCategory).filter_by(id=category).first()
-    if not sc:
+    if category not in CATEGORY_DATA:
         return jsonify({"error": f"Invalid category id"}), 400
 
     if board.is_locked_category:
