@@ -22,7 +22,7 @@ def slash_post():
 @app.get("/notifications/mentions")
 @app.get("/notifications/replies")
 @app.get("/notifications/system")
-@app.route("/api/v1/notifications", methods=["GET"])
+@app.route("/api/v2/me/notifications", methods=["GET"])
 @auth_required
 @api("read")
 def notifications():
@@ -272,7 +272,6 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     
 
 @app.route("/", methods=["GET"])
-@app.route("/api/v1/front/listing", methods=["GET"])
 @app.route("/api/v2/me/submissions")
 @auth_desired
 @api("read")
@@ -372,7 +371,6 @@ def categories_select():
 
 
 @app.route("/all", methods=["GET"])
-@app.route("/api/v1/all/listing", methods=["GET"])
 @app.route("/inpage/all")
 @app.get("/api/v2/submissions")
 @auth_desired
@@ -574,7 +572,6 @@ def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
 
 
 @app.route("/browse", methods=["GET"])
-@app.get("/api/v1/guilds")
 @app.get("/api/v2/guilds")
 @auth_desired
 @api("read")
@@ -625,11 +622,10 @@ Optional query parameters:
 
 
 @app.route('/mine/guilds', methods=["GET"])
-@app.route("/api/v1/mine/guilds", methods=["GET"])
 @app.get("/api/v2/me/guilds")
 @auth_required
 @api("read")
-def my_guilds(v, kind=None):
+def my_guilds():
 
     """
 Get guilds with which the user has a connection
@@ -678,11 +674,10 @@ def mine_redirect():
     return redirect("/mine/guilds")
 
 @app.get("/mine/users")
-@app.route("/api/v1/mine", methods=["GET"])
 @app.get("/api/v2/me/users")
 @auth_required
 @api("read")
-def my_subs(v, kind=None):
+def my_subs():
 
     """
 Get users that the authenticated user is following
@@ -883,7 +878,6 @@ def comment_idlist(page=1, nsfw=False, **kwargs):
 
 
 @app.route("/all/comments", methods=["GET"])
-@app.route("/api/v1/front/comments", methods=["GET"])
 @app.get("/api/v2/comments")
 @auth_desired
 @api("read")
@@ -917,7 +911,7 @@ Optional query parameters:
             "api": lambda: jsonify({"data": [x.json for x in comments]})}
 
 
-@app.route("/api/v1/categories", methods=["GET"])
+@app.route("/api/v2/categories", methods=["GET"])
 @auth_desired
 @api()
 def categories():
