@@ -30,10 +30,10 @@
 	<reporter>
 		<reportingPerson>
 			<firstName>
-				{{ v.username }}
+				{{ g.user.username }}
 			</firstName>
 			<email>
-				{{ v.email }}
+				{{ g.user.email }}
 			</email>
 		</reportingPerson>
 		<termsOfService>

@@ -12,7 +12,7 @@
 <h1>Category Lock</h1>
 
 <form action="/admin/category" method="post" class="mb-6">
-	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 	<label for="category-selector">Enter guild</label>
 
 	<input id="guild" type="text" class="form-control" name="board" value="{{ b.name if b else '' }}">

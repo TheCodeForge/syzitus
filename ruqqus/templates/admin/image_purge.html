@@ -13,6 +13,7 @@
 <p>Paste a {{ "S3_BUCKET" | app_config }} link here to delete the image and purge it from cache</p>
 
 <form action="/admin/image_purge" method="post" class="mb-6">
+	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 	<label for="link-input">S3 Link</label>
 	<input id="link-input" type="text" class="form-control mb-2" name="url">
 	<input type="submit" value="Delete Image" class="btn btn-primary">

@@ -3,11 +3,6 @@
 {% block sidebarblock %}{% endblock %}
 {% block sidebarLeftblock %}{% endblock %}
 
-{% block title %}
-<title>Ruqqus - Help</title>
-<meta name="description" content="Ruqqus Help">
-{% endblock %}
-
 {% block content %}
 <h1>Siege Form</h1>
 
@@ -15,7 +10,7 @@
   <label>User name:</label>
   <input class="form-control" type="text" name="username" required>
 
-  <input type="hidden" name="formkey" value="{{ v.formkey }}">
+  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
   <label for="text-guild mt-2">Guild to siege:</label>
   <input class="form-control" id="text-guild" type="text" name="guild">

@@ -38,7 +38,7 @@
 <h2>Actions</h2>
 
 <form action="/admin/ban_domain" method="post">
-    <input type="hidden" name="formkey" value="{{ v.formkey }}">
+    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
     <input type="hidden" name="domain" value="{{ domain_name }}">
     <label for="reason_select">Ban reason</label>
     <select id="reason_select" class="form-control" name="reason" onchange="$('#ban-submit').prop('disabled', false)"> 

@@ -15,9 +15,9 @@
     <h3>banned</h3>
     {% else %}
     <h3>not banned</h3>
-    {% if v.admin_level>=7 %}
+    {% if g.user.admin_level>=7 %}
         <form action="/admin/ipban" method="post">
-        <input type="hidden" name="formkey" value="{{ v.formkey }}">
+        <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
         <input type="hidden" name="ip" value="{{ ip }}">
         <input type="submit" value="ban {{ ip }}" class="btn btn-danger">
         </form>
