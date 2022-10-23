@@ -355,7 +355,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     @property
     @lazy
     def is_crosspost(self):
-        return bool((self.domain==app.config["SERVER_NAME"]) and re.match("^https?://[a-zA-Z0-9_.-]+/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/?)?$", self.url))
+        return bool((self.domain==app.config['SERVER_NAME']) and re.match("^https?://[a-zA-Z0-9_.-]+/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/?)?$", self.url))
     
 
     @property
