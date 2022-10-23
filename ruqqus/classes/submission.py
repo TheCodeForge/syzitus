@@ -323,7 +323,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     def thumb_url(self):
 
         if self.has_thumb:
-            return f"https://{app.config["S3_BUCKET"]}/posts/{self.base36id}/thumb.png"
+            return f"https://{app.config['S3_BUCKET']}/posts/{self.base36id}/thumb.png"
         elif self.is_image:
             return self.url
         else:
