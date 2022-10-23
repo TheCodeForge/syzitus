@@ -7,6 +7,7 @@ import mistletoe
 from flask import *
 import PIL
 import io
+from PIL import ImageFont
 
 from ruqqus.helpers.wrappers import *
 from ruqqus.helpers.markdown import *
@@ -62,23 +63,32 @@ def get_assets_images_splash(width, height):
     primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
     primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
 
-    primary = (primary_r, primary_g, primary_b)
+    primary = (primary_r, primary_g, primary_b, 255)
 
     base = PIL.Image.new("RGBA", (width, height), color=primary)
 
-    font = PIL.ImageFont.load("arial.pil")
+    # font = ImageFont.load("arial.pil")
+
+    # letter = app.config["SITE_NAME"][0:1].lower()
+    # box = font.getbbox(letter)
+
+    # debug(box)
 
 
-    d.text(
-        app.config["SITE_NAME"][0:1].lower(), 
-        font=font,
-        fill=(255,255,255)
-        )
+    # d.text(
+    #     (
+    #         width // 2 - box[0] // 2, 
+    #         height // 2 - box[1] // 2
+    #         )
+    #     letter, 
+    #     font=font,
+    #     fill=(255,255,255, 255)
+    #     )
 
-    img.rotate(20, expand=True, fillcolor=primary)
+    # d.rotate(20, expand=True, fillcolor=primary)
 
     with io.BytesIO() as output:
-        img.save(output, format="PNG")
+        img.save(base, format="PNG")
         output.seek(0)
         return send_file(output, mimetype="image/png")
 
