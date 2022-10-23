@@ -1,5 +1,9 @@
 {% extends "mine/mine.html" %}
 
+{% block title %}
+<title>{{ "SITE_NAME" | app_config }} - New Users</title>
+{% endblock %}
+
 {% block maincontent %}
     <img src="{{ single_plot }}">
     <img src="{{ multi_plot }}">
