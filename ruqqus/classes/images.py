@@ -41,7 +41,7 @@ IMG_DATA={
 IMAGES={x: Image(id=x) for x in IMG_DATA}
 
 def random_image():
-    return IMAGES[g.timestamp % len(IMAGES)+1]
+    return IMAGES[g.timestamp % len(IMAGES) + 1]
 
 
 
