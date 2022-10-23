@@ -725,11 +725,11 @@ $("#dark-switch").click(function () {
   dswitch = document.getElementById("dark-switch");
   dswitchmobile = document.getElementById("dark-switch-mobile");
 
-  if ($('css-link-light').attr("rel")=="stylesheet") {
+  if ($('#css-link-light').attr("rel")=="stylesheet") {
     post("/settings/dark_mode/1",
       callback=function(){
-        $('css-link-dark').attr("rel", "stylesheet");
-        $('css-link-light').attr("rel", "");
+        $('#css-link-dark').attr("rel", "stylesheet");
+        $('#css-link-light').attr("rel", "");
         $('body').toggleClass('light');
         $('body').toggleClass('dark');
         $('#dark-switch-icon').removeClass('fa-toggle-off')
@@ -740,8 +740,8 @@ $("#dark-switch").click(function () {
   else {
     post("/settings/dark_mode/0",
       callback=function(){
-        $('css-link-dark').attr("rel", "");
-        $('css-link-light').attr("rel", "stylesheet");
+        $('#css-link-dark').attr("rel", "");
+        $('#css-link-light').attr("rel", "stylesheet");
         $('body').toggleClass('light');
         $('body').toggleClass('dark');
         $('#dark-switch-icon').removeClass('fa-toggle-on')
