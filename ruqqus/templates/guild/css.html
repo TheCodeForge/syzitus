@@ -2,16 +2,6 @@
 
 {% block pagetitle %}+{{ b.name }} CSS - Ruqqus Guildmaster Tools{% endblock %}
 
-{% block stylesheets %}
-
-{% if g.user and and session.get("dark_mode_enabled") %}
-<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
-{% else %}
-<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
-{% endif %}
-
-{% endblock %}
-
 {% block content %}
 <div class="row justify-content-around">
 
