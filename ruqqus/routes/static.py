@@ -7,7 +7,7 @@ import mistletoe
 from flask import *
 import PIL
 import io
-from PIL import ImageFont
+from PIL import ImageFont, ImageDraw
 
 from ruqqus.helpers.wrappers import *
 from ruqqus.helpers.markdown import *
@@ -79,7 +79,7 @@ def get_assets_images_splash(width, height):
 
     debug(box)
 
-    d = PIL.ImageDraw.Draw(text_layer)
+    d = ImageDraw.Draw(text_layer)
     d.text(
         (
             width // 2 - box[0] // 2, 
