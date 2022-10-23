@@ -50,7 +50,7 @@ def main_css(board, file):
 
 @app.get('/assets/images/splash/<width>/<height>')
 @cache.memoize()
-def get_assets_images_splash(kind, width, height):
+def get_assets_images_splash(width, height):
 
     try:
         width=int(width)
