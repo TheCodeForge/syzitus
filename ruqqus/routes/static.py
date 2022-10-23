@@ -81,7 +81,7 @@ def get_assets_images_splash(width, height):
         (
             width // 2 - box[0] // 2, 
             height // 2 - box[1] // 2
-            )
+            ),
         letter, 
         font=font,
         fill=(255,255,255,255)
