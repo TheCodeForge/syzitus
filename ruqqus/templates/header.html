@@ -96,22 +96,13 @@
           <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
             profile</a>
             {% if g.user.notifications_count %}
-            <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span
-              class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
-              {% else %}
-              <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
-              {% endif %}
-              <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
+            <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
+            {% else %}
+            <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+            {% endif %}
+            <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-              {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
-              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-              {% elif g.user and g.user.can_use_darkmode %}
-              <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-              {% else %}
-              <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
-              {% endif %}
-
-              <a class="dropdown-item" role="button" id="dark-switch"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
+            <a class="dropdown-item" role="button" id="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
 
             </div>
             <hr class="my-2">
