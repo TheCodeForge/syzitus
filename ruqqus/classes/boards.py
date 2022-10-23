@@ -473,11 +473,11 @@ class Board(Base, Stndrd, Age_times):
 
     @property
     def main_css_light_url(self):
-        return f"/assets/style/+{board.name}/light.css"
+        return f"/assets/style/+{self.name}/light.css"
 
     @property
     def main_css_dark_url(self):
-        return f"/assets/style/+{board.name}/dark.css"
+        return f"/assets/style/+{self.name}/dark.css"
 
     def has_participant(self, user):
         return (g.db.query(Submission).filter_by(original_board_id=self.id, author_id=user.id).first() or
