@@ -341,7 +341,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         elif self.board.has_contributor(v):
             return f"you are an approved contributor in +{self.board.name}."
         elif g.user.admin_level >= 4:
-            return "you are a Ruqqus admin."
+            return f"you are a {app.config["SITE_NAME"]} admin."
 
     def determine_offensive(self):
 
