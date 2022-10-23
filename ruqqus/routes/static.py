@@ -82,8 +82,8 @@ def get_assets_images_splash(width, height):
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
-            width // 2 - box[0] // 2, 
-            height // 2 - box[1] // 2
+            width // 2 - box[2] // 2, 
+            height // 2 - (box[3]-box[1]) // 2
             ),
         letter, 
         font=font,
