@@ -1,7 +1,7 @@
 // Colors
 
 $setprimary: #{primary};
-%setsecondary: #{secondary}
+$setsecondary: #{secondary};
 
 $primary: lighten($setprimary, 20%);
 $dark: #23183E;
