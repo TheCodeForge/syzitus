@@ -48,7 +48,8 @@ app.url_map.strict_slashes = False
 
 app.config["SITE_NAME"]=environ.get("SITE_NAME", "Ruqqus").lstrip().rstrip()
 
-app.config["SITE_COLOR"]=environ.get("SITE_COLOR", "805ad5").lstrip().rstrip()
+app.config["COLOR_PRIMARY"]=environ.get("COLOR_PRIMARY", "805AD5").lstrip().rstrip()
+app.config["COLOR_SECONDARY"]=environ.get("COLOR_SECONDARY", "E2E8F0").lstrip().rstrip()
 
 app.config["RUQQUSPATH"]=environ.get("RUQQUSPATH", os.path.dirname(os.path.realpath(__file__)))
 
