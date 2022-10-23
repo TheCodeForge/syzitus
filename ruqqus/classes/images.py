@@ -10,8 +10,9 @@ from ruqqus.__main__ import Base
 
 class Image():
 
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+    def __init__(self, id):
+        self.id=id
+        self.__dict__.update(IMG_DATA[self.id])
 
     @property
     def path(self):
@@ -37,10 +38,10 @@ IMG_DATA={
     17: {'number': 1, 'state': 'OK', 'text': 'Gaylord Stadium, Oklahoma'}
 }
 
-IMAGES={x: Image(id=x, **IMG_DATA[x]) for x in IMG_DATA}
+IMAGES={x: Image(id=x) for x in IMG_DATA}
 
 def random_image():
-    return random.choice(IMAGES)
+    return IMAGES[g.time % len(IMAGES)+1]
 
 
 
