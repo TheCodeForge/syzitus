@@ -65,31 +65,35 @@ def get_assets_images_splash(width, height):
 
     primary = (primary_r, primary_g, primary_b, 255)
 
-    base = PIL.Image.new("RGBA", (width, height), color=primary)
+    base_layer = PIL.Image.new("RGBA", (width, height), color=primary)
 
-    # font = ImageFont.load("arial.pil")
+    text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    # letter = app.config["SITE_NAME"][0:1].lower()
-    # box = font.getbbox(letter)
+    font = ImageFont.load("arial.pil")
 
-    # debug(box)
+    letter = app.config["SITE_NAME"][0:1].lower()
+    box = font.getbbox(letter)
 
+    debug(box)
 
-    # d.text(
-    #     (
-    #         width // 2 - box[0] // 2, 
-    #         height // 2 - box[1] // 2
-    #         )
-    #     letter, 
-    #     font=font,
-    #     fill=(255,255,255, 255)
-    #     )
+    d = PIL.ImageDraw.Draw(text_layer)
+    d.text(
+        (
+            width // 2 - box[0] // 2, 
+            height // 2 - box[1] // 2
+            )
+        letter, 
+        font=font,
+        fill=(255,255,255,255)
+        )
 
-    # d.rotate(20, expand=True, fillcolor=primary)
+    text_layer.rotate(20, expand=False, fillcolor=(255,255,255,0))
 
-    with io.BytesIO() as output:
-        img.save(base, format="PNG")
-        output.seek(0)
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
+
+    with io.BytesIO() as out:
+        output.save(out, format="PNG")
+        out.seek(0)
         return send_file(output, mimetype="image/png")
 
 
