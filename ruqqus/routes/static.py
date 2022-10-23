@@ -24,16 +24,10 @@ def main_css(board, file):
     if file not in ["light", "dark"]:
         abort(404)
 
-    try:
-        name=f"{app.config['RUQQUSPATH']}/assets/style/{file}.scss"
-        #print(name)
-        with open(name, "r") as file:
-            raw = file.read()
-
-    except FileNotFoundError:
-        #print("unable to find file")
-        return make_response(send_file(f'./assets/style/{file}.css'))
-
+    name=f"{app.config['RUQQUSPATH']}/assets/style/{file}.scss"
+    #print(name)
+    with open(name, "r") as file:
+        raw = file.read()
 
     # This doesn't use python's string formatting because
     # of some odd behavior with css files
@@ -47,14 +41,8 @@ def main_css(board, file):
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
 
-    try:
-        resp = Response(sass.compile(string=scss), mimetype='text/css')
-    except sass.CompileError as e:
-        #print(e)
-        return make_response(send_file(f'./assets/style/{file}.css'))
-
+    resp = Response(sass.compile(string=scss), mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
-
     return resp
 
 @app.get('/assets/<path:path>')

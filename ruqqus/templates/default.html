@@ -86,17 +86,12 @@
     <!-- Ruqqus CSS -->
     
     {% if b %}
-
       <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}">
       <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}">
-
       <link rel="stylesheet" href="{{ b.custom_css_url }}">
-
     {% else %}
-
       <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/dark.css?v=3.0.5">
       <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/light.css?v=3.0.5">
-
     {% endif %}
 
     <!-- Font Awesome -->
