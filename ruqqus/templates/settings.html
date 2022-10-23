@@ -35,11 +35,9 @@
 
   <!-- Ruqqus CSS -->
 
-  {% if v and session.get("dark_mode_enabled") %}
-  <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css">
-  {% else %}
-  <link id="css-link" rel="stylesheet" href="/assets/style/main.css">
-  {% endif %}
+  
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/dark.css?v=3.0.5">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/light.css?v=3.0.5">
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
