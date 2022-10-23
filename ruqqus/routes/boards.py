@@ -2063,7 +2063,7 @@ Optional query parameters:
 @app.route("/mod/<bid>/category/<category>", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-def change_guild_category(v, board, bid, category):
+def change_guild_category(board, bid, category):
 
     category = int(category)
 
