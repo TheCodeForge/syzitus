@@ -5,6 +5,8 @@ import pprint
 import sass
 import mistletoe
 from flask import *
+import PIL
+import io
 
 from ruqqus.helpers.wrappers import *
 from ruqqus.helpers.markdown import *
@@ -45,6 +47,40 @@ def main_css(board, file):
     resp = Response(sass.compile(string=scss), mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
     return resp
+
+@app.get('/assets/images/splash/<width>/<height>')
+@cache.memoize()
+def get_assets_images_splash(kind, width, height):
+
+    try:
+        width=int(width)
+        height=int(height)
+    except:
+        abort(400)
+
+    img = PIL.Image.new("RGB", (width, height), color=app.config["COLOR_PRIMARY"])
+
+    font = PIL.ImageFont.load("arial.pil")
+
+
+
+    d = PIL.ImageDraw.Draw(img)
+
+    d.text(
+        app.config["SITE_NAME"][0:1].lower(), 
+        font=font,
+        fill=(255,255,255)
+        )
+
+    img.rotate(20, expand=True, fillcolor=app.config["COLOR_PRIMARY"])
+
+    with io.BytesIO() as output:
+        img.save(output, format="PNG")
+        output.seek(0)
+        return send_file(output, mimetype="image/png")
+
+
+
 
 @app.get('/assets/<path:path>')
 @limiter.exempt
