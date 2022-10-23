@@ -85,7 +85,7 @@
 
     <!-- Ruqqus CSS -->
     
-    {% if b %}
+    {% if b and not request.path.startswith("/mod") %}
       <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}">
       <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}">
       <link rel="stylesheet" href="{{ b.custom_css_url }}">
