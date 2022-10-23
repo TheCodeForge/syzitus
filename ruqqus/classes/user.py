@@ -1052,11 +1052,11 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def can_upload_avatar(self):
-        return (self.has_premium or self.true_score >= 300 or self.created_utc <= 1592974538) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
+        return (self.has_premium or self.true_score >= app.config["PROFILE_UPLOAD_REP"]) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
 
     @property
     def can_upload_banner(self):
-        return (self.has_premium or self.true_score >= 500 or self.created_utc <= 1592974538) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
+        return (self.has_premium or self.true_score >= app.config["BANNER_UPLOAD_REP"]) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
 
     @property
     def json_raw(self):
