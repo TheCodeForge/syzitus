@@ -272,7 +272,6 @@ def settings_security_post():
 
 
 @app.route("/settings/dark_mode/<x>", methods=["POST"])
-@auth_required
 def settings_dark_mode(x):
 
     try:
