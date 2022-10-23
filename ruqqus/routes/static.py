@@ -98,10 +98,10 @@ def get_assets_images_splash(width, height):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    with io.BytesIO() as out:
-        output.save(out, format="PNG")
-        out.seek(0)
-        return send_file(out, mimetype="image/png")
+    output_bytes=io.BytesIO()
+    output.save(output_bytes, format="PNG")
+    output_bytes.seek(0)
+    return send_file(output_bytes, mimetype="image/png")
 
 
 
