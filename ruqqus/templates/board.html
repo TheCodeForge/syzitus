@@ -110,11 +110,11 @@
     css = document.getElementById("css-link");
     dswitch = document.getElementById("dark-switch");
 
-    if (css.href.endsWith("{{ b.css_url }}?v=3.0.7")) {
+    if (css.href.endsWith("{{ b.css_url }}?v=3.0.8")) {
 
       post("/settings/dark_mode/1",
         callback=function(){
-          css.href="{{ b.css_dark_url }}?v=3.0.7";
+          css.href="{{ b.css_dark_url }}?v=3.0.8";
           dswitch.classList.remove("fa-toggle-off");
           dswitch.classList.add("fa-toggle-on");
         }
@@ -123,7 +123,7 @@
     else {
       post("/settings/dark_mode/0",
         callback=function(){
-          css.href="{{ b.css_url }}?v=3.0.7";
+          css.href="{{ b.css_url }}?v=3.0.8";
           dswitch.classList.remove("fa-toggle-on");
           dswitch.classList.add("fa-toggle-off");
         }
