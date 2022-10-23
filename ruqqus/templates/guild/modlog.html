@@ -2,16 +2,6 @@
 
 {% block pagetitle %}{% if action %}(+{{ b.name }}) {{ action.title_text }}{% else %}+{{ b.name }} Moderation Log{% endif %}{% endblock %}
 
-{% block stylesheets %}
-
-{% if g.user and g.user.referral_count and session.get("dark_mode_enabled") %}
-<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/dark.css">
-{% else %}
-<link id="css-link" rel="stylesheet" href="/+{{ p.board.name }}/main.css">
-{% endif %}
-
-{% endblock %}
-
 {% block content %}
 <div class="row justify-content-around">
 
