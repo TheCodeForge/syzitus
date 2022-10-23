@@ -4,52 +4,6 @@
 {% set downs=p.downvotes_fuzzed %}
 {% set score=ups-downs %}
 
-{% block stylesheets %}
-{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
-<link id="css-link" rel="stylesheet" href="{{ p.board.css_dark_url }}?v=3.0.4">
-{% else %}
-<link id="css-link" rel="stylesheet" href="{{ p.board.css_url }}?v=3.0.4">
-{% endif %}
-<link id="board-css" rel="stylesheet" href="{{ p.board.custom_css_url }}">
-{% endblock %}
-
-{% block darkswitch %}
-
-<script>
-  function switch_css_board() {
-    css = document.getElementById("css-link");
-    dswitch = document.getElementById("dark-switch");
-
-    if (css.href.endsWith("{{ p.board.css_url }}")) {
-
-      post("/settings/dark_mode/1",
-        callback=function(){
-          css.href="{{ p.board.css_dark_url }}";
-          dswitch.classList.remove("fa-toggle-off");
-          dswitch.classList.add("fa-toggle-on");
-        }
-        );
-    }
-    else {
-      post("/settings/dark_mode/0",
-        callback=function(){
-          css.href="{{ p.board.css_url }}";
-          dswitch.classList.remove("fa-toggle-on");
-          dswitch.classList.add("fa-toggle-off");
-        }
-        );
-
-    }
-  }
-</script>
-{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
-<a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-{% elif g.user and g.user.can_use_darkmode %}
-<a class="dropdown-item" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
-{% else %}
-<a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
-{% endif %}
-{% endblock %}
 
 {% block darkswitchMobile %}
 {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}

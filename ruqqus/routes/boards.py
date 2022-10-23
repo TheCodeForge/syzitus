@@ -1313,8 +1313,6 @@ URL path parameters:
         }
 
 @app.route("/+<guildname>/mod/css", methods=["GET"])
-@app.route("/api/vue/+<guildname>/mod/css",  methods=["GET"])
-@app.route("/api/v1/<guildname>/mod/css", methods=["GET"])
 @auth_desired
 @api("read")
 def board_about_css(guildname):

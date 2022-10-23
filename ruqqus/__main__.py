@@ -160,16 +160,16 @@ class CorsMatch(str):
 
     def __eq__(self, other):
         if isinstance(other, str):
-            if other in ['https://ruqqus.com', f'https://{app.config["SERVER_NAME"]}']:
+            if other == f'https://{app.config["SERVER_NAME"]}':
                 return True
 
-            elif other.endswith(".ruqqus.com"):
+            elif other.endswith(f".{app.config['SERVER_NAME']}"):
                 return True
 
         elif isinstance(other, list):
             if f'https://{app.config["SERVER_NAME"]}' in other:
                 return True
-            elif any([x.endswith(".ruqqus.com") for x in other]):
+            elif any([x.endswith(f".{app.config['SERVER_NAME']}") for x in other]):
                 return True
 
         return False
@@ -277,17 +277,6 @@ r=redis.Redis(
     ) if app.config["CACHE_REDIS_URL"] else None
 
 
-#import and bind chat function
-#the if statement is needed because chat includes its own db session
-#and if it's not used then every worker connection will spawn a new db session
-#from ruqqus.chat.chat_routes import *
-#if "load_chat" in sys.argv:
-#    socketio=SocketIO(
-#        app,
-#        cors_allowed_origins=CorsMatch()
-#        #message_queue=app.config["CACHE_REDIS_URL"]
-#        )
-#    from ruqqus.chat.chat import *
 
 local_ban_cache={}
 

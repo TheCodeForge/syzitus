@@ -53,145 +53,50 @@
     <meta name="theme-color" content="#805ad5">
 
 
-
-    <link
-    rel="apple-touch-startup-image"
-    sizes="320x480"
-    href="/assets/images/splash/320x480.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="640x960"
-    href="/assets/images/splash/640x960.png"
-    />
-    <link
-    rel="apple-touch-icon"
-    sizes="640x1136"
-    href="/assets/images/splash/640x1136.png"
-    />
-    <link
-    rel="apple-touch-icon"
-    sizes="750x1334"
-    href="/assets/images/splash/750x1334.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="768x1004"
-    href="/assets/images/splash/768x1004.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="768x1024"
-    href="/assets/images/splash/768x1024.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="828x1792"
-    href="/assets/images/splash/828x1792.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1024x748"
-    href="/assets/images/splash/1024x748.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1024x768"
-    href="/assets/images/splash/1024x768.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1125x2436"
-    href="/assets/images/splash/1125x2436.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1242x2208"
-    href="/assets/images/splash/1242x2208.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1242x2688"
-    href="/assets/images/splash/1242x2688.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1334x750"
-    href="/assets/images/splash/1334x750.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1536x2008"
-    href="/assets/images/splash/1536x2008.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1536x2048"
-    href="/assets/images/splash/1536x2048.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1668x2224"
-    href="/assets/images/splash/1668x2224.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="1792x828"
-    href="/assets/images/splash/1792x828.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2048x1496"
-    href="/assets/images/splash/2048x1496.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2048x1536"
-    href="/assets/images/splash/2048x1536.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2048x2732"
-    href="/assets/images/splash/2048x2732.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2208x1242"
-    href="/assets/images/splash/2208x1242.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2224x1668"
-    href="/assets/images/splash/2224x1668.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2436x1125"
-    href="/assets/images/splash/2436x1125.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2668x1242"
-    href="/assets/images/splash/2668x1242.png"
-    />
-    <link
-    rel="apple-touch-startup-image"
-    sizes="2737x2048"
-    href="/assets/images/splash/2737x2048.png"
-    />
+    {% if g.system.startswith("iOS/") %}
+    <link rel="apple-touch-startup-image" sizes="320x480" href="/assets/images/splash/320x480.png" />
+    <link rel="apple-touch-startup-image" sizes="640x960" href="/assets/images/splash/640x960.png" />
+    <link rel="apple-touch-icon" sizes="640x1136" href="/assets/images/splash/640x1136.png" />
+    <link rel="apple-touch-icon" sizes="750x1334" href="/assets/images/splash/750x1334.png" />
+    <link rel="apple-touch-startup-image" sizes="768x1004" href="/assets/images/splash/768x1004.png" />
+    <link rel="apple-touch-startup-image" sizes="768x1024" href="/assets/images/splash/768x1024.png" />
+    <link rel="apple-touch-startup-image" sizes="828x1792" href="/assets/images/splash/828x1792.png" />
+    <link rel="apple-touch-startup-image" sizes="1024x748" href="/assets/images/splash/1024x748.png" />
+    <link rel="apple-touch-startup-image" sizes="1024x768" href="/assets/images/splash/1024x768.png" />
+    <link rel="apple-touch-startup-image" sizes="1125x2436" href="/assets/images/splash/1125x2436.png" />
+    <link rel="apple-touch-startup-image" sizes="1242x2208" href="/assets/images/splash/1242x2208.png" />
+    <link rel="apple-touch-startup-image" sizes="1242x2688" href="/assets/images/splash/1242x2688.png" />
+    <link rel="apple-touch-startup-image" sizes="1334x750" href="/assets/images/splash/1334x750.png" />
+    <link rel="apple-touch-startup-image" sizes="1536x2008" href="/assets/images/splash/1536x2008.png" />
+    <link rel="apple-touch-startup-image" sizes="1536x2048" href="/assets/images/splash/1536x2048.png" />
+    <link rel="apple-touch-startup-image" sizes="1668x2224" href="/assets/images/splash/1668x2224.png" />
+    <link rel="apple-touch-startup-image" sizes="1792x828" href="/assets/images/splash/1792x828.png" />
+    <link rel="apple-touch-startup-image" sizes="2048x1496" href="/assets/images/splash/2048x1496.png" />
+    <link rel="apple-touch-startup-image" sizes="2048x1536" href="/assets/images/splash/2048x1536.png" />
+    <link rel="apple-touch-startup-image" sizes="2048x2732" href="/assets/images/splash/2048x2732.png" />
+    <link rel="apple-touch-startup-image" sizes="2208x1242" href="/assets/images/splash/2208x1242.png" />
+    <link rel="apple-touch-startup-image" sizes="2224x1668" href="/assets/images/splash/2224x1668.png" />
+    <link rel="apple-touch-startup-image" sizes="2436x1125" href="/assets/images/splash/2436x1125.png" />
+    <link rel="apple-touch-startup-image" sizes="2668x1242" href="/assets/images/splash/2668x1242.png" />
+    <link rel="apple-touch-startup-image" sizes="2737x2048" href="/assets/images/splash/2737x2048.png" />
+    {% endif %}
 
 
 
     <!-- Ruqqus CSS -->
     
+    {% if b %}
 
-    {% if g.user and session.get("dark_mode_enabled") %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css?v=3.0.4">
+      <link id="css-link-dark" rel="{{ if session.get('dark_mode_enabled') }}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}">
+      <link id="css-link-light" rel="{{ if not session.get('dark_mode_enabled') }}stylesheet{% endif %}" href="{{ b.main_css_light_url }}">
+
+      <link rel="stylesheet" href="{{ b.custom_css_url }}">
+
     {% else %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main.css?v=3.0.4">
-    {% endif %}
 
-    {% block _stylesheets %}
+      <link id="css-link-dark" rel="{{ if session.get('dark_mode_enabled') }}stylesheet{% endif %}" href="/assets/style/main/dark.css?v=3.0.4">
+      <link id="css-link-dark" rel="{{ if not session.get('dark_mode_enabled') }}stylesheet{% endif %}" href="/assets/style/main/light.css?v=3.0.4">
+
     {% endblock %}
 
     <!-- Font Awesome -->

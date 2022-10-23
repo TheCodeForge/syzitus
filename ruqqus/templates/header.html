@@ -103,7 +103,6 @@
               {% endif %}
               <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-              {% block darkswitch %}
               {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
               <a class="dropdown-item" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch"></i>Dark mode</a>
               {% elif g.user and g.user.can_use_darkmode %}
@@ -111,7 +110,9 @@
               {% else %}
               <a class="dropdown-item" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw text-left mr-3"></i>Dark mode</a>
               {% endif %}
-              {% endblock %}
+
+              <a class="dropdown-item" role="button" id="dark-switch"><i class="fad fa-toggle-on fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
+
             </div>
             <hr class="my-2">
             <div class="px-2">

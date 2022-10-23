@@ -1,14 +1,5 @@
 {% extends "home.html" %}
 
-{% block stylesheets %}
-{% if g.user and session.get("dark_mode_enabled") %}
-<link id="css-link" rel="stylesheet" href="{{ b.css_dark_url }}?v=3.0.4">
-{% else %}
-<link id="css-link" rel="stylesheet" href="{{ b.css_url }}?v=3.0.4">
-{% endif %}
-<link id="board-css" rel="stylesheet" href="{{ b.custom_css_url }}">
-{% endblock %}
-
 {% block adminpanel %}
 {% if g.user.admin_level >=3 %}
 {% if b.is_banned %}

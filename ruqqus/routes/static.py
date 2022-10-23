@@ -15,13 +15,13 @@ from ruqqus.__main__ import app, limiter, debug
 
 # take care of misc pages that never really change (much)
 
-@app.route("/assets/style/<file>.css", methods=["GET"])
+@app.route("/assets/style/<board>/<file>.css", methods=["GET"])
 @cache.memoize()
-def main_css(file):
+def main_css(board, file):
 
     #print(file, color)
 
-    if file not in ["main", "main_dark"]:
+    if file not in ["light", "dark"]:
         abort(404)
 
     try:
@@ -37,9 +37,15 @@ def main_css(file):
 
     # This doesn't use python's string formatting because
     # of some odd behavior with css files
-    scss = raw.replace("{boardcolor}", app.config["SITE_COLOR"])
-    scss = scss.replace("{maincolor}", app.config["SITE_COLOR"])
-    scss = scss.replace("{ruqquspath}", app.config["RUQQUSPATH"])
+
+    if board=="main":
+        scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
+
+    else:
+        board=get_guild(board)
+        scss = raw.replace("{primary}", board.color)
+
+    scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
 
     try:
         resp = Response(sass.compile(string=scss), mimetype='text/css')
