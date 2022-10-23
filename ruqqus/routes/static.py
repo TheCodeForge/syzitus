@@ -40,6 +40,7 @@ def main_css(board, file):
         scss = raw.replace("{primary}", board.color)
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
+    scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
 
     resp = Response(sass.compile(string=scss), mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
