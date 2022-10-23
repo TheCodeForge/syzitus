@@ -69,7 +69,10 @@ def get_assets_images_splash(width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    font = ImageFont.load("arial.pil")
+    try:
+        font = ImageFont.truetype("arial.pil", size=min(height//5, width//3))
+    except OSError:
+        font = ImageFont.load_default()
 
     letter = app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
