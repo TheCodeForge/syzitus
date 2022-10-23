@@ -314,7 +314,7 @@ URL path parameters:
     g.db.add(target)
     g.db.commit()
 
-    cache.delete_memoized(User.idlist, kind="user")
+    cache.delete_memoized(User.idlist)
 
     return "", 204
 
@@ -341,7 +341,7 @@ URL path parameters:
 
     g.db.delete(follow)
 
-    cache.delete_memoized(User.idlist, kind="user")
+    cache.delete_memoized(User.idlist)
 
     return "", 204
 
