@@ -12,18 +12,18 @@ Abuse of this service may lead to the termination of your Ruqqus account, at the
 
 {% endfilter %}
 
-{% if v and v.is_suspended %}
+{% if g.user and g.user.is_suspended %}
 
 <div>Your Ruqqus account has been suspended. You are not permitted to submit legal requests via this portal.</div>
 
-{% elif v and v.is_activated %}
+{% elif g.user and g.user.is_activated %}
 <form id="legal-form" action="/legal/2" method="post">
 	
-	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 	<div class="h6 mt-5">Email</div>
-	<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
-	<input type="hidden" name="username" value="{{ v.username }}">
+	<input type="text" name="email" class="form-control" value="{{ g.user.email }}" readonly="readonly">
+	<input type="hidden" name="username" value="{{ g.user.username }}">
 
 	<div class="h6 mt-5">Tell us about yourself.</div>
 	<input type="radio" name="about_yourself" value="law_enforcement"> I am an authorized law enforcement representative (ex. police).<br>
@@ -57,12 +57,12 @@ Abuse of this service may lead to the termination of your Ruqqus account, at the
 
 	<div class="h6 mt-5">Required acknowledgements</div>
 	<input type="checkbox" name="ack_convenience" value="true" required> I acknowledge and understand that this form is for convenience only, and that Ruqqus does not waive any of its legal rights, including but not limited to its right to object for improper service or lack of jurisdiction.<br>
-	<input type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ v.email }}.<br>
+	<input type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ g.user.email }}.<br>
 
 	<input class="btn btn-primary mt-5" type="submit" value="Next">
 </form>
 
-{% elif v %}
+{% elif g.user %}
 <p>Please <a href="/settings/profile">verify your email address</a>. Then, refresh this page.</p>
 {% else %}
 {% filter markdown %}

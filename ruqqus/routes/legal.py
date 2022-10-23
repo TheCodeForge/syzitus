@@ -14,40 +14,40 @@ from ruqqus.__main__ import app, limiter
 
 @app.route("/legal", methods=["GET"])
 @auth_desired
-def legal_1(v):
-    return render_template("legal/legal.html", v=v)
+def legal_1():
+    return render_template("legal/legal.html")
 
 
 @app.route("/legal/2", methods=["POST"])
 @is_not_banned
-def legal_2(v):
+def legal_2():
 
     if request.form.get("username") != v.username:
         abort(422)
 
     if request.form.get("about_yourself", "") not in [
             "law_enforcement", "gov_official"]:
-        return render_template("legal/legal_reject.html", v=v)
+        return render_template("legal/legal_reject.html")
 
     req_type = request.form.get("request_type", "")
 
     if req_type == "user_info_baseless":
-        return render_template("legal/legal_reject2.html", v=v)
+        return render_template("legal/legal_reject2.html")
     elif req_type == "user_info_emergency":
-        return render_template("legal/legal_emergency.html", v=v)
+        return render_template("legal/legal_emergency.html")
     elif req_type == "post_takedown":
-        return render_template("legal/legal_takedown.html", v=v)
+        return render_template("legal/legal_takedown.html")
     elif req_type == "user_info_legal":
-        return render_template("legal/legal_user.html", v=v)
+        return render_template("legal/legal_user.html")
     elif req_type == "data_save":
-        return render_template("legal/legal_infosave.html", v=v)
+        return render_template("legal/legal_infosave.html")
     else:
         abort(400)
 
 
 @app.route("/legal/final", methods=["POST"])
 @is_not_banned
-def legal_final(v):
+def legal_final():
 
     if request.form.get("username") != v.username:
         abort(422)
@@ -83,7 +83,7 @@ def dmca_post(v):
 
     data = {x: request.form[x] for x in request.form if x != "formkey"}
 
-    email_text = render_template("help/dmca_email.md", v=v, **data)
+    email_text = render_template("help/dmca_email.md", **data)
 
     with CustomRenderer() as renderer:
         email_html = renderer.render(mistletoe.Document(email_text))
@@ -99,7 +99,7 @@ def dmca_post(v):
                                error="Unable to save your request. Please try again later.",
                                v=v)
 
-    post_text = render_template("help/dmca_notice.md", v=v, **data)
+    post_text = render_template("help/dmca_notice.md", **data)
     with CustomRenderer() as renderer:
         post_html = renderer.render(mistletoe.Document(post_text))
     post_html = sanitize(post_html, linkgen=True)
