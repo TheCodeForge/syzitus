@@ -101,7 +101,7 @@ def get_assets_images_splash(width, height):
     with io.BytesIO() as out:
         output.save(out, format="PNG")
         out.seek(0)
-        return send_file(output, mimetype="image/png")
+        return send_file(out, mimetype="image/png")
 
 
 
