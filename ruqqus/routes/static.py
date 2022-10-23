@@ -69,10 +69,10 @@ def get_assets_images_splash(width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    try:
-        font = ImageFont.truetype(f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", size=min(height//4, width//3))
-    except OSError:
-        font = ImageFont.load_default()
+    font = ImageFont.truetype(
+        f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
+        size=min(min(height//4, width//3), min(height,width)-3)
+        )
 
     letter = app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
