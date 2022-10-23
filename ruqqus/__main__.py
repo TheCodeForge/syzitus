@@ -401,8 +401,10 @@ def before_request():
 @app.after_request
 def after_request(response):
 
-    debug([g.get('user'), request.path, request.url_rule])
-
+    try:
+        debug([g.get('user'), request.path, request.url_rule, request.headers.get("User-Agent")])
+    except:
+        debug(["<detached>", request.path, request.url_rule, request.headers.get("User-Agent")])
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth"
                          )
