@@ -720,7 +720,7 @@ document.addEventListener('input', function (event) {
 
 //dark mode
 
-$("#dark-switch").click(function  {
+$("#dark-switch").click(function () {
   css = document.getElementById("css-link");
   dswitch = document.getElementById("dark-switch");
   dswitchmobile = document.getElementById("dark-switch-mobile");
