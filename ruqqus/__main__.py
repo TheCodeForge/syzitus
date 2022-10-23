@@ -295,7 +295,6 @@ from ruqqus.routes import *
 import ruqqus.helpers.jinja2
 
 #purge css from cache
-cache.delete_memoized(ruqqus.routes.board_css)
 cache.delete_memoized(ruqqus.routes.main_css)
 
 
