@@ -271,7 +271,8 @@ def settings_security_post():
         return jsonify({"message":f"Two-factor authentication disabled."})
 
 
-@app.route("/settings/dark_mode/<x>", methods=["POST"])
+@app.post("/settings/dark_mode/<x>")
+@auth_desired
 def settings_dark_mode(x):
 
     try:
