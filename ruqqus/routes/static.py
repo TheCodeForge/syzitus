@@ -90,7 +90,7 @@ def get_assets_images_splash(width, height):
         fill=(255,255,255,255)
         )
 
-    text_layer.rotate(
+    d.rotate(
         20, 
         expand=False, 
         fillcolor=(255,255,255,0),
