@@ -1370,9 +1370,9 @@ def board_edit_css(bid, board):
         if isinstance(rule, cssutils.css.CSSStyleRule):
             
             for property in rule.style.children():
-                for pg.user in property.propertyValue:
+                for pv in property.propertyValue:
                     if isinstance(pv, cssutils.css.URIValue):
-                        domain = urlparse(pg.user.uri).netloc
+                        domain = urlparse(pv.uri).netloc
 
                         if domain != app.config["S3_BUCKET"]:
                             return jsonify({"error": f"No external links allowed. Assets may only be hosted on {app.config['S3_BUCKET']}"}), 422
