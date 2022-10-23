@@ -1803,51 +1803,6 @@ def mod_board_images_delete_banner(bid, board):
     return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
 
 
-@app.route("/assets/board_css/<board_fullname>/<theme>/<x>.css", methods=["GET"])
-@cache.memoize()
-def board_css(board_fullname, theme, x):
-
-    if theme not in ["main", "dark"]:
-        abort(404)
-
-    try:
-        b36id=board_fullname.split('_')[1]
-    except IndexError:
-        #print(request.headers.get("Referer",request.headers.get("Referrer")))
-        abort(400)
-
-    board = get_board(b36id)
-
-    if int(x) != board.color_nonce:
-        return redirect(board.css_url)
-
-    if theme=="main":
-        path=f"{app.config['RUQQUSPATH']}/assets/style/main.scss"
-    else:
-        path=f"{app.config['RUQQUSPATH']}/assets/style/main_dark.scss"
-
-    try:
-        with open(path, "r") as file:
-            raw = file.read()
-    except FileNotFoundError:
-        return redirect("/assets/style/main.css")
-
-    # This doesn't use python's string formatting because
-    # of some odd behavior with css files
-    scss = raw.replace("{boardcolor}", board.color)
-    scss = scss.replace("{maincolor}", app.config["SITE_COLOR"])
-    scss = scss.replace("{ruqquspath}", app.config["RUQQUSPATH"])
-
-    try:
-        resp = Response(sass.compile(string=scss), mimetype='text/css')
-    except sass.CompileError:
-        return redirect("/assets/style/main.css")
-
-    resp.headers.add("Cache-Control", "public")
-
-    return resp
-
-
 @app.route("/mod/<bid>/color", methods=["POST"])
 @auth_required
 @is_guildmaster("appearance")
