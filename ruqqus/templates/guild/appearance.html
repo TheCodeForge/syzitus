@@ -61,7 +61,7 @@
                  <form action="/mod/{{ b.base36id }}/color" id="color-form" method="post" class="color-picker" style="line-height: 0">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
-                    {% for color in [('COLOR_PRIMARY' | app_config ),'2a96f3','62ca56','eb4963','f39731','30409f','3e98a7','e4432d','7b9ae4','ec72de','7f8fa6'] %}
+                    {% for color in [('COLOR_PRIMARY' | app_config | lower ),'2a96f3','62ca56','eb4963','f39731','30409f','3e98a7','e4432d','7b9ae4','ec72de','7f8fa6'] %}
                     <input type="radio" name="color" id="color-{{ color }}" value="{{ color }}" {% if b.color == color %}checked{% endif %} onclick="document.getElementById('color-form').submit()"/>
                     <label class="color-radio" for="color-{{ color }}">
                       <span style="background-color: #{{ color }}">
