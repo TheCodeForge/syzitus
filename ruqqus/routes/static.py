@@ -58,13 +58,16 @@ def get_assets_images_splash(width, height):
     except:
         abort(400)
 
-    img = PIL.Image.new("RGB", (width, height), color=app.config["COLOR_PRIMARY"])
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+
+    primary = (primary_r, primary_g, primary_b)
+
+    base = PIL.Image.new("RGBA", (width, height), color=primary)
 
     font = PIL.ImageFont.load("arial.pil")
 
-
-
-    d = PIL.ImageDraw.Draw(img)
 
     d.text(
         app.config["SITE_NAME"][0:1].lower(), 
@@ -72,7 +75,7 @@ def get_assets_images_splash(width, height):
         fill=(255,255,255)
         )
 
-    img.rotate(20, expand=True, fillcolor=app.config["COLOR_PRIMARY"])
+    img.rotate(20, expand=True, fillcolor=primary)
 
     with io.BytesIO() as output:
         img.save(output, format="PNG")
