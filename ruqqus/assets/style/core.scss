@@ -1,83 +1,15 @@
-// Colors
-
-$primary: #{boardcolor};
-$dark: #383838;
-$secondary: #383838;
-$danger: #E53E3E;
-$white: #FFFFFF;
-$black: #CFCFCF;
-$light: #35363e;
-$success: #38A169;
-$muted: #AAAAAA;
-$info: #168EEA;
-
-$purple: #{maincolor};
-$red:  #E53E3E;
-$gray: #383838;
-$green: #38A169;
-
-$gray-100: #AAAAAA;
-$gray-200: #8f8f90;
-$gray-300: #383838;
-$gray-400: #303030;
-$gray-500: #272727;
-$gray-600: #1f2023;
-$gray-700: #181818;
-$gray-800: #121212;
-$gray-900: #0f0f0f;
-
-$upvote: #805AD5;
-$downvote: #38B2AC;
-$admin: #E53E3E;
-$banned: #960000;
-$deleted: #969600;
-$deletedandbanned: #964000;
-$mod: #07c20c;
-$code: #e83e8c;
-
-$gold: #ECC94B;
-$reddit: #ED4630;
-
-$theme-colors: (
-  "primary": $primary,
-  "secondary": $secondary,
-  "danger": $danger,
-  "dark": $dark,
-  "white": $white,
-  "black": $black,
-  "light": $light,
-  "success": $success,
-  "muted": $muted,
-  "downvote": $downvote,
-  "upvote": $upvote,
-  "purple": $purple,
-  "gold": $gold,
-  "admin": $admin,
-  "gray": $gray,
-  "gray-100": $gray-100,
-  "gray-200": $gray-200,
-  "gray-300": $gray-300,
-  "gray-400": $gray-400,
-  "gray-500": $gray-500,
-  "gray-600": $gray-600,
-  "gray-700": $gray-700,
-  "gray-800": $gray-800,
-  "gray-900": $gray-900,
-  "reddit": $reddit
-);
-
 // Borders
 
-$input-border-color: $gray-400;
-$border-color: $gray-400;
+$input-border-color: $gray-300;
+$border-color: $gray-300;
 
 $border-radius: .35rem;
-
-$text-white: $white;
+$border-radius-sm: .25rem;
 
 // Fonts
 
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
 
 // Font size
 
@@ -131,6 +63,8 @@ $box-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)
 
 $box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.05);
 
+$box-shadow-lg: 0 8px 20px 0 rgba( $black, .1 );
+
 // Tool Tips
 
 $tooltip-opacity: 1;
@@ -160,7 +94,7 @@ html {
 body {
     color: $black;
     padding-top: 49px;
-    background-color: $gray-700;
+    background-color: $gray-300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -189,21 +123,21 @@ body.using-mouse :focus {
 
 #settings, #submit {
     padding-top: 98px;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 #page {
     padding-top: 49px;
-    background-color: $gray-700;
+    background-color: $white;
 }
 
 #article {
     padding-top: 0;
-    background-color: $gray-700;
+    background-color: $white;
 }
 
 #thread, #userpage {
-    background-color: $gray-700;
+    background-color: $gray-100;
 }
 
 // Docs
@@ -246,6 +180,7 @@ body.using-mouse :focus {
 
 #thread .custom-gutters {
     padding: 0 15px;
+    background-color: $white;
 }
 
 .custom-gutters {
@@ -346,10 +281,10 @@ ol > li::before {
     margin-right: 1.5rem;
 }
 
-[data-toggle="collapse"] .fa:before {
+[data-toggle="collapse"] .fa:before {   
     content: "\f139";
   }
-
+  
 [data-toggle="collapse"].collapsed .fa:before {
     content: "\f13a";
 }
@@ -372,7 +307,7 @@ ol > li::before {
 }
 
 .btn-secondary {
-    color: $muted;
+    color: $gray;
 }
 
 .btn-tag {
@@ -382,12 +317,12 @@ ol > li::before {
     line-height: 1;
 }
 
-.btn.disabled, .btn:disabled {
-    opacity: .5;
+.btn-tag:hover {
+    color: $black;
 }
 
-.btn-white {
-    color: $dark
+.btn.disabled, .btn:disabled {
+    opacity: .5;
 }
 
 .btn-success, .btn-danger {
@@ -421,24 +356,34 @@ ol > li::before {
 }
 
 .tooltip-inner {
-    background-color: $white;
-    color: $dark;
-}
+    background-color: $black;
+    }
 
 .tooltip.bs-tooltip-right .arrow:before {
-    border-right-color: $white !important;
+    border-right-color: $black !important;
 }
 
 .tooltip.bs-tooltip-left .arrow:before {
-    border-left-color: $white !important;
+    border-left-color: $black !important;
 }
 
 .tooltip.bs-tooltip-bottom .arrow:before {
-    border-bottom-color: $white !important;
+    border-bottom-color: $black !important;
 }
 
 .tooltip.bs-tooltip-top .arrow:before {
-    border-top-color: $white !important;
+    border-top-color: $black !important;
+}
+
+// Callouts
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid $border-color;
+    border-left-width: .25rem;
+    border-radius: .25rem;
 }
 
 // Alerts
@@ -465,7 +410,7 @@ ol > li::before {
 .toast {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
-    color: $black;
+    color: $white;
     border: 0;
     display: none;
     position: fixed;
@@ -475,14 +420,14 @@ ol > li::before {
     right: 0;
     width: 300px;
     z-index: 1041;
-    background-color: $dark;
+    background-color: $black;
+    border-radius: $border-radius;
 }
 
 // Navbar and tab Bar
 
 .navbar-light {
-    background-color: $gray-500!important;
-    box-shadow: 0 1px 2px rgba(0,0,0,.15),0 0 2px rgba(0,0,0,.1)!important;
+    background-color: $white;
 }
 
 .navbar-toggler-icon {
@@ -517,20 +462,12 @@ ol > li::before {
     font-weight: $font-weight-bold;
 }
 
-.navbar-dark .navbar-brand {
-    color: #FFFFFF;
-}
-
-.navbar .text-white {
-    color: #FFFFFF;
-}
-
 .tab-bar {
     box-shadow: inset 0 -1px 0 $border-color;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     padding: .75rem 1rem 0 1rem;
-    background-color: $light;
+    background-color: $white;
     z-index: 5;
 }
 
@@ -565,7 +502,7 @@ ol > li::before {
 }
 
 .navbar-light .navbar-nav .nav-link .fa, .navbar-light .navbar-nav .nav-link .fas, .navbar-light .navbar-nav .nav-link .far, .navbar-light .navbar-nav .nav-link .fab {
-    color: $white;
+    color: $gray-500;
     text-align: center;
     font-size: $font-size-base;
 }
@@ -597,7 +534,7 @@ ol > li::before {
 }
 
 .navbar-dark .navbar-nav .nav-link .fa, .navbar-dark .navbar-nav .nav-link .fas, .navbar-dark .navbar-nav .nav-link .far, .navbar-dark .navbar-nav .nav-link .fab {
-    color: #FFFFFF;
+    color: $white;
     text-align: center;
     font-size: $font-size-lg;
 }
@@ -621,7 +558,7 @@ ol > li::before {
     font-weight: $font-weight-bold;
     top: -4px;
     left: 12px;
-    border: 2px solid $gray-500;
+    border: 2px solid $white;
     padding: 0 2px 2px 2px;
 }
 
@@ -633,7 +570,7 @@ ol > li::before {
 }
 
 .settings-nav .nav-link {
-    color: $gray-200;
+    color: $gray;
     font-size: $font-size-base;
     font-weight: $font-weight-normal;
     padding: 0.75rem 1rem;
@@ -664,7 +601,7 @@ ol > li::before {
 .post-nav .fa, .post-nav .fas, .post-nav .far, .post-nav .fab, .post-nav .fal {
     font-size: $small-font-size;
     margin-right: .5rem;
-    color: $muted;
+    color: $gray-500;
 }
 
 // Settings navigation
@@ -707,6 +644,7 @@ label.color-radio span {
     line-height: 2.25;
 }
 
+
 // Nav pills
 
 #page .nav-pills .nav-link {
@@ -743,35 +681,32 @@ label.color-radio span {
 }
 
 .form-inline.search .form-control:active, .form-inline.search .form-control:focus {
-    background-color: $gray-900;
-    color: $black;
+    background-color: $white;
 }
 
-.form-inline.search .form-control,
-.form-control[readonly] {
-    background-color: $gray-800;
+.form-inline.search .form-control {
+    background-color: $gray-200;
     font-size: $font-size-base;
-    color: $white;
 }
 
-.form-inline.search .input-group-append .input-group-text .fa.fa-search, .form-inline.search .input-group-append-focus .input-group-text .fa.fa-search {
+.form-inline.search .input-group-append .input-group-text .fa.fa-search {
     color: $black;
-    //opacity: .25;
+    opacity: .25;
 }
 
 .form-inline.search .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: $black;
-  //opacity: .25; /* Firefox */
+  opacity: .25; /* Firefox */
 }
 
 .form-inline.search .form-control::-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: $black;
-  //opacity: .25;
+  opacity: .25;
 }
 
 .form-inline.search .form-control::-ms-input-placeholder { /* Microsoft Edge */
   color: $black;
-  //opacity: .25;
+  opacity: .25;
 }
 
 .form-inline.search .form-control:active::placeholder, .form-inline.search .form-control:focus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -800,17 +735,13 @@ label.color-radio span {
     color: $muted;
     border-color: transparent;
     border-width: 2px;
-    background: $gray-300;
+    background: $gray-100;
     transition: none;
-}
-
-.form-control:disabled, .form-control[readonly] {
-    background-color: $dark;
 }
 
 .home-submission .form-control, .home-submission .input-group-text {
     border-color: $border-color;
-    background-color: $light;
+    background-color: $white;
 }
 
 .home-submission .input-group-prepend .fa, .home-submission .input-group-prepend .fas, .home-submission .input-group-append .fa, .home-submission .input-group-append .fas {
@@ -823,7 +754,7 @@ label.color-radio span {
 
 .form-control:hover {
     color: $black;
-    background-color: $gray-600;
+    background-color: #ffffff;
     outline: 0;
     border-color: $primary;
     box-shadow: none;
@@ -831,25 +762,10 @@ label.color-radio span {
 
 .form-control:focus, .form-control:active {
     color: $black;
-    background-color: $gray-900;
+    background-color: #ffffff;
     outline: 0;
     border-color: $primary;
     box-shadow: none;
-}
-
-.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: $black;
-    //opacity: .25; /* Firefox */
-}
-
-.form-control::-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: $black;
-    //opacity: .25;
-}
-
-.form-control::-ms-input-placeholder { /* Microsoft Edge */
-    color: $black;
-    //opacity: .25;
 }
 
 .form-check-label {
@@ -883,8 +799,6 @@ label.terms {
 
 .dropdown-menu {
     padding: 0.5rem;
-    color: $white;
-    background-color: $gray-600;
 }
 
 .user-profile > .dropdown-toggle::after {
@@ -894,7 +808,6 @@ label.terms {
 .dropdown-item {
     padding: 0.5rem 1rem;
     border-radius: $border-radius;
-    color: $black;
 }
 
 .dropdown .dropdown-menu .dropdown-meta {
@@ -904,7 +817,7 @@ label.terms {
 .dropdown-item:hover, .dropdown-item:focus, .dropdown-item.active {
     color: $black;
     text-decoration: none;
-    background-color: $gray-300;
+    background-color: $gray-200;
 }
 
 .dropdown-item:hover .fas, .dropdown-item:focus .fas, .dropdown-item.active .fas, .dropdown-item:hover .far, .dropdown-item:focus .far, .dropdown-item.active .far
@@ -942,7 +855,7 @@ th {
     transform: rotate(-45deg);
 }
 
-.sidebar-right .fa, .sidebar-right .fas, .sidebar-right .far, .sidebar-right .fab, .sidebar-right .fal, .sidebar .fad {
+.sidebar-right .fa, .sidebar-right .fas, .sidebar-right .far, .sidebar-right .fab, .sidebar-right .fal, .sidebar-right .fad {
     font-size: $small-font-size;
 }
 
@@ -974,7 +887,7 @@ th {
 .format .fa-quote-right:hover,
 .format .fa-link:hover,
 .format .fa-image:hover {
-    color: $black;
+    color: $gray;
 }
 
 // Voting
@@ -1096,8 +1009,8 @@ th {
     color: $downvote !important;
 }
 
-.banned .score {
-    color: $gray-300 !important;
+.banned .score, .deleted .score {		
+    color: $gray-300 !important;		
 }
 
 // Link Arrow Symbol
@@ -1164,14 +1077,10 @@ color: $dark;
 
 // Main Content
 
-.pseudo-submit-form .card-header {
-    background-color: $gray-600!important;
-}
-
 #frontpage .pseudo-submit-form.card, #search .search-results.card, #guild .pseudo-submit-form.card {
-    background-color: $gray-600;
+    background-color: $white;
     border-radius: $border-radius;
-    border: none;
+    border: 1px solid $border-color;
     //box-shadow: $box-shadow-sm;
 }
 
@@ -1181,15 +1090,15 @@ color: $dark;
 }
 
 #frontpage .pseudo-submit-form.card .card-body .form-control, #guild .pseudo-submit-form.card .card-body .form-control {
-    background-color: $light;
+    background-color: $gray-100;
 }
 
 #frontpage .pseudo-submit-form.card .card-body .form-control:hover, #frontpage .pseudo-submit-form.card .card-body .form-control:active, #frontpage .pseudo-submit-form.card .card-body .form-control:focus {
-    background-color: $light;
+    background-color: $white;
 }
 
 #guild .pseudo-submit-form.card .card-body .form-control:hover, #guild .pseudo-submit-form.card .card-body .form-control:active, #guild .pseudo-submit-form.card .card-body .form-control:focus {
-    background-color: $light;
+    background-color: $white;
 }
 
 .post-filter {
@@ -1208,7 +1117,7 @@ color: $dark;
 }
 
 //.posts, #thread #main-content-col {
-    //background-color: $light;
+    //background-color: $white;
     //border: 1px solid $border-color;
     //box-shadow: $box-shadow-sm;
     //border-radius: $border-radius;
@@ -1262,7 +1171,6 @@ color: $dark;
 .sidebar {
     -ms-flex: 0 0 300px;
     flex: 0 0 300px;
-    background-color: $gray-600!important;
 }
 
 .sidebar h1, .sidebar h2, .sidebar h3, .sidebar h4, .sidebar h5, .sidebar h6 {
@@ -1281,8 +1189,7 @@ color: $dark;
 
 .sidebar .sidebar-section .body {
     padding: 1rem;
-    color: $black;
-    //border: solid $border-color;
+    border: solid $border-color;
     border-width: 0 1px 1px 1px;
     border-bottom-left-radius: .35rem;
     border-bottom-right-radius: .35rem;
@@ -1290,15 +1197,15 @@ color: $dark;
 
 .sidebar-section {
     margin-bottom: 1rem;
-    background-color: $gray-700;
+    background-color: $gray-100;
     //border: 1px solid $border-color;
     //box-shadow: $box-shadow-sm;
-    border-radius: $border-radius;
+    border-radius: 0.35rem;
     overflow: hidden;
     word-break: break-word;
 
     & .profile-pic.profile-stacked {
-        box-shadow: 0 0 0px 3px $gray-700;
+        box-shadow: 0 0 0px 3px $gray-100;
     }
 }
 
@@ -1307,7 +1214,7 @@ color: $dark;
     padding-bottom: 1rem;
     color: $muted;
     font-weight: $font-weight-bold;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-section.sidebar-trending .trending-hashtag:last-child, .sidebar-section.sidebar-trending .trending-guild:last-of-type {
@@ -1318,8 +1225,19 @@ color: $dark;
 
 .sidebar-section.sidebar-alert {
     color: $black;
-    background-color: $light;
+    background-color: $white;
     border: none;
+}
+
+.sidebar-section.sidebar-dark-promo .form-control {
+    background-color: $gray;
+    color: $gray-600;
+}
+
+.sidebar-section.sidebar-dark-promo .form-control:hover, .sidebar-section.sidebar-dark-promo .form-control:active, .sidebar-section.sidebar-dark-promo .form-control:focus {
+    background-color: $white;
+    color: $black;
+    border-color: $gray-100;
 }
 
 // Sidebar Left Collapsed
@@ -1385,7 +1303,6 @@ color: $dark;
     height: calc(100vh - 49px);
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: $gray-600!important;
 }
 
 @media (min-width: 1199.98px) {
@@ -1405,11 +1322,6 @@ color: $dark;
     border: 0;
 }
 
-.sidebar-section.sidebar-alert {
-    border: 1px solid $border-color;
-    //box-shadow: $box-shadow-sm;
-}
-
 .sidebar-left .sidebar-section.sidebar-filters {
     margin-bottom: 1rem;
     background-color: transparent;
@@ -1419,7 +1331,8 @@ color: $dark;
 
 .sidebar.sidebar-left .sidebar-section .title {
     border-bottom: none;
-    color: $muted;
+    background-color: transparent;
+    color: $gray-600;
 }
 
 .sidebar-section.sidebar-filters .body {
@@ -1451,7 +1364,7 @@ color: $dark;
 
 .filter-list > .filter-item > .filter-link.active {
     color: $black;
-    background-color: $light;
+    background-color: $white;
     border-radius: $border-radius;
     //border: 1px solid $border-color;
 }
@@ -1510,7 +1423,7 @@ color: $dark;
     color: $black;
     background-color: $white;
     border-radius: $border-radius;
-    border: 1px solid $border-color;
+    //border: 1px solid $border-color;
 }
 
 .guild-recommendations-list .guild-recommendations-item .fa, .guild-recommendations-list .guild-recommendations-item .fas, .guild-recommendations-list .guild-recommendations-item .far, .guild-recommendations-list .guild-recommendations-item .fab, .guild-recommendations-list .guild-recommendations-item .fal {
@@ -1551,7 +1464,6 @@ color: $dark;
 .sidebar-section.sidebar-dashboard .body {
     padding: 0;
 }
-
 
 .dashboard-list .dashboard-item {
     color: $muted;
@@ -1647,7 +1559,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     text-align: center;
     object-fit: cover;
     color: $white;
-    background-color: #1f2023;
+    background-color: #FFFFFF;
 }
 
 .profile-pic .letter {
@@ -1687,7 +1599,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-25 {
@@ -1696,7 +1608,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-28 {
@@ -1705,7 +1617,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-30 {
@@ -1714,7 +1626,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-35 {
@@ -1723,7 +1635,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-40 {
@@ -1732,7 +1644,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-50 {
@@ -1741,7 +1653,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-65 {
@@ -1750,7 +1662,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-75 {
@@ -1759,7 +1671,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .profile-pic-100 {
@@ -1768,9 +1680,8 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: $gray-600;
+    background-color: #FFFFFF;
 }
-
 
 .profile-pic-overlap {
     margin-left: -1rem;
@@ -1788,17 +1699,17 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 0;
 }
 
-#frontpage.toggle-card-view .posts .card, #userpage.toggle-card-view .posts .card, #search.toggle-card-view .posts .card, #guild.toggle-card-view .posts .card{
-    border: 1px solid $border-color;
+#frontpage.toggle-card-view .posts .card, #userpage.toggle-card-view .posts .card, #search.toggle-card-view .posts .card, #guild.toggle-card-view .posts .card {
+    border: none;
     border-radius: $border-radius;
     margin-top: 1rem;
-    //box-shadow: $box-shadow-sm;
+    box-shadow: $box-shadow-sm;
 }
 
 #frontpage.toggle-card-view .posts .card:last-of-type, #userpage.toggle-card-view .posts .card:last-of-type, #search.toggle-card-view .posts .card:last-of-type, #guild.toggle-card-view .posts .card:last-of-type {
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
-    border: 1px solid $border-color;
+    //border: 1px solid $border-color;
     border-radius: $border-radius;
 }
 
@@ -1806,30 +1717,30 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     margin-top: 0;
 }
 
-#frontpage.toggle-card-view .posts .card .post-img, #userpage.toggle-card-view .posts .card .post-img, #search.toggle-card-view .posts .card .post-img, #guild.toggle-card-view .posts .card .post-img {
+#frontpage.toggle-card-view .posts .card .post-img, #userpage.toggle-card-view .posts .card .post-img, #search.toggle-card-view .posts .card .post-img, #guild.toggle-card-view .posts .card .post-img { 
     display: none;
 }
 
-#frontpage.toggle-card-view .posts .card .post-img-lg, #userpage.toggle-card-view .posts .card .post-img-lg, #search.toggle-card-view .posts .card .post-img-lg, #guild.toggle-card-view .posts .card .post-img-lg {
+#frontpage.toggle-card-view .posts .card .post-img-lg, #userpage.toggle-card-view .posts .card .post-img-lg, #search.toggle-card-view .posts .card .post-img-lg, #guild.toggle-card-view .posts .card .post-img-lg { 
     display: block;
     text-align: center;
 }
 
-#frontpage.toggle-card-view .posts .card .post-img-lg img, #userpage.toggle-card-view .posts .card .post-img-lg img, #search.toggle-card-view .posts .card .post-img-lg img, #guild.toggle-card-view .posts .card .post-img-lg img {
+#frontpage.toggle-card-view .posts .card .post-img-lg img, #userpage.toggle-card-view .posts .card .post-img-lg img, #search.toggle-card-view .posts .card .post-img-lg img, #guild.toggle-card-view .posts .card .post-img-lg img { 
     max-width: 55%;
     height: auto;
 }
 
-#frontpage.toggle-card-view .posts .card .embed-lg, #userpage.toggle-card-view .posts .card .embed-lg, #search.toggle-card-view .posts .card .embed-lg, #guild.toggle-card-view .posts .card .embed-lg {
+#frontpage.toggle-card-view .posts .card .embed-lg, #userpage.toggle-card-view .posts .card .embed-lg, #search.toggle-card-view .posts .card .embed-lg, #guild.toggle-card-view .posts .card .embed-lg { 
     display: flex;
     z-index: 2;
 }
 
-#frontpage.toggle-card-view .posts .card .post-preview-lg, #userpage.toggle-card-view .posts .card .post-preview-lg, #search.toggle-card-view .posts .card .post-preview-lg, #guild.toggle-card-view .posts .card .post-preview-lg {
+#frontpage.toggle-card-view .posts .card .post-preview-lg, #userpage.toggle-card-view .posts .card .post-preview-lg, #search.toggle-card-view .posts .card .post-preview-lg, #guild.toggle-card-view .posts .card .post-preview-lg { 
     display: block;
 }
 
-#frontpage.toggle-card-view .posts .card .post-preview-lg .post-body, #userpage.toggle-card-view .posts .card .post-preview-lg .post-body, #search.toggle-card-view .posts .card .post-preview-lg .post-body, #guild.toggle-card-view .posts .card .post-preview-lg .post-body {
+#frontpage.toggle-card-view .posts .card .post-preview-lg .post-body, #userpage.toggle-card-view .posts .card .post-preview-lg .post-body, #search.toggle-card-view .posts .card .post-preview-lg .post-body, #guild.toggle-card-view .posts .card .post-preview-lg .post-body { 
     -webkit-mask-image: linear-gradient(180deg,#000 40%,transparent);
     mask-image: linear-gradient(180deg,#000 40%,transparent);
     overflow: hidden;
@@ -1881,17 +1792,9 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 .card-header {
     font-size: $font-size-base;
     font-weight: $font-weight-bold;
-    color: $black;
+    color: $gray;
     padding: 0.5rem 1rem;
     border-bottom: 1px solid $input-border-color;
-}
-
-.card {
-    background-color: $gray-900;
-}
-
-#thread .card {
-    background-color: $gray-700;
 }
 
 #frontpage .posts .card:first-of-type, #userpage .posts .card:first-of-type, #search .posts .card:first-of-type, #guild .posts .card:first-of-type, #settings-guild .posts .card:first-of-type {
@@ -1914,7 +1817,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 }
 
 #frontpage .posts .card:hover, #userpage .posts .card:hover, #search .posts .card:hover, #guild .posts .card:hover, #settings-guild .posts .card:hover {
-    background-color: $gray-600;
+    background-color: $gray-200;
 }
 
 .post-title {
@@ -1973,12 +1876,11 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 }
 
 .modal-header {
-    border-bottom: none;
-    background-color: $gray-400;
+    border-bottom: 1px solid $border-color;
+    background-color: $white;
     border-top-left-radius: $border-radius;
     border-top-right-radius: $border-radius;
     padding: 0.5rem 1rem;
-    box-shadow: $box-shadow;
 }
 
 .modal-header .close {
@@ -1987,27 +1889,24 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 
 .modal-content {
     border: none;
-    background-color: $gray-400;
     border-radius: $border-radius;
     box-shadow: $box-shadow;
 }
 
 .modal-footer {
     border: none;
-    background-color: $gray-400;
+    background-color: $gray-200;
     border-bottom-right-radius: $border-radius;
     border-bottom-left-radius: $border-radius;
-    background-image: linear-gradient(180deg, #ffffff00 25%, $gray-400 100%)!important;
 }
 
 .modal .post-actions .list-group-item {
     border: none;
     border-radius: $border-radius;
-    background-color: $gray-400;
 }
 
 .modal .post-actions .list-group-item:focus, .modal .post-actions .list-group-item:hover {
-    background-color: $gray-300;
+    background-color: $gray-200;
 }
 
 .modal .post-actions a {
@@ -2047,7 +1946,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 }
 
 .post-actions .dropdown-item:hover .fa, .post-actions .dropdown-item:hover .fas {
-    color: $gray;
+    color: $black;
 }
 
 .post-actions a:hover .fa, .post-actions a:hover .fas {
@@ -2133,11 +2032,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
         border-top-right-radius: 1rem;
         border-top-left-radius: 1rem;
     }
-    #frontpage, #search, #guild {
-        padding-top: 98px;
-        background-color: $gray-700;
-    }
-}
+} 
 
 // Dropdown actions
 
@@ -2241,8 +2136,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     padding: 0;
     display: flex;
     align-items: center;
-    z-index: 1
-
+    z-index: 1;
 }
 
 .jumbotron-guild .guild-banner-contents {
@@ -2251,7 +2145,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 
 .jumbotron-guild .jumbotron-overlay {
     background-color: transparent;
-    background-image: linear-gradient(180deg, #fff0 0%, rgba(0, 0, 0, 0.8) 50%);
+    background-image: linear-gradient(0deg,$gray-100,rgba(247,247,248,.25)),linear-gradient(90deg,$gray-100,rgba(247,247,248,.25));
     position: absolute;
     width: 100%;
     height: 100%;
@@ -2277,19 +2171,6 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 
 .page-link {
     font-weight: $font-weight-bold;
-    background-color: $dark;
-    border: 1px solid $dark;
-}
-
-.page-link:hover {
-    background-color: $gray-100;
-}
-
-.page-item.disabled .page-link {
-    font-weight: $font-weight-bold;
-    background-color: $dark;
-    border: 1px solid $dark;
-    opacity: 0.5;
 }
 
 // Small devices (landscape phones, less than 768px)
@@ -2312,7 +2193,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 }
 
 .post-actions a {
-    color: $gray-100;
+    color: $gray;
     text-decoration: none;
     text-transform: none;
 }
@@ -2349,6 +2230,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     color: $white;
 }
 
+
 .thumb-img-link-overlay {
     display: none;
 }
@@ -2376,7 +2258,7 @@ div:hover .thumb-img-link-overlay {
 }
 
 // Small devices (landscape phones, less than 768px)
-@media (max-width: 767.98px) {
+@media (max-width: 767.98px) { 
     .post-img {
     width: 80px;
     height: 60px;
@@ -2418,6 +2300,7 @@ div:hover .thumb-img-link-overlay {
     display: flex;
     position: relative;
     margin-top: 2rem;
+    word-break: break-word;
 }
 
 #notifications .comment, #userpage .comment {
@@ -2462,10 +2345,10 @@ div:hover .thumb-img-link-overlay {
 
 blockquote {
     border-left: 2px solid $primary;
-    color: $black;
+    color: $primary;
     font-size: $font-size-base;
     font-weight: $font-weight-normal;
-    background-color: #46444a;
+    background-color: rgba($primary, 0.15);
     padding: 0.5rem 1rem;
     margin: 0.5rem 0rem 1rem 0.5rem;
 }
@@ -2486,15 +2369,14 @@ blockquote p {
 .modal .comment-actions .list-group-item {
     border: none;
     border-radius: $border-radius;
-    background-color: $gray-400;
 }
 
 .modal .comment-actions .list-group-item:focus, .modal .comment-actions .list-group-item:hover {
-    background-color: $gray-300;
+    background-color: $gray-200;
 }
 
 .modal .comment-actions a {
-    color: $gray-100;
+    color: $black;
     font-size: $font-size-base;
 }
 
@@ -2506,11 +2388,7 @@ blockquote p {
 // Comments
 
 .comment-section {
-    background-color: $gray-700;
-}
-
-.comment p {
-    word-break: break-word;
+    background-color: $gray-100;
 }
 
 .comment-actions {
@@ -2522,7 +2400,7 @@ blockquote p {
 .comment-actions .fa, .comment-actions .fas, .comment-actions .far {
     font-size: 12px;
     margin-right: .5rem;
-    color: $gray-100;
+    color: $gray-500;
 }
 
 .comment-actions .dropdown-item:active .fa, .comment-actions .dropdown-item:active .fas, .comment-actions .dropdown-item:active .far {
@@ -2559,7 +2437,7 @@ blockquote p {
 }
 
 .comment-actions a {
-    color: $gray-100;
+    color: $gray;
     text-decoration: none;
 }
 
@@ -2612,7 +2490,7 @@ ul.comment-section {
 }
 
 .comment-write.collapsed textarea:focus, .comment-write.collapsed textarea:active {
-    background-color: $gray-900;
+    background-color: $white;
 }
 
 .comment-write.collapsed textarea {
@@ -2623,12 +2501,7 @@ ul.comment-section {
 }
 
 .comment-write textarea {
-    background: $light;
-}
-
-.comment-write textarea:hover,
-.form-control[readonly]:hover {
-    background: $gray-600;
+    background: $white;
 }
 
 .comment-write .comment-format {
@@ -2648,11 +2521,11 @@ ul.comment-section {
 .comment-write .comment-format .format {
     padding: 0 .5rem;
     font-size: $font-size-base;
-    color: $gray-200;
+    color: $gray-500;
 }
 
 .comment-write .comment-format .format:hover {
-    color: $black;
+    color: $muted;
 }
 
 .comment .comment-collapse {
@@ -2663,7 +2536,7 @@ ul.comment-section {
     content: "";
     position: absolute;
     font-family: "Font Awesome 5 Pro";
-    border-left: 2px solid $gray-100;
+    border-left: 2px solid $gray-400;
     font-size: $font-size-base;
     color: $primary;
     display: inline-block;
@@ -2736,7 +2609,7 @@ ul.comment-section {
 
 .reaction {
     border: 1px solid $gray-300;
-    background-color: $light;
+    background-color: $white;
     padding: 0.25rem 0.5rem;
     border-radius: .35rem;
     font-weight: $font-weight-bold;
@@ -2790,7 +2663,7 @@ ul.comment-section {
     padding-top: 0;
     height: 100%;
     overflow: hidden;
-    background-color: $light;
+    background-color: $white;
 }
 
 .splash-wrapper {
@@ -2846,7 +2719,7 @@ ul.comment-section {
 // Guild Settings Page
 
 #settings-guild {
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 #settings-guild .settings .settings-section {
@@ -2857,15 +2730,11 @@ ul.comment-section {
 
 .settings .settings-section {
     margin-bottom: 3rem;
-    background: $gray-500;
+    background: $white;
     border: 1px solid $border-color;
     //box-shadow: $box-shadow-sm;
-    border-radius: $border-radius;
+    border-radius: 0.35rem;
     overflow: hidden;
-}
-
-#settings .bg-gray-300 {
-    background-color: $dark!important;
 }
 
 .settings .settings-section .title, .settings .settings-section .body, .settings .settings-section .footer {
@@ -2877,7 +2746,7 @@ ul.comment-section {
 }
 
 .settings .settings-section .footer {
-    background-color: $secondary;
+    background-color: $gray-200;
 }
 
 // Modal Profile Actions
@@ -2911,7 +2780,7 @@ ul.comment-section {
 
 .profile-actions .fa, .profile-actions .fas, .profile-actions .far {
     font-size: $small-font-size;
-    color: $gray;
+    color: $gray-600;
 }
 
 .profile-actions .dropdown-item:hover {
@@ -2924,7 +2793,7 @@ ul.comment-section {
 
 .profile-actions .dropdown .dropdown-menu .dropdown-item .fa, .profile-actions .dropdown .dropdown-menu .dropdown-item .fas, .profile-actions .dropdown .dropdown-menu .dropdown-item .far {
     font-size: $small-font-size;
-    color: $gray;
+    color: $gray-600;
     width: 1rem;
     margin-right: 0.5rem;
     text-align: center;
@@ -3033,7 +2902,7 @@ ul.comment-section {
     }
 
 // Responsive Border Radius
-
+ 
 	.rounded#{$infix}        { @include border-radius($border-radius); }
 	.rounded#{$infix}-top    { @include border-top-radius($border-radius); @include border-bottom-radius(0); }
 	.rounded#{$infix}-right  { @include border-right-radius($border-radius); @include border-left-radius(0); }
@@ -3044,6 +2913,14 @@ ul.comment-section {
 
   }
 }
+
+// Responsive Shadow
+
+@media (min-width: 768px) {
+    .shadow-md {
+      box-shadow: $box-shadow;
+    }
+  }
 
 // Responsive Sizing
 
@@ -3079,7 +2956,7 @@ ul.comment-section {
       height: auto !important;
     }
   }
-
+  
   @media (min-width: 768px) {
     .w-md-25 {
       width: 25% !important;
@@ -3112,7 +2989,7 @@ ul.comment-section {
       height: auto !important;
     }
   }
-
+  
   @media (min-width: 992px) {
     .w-lg-25 {
       width: 25% !important;
@@ -3145,7 +3022,7 @@ ul.comment-section {
       height: auto !important;
     }
   }
-
+  
   @media (min-width: 1200px) {
     .w-xl-25 {
       width: 25% !important;
@@ -3208,13 +3085,13 @@ ul.comment-section {
 }
 
 .submission .footer {
-    background-color: transparent;
+    background-color: $gray-200;
     padding: 1rem;
     border-bottom-left-radius: .25rem;
     border-bottom-right-radius: .25rem;
 }
 
-// Transitions
+// Transitions 
 
 .transition-15 {
     -webkit-transition: width .15s;
@@ -3266,8 +3143,8 @@ ul.comment-section {
   width: 2.75rem;    // it was 1.75rem before. Sliding way is longer than before.
   pointer-events: all;
   border-radius: 1rem;
-  background-color: $gray-100;
-  border: $gray-100 solid 1px;
+  background-color: $gray-500;
+  border: $gray-500 solid 1px;
   opacity: .7;
 }
 
@@ -3280,7 +3157,7 @@ ul.comment-section {
   left: calc(-2.25rem + 2px);
   width: calc(1.5rem - 4px);   // it was calc(1rem - 4px) before. Oval is bigger than before.
   height: calc(1.5rem - 4px);  // it was calc(1rem - 4px) before. Oval is bigger than before.
-  background-color: $light;
+  background-color: $white;
   border-radius: 2rem; //   it was 0.5rem before. Oval is bigger than before.
   transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-transform 0.15s ease-in-out;
   transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -3294,7 +3171,7 @@ ul.comment-section {
 }
 
 .custom-switch .custom-control-input:checked ~ .custom-control-label::after {
-  background-color: $white;
+  background-color: #fff;
   -webkit-transform: translateX(1.25rem); //translateX(0.75rem);
   transform: translateX(1.25rem); //translateX(0.75rem);
 }
@@ -3362,7 +3239,7 @@ pre .typ, code .typ {
 }
 
 pre .clo, pre .opn, pre .pun, code .clo, code .opn, code .pun {
-    color: $white;
+    color: #fff;
 }
 
 // GIF Keyboard
@@ -3427,13 +3304,13 @@ html {
     max-width: none;
 }
 
-body, #settings, #notifications, #submit {
+body, #settings, #notifications, #submit{
     padding-top: 49px;
-    background-color: $gray-700;
+    background-color: $white;
 }
 
 #thread, #userpage {
-    background-color: $gray-600;
+    background-color: $white;
 }
 
 .custom-gutters {
@@ -3443,10 +3320,6 @@ body, #settings, #notifications, #submit {
 
 .shadow-sm-0 {
     box-shadow: none!important;
-}
-
-.navbar.bg-primary {
-    background-color: $dark!important;
 }
 
 .navbar-nav {
@@ -3477,24 +3350,19 @@ body, #settings, #notifications, #submit {
 }
 
 #fixed-bar-mobile {
-    box-shadow: none;
+    box-shadow: $box-shadow;
 }
 
 .mobile-nav-icon {
     padding: 0.25rem 0.75rem;
 }
 
-#thread, #submit, #error-401, #error-403, #error-404, #error-405, #error-409, #error-410, #error-422, #error-429, #error-451, #error-500 {
-    background-color: $light;
-}
-
-#frontpage, #search, #guild {
+#frontpage, #search, #guild{
     padding-top: 98px;
-    background-color: $light;
 }
 
 #search .search-results.card  {
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid #e3e3e3;
     border-width: 0 0 1px 0;
     border-radius: 0;
 }
@@ -3508,16 +3376,12 @@ body, #settings, #notifications, #submit {
     border-radius: 0;
 }
 
-#frontpage .posts .card, #userpage .posts .card, #search .posts .card, #userpage .posts .card {
-    background-color: $gray-600;
-}
-
-#frontpage .posts .card:last-of-type, #search .posts .card:last-of-type {
+#frontpage .posts .card:nth-last-of-type(2), #search .posts .card:nth-last-of-type(2) {
     border-bottom: 1px solid $border-color;
 }
 
-#frontpage .posts .card:hover .post-title a, #search .posts .card:hover .post-title a{
-    color: $primary;
+#frontpage .posts .card:hover, #search .posts .card:hover {
+    background-color: transparent;
 }
 
 #frontpage .posts .card .post-img, #search .posts .card .post-img {
@@ -3552,7 +3416,7 @@ body, #settings, #notifications, #submit {
     box-shadow: none;
 }
 
-#frontpage.toggle-card-view .posts .card .post-img-lg img, #userpage.toggle-card-view .posts .card .post-img-lg img, #search.toggle-card-view .posts .card .post-img-lg img, #guild.toggle-card-view .posts .card .post-img-lg img {
+#frontpage.toggle-card-view .posts .card .post-img-lg img, #userpage.toggle-card-view .posts .card .post-img-lg img, #search.toggle-card-view .posts .card .post-img-lg img, #guild.toggle-card-view .posts .card .post-img-lg img { 
     max-width: 100%;
     height: auto;
 }
@@ -3567,18 +3431,10 @@ body, #settings, #notifications, #submit {
 
 // Posts and thread
 
-#thread .card {
-    background-color: $gray-600;
-}
-
-.card {
-    background-color: $gray-600;
-}
-
 .posts, #thread #main-content-col {
     box-shadow: none;
-    border: none;
     border-radius: 0;
+    border: none;
 }
 
 #thread #main-content-col {
@@ -3607,7 +3463,6 @@ body, #settings, #notifications, #submit {
     font-size: $font-size-base;
 }
 
-
 #frontpage .voting, #search .voting, #userpage .voting, #guild .voting {
     margin: 0;
 }
@@ -3621,19 +3476,23 @@ body, #settings, #notifications, #submit {
 
 .post-meta {
     font-size: 1rem;
+    color: $gray-600;
 }
 
 .post-actions {
+    color: $gray-500;
     font-weight: $font-weight-normal;
 }
 
 .post-actions a {
+    color: $gray-500;
     font-size: $font-size-base;
-    color: $gray-200;
+    font-weight: $font-weight-normal;
 }
 
 .post-actions .fa, .post-actions .fas, .post-actions .far {
     font-size: $font-size-base;
+    color: $gray-400;
 }
 
 .post-actions .voting .fa, .post-actions .voting .fas, .post-actions .voting .far {
@@ -3643,16 +3502,16 @@ body, #settings, #notifications, #submit {
 // Voting Mobile
 
 .comment-actions .score {
-    color: $gray-200;
+    color: $muted;
 }
 
 .score {
-    color: $gray-200;
+    color: $muted;
 }
 
 .arrow-up::before, .arrow-down::before, .arrow-up:hover::before, .arrow-down:hover::before {
     font-size: $font-size-lg;
-    color: $gray-200;
+    color: $gray-400;
     opacity: 1;
 }
 
@@ -3670,6 +3529,7 @@ body, #settings, #notifications, #submit {
 
 .dropdown-actions .fa, .dropdown-actions .fas, .dropdown-actions .far {
     font-size: $font-size-base;
+    color: $gray-400;
 }
 
 .btn-tag {
@@ -3679,7 +3539,11 @@ body, #settings, #notifications, #submit {
 // Comments
 
 .comment-section {
-    background-color: $gray-600;
+    background-color: $white;
+}
+
+.comment-write textarea {
+    background-color: $gray-100;
 }
 
 .comment-section > .comment {
@@ -3712,7 +3576,7 @@ body, #settings, #notifications, #submit {
 }
 
 .comment-actions .fa, .comment-actions .fas, .comment-actions .far {
-    color: $gray-100;
+    color: $gray-400;
 }
 
 // User and Profile (mobile)
@@ -3747,7 +3611,7 @@ body, #settings, #notifications, #submit {
 }
 
 #submit .submission {
-    border: none;
+    box-shadow: none;
 }
 
 #submit .submission .body {
@@ -3766,7 +3630,6 @@ body, #settings, #notifications, #submit {
 .comments-count .total {
     font-weight: $font-weight-normal;
     font-size: $font-size-base;
-
 }
 
 .comment-actions {
@@ -3827,25 +3690,6 @@ textarea, input[type=text] {
 
 }
 
-// Dark Mode
-
-.bg-white {
-    background-color: $gray-600!important;
-}
-
-.text-muted {
-    color: $muted!important;
-}
-
-.text-gray-400, .text-gray-500 {
-    color: $gray-200!important;
-}
-
-.white-overlay {
-    background-color: rgba(0, 0, 0, 0.5)!important;
-    background-image: linear-gradient(180deg, #ffffff00 25%, $gray-600 100%)!important;
-}
-
 // Scroll bar
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -3878,20 +3722,33 @@ span.green {
 }
 
 div.banned {
-    background-color: $banned;
-    border-left: 3px solid #ff0000!important;
-}
+  background-color: $banned;
+}	  
 
 div.deleted {
     background-color: $deleted;
-}
-
+}  
+  
 div.deleted.banned {
     background-color: $deletedandbanned
 }
-
-.text-admin {
-    color: $admin
+			
+.distinguish-admin .user-name, .distinguish-mod   .user-name {		
+  color: white;		
+  padding: 0px 3px 2px 3px;		
+  border-radius: 3px;		
+}		
+.distinguish-admin .user-name {		
+  background-color: $admin;		
+}		
+.distinguish-mod .user-name {		
+  background-color: $mod;		
+}		
+.distinguish-admin .user-name::before {		
+ content: "[A] "		
+}		
+.distinguish-mod .user-name::before {		
+ content: "[M] "		
 }
 
 .in-comment-image {
@@ -3926,21 +3783,19 @@ div.deleted.banned {
     }
 }
 
-
-
 img.emoji {
     width: 30px;
     height: 30px;
     object-fit: contain;
 }
 
-/* Dark mode spoiler */
+/* Light mode spoiler */
 .spoiler{ 
-  color: white; 
-  background-color:white;
+  color: black; 
+  background-color:black;
   font-weight: 600 !important;
 }
 
 .spoiler:hover { 
-  color: black;
+  color: white; 
 }
