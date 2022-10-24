@@ -721,9 +721,6 @@ document.addEventListener('input', function (event) {
 //dark mode
 
 $(".dark-switch").click(function () {
-  css = document.getElementById("css-link");
-  dswitch = document.getElementById("dark-switch");
-  dswitchmobile = document.getElementById("dark-switch-mobile");
 
   if ($('#css-link-light').attr("rel")=="stylesheet") {
     post("/settings/dark_mode/1",
