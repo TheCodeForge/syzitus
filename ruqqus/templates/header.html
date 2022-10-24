@@ -101,8 +101,7 @@
               {% endif %}
               <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-              <a class="dropdown-item" role="button" id="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
-
+              <a class="dropdown-item" role="button" class="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
             </div>
             <hr class="my-2">
             <div class="px-2">
@@ -141,42 +140,41 @@
       </form>
     </li>
     {% if g.user %}
-    <li class="nav-item">
-      <a class="nav-link" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ g.user.username }}</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications?all=true">
-        <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
-        {% if g.user.notifications_count %}
-        <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
-        {% endif %}
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
-    </li>
-    {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
-    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-on fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
-    {% elif g.user and g.user.can_use_darkmode %}
-    <li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css()"><i class="fad fa-toggle-off fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ g.user.username }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications?all=true">
+          <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
+          {% if g.user.notifications_count %}
+          <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
+          {% endif %}
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link dark-switch" role="button"><i class="fad fa-toggle-on fa-fw mr-3" class="dark-switch-icon"></i>Dark mode</a>
+      </li>
+
+      {% if g.user.can_make_guild %}
+        <li class="nav-item">
+          <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
+        </li>
+      {% endif %}
+      <li class="nav-item border-top border-bottom mt-2 pt-2">
+        <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
+      </li>
     {% else %}
-    <li class="nav-item"><a class="nav-link" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw mr-3"></i>Dark mode</a></li>
-    {% endif %}
-    {% if g.user and g.user.can_make_guild %}
-    <li class="nav-item">
-      <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
-    </li>
-    {% endif %}
-    <li class="nav-item border-top border-bottom mt-2 pt-2">
-      <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
-    </li>
-    {% else %}
-    <li class="nav-item d-flex align-items-center justify-content-center pb-3">
-      <a class="btn btn-outline-purple btn-block" href="/login?redirect={{ request.path | urlencode}}">Sign in</a>
-    </li>
-    <li class="nav-item d-flex align-items-center justify-content-center">
-      <a class="btn btn-purple btn-block" href="/signup?redirect={{ request.path | urlencode}}">Sign up</a>
-    </li>
+      <li class="nav-item d-flex align-items-center justify-content-center pb-3">
+        <a class="btn btn-outline-purple btn-block" href="/login?redirect={{ request.path | urlencode}}">Sign in</a>
+      </li>
+      <li class="nav-item d-flex align-items-center justify-content-center">
+        <a class="btn btn-purple btn-block" href="/signup?redirect={{ request.path | urlencode}}">Sign up</a>
+      </li>
     {% endif %}
     <li class="nav-item mt-2">
       <a class="nav-link text-small-extra" href="/help/about">About</a>
