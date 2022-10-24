@@ -22,44 +22,18 @@
 
     <!-- Ruqqus Board CSS -->
 
-    {% block stylesheets %}
-    {% if b %}
-    {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
-    <link id="css-link" rel="stylesheet" href="{{ b.css_dark_url }}">
-    {% else %}
-    <link id="css-link" rel="stylesheet" href="{{ b.css_url }}">
-    {% endif %}
-    {% else %}
-    {% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled") %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main_dark.css">
-    {% else %}
-    <link id="css-link" rel="stylesheet" href="/assets/style/main.css">
-    {% endif %}
-    {% endif %}
-    {% endblock %}
+
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/dark.css?v=3.0.10">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/light.css?v=3.0.10">
 
     <!-- Font Awesome -->
     <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
-    {% if g.user %}
-
     <script>
-        function post(url, callback, errortext) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", url, true);
-            var form = new FormData()
-            form.append("formkey", "{{ g.user.formkey }}");
-            xhr.withCredentials=true;
-            xhr.onload=callback
-            xhr.onerror=function(){alert(errortext)}
-            xhr.send(form);
-        }
         function formkey() {
             return '{{ g.user.formkey }}';
         }
     </script>
-
-    {% endif %}
 
 </head>
 
