@@ -90,13 +90,14 @@ def get_assets_images_splash(width, height):
         fill=(255,255,255,255)
         )
 
-    output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    output.rotate(
+    text_layer = text_layer.rotate(
         angle=30, 
         expand=False, 
         fillcolor=primary,
         resample=PIL.Image.BILINEAR)
+
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
 
     output_bytes=io.BytesIO()
     output.save(output_bytes, format="PNG")
