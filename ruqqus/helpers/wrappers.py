@@ -31,7 +31,7 @@ def get_logged_in_user():
             is_deleted=False
             ).first()
 
-        if request.path.startswith("/api/") and user.admin_level<3:
+        if request.path.startswith("/api/v2/") and user.admin_level<3:
             g.user=None
             g.client=None
             return
