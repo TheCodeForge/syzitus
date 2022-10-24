@@ -1228,17 +1228,6 @@ color: $dark;
     border: none;
 }
 
-.sidebar-section.sidebar-dark-promo .form-control {
-    background-color: $gray;
-    color: $gray-600;
-}
-
-.sidebar-section.sidebar-dark-promo .form-control:hover, .sidebar-section.sidebar-dark-promo .form-control:active, .sidebar-section.sidebar-dark-promo .form-control:focus {
-    background-color: $white;
-    color: $black;
-    border-color: $gray-100;
-}
-
 // Sidebar Left Collapsed
 
 .sidebar.sidebar-left.sidebar-collapsed {
