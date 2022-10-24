@@ -49,9 +49,9 @@ def main_css(board, file):
     resp.headers.add("Cache-Control", "public")
     return resp
 
-@app.get('/assets/images/splash/<width>/<height>')
+@app.get('/assets/images/<kind>/<width>/<height>')
 @cache.memoize()
-def get_assets_images_splash(width, height):
+def get_assets_images_splash(kind, width, height):
 
     try:
         width=int(width)
@@ -60,6 +60,9 @@ def get_assets_images_splash(width, height):
         abort(400)
 
     if max(width, height)>4500:
+        abort(404)
+
+    if kind not in ["splash", "thumb"]:
         abort(404)
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
@@ -85,8 +88,6 @@ def get_assets_images_splash(width, height):
     letter = app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
 
-    debug(box)
-
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
@@ -99,11 +100,33 @@ def get_assets_images_splash(width, height):
         )
 
 
+
+
     text_layer = text_layer.rotate(
         angle=20, 
         expand=False, 
         fillcolor=primary,
         resample=PIL.Image.BILINEAR)
+
+    if kind=="thumb":
+        font = ImageFont.truetype(
+            f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
+            size=int(size*0.8)
+            )
+        fullbox=font.getbbox(app.config["SITE_NAME"].lower())
+
+        if fullbox[2]>width:
+            abort(400)
+
+        d.text(
+            (
+                width//2 - fullbox[2]//2,
+                height//2 + (box[3]-box[1]) // 2 + int(size*0.2)
+                ),
+            app.config["SITE_NAME"].lower(),
+            font=font,
+            fill=(255,255,255,255)
+            )
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
