@@ -191,14 +191,26 @@ app.config["RATELIMIT_HEADERS_ENABLED"]=True
 def limiter_key_func():
     return request.remote_addr
 
+def ban_ip():
+    ip_ban=g.db.query(IP).filter_by(addr=request.remote_addr).first()
+    if not ip_ban:
+        ip_ban = IP(
+            addr=request.remote_addr,
+            unban_utc=int(time.time())+60*60
+            )
+
+    g.db.add(ip_ban)
+    g.db.commit()
+    return jsonify({"error":"You have been banned for 1 hour. Slow down."}), 429
 
 limiter = Limiter(
     app,
     key_func=limiter_key_func,
-    default_limits=["50/minute"],
+    default_limits=["75/minute"],
     headers_enabled=True,
     strategy="fixed-window",
-    storage_uri="memory://"
+    storage_uri="memory://",
+    on_breach=ban_ip
 )
 
 # setup db
@@ -334,16 +346,22 @@ def before_request():
         abort(503)
 
 
+    g.timestamp = int(time.time())
 
     if r and bool(r.get(f"ban_ip_{request.remote_addr}")):
         return jsonify({"error":"Too many requests. You are in time out for 1 hour. Rate limit is 100/min; less for authentication and content creation endpoints."}), 429
 
     g.db = db_session()
 
-    if g.db.query(IP).filter_by(addr=request.remote_addr).first():
+    ipban= g.db.query(IP).filter(
+        IP.addr==request.remote_addr,
+        IP.unban_utc>g.timestamp
+        ).first():
         abort(503)
+    if ipban:
+        ipban.unban_utc
+        return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
 
-    g.timestamp = int(time.time())
 
     session.permanent = True
 
