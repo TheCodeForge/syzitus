@@ -85,7 +85,7 @@ def get_assets_images_splash_logo(color):
     d.text(
         (
             base_layer.size[0] // 2 - box[2] // 2, 
-            base_layer.size[1] // 2 - (box[3]+box[1]) // 2
+            base_layer.size[0] // 2 - (box[3]+box[1]) // 2
             ),
         letter, 
         font=font,
