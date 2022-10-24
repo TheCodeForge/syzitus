@@ -15,7 +15,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
   <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-  <meta property="og:image" content="{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}" />
+  <meta property="og:image" content="/assets/images/splash/1200/630" />
   <meta property="og:url" content="{{ request.path | full_link }}">
   <meta property="og:description" name="description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
   <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config }}" />
@@ -40,17 +40,15 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/favicons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/splash/180/180">
   <link rel="icon" type="image/png" sizes="32x32" href=/assets/images/splash/32/32>
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/splash/16/16">
     <link rel="manifest" href="/assets/manifest.json">
-    <link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#805ad5">
     <link rel="shortcut icon" href="/assets/images/splash/64/64">
     <meta name="apple-mobile-web-app-title" content="{{ 'SITE_NAME' | app_config }}">
     <meta name="application-name" content="{{ 'SITE_NAME' | app_config }}">
-    <meta name="msapplication-TileColor" content="#805ad5">
-    <meta name="msapplication-config" content="/assets/images/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#805ad5">
+    <meta name="msapplication-TileColor" content="#{{ 'COLOR_PRIMARY' | app_config }}">
+    <meta name="theme-color" content="#{{ 'COLOR_PRIMARY' | app_config }}">
 
 
     {% if g.system.startswith("iOS/") %}
