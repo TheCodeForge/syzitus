@@ -11,6 +11,7 @@ class IP(Base):
     addr = Column(String(64), index=True)
     reason = Column(String(256), default="")
     banned_by = Column(Integer, ForeignKey("users.id"), default=True)
+    unban_utc = Column(Integer, default=None)
 
 
 class Agent(Base):
