@@ -49,7 +49,7 @@ def main_css(board, file):
     resp.headers.add("Cache-Control", "public")
     return resp
 
-@app.get("/assets/images/logo/<color>")
+@app.get("/logo/<color>")
 @cache.memoize()
 def get_assets_images_splash_logo(color, text):
 
