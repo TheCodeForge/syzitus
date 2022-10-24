@@ -12,16 +12,16 @@
     <title>Donate - {{ 'SITE_NAME' | app_config }}</title>
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
-    <meta property="og:site_name" content="{{ "SERVER_NAME" | app_config }}" />
-    <meta property="og:image" content="{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}" />
+    <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+    <meta property="og:image" content="/assets/images/splash/1200/630" />
     <meta property="og:url" content="{{ request.path | full_link }}">
     <meta property="og:description" name="description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.">
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
 
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
-    <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
-    <meta name="twitter:image" content="{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}" />
+    <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
+    <meta name="twitter:image" content="/assets/images/splash/1200/630" />
     <meta name="twitter:url" content="{{ request.path | full_link }}" />
     {% endblock %}
 
@@ -32,7 +32,8 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- {{ 'SITE_NAME' | app_config }} CSS -->
-    <link rel="stylesheet" href="/assets/style/main.css">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/dark.css?v=3.0.8">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/main/light.css?v=3.0.8">
 
     <!-- Font Awesome -->
     <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
