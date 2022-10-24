@@ -56,53 +56,52 @@
       </li>
 
       <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-          <div class="dropdown">
-            <a class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-              <i class="fas fa-random"></i>
-            </a>
-            <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
-              <h6 class="dropdown-header">View random</h6>
-              <div class="px-2">
-                <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
-                <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
-                <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
-              </div>
+        <div class="dropdown">
+          <a class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+            <i class="fas fa-random"></i>
+          </a>
+          <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
+            <h6 class="dropdown-header">View random</h6>
+            <div class="px-2">
+              <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
+              <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
+              <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
             </div>
           </div>
-        </li>
+        </div>
+      </li>
 
       <li class="nav-item d-flex align-items-center justify-content-center text-center">
         <div class="dropdown">
           <a class="nav-link bg-transparent py-0 pr-0" href="{{ g.user.permalink }}" role="button" id="dropdownMenuLink" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <div class="d-flex">
-            <div><img src="{{ g.user.profile_url }}" class="profile-pic-35"></div>
-            <div class="text-left pl-2">
-              <div class="text-small font-weight-bold">{{ g.user.username }}</div>
-              <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
+            <div class="d-flex">
+              <div><img src="{{ g.user.profile_url }}" class="profile-pic-35"></div>
+              <div class="text-left pl-2">
+                <div class="text-small font-weight-bold">{{ g.user.username }}</div>
+                <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
+              </div>
             </div>
-          </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left border-0 shadow fade px-0 mt-2"
+          </a>
+          <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left border-0 shadow fade px-0 mt-2"
         aria-labelledby="dropdownMenuButton">
-        <div class="px-2">
-          <div class="dropdown-meta">
-            <div class="font-weight-bold mb-2">{{ g.user.username }}</div>
-            <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
-          </div>
-        </div>
-        <hr class="my-2">
-        <div class="px-2">
-          <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My
-            profile</a>
-            {% if g.user.notifications_count %}
-            <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
-            {% else %}
-            <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
-            {% endif %}
-            <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
+            <div class="px-2">
+              <div class="dropdown-meta">
+                <div class="font-weight-bold mb-2">{{ g.user.username }}</div>
+                <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
+              </div>
+            </div>
+            <hr class="my-2">
+            <div class="px-2">
+              <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My profile</a>
+              {% if g.user.notifications_count %}
+              <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
+              {% else %}
+              <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+              {% endif %}
+              <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-            <a class="dropdown-item" role="button" id="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
+              <a class="dropdown-item" role="button" id="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
 
             </div>
             <hr class="my-2">
