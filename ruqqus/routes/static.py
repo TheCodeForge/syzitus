@@ -97,7 +97,7 @@ def get_assets_images_splash(width, height):
 
 
     text_layer = text_layer.rotate(
-        angle=30, 
+        angle=20, 
         expand=False, 
         fillcolor=primary,
         resample=PIL.Image.BILINEAR)
