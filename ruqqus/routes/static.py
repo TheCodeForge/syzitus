@@ -236,10 +236,6 @@ def settings_premium():
                            msg=request.args.get("msg") or None
                            )
 
-@app.route("/assets/favicon.ico", methods=["GET"])
-def favicon():
-    return send_file("./assets/images/logo/favicon.png")
-
 
 #@app.route("/my_info", methods=["GET"])
 #@auth_required
