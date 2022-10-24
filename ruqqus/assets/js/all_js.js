@@ -720,7 +720,7 @@ document.addEventListener('input', function (event) {
 
 //dark mode
 
-$("#dark-switch").click(function () {
+$(".dark-switch").click(function () {
   css = document.getElementById("css-link");
   dswitch = document.getElementById("dark-switch");
   dswitchmobile = document.getElementById("dark-switch-mobile");
@@ -732,8 +732,8 @@ $("#dark-switch").click(function () {
         $('#css-link-light').attr("rel", "");
         $('body').toggleClass('light');
         $('body').toggleClass('dark');
-        $('#dark-switch-icon').removeClass('fa-toggle-off')
-        $('#dark-switch-icon').addClass('fa-toggle-on')
+        $('.dark-switch-icon').removeClass('fa-toggle-off')
+        $('.dark-switch-icon').addClass('fa-toggle-on')
       }
       );
   }
@@ -744,8 +744,8 @@ $("#dark-switch").click(function () {
         $('#css-link-light').attr("rel", "stylesheet");
         $('body').toggleClass('light');
         $('body').toggleClass('dark');
-        $('#dark-switch-icon').removeClass('fa-toggle-on')
-        $('#dark-switch-icon').addClass('fa-toggle-off')
+        $('.dark-switch-icon').removeClass('fa-toggle-on')
+        $('.dark-switch-icon').addClass('fa-toggle-off')
       }
       );
   }
