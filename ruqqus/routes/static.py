@@ -53,7 +53,8 @@ def main_css(board, file):
 @cache.memoize()
 def get_assets_images_splash(width, height):
 
-    if m
+    if max(width, height)>4500:
+        abort(404)
 
     try:
         width=int(width)
