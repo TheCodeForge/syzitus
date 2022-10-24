@@ -51,7 +51,7 @@ def main_css(board, file):
 
 @app.get("/logo/<color>")
 @cache.memoize()
-def get_assets_images_splash_logo(color, text):
+def get_assets_images_splash_logo(color):
 
     if color not in ["main", "white"]:
         abort(404)
