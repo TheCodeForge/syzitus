@@ -267,7 +267,6 @@ Optional query parameters:
 
 #if the guild name is missing, add it to the url and redirect
 @app.route("/post/<pid>/<anything>/<cid>", methods=["GET"])
-@app.route("/api/v1/post/<pid>/comment/<cid>", methods=["GET"])
 @auth_desired
 @api("read")
 def post_pid_comment_cid_noboard(pid, cid, anything=None):
@@ -292,7 +291,7 @@ Required form data:
 
 Optional file data:
 * `file` - An image to upload and append to the comment body. Requires premium.
-"""
+""" 
     parent_fullname = request.form.get("parent_fullname")
 
     # get parent item info
@@ -751,8 +750,6 @@ URL path parameters:
 
 @app.route("/embed/comment/<cid>", methods=["GET"])
 @app.route("/embed/post/<pid>/comment/<cid>", methods=["GET"])
-@app.route("/api/v1/embed/comment/<cid>", methods=["GET"])
-@app.route("/api/v1/embed/post/<pid>/comment/<cid>", methods=["GET"])
 def embed_comment_cid(cid, pid=None):
 
     comment = get_comment(cid)
@@ -771,7 +768,6 @@ def embed_comment_cid(cid, pid=None):
     return render_template("embeds/comment.html", c=comment)
 
 @app.route("/mod/comment_pin/<guildname>/<cid>", methods=["POST"])
-@app.route("/api/v1/comment_pin/<guildname>/<cid>", methods=["POST"])
 @app.patch("/api/v2/guilds/<guildname>/comments/<cid>/pin")
 @auth_required
 @is_guildmaster("content")
