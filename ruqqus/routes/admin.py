@@ -753,7 +753,7 @@ def admin_image_purge():
 
 @app.route("/admin/ip/<ipaddr>", methods=["GET"])
 @admin_level_required(5)
-def admin_ip_addr(ipaddr, v):
+def admin_ip_addr(ipaddr):
 
     pids=[x.id for x in g.db.query(Submission).filter_by(creation_ip=ipaddr).order_by(Submission.created_utc.desc()).all()]
 
