@@ -198,8 +198,7 @@ limiter = Limiter(
     default_limits=["50/minute"],
     headers_enabled=True,
     strategy="fixed-window",
-    storage_options={'max_connections':100}
-    #storage_options={'connection_pool':redispool}
+    storage_uri="memory://"
 )
 
 # setup db
