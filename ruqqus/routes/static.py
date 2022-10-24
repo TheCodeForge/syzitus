@@ -53,14 +53,14 @@ def main_css(board, file):
 @cache.memoize()
 def get_assets_images_splash(width, height):
 
-    if max(width, height)>4500:
-        abort(404)
-
     try:
         width=int(width)
         height=int(height)
     except:
         abort(400)
+
+    if max(width, height)>4500:
+        abort(404)
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
     primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
