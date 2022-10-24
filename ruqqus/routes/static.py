@@ -69,9 +69,14 @@ def get_assets_images_splash(width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
+    if min(width, height) <=5:
+        size=min(width, height) - 6
+    else:
+        size=min(height//4, width//3)
+
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-        size=min(min(height//4, width//3), min(height,width)-3)
+        size=size
         )
 
     letter = app.config["SITE_NAME"][0:1].lower()
