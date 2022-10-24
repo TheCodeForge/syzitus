@@ -53,6 +53,8 @@ def main_css(board, file):
 @cache.memoize()
 def get_assets_images_splash(width, height):
 
+    if m
+
     try:
         width=int(width)
         height=int(height)
@@ -72,7 +74,7 @@ def get_assets_images_splash(width, height):
     if min(width, height) <=5:
         size=min(width, height) - 6
     else:
-        size=min(height//4, width//3)
+        size=min(height//4, width//2)
 
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
