@@ -87,7 +87,7 @@
         aria-labelledby="dropdownMenuButton">
             <div class="px-2">
               <div class="dropdown-meta">
-                <div class="font-weight-bold mb-2">{{ g.user.username }}</div>
+                <div class="font-weight-bold text-dark mb-2">{{ g.user.username }}</div>
                 <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
               </div>
             </div>
@@ -101,7 +101,7 @@
               {% endif %}
               <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-              <a class="dropdown-item" role="button" class="dark-switch"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3" id="dark-switch-icon"></i>Dark mode</a>
+              <a class="dropdown-item" role="button" class="dark-switch text-black"><i class="fad {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3 dark-switch-icon"></i>Dark mode</a>
             </div>
             <hr class="my-2">
             <div class="px-2">
@@ -157,7 +157,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link dark-switch" role="button"><i class="fad fa-toggle-on fa-fw mr-3" class="dark-switch-icon"></i>Dark mode</a>
+        <a class="nav-link dark-switch" role="button"><i class="fad fa-toggle-on fa-fw mr-3 dark-switch-icon"></i>Dark mode</a>
       </li>
 
       {% if g.user.can_make_guild %}
