@@ -105,7 +105,7 @@
 <meta name="twitter:title" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}} comments on {{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
 <meta name="twitter:creator" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}}">
 <meta name="twitter:description" content="{{ comment_info.body }}" />
-<meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}{% endif %}" />
+<meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/splash/1200/630' | full_link }}{% endif %}" />
 <meta name="twitter:url" content="{{ p.permalink | full_link }}" />
 
 {% if linked_comment.author.is_private %}
