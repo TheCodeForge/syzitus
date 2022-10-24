@@ -67,8 +67,7 @@ def get_assets_images_splash_logo(color):
 
     #flood fill main logo shape if needed
     if color=="main":
-        d=ImageDraw.Draw(base_layer)
-        d.floodfill(
+        base_layer = base_layer.floodfill(
             base_layer,
             (base_layer.size[0]//2, base_layer.size[1]//2),
             value=primary)
@@ -98,8 +97,6 @@ def get_assets_images_splash_logo(color):
         expand=False, 
         fillcolor=color=(255,255,255,0),
         resample=PIL.Image.BILINEAR)
-
-
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
     output_bytes=io.BytesIO()
