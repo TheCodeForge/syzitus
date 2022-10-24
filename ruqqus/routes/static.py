@@ -70,7 +70,7 @@ def get_assets_images_splash_logo(color):
         d=ImageDraw.Draw(base_layer)
         d.floodfill(
             base_layer,
-            (base_layer.size[1]//2, base_layer.size[2]//2),
+            (base_layer.size[0]//2, base_layer.size[1]//2),
             value=primary)
 
     #tilted letter layer
@@ -85,8 +85,8 @@ def get_assets_images_splash_logo(color):
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
-            base_layer.size[1] // 2 - box[2] // 2, 
-            base_layer.size[2] // 2 - (box[3]+box[1]) // 2
+            base_layer.size[0] // 2 - box[2] // 2, 
+            base_layer.size[1] // 2 - (box[3]+box[1]) // 2
             ),
         letter, 
         font=font,
