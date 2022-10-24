@@ -75,7 +75,7 @@ def get_assets_images_splash(kind, width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    if min(width, height) <= 100:
+    if min(width, height) <= 150:
         size=int(min(width, height) *0.95)
     else:
         size=min(height//4, width//2)
@@ -108,7 +108,7 @@ def get_assets_images_splash(kind, width, height):
     if kind=="thumb":
         font = ImageFont.truetype(
             f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-            size=int(size*0.8)
+            size=int(size*0.6)
             )
         fullbox=font.getbbox(app.config["SITE_NAME"].lower())
 
@@ -125,6 +125,8 @@ def get_assets_images_splash(kind, width, height):
             font=font,
             fill=(255,255,255,255)
             )
+
+
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
