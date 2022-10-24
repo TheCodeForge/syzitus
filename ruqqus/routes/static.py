@@ -95,7 +95,7 @@ def get_assets_images_splash_logo(color):
     text_layer = text_layer.rotate(
         angle=20, 
         expand=False, 
-        fillcolor=color=(255,255,255,0),
+        fillcolor=(255,255,255,0),
         resample=PIL.Image.BILINEAR)
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
