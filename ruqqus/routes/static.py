@@ -67,7 +67,7 @@ def get_assets_images_splash_logo(color):
 
     #flood fill main logo shape if needed
     if color=="main":
-        base_layer = base_layer.floodfill(
+        ImageDraw.floodfill(
             base_layer,
             (base_layer.size[0]//2, base_layer.size[1]//2),
             value=primary)
