@@ -34,7 +34,7 @@ class Board(Base, Stndrd, Age_times):
     has_profile=Column(Boolean, default=False)
     creator_id=Column(Integer, ForeignKey("users.id"))
     ban_reason=Column(String(256), default=None)
-    color=Column(String(8), default=app.config.get("SITE_COLOR","805ad5"))
+    color=Column(String(8), default=app.config["COLOR_PRIMARY"])
     restricted_posting=Column(Boolean, default=False)
     disallowbots=Column(Boolean, default=False)
     #hide_banner_data=Column(Boolean, default=False)
