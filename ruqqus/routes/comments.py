@@ -40,13 +40,8 @@ def comment_cid(cid, pid=None):
         abort(403)
     return redirect(comment.permalink)
 
-@app.route("/api/v1/post/<pid>/comment/<cid>", methods=["GET"])
-def comment_cid_api_redirect(cid=None, pid=None):
-    redirect(f'/api/v1/comment/<cid>')
 
-@app.route("/api/v1/comment/<cid>", methods=["GET"])
 @app.route("/+<guildname>/post/<pid>/<anything>/<cid>", methods=["GET"])
-@app.get("/api/vue/comment/<cid>")
 @app.get("/api/v2/comments/<cid>")
 @auth_desired
 @api("read")
@@ -282,7 +277,6 @@ def post_pid_comment_cid_noboard(pid, cid, anything=None):
 
 
 @app.route("/api/comment", methods=["POST"])
-@app.route("/api/v1/comment", methods=["POST"])
 @app.post("/api/v2/comments")
 @limiter.limit("6/minute")
 @is_not_banned
