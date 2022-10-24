@@ -206,7 +206,7 @@ def ban_ip():
 limiter = Limiter(
     app,
     key_func=limiter_key_func,
-    default_limits=["75/minute"],
+    default_limits=["60/minute"],
     headers_enabled=True,
     strategy="fixed-window",
     storage_uri="memory://",
@@ -349,7 +349,7 @@ def before_request():
     g.timestamp = int(time.time())
 
     if r and bool(r.get(f"ban_ip_{request.remote_addr}")):
-        return jsonify({"error":"Too many requests. You are in time out for 1 hour. Rate limit is 100/min; less for authentication and content creation endpoints."}), 429
+        return jsonify({"error":"Too many requests. You are in time out for 1 hour. Rate limit is 60/min; less for authentication and content creation endpoints."}), 429
 
     g.db = db_session()
 
