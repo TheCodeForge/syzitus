@@ -76,7 +76,7 @@ def get_assets_images_splash_logo(color):
     #tilted letter layer
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-        size=size
+        size=base_layer.size[0]//4
     )
 
     letter = app.config["SITE_NAME"][0:1].lower()
