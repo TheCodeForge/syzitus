@@ -99,9 +99,6 @@ def get_assets_images_splash(kind, width, height):
         fill=(255,255,255,255)
         )
 
-
-
-
     text_layer = text_layer.rotate(
         angle=20, 
         expand=False, 
@@ -118,6 +115,7 @@ def get_assets_images_splash(kind, width, height):
         if fullbox[2]>width:
             abort(400)
 
+        d = ImageDraw.Draw(text_layer)
         d.text(
             (
                 width//2 - fullbox[2]//2,
