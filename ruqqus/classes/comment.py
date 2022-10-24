@@ -517,7 +517,7 @@ class Notification(Base):
 
     comment = relationship("Comment", primaryjoin="Notification.comment_id==Comment.id")
     post = relationship("Submission")
-    user=relationship("User", innerjoin=True, readonly=True)
+    user=relationship("User", innerjoin=True, viewonly=True)
 
     def __repr__(self):
 
