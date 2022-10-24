@@ -49,6 +49,68 @@ def main_css(board, file):
     resp.headers.add("Cache-Control", "public")
     return resp
 
+@app.get("/assets/images/logo/<color>")
+@cache.memoize()
+def get_assets_images_splash(color, text):
+
+    if color not in ["main", "white"]:
+        abort(404)
+
+    if text not in ["simple", "full"]:
+        abort(404)
+
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+
+    primary = (primary_r, primary_g, primary_b, 255)
+
+    base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
+    text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
+
+    #flood fill main logo shape if needed
+    if color=="main":
+        d=ImageDraw.Draw(base_layer)
+        d.floodfill(
+            base_layer,
+            (base_layer.width//2, base_layer.height//2),
+            value=primary)
+
+    #tilted letter layer
+    font = ImageFont.truetype(
+        f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
+        size=size
+    )
+
+    letter = app.config["SITE_NAME"][0:1].lower()
+    box = font.getbbox(letter)
+
+    d = ImageDraw.Draw(text_layer)
+    d.text(
+        (
+            width // 2 - box[2] // 2, 
+            height // 2 - (box[3]+box[1]) // 2
+            ),
+        letter, 
+        font=font,
+        fill=(255,255,255,255) if color=="main" else primary
+        )
+
+    text_layer = text_layer.rotate(
+        angle=20, 
+        expand=False, 
+        fillcolor=primary,
+        resample=PIL.Image.BILINEAR)
+
+
+
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
+    output_bytes=io.BytesIO()
+    output.save(output_bytes, format="PNG")
+    output_bytes.seek(0)
+    return send_file(output_bytes, mimetype="image/png")
+
+
 @app.get('/assets/images/<kind>/<width>/<height>')
 @cache.memoize()
 def get_assets_images_splash(kind, width, height):
@@ -57,7 +119,7 @@ def get_assets_images_splash(kind, width, height):
         width=int(width)
         height=int(height)
     except:
-        abort(400)
+        abort(404)
 
     if max(width, height)>4500:
         abort(404)
