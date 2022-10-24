@@ -72,8 +72,8 @@ def get_assets_images_splash(width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    if min(width, height) <=5:
-        size=min(width, height) - 6
+    if min(width, height) <= 100:
+        size=int(min(width, height) *0.95)
     else:
         size=min(height//4, width//2)
 
