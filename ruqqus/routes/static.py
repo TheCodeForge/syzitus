@@ -63,14 +63,14 @@ def get_assets_images_splash_logo(color):
     primary = (primary_r, primary_g, primary_b, 255)
 
     base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
-    text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
+    text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
 
     #flood fill main logo shape if needed
     if color=="main":
         d=ImageDraw.Draw(base_layer)
         d.floodfill(
             base_layer,
-            (base_layer.width//2, base_layer.height//2),
+            (base_layer.size[1]//2, base_layer.size[2]//2),
             value=primary)
 
     #tilted letter layer
@@ -85,8 +85,8 @@ def get_assets_images_splash_logo(color):
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
-            width // 2 - box[2] // 2, 
-            height // 2 - (box[3]+box[1]) // 2
+            base_layer.size[1] // 2 - box[2] // 2, 
+            base_layer.size[2] // 2 - (box[3]+box[1]) // 2
             ),
         letter, 
         font=font,
