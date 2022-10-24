@@ -56,9 +56,6 @@ def get_assets_images_splash_logo(color):
     if color not in ["main", "white"]:
         abort(404)
 
-    if text not in ["simple", "full"]:
-        abort(404)
-
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
     primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
     primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
