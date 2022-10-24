@@ -97,7 +97,7 @@
 <meta property="og:description" name="description" content="{{ comment_info.body }}" />
 <meta property="og:author" name="author" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}}" />
 <meta property="og:title" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}} comments on {{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
-<meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}{% endif %}" />
+<meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/splash/1200/630' | full_link }}{% endif %}" />
 <meta property="og:url" content="{{ comment_info.permalink | full_link }}" />
 <meta property="og:site_name" content="{{ p.board.permalink | full_link }}" />
 
