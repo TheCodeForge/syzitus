@@ -91,7 +91,7 @@ def get_assets_images_splash(width, height):
     d.text(
         (
             width // 2 - box[2] // 2, 
-            height // 2 - (box[3]-box[1]) // 2
+            height // 2 - box[3] // 2
             ),
         letter, 
         font=font,
