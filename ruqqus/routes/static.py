@@ -96,6 +96,10 @@ def get_assets_images_splash_logo(color):
         angle=20, 
         expand=False, 
         fillcolor=(255,255,255,0),
+        center=(
+            text_layer.size[0]//2,
+            text_layer.size[0]//2
+            )
         resample=PIL.Image.BILINEAR)
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
