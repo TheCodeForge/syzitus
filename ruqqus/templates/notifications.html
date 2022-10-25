@@ -31,24 +31,24 @@
       </li>
       <li class="nav-item">
 
-        <a class="nav-link py-3{% if request.path=='/notifications/posts' %} active{% endif %}" href="/notifications/posts{% if not v.post_notifications_count %}?all=true{% endif %}">
-          Posts{% if v.post_notifications_count %} <span class="text-purple font-weight-bold">({{ v.post_notifications_count }})</span>{% endif %}
+        <a class="nav-link py-3{% if request.path=='/notifications/posts' %} active{% endif %}" href="/notifications/posts{% if not g.user.post_notifications_count %}?all=true{% endif %}">
+          Posts{% if g.user.post_notifications_count %} <span class="text-purple font-weight-bold">({{ g.user.post_notifications_count }})</span>{% endif %}
 
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link py-3{% if request.path=='/notifications/replies' %} active{% endif %}" href="/notifications/replies">
-          Replies{% if v.replies_count %} <span class="text-purple font-weight-bold">{{ v.replies_count }}</span>{% endif %}
+          Replies{% if g.user.replies_count %} <span class="text-purple font-weight-bold">{{ g.user.replies_count }}</span>{% endif %}
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link py-3{% if request.path=='/notifications/mentions' %} active{% endif %}" href="/notifications/mentions">
-          Mentions{% if v.mentions_count %} <span class="text-purple font-weight-bold">{{ v.mentions_count }}</span>{% endif %}
+          Mentions{% if g.user.mentions_count %} <span class="text-purple font-weight-bold">{{ g.user.mentions_count }}</span>{% endif %}
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link py-3 {% if request.path=='/notifications/system' %} active{% endif %}" href="/notifications/system">
-          System{% if v.system_notif_count %} <span class="text-purple font-weight-bold">{{ v.system_notif_count }}</span>{% endif %}
+          System{% if g.user.system_notif_count %} <span class="text-purple font-weight-bold">{{ g.user.system_notif_count }}</span>{% endif %}
         </a>
       </li>
     </ul>
