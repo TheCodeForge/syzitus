@@ -165,7 +165,7 @@
           <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
         </li>
       {% endif %}
-      {% if g.user.admin_level %}
+      {% if g.user.admin_level > 1 %}
         <li class="nav-item">
           <a class="nav-link" href="/admin"><i class="fas fa-shield fa-fw mr-3 text-danger"></i>Admin</a>
         </li>
