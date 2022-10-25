@@ -2515,8 +2515,8 @@ function mod_post(url, type, id) {
 
 
 //post form toast utility function
-$('.toast-form-submit').click(function(){
-  var form_id=$(this).data('form')
+var postformtoast = function(x){
+  var form_id=$(x).data('form')
   var xhr = new XMLHttpRequest();
   url=$('#'+form_id).prop('action');
   xhr.open("POST", $('#'+form_id).prop('action'), true);
@@ -2542,4 +2542,7 @@ $('.toast-form-submit').click(function(){
     }
   };
   xhr.send(form);
-})
+}
+
+$('.toast-form-submit').click(function(){postformtoast($(this))});
+$('.toast-form-change-submit').change(function(){postformtoast($(this))});
