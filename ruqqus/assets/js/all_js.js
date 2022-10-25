@@ -2516,7 +2516,7 @@ function mod_post(url, type, id) {
 
 //post form toast utility function
 var postformtoast = function(x){
-  var form_id=$(x).data('form')
+  var form_id=x.data('form')
   var xhr = new XMLHttpRequest();
   url=$('#'+form_id).prop('action');
   xhr.open("POST", $('#'+form_id).prop('action'), true);
