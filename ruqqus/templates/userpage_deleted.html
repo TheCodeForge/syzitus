@@ -38,20 +38,20 @@
 {% block sidebar %}{% endblock %}
 
 {% block adminpanel %}
-{% if v.admin_level >=3 and v.admin_level > u.admin_level %}
+{% if g.user.admin_level >=3 and g.user.admin_level > u.admin_level %}
 {% if u.is_banned %}
 <form action="/api/unban_user/{{ u.id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-success" value="Unban user">
 </form>
 {% else %}
 <form action="/api/ban_user/{{ u.id }}", method="post">
-  <input type="hidden" name="formkey", value="{{ v.formkey }}">
+  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
   <input type="submit" class="btn btn-warning" value="Ban user">
 </form>
 {% endif %}
 {% endif %}
-{% if v.admin_level >=4 and v.admin_level > u.admin_level %}
+{% if g.user.admin_level >=4 and g.user.admin_level > u.admin_level %}
 <table>
  <tr>
   <th>Key</th>

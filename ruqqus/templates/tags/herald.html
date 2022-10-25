@@ -1,0 +1,10 @@
+{% if c %}
+    {% set b=c.distinguished_board %}
+    {% set same=(c.gm_distinguish==c.post.board_id)}
+{% elif p %}
+    {% set b=p.distinguished_board %}
+    {% set same=(p.gm_distinguish==p.board_id)}
+{% endif %}
+<span>
+    <i class="fad fa-crown {% if same %}text-warning{% else %}text-muted{% endif %} align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="Guildmaster of +{{ b.name }}"></i>
+</span>
