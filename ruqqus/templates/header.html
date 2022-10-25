@@ -101,7 +101,7 @@
               {% endif %}
               <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
-              <a class="dropdown-item dark-switch text-black"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3 dark-switch-icon"></i>Dark mode</a>
+              <a class="dropdown-item dark-switch text-black" href="javascript:void(0)"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3 dark-switch-icon"></i>Dark mode</a>
             </div>
             <hr class="my-2">
             <div class="px-2">
@@ -157,7 +157,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link dark-switch text-black"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-black fa-fw mr-3 dark-switch-icon"></i>Dark mode</a>
+        <a class="nav-link dark-switch text-black" href="javascript:void(0)"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-black fa-fw mr-3 dark-switch-icon"></i>Dark mode</a>
       </li>
 
       {% if g.user.can_make_guild %}
