@@ -34,7 +34,7 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
                          files=[("attachment", (k, files[k])) for k in files]
                          )
 
-    debug([g.user.username, x.status_code, x.content])
+    debug([g.user.username, url, x.status_code, x.content])
     return x
 
 
