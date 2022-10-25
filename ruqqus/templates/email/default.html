@@ -23,7 +23,7 @@
     }
     
     a {
-      color: #805AD5!important;
+      color: #{{ "COLOR_PRIMARY" | app_config }}!important;
     }
     
     a img {
@@ -110,11 +110,11 @@
     /* Buttons ------------------------------ */
     
     .button {
-      background-color: #805AD5;
-      border-top: 10px solid #805AD5;
-      border-right: 18px solid #805AD5;
-      border-bottom: 10px solid #805AD5;
-      border-left: 18px solid #805AD5;
+      background-color: #{{ "COLOR_PRIMARY" | app_config }};
+      border-top: 10px solid #{{ "COLOR_PRIMARY" | app_config }};
+      border-right: 18px solid #{{ "COLOR_PRIMARY" | app_config }};
+      border-bottom: 10px solid #{{ "COLOR_PRIMARY" | app_config }};
+      border-left: 18px solid #{{ "COLOR_PRIMARY" | app_config }};
       display: inline-block;
       color: #FFF!important;
       text-decoration: none;
