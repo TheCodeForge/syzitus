@@ -323,7 +323,6 @@ def settings_images_profile():
     # anti csam
     new_thread = threading.Thread(target=check_csam_url,
                                   args=(g.user.profile_url,
-                                        v,
                                         lambda: board.del_profile()
                                         )
                                   )
@@ -341,7 +340,6 @@ def settings_images_banner():
     # anti csam
     new_thread = threading.Thread(target=check_csam_url,
                                   args=(g.user.banner_url,
-                                        v,
                                         lambda: board.del_banner()
                                         )
                                   )
