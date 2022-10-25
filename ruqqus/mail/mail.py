@@ -11,14 +11,14 @@ from ruqqus.__main__ import app
 
 
 def send_mail(to_address, subject, html, plaintext=None, files={},
-              from_address="Ruqqus <noreply@mail.ruqqus.com>"):
+              from_address=f"{app.config['SITE_NAME']} <noreply@mail.{app.config['SERVER_NAME']}>"):
 
     if not environ.get("MAILGUN_KEY"):
         debug("Cannot send mail - no mailgun key")
         return
 
 
-    url = "https://api.mailgun.net/v3/mail.ruqqus.com/messages"
+    url = "https://api.mailgun.net/v3/mail.{app.config['SERVER_NAME']}/messages"
 
     data = {"from": from_address,
             "to": [to_address],
