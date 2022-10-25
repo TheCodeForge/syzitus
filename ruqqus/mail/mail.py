@@ -57,7 +57,7 @@ def send_verification_email(user, email=None):
               html=render_template("email/email_verify.html",
                                    action_url=link,
                                    v=user),
-              subject="Validate your Ruqqus account email."
+              subject=f"Validate your {app.config["SITE_NAME"]} account email."
               )
 
 
@@ -72,7 +72,7 @@ def api_verify_email(v):
 
 @app.route("/activate", methods=["GET"])
 @auth_desired
-def activate(v):
+def activate():
 
     email = request.args.get("email", "")
     id = request.args.get("id", "")
@@ -80,8 +80,11 @@ def activate(v):
     token = request.args.get("token", "")
 
     if int(time.time()) - timestamp > 3600:
-        return render_template("message.html", v=v, title="Verification link expired.",
-                               message="That link has expired. Visit your settings to send yourself another verification email."), 410
+        return render_template(
+            "message.html", 
+            title="Verification link expired.",
+            message="That link has expired. Visit your settings to send yourself another verification email."
+            ), 410
 
     if not validate_hash(f"{email}+{id}+{timestamp}", token):
         abort(403)
@@ -91,8 +94,11 @@ def activate(v):
         abort(404)
 
     if user.is_activated and user.email == email:
-        return render_template("message_success.html", v=v,
-                               title="Email already verified.", message="Email already verified."), 404
+        return render_template(
+            "message_success.html",
+            title="Email already verified.", 
+            message="Email already verified."
+            ), 404
 
     user.email = email
     user.is_activated = True
@@ -105,4 +111,4 @@ def activate(v):
 
     g.db.add(user)
 
-    return render_template("message_success.html", v=v, title="Email verified.", message=f"Your email {email} has been verified. Thank you.")
+    return render_template("message_success.html", title="Email verified.", message=f"Your email {email} has been verified. Thank you.")
