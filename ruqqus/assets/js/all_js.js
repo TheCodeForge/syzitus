@@ -2533,8 +2533,11 @@ $('.toast-form-submit').click(function(){
       $('#toast-success').toast('show')
     } else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
-    } else {
+    } else if (xhr.status >=400 && xhr.status < 500) {
       $('#toast-error .toast-text').text(data['error']);
+      $('#toast-error').toast('show')
+    } else {
+      $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
       $('#toast-error').toast('show')
     }
   };
