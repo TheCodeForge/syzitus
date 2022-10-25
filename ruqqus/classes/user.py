@@ -264,11 +264,11 @@ class User(Base, Stndrd, Age_times):
         if not self.show_nsfl:
             posts = posts.filter_by(is_nsfl=False)
 
-        board_ids = g.db.select(
+        board_ids = select(
             Subscription.board_id).filter_by(
             user_id=self.id,
             is_active=True)
-        user_ids = g.db.select(
+        user_ids = select(
             Follow.user_id).filter_by(
             user_id=self.id).join(
             Follow.target).filter(
