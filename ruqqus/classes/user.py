@@ -267,13 +267,13 @@ class User(Base, Stndrd, Age_times):
         board_ids = g.db.query(
             Subscription.board_id).filter_by(
             user_id=self.id,
-            is_active=True).subquery()
+            is_active=True).select()
         user_ids = g.db.query(
             Follow.user_id).filter_by(
             user_id=self.id).join(
             Follow.target).filter(
                 User.is_private == False,
-            User.is_nofollow == False).subquery()
+            User.is_nofollow == False).select()
 
         posts = posts.filter(
             or_(
