@@ -1,0 +1,8 @@
+{% if c %}
+    {% set b=c.original_board %}
+{% elif p %}
+    {% set b=p.original_board %}
+{% endif %}
+<span>
+	<i class="fas fa-thumbtack fa-fw text-info fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Pinned to +{{ b.name }}"></i>
+</span>

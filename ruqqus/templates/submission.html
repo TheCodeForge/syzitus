@@ -383,16 +383,19 @@
         <div class="card-block w-100 my-md-auto">
 
           <div class="post-meta text-left d-none d-md-block mb-md-2">
-            {% if p.stickied %}<i class="fas fa-thumbtack fa-fw text-admin fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Sticky post"></i> · {% endif %}
-            {% if p.is_pinned %}<i class="fas fa-thumbtack fa-fw text-info fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Pinned to +{{ p.board.name }}"></i> · {% endif %}
-            {% if p.is_archived %}<i class="fas fa-archive text-warning" data-toggle="tooltip" data-placement="bottom" title="Archived post"></i> · {% endif %}<span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
-            {% if p.is_exiled_for %} <i class="fad fa-gavel text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="User was exiled from +{{ p.original_board.name }} for this post."></i>{% endif %}
+            {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
+            {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
+            {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}<span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
             {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
             {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
-            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %}){% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}{% if p.over_18 %} · <span class="badge text-danger border-danger border-1 text-small-extra">nsfw</span>{% endif %} {% if p.is_nsfl %} · <span class="badge text-black border-danger border-1 text-small-extra">nsfl</span>{% endif %}{% if p.is_repost %} · <span class="badge border-warning border-1 text-small-extra"><a class="text-warning" href="{{ p.reposts.permalink }}">repost</a></span>{% endif %}
+            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %}){% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}
+            {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}
+            {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
+            {% if p.is_repost %} · {% include "tags/repost.html" %}{% endif %}
           </div>
 
           {% if p.url %}
@@ -402,9 +405,14 @@
           {% endif %}
 
           <div class="post-meta text-left d-block d-md-none mb-3">
-            {% if p.stickied %}<i class="fas fa-thumbtack fa-fw text-admin fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Sticky post"></i> · {% endif %}{% if p.is_pinned %}<i class="fas fa-thumbtack fa-fw text-info fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Pinned to +{{ p.board.name }}"></i> · {% endif %}{% if p.is_archived %}<i class="fas fa-archive text-warning" data-toggle="tooltip" data-placement="bottom" title="Archived post"></i> · {% endif %}{% if p.over_18 %}<span class="text-danger"><i class="far fa-exclamation-triangle text-small mr-1"></i>nsfw</span> · {% endif %}{% if p.is_nsfl %}<span class="text-black"><i class="far fa-exclamation-triangle text-small mr-1"></i>nsfl</span> · {% endif %}{% if p.is_repost %}<span class="text-warning"><i class="far fa-sync text-small mr-1"></i><a class="text-warning" href="{{ p.reposts.permalink }}">repost</a></span> · {% endif %}<span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
-            {% if p.is_exiled_for %}<i class="fad fa-gavel text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="User was exiled from +{{ p.original_board.name }} for this post."></i>
-            {% endif %}
+            {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
+            {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
+            {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}
+            {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
+            {% if p.is_nsfl %}{% include "tags/nsfl.html" %} · {% endif %}
+            {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %}
+            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}

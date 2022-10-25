@@ -1,0 +1,8 @@
+{% if c %}
+    {% set b=c.original_board %}
+{% elif p %}
+    {% set b=p.original_board %}
+{% endif %}
+<span>
+    <i class="fad fa-gavel text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="User was exiled from +{{ b.name }} for this post."></i>
+</span>
