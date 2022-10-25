@@ -35,7 +35,7 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
                          )
 
     debug([g.user.username, x.status_code, x.content])
-    return s
+    return x
 
 
 def send_verification_email(user, email=None):
