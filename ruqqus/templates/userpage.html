@@ -55,11 +55,7 @@
                   <i class="fad fa-user-tag text-info align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="Original Username: @{{ u.original_username }}"></i>
                 </span>
                 {% endif %}
-                {% if u.admin_level > 1 %}
-                <span>
-                  <i class="fad fa-shield-cross text-admin align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="{{ 'SITE_NAME' | app_config }} Admin"></i>
-                </span>
-                {% endif %}
+                {% if u.admin_level > 1 %}{% include "tags/admin.html" %}{% endif %}
                 {% if u.real_id %}<span class="badge badge-pill text-white badge-info ml-2">{{ u.real_id }}</span>
                 {% endif %}
                 {% if g.user and g.user.has_follower(u) %}
