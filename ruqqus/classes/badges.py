@@ -216,7 +216,7 @@ BADGE_DATA={
     15: {
         "name":"Alpha User",
         "description":f"Joined {app.config['SITE_NAME']} in alpha phase",
-        "kind": 2,
+        "kind": 3,
         "rank": 4,
         "icon": "alpha.png"
     },
