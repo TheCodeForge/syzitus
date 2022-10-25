@@ -316,7 +316,7 @@ def settings_log_out_others():
 @is_not_banned
 def settings_images_profile():
     if not g.user.can_upload_avatar:
-        return jsonify({"error":"Profile pictures require 300 Reputation"}), 401
+        return jsonify({"error":f"Profile pictures require {app.config['PROFILE_UPLOAD_REP']} Reputation"}), 401
 
     g.user.set_profile(request.files["profile"])
 
@@ -334,7 +334,7 @@ def settings_images_profile():
 @is_not_banned
 def settings_images_banner():
     if not g.user.can_upload_banner:
-        jsonify({"error":"Profile banners require 500 Reputation."}), 401
+        jsonify({"error":f"Profile banners require {app.config['BANNER_UPLOAD_REP']} Reputation."}), 401
     g.user.set_banner(request.files["banner"])
 
     # anti csam
