@@ -1,13 +1,11 @@
 {% extends "email/default.html" %}
 
-{% block image %}verify.png{% endblock %}
-
 {% block title %}Verify Your Email{% endblock %}</h1>
 
-{% block preheader %}Verify your new Ruqqus email.{% endblock %}
+{% block preheader %}Verify your new {{ "SITE_NAME" | app_config }} email.{% endblock %}
 
 {% block content %}
-                        <p>You told us you wanted to change your Ruqqus account email. To finish this process, please verify your new email address:</p>
+                        <p>You told us you wanted to change your {{ "SITE_NAME" | app_config }} account email. To finish this process, please verify your new email address:</p>
                         <!-- Action -->
                         <table class="body-action" align="center" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                           <tr>
@@ -32,14 +30,14 @@
                                 <tr>
                                   <td class="attributes_item">
                                     <span class="f-fallback">
-              <strong>Email:</strong> {{ v.email }}
+              <strong>Email:</strong> {{ g.user.email }}
             </span>
                                   </td>
                                 </tr>
                                 <tr>
                                   <td class="attributes_item">
                                     <span class="f-fallback">
-              <strong>Username:</strong> {{ v.username }}
+              <strong>Username:</strong> {{ g.user.username }}
             </span>
                                   </td>
                                 </tr>
@@ -47,11 +45,9 @@
                             </td>
                           </tr>
                         </table>
-                        <p>Please note that Ruqqus will never ask you for your email, password, or two-factor token via email, text, or phone.</p>
-                        <p>If you have any questions, feel free to <a href="mailto:info@ruqqus.com">email the Ruqqus team</a>. (We're lightning fast at replying.)</p>
+                        <p>Please note that {{ "SITE_NAME" | app_config }} will never ask you for your email, password, or two-factor token via email, text, or phone.</p>
                         <p>Thanks,
                           <br>The Ruqqus Team</p>
-                        <p><strong>P.S.</strong> Feel free to tweet at us on Twitter <a href="https://www.twitter.com/ruqqus">@ruqqus</a>.</p>
                         <!-- Sub copy -->
                         <table class="body-sub" role="presentation">
                           <tr>
