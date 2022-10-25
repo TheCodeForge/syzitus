@@ -328,7 +328,7 @@ def settings_images_profile():
                                   )
     new_thread.start()
 
-    return jsonify({"message":"Profile picture successfully updated."})
+    return redirect("/settings/profile?Profile picture updated")#jsonify({"message":"Profile picture successfully updated."})
 
 @app.route("/settings/images/banner", methods=["POST"])
 @is_not_banned
@@ -345,7 +345,7 @@ def settings_images_banner():
                                   )
     new_thread.start()
 
-    return jsonify({"message":"Banner picture successfully updated."})
+    return redirect("/settings/profile?Banner picture updated") #jsonify({"message":"Banner picture successfully updated."})
 
 
 @app.route("/settings/delete/profile", methods=["POST"])
