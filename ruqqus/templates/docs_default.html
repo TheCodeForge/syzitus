@@ -9,7 +9,7 @@
   <meta name="author" content="">
 
   {% block title %}
-  <title>{{ "SITE_NAME" | app_config | lower }}: The Open-Source Platform for Independent Internet Communities</title>
+  <title>{{ "SITE_NAME" | app_config | lower }}: The Platform for Independent Internet Communities</title>
   <meta name="description" content="The independent social platform">
   {% endblock %}
   
@@ -43,7 +43,30 @@
 
 <body id="{% block pagetype %}article{% endblock %}">
 
-  {% include "docs_header.html" %}
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom">
+          <div class="container">
+              <a class="navbar-brand text-purple" href="/">{{ "SITE_NAME" | app_config }}</a>
+              <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"><i class="fal fa-bars text-dark" style="font-size: 2rem;"></i></span>
+          </button>
+          <div class="navbar-collapse collapse" id="navbarResponsive" style="">
+              <ul class="navbar-nav align-items-center ml-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="/help/about">About</a>
+                  </li>
+                  {% block backbutton %}
+                  {% if request.path != "/help" %}
+                  <li class="py-md-0 py-1 px-md-2">
+                      <a class="btn btn-primary" href="/help"><i class="fas fa-left-from-line mr-2"></i>Back to {{ "SITE_NAME" | app_config }} help</a>
+                  </li>
+                  {% endif %}
+                  {% endblock %}
+              </ul>
+          </div>
+      </div>
+  </nav>
+
 
   <!-- Page Content -->
 

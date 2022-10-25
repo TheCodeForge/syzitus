@@ -1,0 +1,9 @@
+{% extends "docs_default.html"}
+
+{% block backbutton %}
+{% if request.path != "/admin" %}
+<li class="py-md-0 py-1 px-md-2">
+    <a class="btn btn-primary" href="/admin"><i class="fas fa-left-from-line mr-2"></i>Back to admin home</a>
+</li>
+{% endif %}
+{% endblock %}
