@@ -156,7 +156,7 @@
 
           </div>
           
-          {% if environ.get('DISCORD_SERVER_ID') %}
+          {% if ('DISCORD_SERVER_ID' | app_config ) %}
           <h2 class="h5" name="referral">Linked Accounts</h2>
 
           <p class="text-small text-muted">Manage your connections to other services.</p>

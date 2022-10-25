@@ -154,6 +154,12 @@ app.config['UPLOAD_IMAGE_REP']=int(environ.get("UPLOAD_IMAGE_REP","10").lstrip()
 
 app.config["DEBUG"]=bool(int(environ.get("DEBUG", 0)))
 
+app.config['DISCORD_SERVER_ID'] = environ.get("DISCORD_SERVER_ID",'').rstrip()
+app.config['DISCORD_CLIENT_ID'] = environ.get("DISCORD_CLIENT_ID",'').rstrip()
+app.config['DISCORD_CLIENT_SECRET'] = environ.get("DISCORD_CLIENT_SECRET",'').rstrip()
+app.config['DISCORD_BOT_TOKEN'] = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
+app.config['DISCORD_ENDPOINT'] = "https://discordapp.com/api/v6"
+
 Markdown(app)
 cache = Cache(app)
 Compress(app)

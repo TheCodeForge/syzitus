@@ -10,12 +10,6 @@ from ruqqus.helpers.security import *
 from ruqqus.helpers.discord import add_role, delete_role
 from ruqqus.__main__ import app
 
-SERVER_ID = environ.get("DISCORD_SERVER_ID",'').rstrip()
-CLIENT_ID = environ.get("DISCORD_CLIENT_ID",'').rstrip()
-CLIENT_SECRET = environ.get("DISCORD_CLIENT_SECRET",'').rstrip()
-BOT_TOKEN = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
-DISCORD_ENDPOINT = "https://discordapp.com/api/v6"
-
 
 WELCOME_CHANNEL="775132151498407961"
 
@@ -36,7 +30,7 @@ def join_discord(v):
 
     state=f"{now}.{state}"
 
-    return redirect(f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_ID}&redirect_uri=https%3A%2F%2F{app.config['SERVER_NAME']}%2Fdiscord_redirect&response_type=code&scope=identify%20guilds.join&state={state}")
+    return redirect(f"https://discord.com/api/oauth2/authorize?client_id={app.config['DISCORD_CLIENT_ID']}&redirect_uri=https%3A%2F%2F{app.config['SERVER_NAME']}%2Fdiscord_redirect&response_type=code&scope=identify%20guilds.join&state={state}")
 
 @app.route("/discord_redirect", methods=["GET"])
 @auth_required
@@ -63,8 +57,8 @@ def discord_redirect(v):
         abort(400)
 
     data={
-        "client_id":CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
+        "client_id":app.config['DISCORD_CLIENT_ID'],
+        'client_secret': app.config['DISCORD_CLIENT_SECRET'],
         'grant_type': 'authorization_code',
         'code': code,
         'redirect_uri': f"https://{app.config['SERVER_NAME']}/discord_redirect",
@@ -99,13 +93,13 @@ def discord_redirect(v):
 
     #add user to discord
     headers={
-        'Authorization': f"Bot {BOT_TOKEN}",
+        'Authorization': f"Bot {app.config['DISCORD_BOT_TOKEN']}",
         'Content-Type': "application/json"
     }
 
     #remove existing user if applicable
     if v.discord_id and v.discord_id != x['id']:
-        url=f"https://discord.com/api/guilds/{SERVER_ID}/members/{v.discord_id}"
+        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{v.discord_id}"
         requests.delete(url, headers=headers)
 
     if g.db.query(User).filter(User.id!=v.id, User.discord_id==x["id"]).first():
@@ -115,7 +109,7 @@ def discord_redirect(v):
     g.db.add(v)
     g.db.commit()
 
-    url=f"https://discord.com/api/guilds/{SERVER_ID}/members/{x['id']}"
+    url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{x['id']}"
 
     name=v.username
     if v.real_id:
@@ -153,7 +147,7 @@ def discord_redirect(v):
             add_role(v, "realid")
 
 
-        url=f"https://discord.com/api/guilds/{SERVER_ID}/members/{v.discord_id}"
+        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{v.discord_id}"
         data={
             "nick": name
         }
@@ -163,7 +157,7 @@ def discord_redirect(v):
         #print(req.status_code)
         #print(url)
 
-    return redirect(f"https://discord.com/channels/{SERVER_ID}/{WELCOME_CHANNEL}")
+    return redirect(f"https://discord.com/channels/{app.config['DISCORD_SERVER_ID']}/{WELCOME_CHANNEL}")
 
 
 #guilded redirect
