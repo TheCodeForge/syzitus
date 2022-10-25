@@ -173,25 +173,23 @@ def api_distinguish_post(post_id):
 @admin_level_required(3)
 def api_sticky_post(post_id):
 
-    post = get_post(post_id)
-    if post:
-        if post.stickied == False:
-            g.db.add(post)
-            g.db.commit()
-            return redirect(post.permalink)
-
     already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
-
-    post.stickied = True
-
     if already_stickied:
         already_stickied.stickied = False
         g.db.add(already_stickied)
 
-    g.db.add(post)
+    post = get_post(post_id)
+    if post:
+        if post.stickied:
+            post.sticked=True
+            g.db.add(post)
+        else:
+            post.stickied = True
+            g.db.add(post)
+
     g.db.commit()
 
-    return (redirect(post.permalink), post)
+    return redirect(post.permalink)
 
 
 @app.route("/api/ban_comment/<c_id>", methods=["post"])
