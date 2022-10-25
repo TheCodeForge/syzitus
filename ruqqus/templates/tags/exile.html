@@ -1,8 +1,10 @@
 {% if c %}
     {% set b=c.original_board %}
+    {% set link=c.is_exiled_for.permalink %}
 {% elif p %}
     {% set b=p.original_board %}
+    {% set link=p.is_exiled_for.permalink %}
 {% endif %}
 <span>
-    <i class="fad fa-gavel text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="User was exiled from +{{ b.name }} for this post."></i>
+    <a href="{{ link }}" target="_blank"><i class="fad fa-gavel text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="User was exiled from +{{ b.name }} for this {% if c %}comment{% elif p %}post{% endif %}."></i></a>
 </span>
