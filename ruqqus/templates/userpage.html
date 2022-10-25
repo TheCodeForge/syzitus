@@ -162,9 +162,7 @@
               <i class="fad fa-user-tag text-info align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="Original Username: @{{ u.original_username }}"></i>
             </span>
             {% endif %}
-            <!--{% if u.over_18 %}
-            <span class="badge badge-danger text-small align-middle mx-1">nsfw</span>
-            {% endif %}-->
+            {% if u.admin_level>2 %}{% include "tags/admin.html" %}{% endif %}
             {% if g.user and g.user.has_follower(u) and not g.user.is_nofollow %}
             <span class="badge badge-secondary text-small align-middle mx-1">Follows you</span>
             {% endif %}
