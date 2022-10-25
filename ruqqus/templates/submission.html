@@ -413,7 +413,7 @@
             {% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
-            {% if p.distinguish_level %}{% include "tags/admin.html %}{% endif %}
+            {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
             {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
             {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %}
             {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}
