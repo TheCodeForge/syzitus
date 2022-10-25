@@ -27,12 +27,15 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
             "html": html,
             }
 
-    return requests.post(url,
+    x= requests.post(url,
                          auth=(
                              "api", environ.get("MAILGUN_KEY").lstrip().rstrip()),
                          data=data,
                          files=[("attachment", (k, files[k])) for k in files]
                          )
+
+    debug([g.user.username, x.status_code, x.content])
+    return s
 
 
 def send_verification_email(user, email=None):
