@@ -74,7 +74,7 @@ URL path parameters:
                     vote_type=x,
                     submission_id=base36decode(pid),
                     creation_ip=request.remote_addr,
-                    app_id=g.user.client.application.id if g.user.client else None
+                    app_id=g.client.application.id if g.client else None
                     )
 
         g.db.add(vote)
@@ -155,7 +155,7 @@ URL path parameters:
                            vote_type=x,
                            comment_id=base36decode(cid),
                            creation_ip=request.remote_addr,
-                           app_id=g.user.client.application.id if g.user.client else None
+                           app_id=g.client.application.id if g.client else None
                            )
 
         g.db.add(vote)

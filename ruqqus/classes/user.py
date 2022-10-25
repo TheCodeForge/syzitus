@@ -57,7 +57,7 @@ class User(Base, Stndrd, Age_times):
     bio_html = Column(String, default="")
     _badges = relationship("Badge", lazy="dynamic", backref="user")
     real_id = Column(String, default=None)
-    notifications = relationship("Notification")
+    notifications = relationship("Notification", lazy="dynamic")
 
     #unread_notifications_relationship=relationship(
     #    "Notification",
