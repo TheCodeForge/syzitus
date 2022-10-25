@@ -20,7 +20,7 @@
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- {{ "SITE_NAME" | app_config }} CSS -->
-  <link rel="stylesheet" href="/assets/style/main.css">
+  <link rel="stylesheet" href="/assets/style/main/light.css">
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
@@ -271,96 +271,6 @@
 
 </div>
 
-<div class="row text-left text-white d-flex d-md-none">
-
-    <div class="col">
-
-        <a href="https://github.com/{{ "SITE_NAME" | app_config }}/{{ "SITE_NAME" | app_config }}" class="btn btn-lg btn-primary btn-block mb-6">View our code</a>
-
-        <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-        style="height: 330px; overflow-x: hidden;">
-        import time
-        from {{ "SITE_NAME" | app_config }}.helpers.wrappers
-        import *
-        from flask
-        import *
-
-        from {{ "SITE_NAME" | app_config }}.__main__
-        import app, db, cache
-        from {{ "SITE_NAME" | app_config }}.classes
-        import *
-
-        @cache.memoize(timeout = 30)
-        def frontlist(sort = "hot", page = 1):
-
-        cutoff = int(time.time()) - (60 * 60 * 24 * 30)
-
-        posts = db.query(Submission).filter(Submission.created_utc >= cutoff,
-        Submission.is_banned == False,
-        Submission.stickied == False)
-
-        if sort == "hot":
-        posts = posts.order_by(text("submissions.rank_hot desc"))
-        elif sort == "new":
-        posts = posts.order_by(Submission.created_utc.desc())
-        elif sort == "fiery":
-        posts = posts.order_by(text("submissions.rank_fiery desc"))
-        elif sort == "top":
-        posts = posts.order_by(text("submissions.score desc"))
-
-        posts = [x.id
-        for x in posts.offset(25 * (page - 1)).limit(25).all()
-        ]
-
-        return posts
-
-        @app.route("/", methods = ["GET"])
-        @auth_desired
-        def home(v):
-
-        page = int(request.args.get("page", 1))
-
-        sort_method = request.args.get("sort", "hot")
-
-        # get list of ids
-        ids = frontlist(sort = sort_method, page = page)
-
-        # assemble list of tuples
-        i = 1
-        tups = []
-        for x in ids:
-        tups.append((x, i))
-        i += 1
-
-        # tuple string
-        tups = str(tups).lstrip("[").rstrip("]")
-
-        # hit db
-        for entries
-        posts = db.query(Submission).from_statement(
-        text(f ""
-        "
-        select submissions.*, submissions.ups, submissions.downs from submissions join(values {
-        tups
-    }) as x(id, n) on submissions.id = x.id order by x.n ""
-    "
-    )).all()
-
-    # If page 1, check
-    for sticky
-    if page == 1:
-    sticky = []
-    sticky = db.query(Submission).filter_by(stickied = True).first()
-    if sticky:
-    posts = [sticky] + posts
-
-    return render_template("home.html", v = v, listing = posts, sort_method = sort_method)
-</pre>
-
-</div>
-
-</div>
-
 </div>
 
 </section>
@@ -383,7 +293,7 @@
                     <p class="text-uppercase font-weight-bold text-small text-primary" style="
                     letter-spacing: .025rem;
                     ">get started</p>
-                    <h2>Join the future of online discourse and make a {{ "SITE_NAME" | app_config }}</h2>
+                    <h2>Join the future of online discourse</h2>
                     <p class="text-white opacity-80">Create a {{ "SITE_NAME" | app_config }} account in seconds and join your favorite communities. Usernames aplenty. No email required.
                     </p>
                     <a href="/signup" class="btn btn-primary btn-lg">Sign up</a>
