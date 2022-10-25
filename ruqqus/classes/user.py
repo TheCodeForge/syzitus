@@ -583,7 +583,7 @@ class User(Base, Stndrd, Age_times):
                 )
                 ).subquery()
         
-        posts=g.db.query(Submission).options(lazyload('*')).filter(
+        posts=select(Submission).options(lazyload('*')).filter(
             Submission.board_id.in_(
                 board_ids
             ), 
