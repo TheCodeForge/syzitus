@@ -109,35 +109,39 @@
           <div style="height: 21px" class="d-block d-md-none mb-1">
 
             <div class="post-meta text-left x-scroll" style="overflow-x: scroll;">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
-              {% if p.stickied %}<i class="fas fa-thumbtack text-admin fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Sticky post"></i> · {% endif %}
-              {% if p.is_pinned %}<i class="fas fa-thumbtack text-info fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Pinned to +{{ p.board.name }}"></i> · {% endif %}
-              {% if p.over_18 %}<span class="text-danger"><i class="far fa-exclamation-triangle text-small mr-1"></i>nsfw</span> · {% endif %}
-              {% if p.is_nsfl %} · <span class="badge text-black border-danger border-1 text-small-extra">nsfl</span>{% endif %}
-              {% if p.is_repost %}<span class="text-warning"><i class="far fa-sync text-small mr-1"></i><a class="text-warning" href="{{ p.reposts.permalink }}">repost</a></span> · {% endif %} <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_date }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
+              {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
+              {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
+              {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
+              {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
+              {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %} <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_date }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
               {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
               {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
               {% endif %}{% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({{ p.domain }})
               {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible to you because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
-              {% if p.is_bot %} <i class="fad fa-robot text-info" data-toggle="tooltip" data-placement="bottom"  data-original-title="Automaton"></i>
-              {% endif %}
-              {% if p.is_blocking %}<i class="fas fa-user-minus text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="You're blocking this user."></i>{% endif %}
-              {% if p.is_blocked %}<i class="fas fa-user-minus text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="This user is blocking you."></i>{% endif %}
+              {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
+              {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
+              {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
               {% if g.user and g.user.admin_level >=3 and p.active_flags %} · <span class="text-danger">{{ p.active_flags }} Flags</span>{% endif %}{% if "/mod/queue" in request.path and p.active_reports %} · <span class="text-danger">{{ p.active_reports }} Reports</span>{% endif %}
           </div>
         </div>
 
         <div class="post-meta text-left d-none d-md-block mb-md-2">
-          {% if p.board_id %}{% if not b %}<span class="font-weight-bold"><a href="{{ p.board.permalink }}" class="text-black"><img src="{{ p.board.profile_url }}" class="profile-pic-20 align-top mr-1">+{{ p.board.name }}</a></span> · {% endif %}{% endif %}
-          {% if p.stickied %}<i class="fas fa-thumbtack text-admin fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Sticky post"></i> · {% endif %}
-          {% if p.is_pinned %}<i class="fas fa-thumbtack text-info fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="Pinned to +{{ p.board.name }}"></i> · {% endif %}
-          <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% if p.gm_distinguish %} <i class="fad fa-crown {% if p.gm_distinguish==p.board_id %}text-warning{% else %}text-muted{% endif %}" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Guildmaster of +{{ p.distinguished_board.name }}"></i>{% endif %}{% endif %} {% if p.distinguish_level %}<i class="fad fa-shield text-admin" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Ruqqus Administrator, speaking officially"></i>{% endif %}{% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
-          {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(g.user) }}"></i>{% endif %}{% if p.over_18 %} · <span class="badge text-danger border-danger border-1 text-small-extra">nsfw</span>{% endif %}{% if p.is_nsfl %} · <span class="badge text-black border-danger border-1 text-small-extra">nsfl</span>
+          {% if not b %}<span class="font-weight-bold"><a href="{{ p.board.permalink }}" class="text-black"><img src="{{ p.board.profile_url }}" class="profile-pic-20 align-top mr-1">+{{ p.board.name }}</a></span> · {% endif %}
+          {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
+          {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
+          <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
+          {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
           {% endif %}
-          {% if p.is_bot %} <i class="fad fa-robot text-info" data-toggle="tooltip" data-placement="bottom"  data-original-title="Automaton"></i>
-          {% endif %}
-          {% if p.is_blocking %}<i class="fas fa-user-minus text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="You're blocking this user."></i>{% endif %}
-          {% if p.is_blocked %}<i class="fas fa-user-minus text-danger" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="This user is blocking you."></i>{% endif %}
-          {% if p.is_repost %} · <span class="badge border-warning border-1 text-small-extra"><a class="text-warning" href="{{ p.reposts.permalink }}">repost</a></span>{% endif %}{% if g.user and g.user.admin_level >=3 and p.active_flags %}<span class="text-danger">{{ p.active_flags }} Flags</span>{% endif %}
+          {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
+          {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
+          {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
+          {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}
+          {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
+          {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
+          {% if p.is_blocking %}{% include "tags/blocking.html" %}>{% endif %}
+          {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
+          {% if p.is_repost %} · {% include "tags/repost.html" %}{% endif %}
+          {% if g.user and g.user.admin_level >=3 and p.active_flags %}<span class="text-danger">{{ p.active_flags }} Flags</span>{% endif %}
           {% if "/mod/queue" in request.path and p.active_reports %} · <span class="text-danger">{{ p.active_reports }} Reports</span>{% endif %}
 
       </div>
