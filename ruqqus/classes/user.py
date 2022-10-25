@@ -806,7 +806,8 @@ class User(Base, Stndrd, Age_times):
     @property
     @lazy
     def post_notifications_count(self):
-        return self.notifications.filter(
+        return g.db.query(Notification).filter(
+            Notification.user_id==self.id,
             Notification.read==False
             ).join(
             Submission,
@@ -819,11 +820,12 @@ class User(Base, Stndrd, Age_times):
     @property
     @lazy
     def system_notif_count(self):
-        return self.notifications.options(
+        return g.db.query(Notification).options(
             lazyload('*')
             ).join(
             Notification.comment
             ).filter(
+            Notification.user_id==self.id,
             Notification.read==False,
             Comment.author_id==1
             ).count()
@@ -831,9 +833,10 @@ class User(Base, Stndrd, Age_times):
     @property
     @lazy
     def notifications_count(self):
-        return self.notifications.options(
+        return g.db.query(Notification).options(
             lazyload('*')
             ).filter(
+                Notification.user_id==self.id,
                 Notification.read==False
             ).join(Notification.comment, isouter=True
             ).join(Notification.post, isouter=True
