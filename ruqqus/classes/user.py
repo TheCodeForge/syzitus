@@ -666,13 +666,14 @@ class User(Base, Stndrd, Age_times):
     def notification_commentlisting(self, page=1, all_=False, replies_only=False, mentions_only=False, system_only=False):
 
 
-        notifications = self.notifications.options(
+        notifications = g.db.query(Notification).options(
             lazyload('*'),
             joinedload(Notification.comment).lazyload('*'),
             joinedload(Notification.comment).joinedload(Comment.comment_aux)
             ).join(
             Notification.comment
             ).filter(
+            Notification.user_id==self.id
             Comment.is_banned == False,
             Comment.deleted_utc == 0)
 
@@ -729,9 +730,10 @@ class User(Base, Stndrd, Age_times):
 
     def notification_postlisting(self, all_=False, page=1):
 
-        notifications=self.notifications.join(
+        notifications=g.db.query(Notification).join(
             Notification.post
             ).filter(
+            Notification.user_id==self.id,
             Submission.is_banned==False, 
             Submission.deleted_utc==0
             )
