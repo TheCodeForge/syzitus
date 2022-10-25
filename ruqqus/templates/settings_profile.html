@@ -46,9 +46,9 @@
 
               {% if g.user.has_profile %}
               <div>
-                <form action="/settings/delete/profile" method="post">
+                <form id="delete-profile" action="/settings/delete/profile" method="post">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                  <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+                  <button class="btn btn-link fa-lg toast-form-submit" data-form="delete-profile"><i class="far fa-trash-alt text-danger"></i></button>
                 </form>
               </div>
               {% endif %}
@@ -102,9 +102,9 @@
               <div>
 
                 {% if g.user.has_banner %}
-                <form action="/settings/delete/banner" method="post">
+                <form id="delete-banner" action="/settings/delete/banner" method="post">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                  <button type="submit" value="Delete" class="btn btn-link fa-lg"><i class="far fa-trash-alt text-danger"></i></button>
+                  <button class="btn btn-link fa-lg toast-form-submit" data-form="delete-banner"><i class="far fa-trash-alt text-danger"></i></button>
                 </form>{% endif %}
 
               </div>
