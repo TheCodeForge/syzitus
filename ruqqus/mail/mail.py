@@ -18,7 +18,7 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
         return
 
 
-    url = "https://api.mailgun.net/v3/mail.{app.config['SERVER_NAME']}/messages"
+    url = f"https://api.mailgun.net/v3/mail.{app.config['SERVER_NAME']}/messages"
 
     data = {"from": from_address,
             "to": [to_address],
@@ -27,12 +27,14 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
             "html": html,
             }
 
-    x= requests.post(url,
-                         auth=(
-                             "api", environ.get("MAILGUN_KEY").lstrip().rstrip()),
-                         data=data,
-                         files=[("attachment", (k, files[k])) for k in files]
-                         )
+    x= requests.post(
+        url,
+        auth=(
+            "api", environ.get("MAILGUN_KEY").lstrip().rstrip()
+            ),
+        data=data,
+        files=[("attachment", (k, files[k])) for k in files]
+        )
 
     debug([g.user.username, url, x.status_code, x.content])
     return x
