@@ -177,7 +177,7 @@ def api_sticky_post(post_id):
     if post:
         if post.stickied == False:
             g.db.add(post)
-
+            g.db.commit()
             return redirect(post.permalink)
 
     already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
