@@ -574,16 +574,16 @@ class User(Base, Stndrd, Age_times):
     #@cache.memoize(timeout=60)
     @lazy
     def has_report_queue(self):
-        board_ids = g.db.query(ModRelationship.board_id).options(lazyload('*')).filter(
+        board_ids = select(ModRelationship.board_id).options(lazyload('*')).filter(
                 ModRelationship.user_id==self.id,
                 ModRelationship.accepted==True,
                 or_(
                     ModRelationship.perm_full==True,
                     ModRelationship.perm_content==True
                 )
-                ).subquery()
+            )
         
-        posts=select(Submission).options(lazyload('*')).filter(
+        posts=g.db.query(Submission).options(lazyload('*')).filter(
             Submission.board_id.in_(
                 board_ids
             ), 
