@@ -234,18 +234,18 @@
                   <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs 20 Coins and may be done once every 7 days.</p>
 
 
-                  <form id="profile-settings" action="/settings/name_change" method="post">
+                  <form id="display-name-form" action="/settings/name_change" method="post">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <input type="text" name="name" class="form-control" value="{{ g.user.username }}">
                     <small>Your original username will always stay reserved for you: <code>{{ g.user.original_username }}</code></small>
                     <div class="d-flex mt-2">
                       <small>5-25 characters, including letters, numbers, and _</small>
                       {% if g.user.can_change_name %}
-                      <input class="btn btn-primary ml-auto" id="nameSave" type="submit" value="Change Display Name">
+                      <button class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</button>
                       {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*7 %}
-                      <input class="btn btn-primary ml-auto" id="nameSave" type="submit" value="{{ 7-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
+                      <input class="btn btn-primary ml-auto" id="nameSave" value="{{ 7-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
                       {% else %}
-                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium">20 Coins required</a>
+                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>20 Coins required</a>
                       {% endif %}
                     </div>
                   </form>
@@ -268,7 +268,7 @@
                     </div>
                     <div class="d-flex">
                       <small>Limit of 256 characters</small>
-                      <input class="btn btn-primary ml-auto" id="bioSave" type="submit" value="Save Changes">
+                      <button class="btn ml-auto toast-form-submit btn-primary" data-form="profile-bio">Save Changes</button>
                     </div>
                   </form>
                 </div>
@@ -361,13 +361,6 @@
 
                 <span class="text-small-extra text-muted">Prevent other users from subscribing to you.</span>
 
-              </div>
-
-            </div>
-             <div class="d-lg-flex">
-
-              <div class="title w-lg-25">
-                <label for="chatswitch">Automatically Join Chats</label>
               </div>
 
             </div>
