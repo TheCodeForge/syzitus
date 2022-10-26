@@ -38,11 +38,15 @@ def main_css(board, file, n=None):
 
     if board=="main":
         downvote_color = hex(0xFFFFFF - int(app.config['COLOR_PRIMARY'],16))[2:]
+        while len(downvote_color)<6:
+            downvote_color=f"0{downvote_color}"
         scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
 
     else:
         board=get_guild(board)
         downvote_color = hex(0xFFFFFF - int(board.color,16))[2:]
+        while len(downvote_color)<6:
+            downvote_color=f"0{downvote_color}"
         scss = raw.replace("{primary}", board.color)
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
