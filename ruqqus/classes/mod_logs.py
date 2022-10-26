@@ -354,7 +354,7 @@ ACTIONTYPES={
     "create_guild":{
         "str": 'created +{self.board.name}',
         "icon": "fa-chess-rook",
-        "color": "bg-primary",
+        "color": "bg-purple",
         "title": "created +{self.board.name}"
     },
     "update_stylesheet":{
