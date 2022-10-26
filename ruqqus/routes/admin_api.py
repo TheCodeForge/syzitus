@@ -334,7 +334,7 @@ def mod_self_to_guild(bid):
 @app.route("/api/user_stat_data", methods=['GET'])
 @admin_level_required(2)
 @cache.memoize(timeout=60)
-def user_stat_data(v):
+def user_stat_data():
 
     days = int(request.args.get("days", 30))
 
@@ -576,7 +576,7 @@ def admin_csam_nuke(pid):
 
 @app.route("/admin/dump_cache", methods=["POST"])
 @admin_level_required(3)
-def admin_dump_cache(v):
+def admin_dump_cache():
 
     cache.clear()
 
@@ -586,7 +586,7 @@ def admin_dump_cache(v):
 
 @app.route("/admin/ban_domain", methods=["POST"])
 @admin_level_required(4)
-def admin_ban_domain(v):
+def admin_ban_domain():
 
     domain=request.form.get("domain",'').lstrip().rstrip()
 
@@ -620,7 +620,7 @@ def admin_ban_domain(v):
 
 @app.route("/admin/nuke_user", methods=["POST"])
 @admin_level_required(4)
-def admin_nuke_user(v):
+def admin_nuke_user():
 
     user=get_user(request.form.get("user"))
 
@@ -666,7 +666,7 @@ def admin_nuke_user(v):
 
 @app.route("/admin/demod_user", methods=["POST"])
 @admin_level_required(4)
-def admin_demod_user(v):
+def admin_demod_user():
 
     user=get_user(request.form.get("user"))
 
@@ -688,14 +688,14 @@ def admin_demod_user(v):
 
 @app.route("/admin/signature", methods=["POST"])
 @admin_level_required(5)
-def admin_sig_generate(v):
+def admin_sig_generate():
 
     file=request.files["file"]
     return generate_hash(str(file.read()))
 
 @app.route("/help/signature", methods=["POST"])
 @auth_desired
-def sig_validate(v):
+def sig_validate():
 
     file=request.files["file"]
 
