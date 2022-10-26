@@ -19,8 +19,9 @@ from ruqqus.__main__ import app, limiter, debug
 # take care of misc pages that never really change (much)
 
 @app.route("/assets/style/<board>/<file>.css", methods=["GET"])
+@app.route("/assets/style/<board>/<file>/<n>.css", methods=["GET"])
 @cache.memoize()
-def main_css(board, file):
+def main_css(board, file, n=None):
 
     #print(file, color)
 
