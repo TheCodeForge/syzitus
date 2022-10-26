@@ -627,7 +627,7 @@ def admin_paypaltxns():
 
 @app.route("/admin/domain/<domain_name>", methods=["GET"])
 @admin_level_required(4)
-def admin_domain_domain(domain_name, v):
+def admin_domain_domain(domain_name):
 
     d_query=domain_name.replace("_","\_")
     domain=g.db.query(Domain).filter_by(domain=d_query).first()
