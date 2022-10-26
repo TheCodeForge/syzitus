@@ -36,14 +36,17 @@ def main_css(board, file):
     # of some odd behavior with css files
 
     if board=="main":
+        downvote_color = hex(0xFFFFFF - int(app.config['COLOR_PRIMARY'],16))[2:]
         scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
 
     else:
         board=get_guild(board)
+        downvote_color = hex(0xFFFFFF - int(board_color,16))[2:]
         scss = raw.replace("{primary}", board.color)
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
     scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
+    scss = scss.replace("{downvote}", downvote_color)
 
     resp = Response(sass.compile(string=scss), mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
