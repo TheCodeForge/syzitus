@@ -339,16 +339,19 @@ def user_stat_data(v):
     days = int(request.args.get("days", 30))
 
     now = time.gmtime()
-    midnight_this_morning = time.struct_time((now.tm_year,
-                                              now.tm_mon,
-                                              now.tm_mday,
-                                              0,
-                                              0,
-                                              0,
-                                              now.tm_wday,
-                                              now.tm_yday,
-                                              0)
-                                             )
+    midnight_this_morning = time.struct_time(
+        (
+            now.tm_year,
+            now.tm_mon,
+            now.tm_mday,
+            0,
+            0,
+            0,
+            now.tm_wday,
+            now.tm_yday,
+            0
+            )
+        )
     today_cutoff = calendar.timegm(midnight_this_morning)
 
     day = 3600 * 24
