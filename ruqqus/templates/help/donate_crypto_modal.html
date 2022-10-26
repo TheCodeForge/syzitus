@@ -46,7 +46,7 @@
             <span class="h6 text-muted">[{{ x | upper }}] {{ data[x]['name'] }}</span>
             <span class="float-right"><i class="fa text-gray-400"></i></span>
           </div>
-          <div id="collapse-{{ loop.index0 }}" class="collapse show" data-parent="#cryptoAccordion">
+          <div id="collapse-{{ loop.index0 }}" class="collapse" data-parent="#cryptoAccordion">
             <div class="mt-3 text-center">
               <img class="mx-auto d-block w-75" src="{{ data[x]['addr'] | qrcode_img_data }}">
               <div class="mt-3">
