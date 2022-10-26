@@ -39,37 +39,24 @@
         </button>
       </div>
       <div class="modal-body accordion" id="cryptoAccordion">
-
         {% for x in data %}
-
         <div class="border rounded p-3 mb-3">
-
-         <div class="" data-toggle="collapse" href="#collapse-{{ loop.index0 }}" role="button" aria-expanded="true" aria-controls="collapse-{{ loop.index0 }}">
-          <i class="fab fa-bitcoin text-lg text-center mr-1" style="color: #F39231; width: 1.25rem;"></i>
-          <span class="h6 text-muted">[{{ x | upper }}] {{ data[x]['name'] }}</span>
-          <span class="float-right"><i class="fa text-gray-400"></i></span>
-        </div>
-
-        <div id="collapse-{{ loop.index0 }}" class="collapse show" data-parent="#cryptoAccordion">
-
-          <div class="mt-3 text-center">
-
-            <img class="mx-auto d-block w-75" src="{{ data[x]['addr'] | qrcode_img_data }}">
-
-            <div class="mt-3">
-              <input class="copy-link form-control mr-3" role="button" value="{{ data[x]['address'] }}" data-clipboard-text="{{ data[x]['address'] }}" aria-describedby="bitcoinAddress" readonly>
-            </div>
-
+          <div class="" data-toggle="collapse" href="#collapse-{{ loop.index0 }}" role="button" aria-expanded="true" aria-controls="collapse-{{ loop.index0 }}">
+            <i class="fab fa-bitcoin text-lg text-center mr-1" style="color: #F39231; width: 1.25rem;"></i>
+            <span class="h6 text-muted">[{{ x | upper }}] {{ data[x]['name'] }}</span>
+            <span class="float-right"><i class="fa text-gray-400"></i></span>
           </div>
-
+          <div id="collapse-{{ loop.index0 }}" class="collapse show" data-parent="#cryptoAccordion">
+            <div class="mt-3 text-center">
+              <img class="mx-auto d-block w-75" src="{{ data[x]['addr'] | qrcode_img_data }}">
+              <div class="mt-3">
+                <input class="copy-link form-control mr-3" role="button" value="{{ data[x]['address'] }}" data-clipboard-text="{{ data[x]['address'] }}" aria-describedby="bitcoinAddress" readonly>
+              </div>
+            </div>
+          </div>
         </div>
-
         {% endfor %}
-
       </div>
-
-    
-</div>
-</div>
-</div>
+    </div>
+  </div>
 </div>
