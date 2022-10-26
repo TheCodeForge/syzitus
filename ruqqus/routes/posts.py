@@ -410,7 +410,7 @@ Optional file data:
     domain_obj = get_domain(domain)
     #print('domain_obj', domain_obj)
     if domain_obj:
-        if not domain_obj.can_submit:
+        if domain_obj.is_banned:
           
             if domain_obj.reason==4:
                 g.user.ban(days=30, reason="Digitally malicious content")

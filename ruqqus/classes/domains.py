@@ -18,8 +18,7 @@ class Domain(Base):
     __tablename__ = "domains"
     id = Column(Integer, primary_key=True)
     domain = Column(String, index=True)
-    can_submit = Column(Boolean, default=True)
-    can_comment = Column(Boolean, default=True)
+    is_banned=Column(Boolean, default=True)
     reason = Column(Integer, default=0)
     show_thumbnail = Column(Boolean, default=False)
     embed_function = Column(String(64), default=None)

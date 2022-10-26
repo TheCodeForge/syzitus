@@ -252,7 +252,11 @@
 
 {% if domain %}
   <p><b>{{ domain }}</b></p>
-  <p>{{ "Banned" if domain_obj and not domain_obj.can_submit else "Not banned" }}</p>
+  {% if domain_obj and domain_obj.is_banned %}
+  <p class="text-danger font-weight-bold"><i class="fas fa-gavel fa-fw"></i>Banned</p>
+  {% else %}
+  <p class="text-success font-weight-bold"><i class="fas fa-gavel fa-fw"></i>Not banned</p>
+  {% endif %}
 
   <form action="/admin/ban_domain" method="post">
     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
