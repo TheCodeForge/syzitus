@@ -120,7 +120,7 @@ def thumbnail_thread(pid, debug=False):
 
         #iterate through desired meta tags
         meta_tags = [
-            "ruqqus:thumbnail",
+            f"{app.config['SITE_NAME'].lower()}:thumbnail",
             "twitter:image",
             "og:image",
             "thumbnail"
