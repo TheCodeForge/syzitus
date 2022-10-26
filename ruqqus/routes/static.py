@@ -41,7 +41,7 @@ def main_css(board, file):
 
     else:
         board=get_guild(board)
-        downvote_color = hex(0xFFFFFF - int(board_color,16))[2:]
+        downvote_color = hex(0xFFFFFF - int(board.color,16))[2:]
         scss = raw.replace("{primary}", board.color)
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
