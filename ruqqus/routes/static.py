@@ -59,7 +59,7 @@ def main_css(board, file, n=None):
 
 @app.get("/logo/<color>")
 @cache.memoize()
-def get_assets_images_splash_logo(color):
+def get_logo_color(color):
 
     if color not in ["main", "white"]:
         abort(404)
@@ -194,17 +194,12 @@ def get_assets_images_splash(kind, width, height):
             fill=(255,255,255,255)
             )
 
-
-
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
     output_bytes=io.BytesIO()
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
-
-
-
 
 @app.get('/assets/<path:path>')
 @limiter.exempt
