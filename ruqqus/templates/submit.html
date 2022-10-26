@@ -185,7 +185,7 @@
             </div>
             <div class="col text-right">
                 {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
-                <button class="btn btn-purple toast-form-submit" data-form="submitform">Post</button>
+                <button class="btn btn-purple toast-form-submit" data-form="submitform">{% block submit_button %}Post{% endblock %}</button>
             </div>
         </div>
     </div>
