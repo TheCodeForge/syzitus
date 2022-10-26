@@ -242,7 +242,7 @@ def slurs():
             ]
         )
     if text:
-        resp = make_response(text)
+        resp = make_response("The following words, and variations of them, are identified as slurs at this time:\n"+text)
     else:
         resp = make_response("<No keywords in the site slur list at this time>")
     resp.headers.add("Content-Type", "text/plain")
