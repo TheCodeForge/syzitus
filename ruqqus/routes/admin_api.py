@@ -606,8 +606,7 @@ def admin_ban_domain(v):
     else:
         d=Domain(
             domain=domain,
-            can_submit=False,
-            can_comment=False,
+            is_banned=True,
             reason=reason,
             show_thumbnail=False,
             embed_function=None,
