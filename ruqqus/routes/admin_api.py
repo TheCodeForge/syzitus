@@ -178,8 +178,11 @@ def api_sticky_post(post_id):
         if post.stickied:
             debug("post is stickied; unstickying")
             post.sticked=False
+            debug("post.stickied set to false")
             g.db.add(post)
+            debug("post added to session")
             g.db.commit()
+            debug("db commit")
             return redirect(post.permalink)
         else:
             debug("post is not stickied, stickying")
