@@ -105,7 +105,7 @@ def get_logo_color(color):
             ),
         letter, 
         font=font,
-        fill=(255,255,255,255) if color=="main" else primary
+        fill=(255,255,255,255) if color in ["main", "inverted"] else primary
         )
 
     text_layer = text_layer.rotate(
