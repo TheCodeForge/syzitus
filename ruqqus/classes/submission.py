@@ -456,7 +456,6 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     def voted(self):
         return self.__dict__.get("_voted", 0)
 
-
     @property
     def user_title(self):
         return self.author.title
