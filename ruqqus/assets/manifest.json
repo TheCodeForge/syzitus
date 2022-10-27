@@ -1,8 +1,8 @@
 {
-  "name": "Ruqqus",
-  "short_name": "Ruqqus",
-  "start_url": "https://ruqqus.com",
+  "name": "Syzitus",
+  "short_name": "Syzitus",
+  "start_url": "https://syzitus.com",
   "display": "standalone",
-  "background_color": "#805ad5",
+  "background_color": "#36827f",
   "description": "Awesome online communities, without censorship"
 }
