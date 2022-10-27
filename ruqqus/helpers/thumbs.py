@@ -8,7 +8,7 @@ from io import BytesIO
 import time
 
 from .get import *
-from ruqqus.__main__ import app, db_session
+from ruqqus.__main__ import app, db_session, debug
 
 def expand_url(post_url, fragment_url):
 
@@ -25,41 +25,15 @@ def expand_url(post_url, fragment_url):
     else:
         return f"{post_url}{'/' if not post_url.endswith('/') else ''}{fragment_url}"
 
-def thumbnail_thread(pid, debug=False):
+def thumbnail_thread(pid):
 
-    #define debug print functionf
-    def print_(x):
-        if debug:
-            try:
-                print(x)
-            except:
-                pass
-
-    db = db_session()
-
-    post = get_post(pid, graceful=True, session=db)
+    post = get_post(pid, graceful=True)
     if not post:
         # account for possible follower lag
         time.sleep(60)
-        post = get_post(pid, session=db)
-
-
-    #First, determine the url to go off of
-    #This is the embed url, if the post is allowed to be embedded, and the embedded url starts with http
-
-    # if post.domain_obj and post.domain_obj.show_thumbnail:
-    #     print_("Post is likely hosted image")
-    #     fetch_url=post.url
-    # elif post.embed_url and post.embed_url.startswith("https://"):
-    #     print_("Post is likely embedded content")
-    #     fetch_url=post.embed_url
-    # else:
-    #     print_("Post is article content")
-    #     fetch_url=post.url
+        post = get_post(pid)
 
     fetch_url=post.url
-
-
 
     #get the content
 
@@ -67,15 +41,13 @@ def thumbnail_thread(pid, debug=False):
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36"}
 
     try:
-        print_(f"loading {fetch_url}")
+        debug(f"loading {fetch_url}")
         x=requests.get(fetch_url, headers=headers)
     except:
-        print_(f"unable to connect to {fetch_url}")
-        db.close()
+        debug(f"unable to connect to {fetch_url}")
         return False, "Unable to connect to source"
 
     if x.status_code != 200:
-        db.close()
         return False, f"Source returned status {x.status_code}."
     
     #detect if there was a redirect
@@ -108,8 +80,8 @@ def thumbnail_thread(pid, debug=False):
                 post.submission_aux.meta_description=meta_desc['content'][0:1000]
 
             if meta_title or meta_desc:
-                db.add(post.submission_aux)
-                db.commit()
+                g.db.add(post.submission_aux)
+                g.db.commit()
 
         except Exception as e:
             print(f"Error while parsing for metadata: {e}")
@@ -161,24 +133,24 @@ def thumbnail_thread(pid, debug=False):
             try:
                 image_req=requests.get(url, headers=headers)
             except:
-                print_(f"Unable to connect to candidate url {url}")
+                debug(f"Unable to connect to candidate url {url}")
                 continue
 
             if image_req.status_code >= 400:
-                print_(f"status code {x.status_code}")
+                debug(f"status code {x.status_code}")
                 continue
 
             if not image_req.headers.get("Content-Type","").startswith("image/"):
-                print_(f'bad type {image_req.headers.get("Content-Type","")}, try next')
+                debug(f'bad type {image_req.headers.get("Content-Type","")}, try next')
                 continue
 
             if image_req.headers.get("Content-Type","").startswith("image/svg"):
-                print_("svg, try next")
+                debug("svg, try next")
                 continue
 
             image = PILimage.open(BytesIO(image_req.content))
             if image.width < 30 or image.height < 30:
-                print_("image too small, next")
+                debug("image too small, next")
                 continue
 
             print_("Image is good, upload it")
@@ -187,7 +159,6 @@ def thumbnail_thread(pid, debug=False):
         else:
             #getting here means we are out of candidate urls (or there never were any)
             print_("Unable to find image")
-            db.close()
             return False, "No usable images"
 
 
@@ -202,7 +173,6 @@ def thumbnail_thread(pid, debug=False):
     else:
 
         print_(f'Unknown content type {x.headers.get("Content-Type")}')
-        db.close()
         return False, f'Unknown content type {x.headers.get("Content-Type")} for submitted content'
 
 
@@ -217,15 +187,13 @@ def thumbnail_thread(pid, debug=False):
 
     aws.upload_from_file(name, tempname, resize=(375, 227))
     post.has_thumb = True
-    db.add(post)
 
-    db.commit()
-
-    db.close()
+    g.db.add(post)
+    g.db.commit()
 
     try:
         remove(tempname)
     except FileNotFoundError:
         pass
 
-    return True, "Success"
+    return True

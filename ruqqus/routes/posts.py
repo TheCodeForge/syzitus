@@ -720,12 +720,13 @@ Optional file data:
     
     g.db.commit()
 
-    # spin off thumbnail generation and csam detection as  new threads
-    if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
-        new_thread = gevent.spawn(
-            thumbnail_thread,
-            new_post.base36id
-        )
+    # # spin off thumbnail generation and csam detection as  new threads
+    # if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
+    #     new_thread = gevent.spawn(
+    #         thumbnail_thread,
+    #         new_post.base36id
+    #     )
+    thumbnail_thread()
 
     # expire the relevant caches: front page new, board new
     cache.delete_memoized(frontlist)
@@ -1009,7 +1010,7 @@ URL path parameters:
         return jsonify({"error": "Post is archived"}), 409
 
     try:
-        success, msg = thumbnail_thread(post.base36id, debug=True)
+        thumbnail_thread(post.base36id, debug=True)
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
