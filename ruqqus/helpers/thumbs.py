@@ -29,11 +29,11 @@ def thumbnail_thread(pid):
 
     db = db_session()
 
-    post = db.query(Submission).filter(id=base36decode(pid)).first()
+    post = db.query(Submission).filter_by(id=base36decode(pid)).first()
     if not post:
         # account for possible follower lag
         time.sleep(60)
-        post = db.query(Submission).filter(id=base36decode(pid)).first()
+        post = db.query(Submission).filter_by(id=base36decode(pid)).first()
 
 
     #First, determine the url to go off of
@@ -220,4 +220,4 @@ def thumbnail_thread(pid):
     except FileNotFoundError:
         pass
 
-    return True, "Success"
+    return True

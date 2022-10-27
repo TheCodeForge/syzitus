@@ -1009,7 +1009,7 @@ URL path parameters:
         return jsonify({"error": "Post is archived"}), 409
 
     try:
-        success, msg = thumbnail_thread(post.base36id, debug=True)
+        success= thumbnail_thread(post.base36id)
     except Exception as e:
         return jsonify({"error":str(e)}), 500
 
