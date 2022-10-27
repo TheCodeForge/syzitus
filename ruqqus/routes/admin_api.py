@@ -173,19 +173,20 @@ def api_distinguish_post(post_id):
 @admin_level_required(3)
 def api_sticky_post(post_id):
 
-    already_stickied = g.db.query(Submission).filter(Submission.stickied==True, Submission.id!=base36decode(post_id)).first()
-    if already_stickied:
-        already_stickied.stickied = False
-        g.db.add(already_stickied)
-
     post = get_post(post_id)
     if post:
         if post.stickied:
-            post.sticked=True
+            post.sticked=False
             g.db.add(post)
         else:
             post.stickied = True
             g.db.add(post)
+            already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
+            if already_stickied:
+                already_stickied.stickied = False
+                g.db.add(already_stickied)
+
+
 
     g.db.commit()
 
