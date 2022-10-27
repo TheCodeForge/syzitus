@@ -61,7 +61,7 @@ def main_css(board, file, n=None):
 @cache.memoize()
 def get_logo_color(color):
 
-    if color not in ["main", "white"]:
+    if color not in ["main", "white", "inverted"]:
         abort(404)
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
@@ -78,7 +78,15 @@ def get_logo_color(color):
         ImageDraw.floodfill(
             base_layer,
             (base_layer.size[0]//2, base_layer.size[1]//2),
-            value=primary)
+            value=primary
+            )
+    elif color=="inverted":
+        ImageDraw.floodfill(
+            base_layer,
+            (base_layer.size[0]//2, base_layer.size[1]//2),
+            value=(255-primary_r, 255-primary_g, 255-primary_b, 255)
+            )
+
 
     #tilted letter layer
     font = ImageFont.truetype(
