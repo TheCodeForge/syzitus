@@ -151,10 +151,7 @@ def get_assets_images_splash(kind, width, height):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    if min(width, height) <= 200:
-        size=int(min(width, height) *0.95)
-    else:
-        size=min(height//4, width//2)
+    size=min(height//2, width//2)
 
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
