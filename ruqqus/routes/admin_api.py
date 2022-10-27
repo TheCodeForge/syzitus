@@ -182,7 +182,7 @@ def api_sticky_post(post_id):
             g.db.add(post)
             debug("post added to session")
             g.db.commit()
-            debug("db commit")
+            debug(f"db commit {post.title}")
             return redirect(post.permalink)
         else:
             debug("post is not stickied, stickying")
