@@ -455,7 +455,6 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     @property
     def voted(self):
         value= self.__dict__.get("_voted", 0)
-        debug(value)
         return value
 
 
