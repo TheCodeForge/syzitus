@@ -119,7 +119,7 @@ def validate_csrf_token():
     if g.user:
         if not g.user.validate_formkey(submitted_key):
             debug('logged in user, failed token')
-            abort(401)
+            abort(403)
 
     else:
         #logged out users
@@ -127,11 +127,11 @@ def validate_csrf_token():
 
         if g.timestamp-t > 3600:
             debug('logged out user, token expired')
-            abort(401)
+            abort(403)
 
         if not validate_hash(f"{t}+{session['session_id']}", submitted_key):
             debug('logged out user, invalid token')
-            abort(401)
+            abort(403)
 
     debug("successful csrf")
 
