@@ -1,7 +1,7 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - DMCA Takedown Request</title>
+<title>{{ 'SITE_NAME' | app_config }} - DMCA Takedown Request</title>
 <meta name="description" content="DMCA Takedown Request">
 <script src="/assets/js/comment_replies.js"></script>
 {% endblock %}
@@ -33,24 +33,24 @@
 {% filter markdown %}
 # DMCA Takedown Request
 
-Use this page to submit a DMCA takedown request to Ruqqus. 
+Use this page to submit a DMCA takedown request to {{ 'SITE_NAME' | app_config }}. 
 
-Abuse of this form is a violation of the Ruqqus [terms of service](/about/terms) and may lead to the termination of your Ruqqus account, at the discretion of Ruqqus staff.
+Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms of service](/about/terms) and may lead to the termination of your {{ 'SITE_NAME' | app_config }} account, at the sole discretion of {{ 'SITE_NAME' | app_config }} staff.
 
 {% endfilter %}
 
-{% if v and v.is_suspended %}
+{% if g.user and g.user.is_suspended %}
 
-<div>Your Ruqqus account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
+<div>Your {{ 'SITE_NAME' | app_config }} account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
 
-{% elif v and v.is_activated %}
+{% elif g.user and g.user.is_activated %}
 
 <div class="h6 mt-5">Email</div>
 <input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
 
 <form id="dmca-form" action="/help/dmca" method="post">
 	
-	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 	<label class="mt-5" for="input-links">Links to infringing content</label>
 	<textarea id="input-links" class="form-control" for="dmca-form" name="infringing_links" required></textarea>
@@ -82,7 +82,7 @@ Abuse of this form is a violation of the Ruqqus [terms of service](/about/terms)
 	<textarea id="input-corrob" class="form-control" for="dmca-form" name="corrob_evidence"></textarea>
 
 	<label class="mt-5">Required statements</label><br>
-	<input id="accept_email" type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ v.email }}.<br>
+	<input id="accept_email" type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ g.user.email }}.<br>
 	<input id="swear_perjury" type="checkbox" name="swear_perjury" value="true" required> I swear, under penalty of perjury, that the information in this Request is accurate, that the linked content is not protected by Fair Use, and that I am authorized to act on behalf of the copyright owner.<br>
 
 	<input class="btn btn-primary mt-5" type="submit" value="Submit">
@@ -91,9 +91,7 @@ Abuse of this form is a violation of the Ruqqus [terms of service](/about/terms)
 {% elif v %}
 <p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
 {% else %}
-{% filter markdown %}
 <p>In order to ensure that we can respond to your request if needed, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
-{% endfilter %}
 {% endif %}
 
 {% endblock %}

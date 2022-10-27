@@ -1,8 +1,8 @@
 {% extends "docs_default.html" %}
 
 {% block title %}
-<title>Ruqqus - Siege Guild</title>
-<meta name="description" content="Lay siege to a Ruqqus guild">
+<title>{{ 'SITE_NAME' | app_config }} - Siege Guild</title>
+<meta name="description" content="Lay siege to a {{ 'SITE_NAME' | app_config }} guild">
 {% endblock %}
 
 	
@@ -35,7 +35,7 @@
 
 # Guild Siege
 
-In order to ensure that Ruqqus Guilds can be curated and managed, users may use this page to try to "lay siege" to, and take over, a guild with inactive Guildmasters.
+In order to ensure that {{ 'SITE_NAME' | app_config }} Guilds can be curated and managed, users may use this page to try to "lay siege" to, and take over, a guild with inactive Guildmasters.
 
 You may attempt to siege a guild once every 7 days. Any siege attempt - whether successful or not - will trigger this cool-down period.
 
@@ -54,11 +54,11 @@ Additionally, no current Guildmaster (or no Guildmaster above you, if you are a 
 * Create a comment in the guild being sieged
 * Perform a mod action in the guild being sieged
 
-Guildmasters who are permanently banned, or who have deactivated their Ruqqus account, will always count as inactive, regardless of actual activity.
+Guildmasters who are permanently banned, or who have deactivated their {{ 'SITE_NAME' | app_config }} account, will always count as inactive, regardless of actual activity.
 
-Sieges against [+general](/+general), or admin-controlled Guilds such as [+Ruqqus](/+Ruqqus), [+RuqqusPress](/+RuqqusPress) or [+GuildSiege](/+GuildSiege) will always fail.
+Sieges against [+general](/+general), or admin-controlled Guilds will always fail.
 
-Finally, you may not Siege a guild with the intention of vandalizing it or subverting its purpose. Such sieges will be reverted by Ruqqus admins.
+Finally, you may not Siege a guild with the intention of vandalizing it or subverting its purpose. Such sieges will be reverted by {{ 'SITE_NAME' | app_config }} admins.
 
 ## Siege a Guild
 
@@ -90,7 +90,7 @@ Finally, you may not Siege a guild with the intention of vandalizing it or subve
 
   {% elif v.is_suspended %}
 
-    <p>You are currently suspended from Ruqqus. You cannot siege any guilds at this time.</p>
+    <p>You are currently suspended from {{ 'SITE_NAME' | app_config }}. You cannot siege any guilds at this time.</p>
 
   {% else %}
 
