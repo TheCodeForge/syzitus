@@ -178,19 +178,18 @@ def api_sticky_post(post_id):
         if post.stickied:
             post.sticked=False
             g.db.add(post)
+            g.db.commit()
+            return redirect(post.permalink)
         else:
             post.stickied = True
-            g.db.add(post)
             already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
             if already_stickied:
                 already_stickied.stickied = False
                 g.db.add(already_stickied)
-
-
-
-    g.db.commit()
-
-    return redirect(post.permalink)
+            g.db.add(post)
+            g.db.commit()
+            return redirect(post.permalink)
+    abort(404)
 
 
 @app.route("/api/ban_comment/<c_id>", methods=["post"])
