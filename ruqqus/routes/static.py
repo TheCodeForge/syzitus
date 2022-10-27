@@ -97,7 +97,7 @@ def get_logo_color(color):
             ),
         letter, 
         font=font,
-        fill=(255,255,255,255) if color=="main" else (255,255,255,0)
+        fill=(255,255,255,255) if color=="main" else primary
         )
 
     text_layer = text_layer.rotate(
@@ -110,10 +110,9 @@ def get_logo_color(color):
             ),
         resample=PIL.Image.BILINEAR)
 
-    base_layer.paste(text_layer)
-
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
     output_bytes=io.BytesIO()
-    base_layer.save(output_bytes, format="PNG")
+    output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
