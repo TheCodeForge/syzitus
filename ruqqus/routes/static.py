@@ -122,8 +122,9 @@ def get_logo_jumbotron():
     output=PIL.Image.new(
         "RGBA", 
         (
-            unit_block.size[0]*25
-            unit_block.size[1]*15), 
+            unit_block.size[0]*25,
+            unit_block.size[1]*15
+            ), 
         color=(255,255,255,0)
         )
 
