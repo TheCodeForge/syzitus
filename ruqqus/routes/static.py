@@ -130,7 +130,7 @@ def get_logo_jumbotron():
 
 
     for i in range(25):
-        for j in range(15)
+        for j in range(15):
 
         output.paste(
             unit_block,
