@@ -41,7 +41,7 @@ class Board(Base, Stndrd, Age_times):
     profile_nonce=Column(Integer, default=0)
     banner_nonce=Column(Integer, default=0)
     is_private=Column(Boolean, default=False)
-    color_nonce=Column(Integer, default=0)
+    # color_nonce=Column(Integer, default=0)
     rank_trending=Column(Float, default=0)
     stored_subscriber_count=Column(Integer, default=1, nullable=False)
     all_opt_out=Column(Boolean, default=False)
@@ -473,11 +473,11 @@ class Board(Base, Stndrd, Age_times):
 
     @property
     def main_css_light_url(self):
-        return f"/assets/style/+{self.name}/light/{self.color_nonce}.css"
+        return f"/assets/style/{self.color}/light.css"
 
     @property
     def main_css_dark_url(self):
-        return f"/assets/style/+{self.name}/dark/{self.color_nonce}.css"
+        return f"/assets/style/+{self.color}/dark.css"
 
     def has_participant(self, user):
         return (g.db.query(Submission).filter_by(original_board_id=self.id, author_id=user.id).first() or

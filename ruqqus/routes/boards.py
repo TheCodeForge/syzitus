@@ -1838,7 +1838,6 @@ def mod_board_color(bid, board):
             ), 400
 
     board.color = color
-    board.color_nonce += 1
 
     g.db.add(board)
 

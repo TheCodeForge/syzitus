@@ -18,8 +18,7 @@ from ruqqus.__main__ import app, limiter, debug
 
 # take care of misc pages that never really change (much)
 
-@app.route("/assets/style/<board>/<file>.css", methods=["GET"])
-@app.route("/assets/style/<board>/<file>/<n>.css", methods=["GET"])
+@app.route("/assets/style/<color>/<file>.css", methods=["GET"])
 @cache.memoize()
 def main_css(board, file, n=None):
 
@@ -36,18 +35,10 @@ def main_css(board, file, n=None):
     # This doesn't use python's string formatting because
     # of some odd behavior with css files
 
-    if board=="main":
-        downvote_color = hex(0xFFFFFF - int(app.config['COLOR_PRIMARY'],16))[2:]
-        while len(downvote_color)<6:
-            downvote_color=f"0{downvote_color}"
-        scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
-
-    else:
-        board=get_guild(board)
-        downvote_color = hex(0xFFFFFF - int(board.color,16))[2:]
-        while len(downvote_color)<6:
-            downvote_color=f"0{downvote_color}"
-        scss = raw.replace("{primary}", board.color)
+    downvote_color = hex(0xFFFFFF - int(color,16))[2:]
+    while len(downvote_color)<6:
+        downvote_color=f"0{downvote_color}"
+    scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
     scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
@@ -205,6 +196,10 @@ def get_assets_images_splash(kind, width, height):
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
+
+@app.get("/assets/images/guild_default")
+
+
 
 @app.get('/assets/<path:path>')
 @limiter.exempt
