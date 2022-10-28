@@ -1,6 +1,6 @@
 {% extends "guild/guild_settings.html" %}
 
-{% block pagetitle %}+{{ b.name }} Guildmasters - Ruqqus Guildmaster Tools{% endblock %}
+{% block pagetitle %}+{{ b.name }} Guildmasters - {{ 'SITE_NAME' | app_config }} Guildmaster Tools{% endblock %}
 
 {% block scripts %}
     <script>
