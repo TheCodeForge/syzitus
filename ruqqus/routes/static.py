@@ -100,7 +100,7 @@ def get_logo_jumbotron():
         resample=PIL.Image.BILINEAR)
 
     #put tilted letter on speech bubble
-    base_layer = PIL.alpha_composite(base_layer, text_layer)
+    base_layer = PIL.Image.alpha_composite(base_layer, text_layer)
 
     #tilt speech bubble
     base_layer = base_layer.rotate(
@@ -112,7 +112,7 @@ def get_logo_jumbotron():
 
     #put tilted speech bubble on background
     background_layer = PIL.Image.new("RGBA", base_layer.size, color=primary)
-    unit_block = PIL.alpha_composite(background_layer, base_layer)
+    unit_block = PIL.Image.alpha_composite(background_layer, base_layer)
 
     unit_block = unit_block.resize(
         (
