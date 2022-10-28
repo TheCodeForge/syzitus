@@ -533,6 +533,30 @@ def multiple_plots(**kwargs):
     aws.upload_from_file(name, name)
     return name
 
+@app.post("/admin/domain_nuke/<domain>")
+@admin_level_required(5)
+def admin_domain_nuke(domain):
+
+    domain=domain.lower()
+    domain=re.sub("[^a-z0-9.]","", domain)
+    #escape periods
+    domain=domain.replace(".","\.")
+
+    posts=g.db.query(Submission).join(
+        Submission.submission_aux
+        ).filter(
+        SubmissionAux.url.op('~')(
+            "https?://([^/]*\.)?"+domain+"(/|$)"
+            )
+        ).all()
+
+    for post in posts:
+        post.is_banned=True
+        g.db.add(post)
+
+    g.db.commit()
+    return redirect(f"/search?q=domain:{domain}")
+
 
 @app.route("/admin/csam_nuke/<pid>", methods=["POST"])
 @admin_level_required(4)
