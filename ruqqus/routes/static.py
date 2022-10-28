@@ -20,7 +20,7 @@ from ruqqus.__main__ import app, limiter, debug
 
 @app.route("/assets/style/<color>/<file>.css", methods=["GET"])
 @cache.memoize()
-def main_css(board, file, n=None):
+def main_css(color, file, n=None):
 
     #print(file, color)
 
