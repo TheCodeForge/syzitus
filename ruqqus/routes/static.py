@@ -86,7 +86,7 @@ def get_logo_jumbotron():
             ),
         letter, 
         font=font,
-        fill=(255,255,255,255)
+        fill=primary
         )
 
     text_layer = text_layer.rotate(
