@@ -53,7 +53,8 @@ def main_css(color, file, n=None):
 @cache.memoize()
 def get_logo_jumbotron(color=None):
 
-    color = color or app.config["COLOR_PRIMARY"]
+    if not color:
+        color=app.config["COLOR_PRIMARY"]
 
     primary_r=int(color, 16)
     primary_g=int(color, 16)
