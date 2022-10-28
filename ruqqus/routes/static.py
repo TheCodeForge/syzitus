@@ -132,13 +132,13 @@ def get_logo_jumbotron():
     for i in range(25):
         for j in range(15):
 
-        output.paste(
-            unit_block,
-            (
-                unit_block.size[0]*i,
-                unit_block.size[1]*j
+            output.paste(
+                unit_block,
+                (
+                    unit_block.size[0]*i,
+                    unit_block.size[1]*j
+                    )
                 )
-            )
 
     output_bytes=io.BytesIO()
     output.save(output_bytes, format="PNG")
