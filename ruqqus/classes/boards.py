@@ -477,7 +477,7 @@ class Board(Base, Stndrd, Age_times):
 
     @property
     def main_css_dark_url(self):
-        return f"/assets/style/+{self.color}/dark.css"
+        return f"/assets/style/{self.color}/dark.css"
 
     def has_participant(self, user):
         return (g.db.query(Submission).filter_by(original_board_id=self.id, author_id=user.id).first() or
