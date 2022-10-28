@@ -49,12 +49,15 @@ def main_css(color, file, n=None):
     return resp
 
 @app.get("/logo/jumbotron")
+@app.get("/logo/jumbotron/<color>")
 @cache.memoize()
-def get_logo_jumbotron():
+def get_logo_jumbotron(color=None):
 
-    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
-    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
-    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+    color = color or app.config["COLOR_PRIMARY"]
+
+    primary_r=int(color, 16)
+    primary_g=int(color, 16)
+    primary_b=int(color, 16)
 
     primary = (primary_r, primary_g, primary_b, 255)
 
