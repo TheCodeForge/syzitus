@@ -38,7 +38,7 @@ def main_css(color, file, n=None):
     downvote_color = hex(0xFFFFFF - int(color,16))[2:]
     while len(downvote_color)<6:
         downvote_color=f"0{downvote_color}"
-    scss = raw.replace("{primary}", app.config["COLOR_PRIMARY"])
+    scss = raw.replace("{primary}", color)
 
     scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
     scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
