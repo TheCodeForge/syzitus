@@ -28,7 +28,7 @@ class SubmissionAux(Base):
     key_id = Column(BigInteger, primary_key=True)
     id = Column(BigInteger, ForeignKey("submissions.id"))
     title = Column(String(500), default=None)
-    url = Column(String(2000), default=None)
+    url = Column(String(2048), default=None)
     body = Column(String(10000), default="")
     body_html = Column(String(20000), default="")
     ban_reason = Column(String(128), default="")
