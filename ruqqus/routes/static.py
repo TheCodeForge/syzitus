@@ -75,6 +75,9 @@ def get_logo_jumbotron():
         size=base_layer.size[1]//2
     )
 
+    letter = app.config["SITE_NAME"][0:1].lower()
+    box = font.getbbox(letter)
+
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
