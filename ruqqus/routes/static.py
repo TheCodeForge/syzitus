@@ -48,6 +48,102 @@ def main_css(color, file, n=None):
     resp.headers.add("Cache-Control", "public")
     return resp
 
+@app.get("/logo/jumbotron")
+cache.memoize()
+def get_logo_jumbotron():
+
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+
+    primary = (primary_r, primary_g, primary_b, 255)
+
+
+    base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
+    text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
+
+    #make base layer white with 50% opacity
+    ImageDraw.floodfill(
+        base_layer,
+        (base_layer.size[0]//2, base_layer.size[1]//2),
+        value=(255, 255, 255, 128)
+        )
+
+    #tilted letter layer
+    font = ImageFont.truetype(
+        f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
+        size=base_layer.size[1]//2
+    )
+
+    d = ImageDraw.Draw(text_layer)
+    d.text(
+        (
+            base_layer.size[0] // 2 - box[2] // 2, 
+            base_layer.size[0] // 2 - (box[3]+box[1]) // 2
+            ),
+        letter, 
+        font=font,
+        fill=(255,255,255,255) if color in ["main", "inverted"] else primary
+        )
+
+    text_layer = text_layer.rotate(
+        angle=20, 
+        expand=False, 
+        fillcolor=(255,255,255,0),
+        center=(
+            text_layer.size[0]//2,
+            text_layer.size[0]//2
+            ),
+        resample=PIL.Image.BILINEAR)
+
+    #put tilted letter on speech bubble
+    base_layer = PIL.alpha_composite(base_layer, text_layer)
+
+    #tilt speech bubble
+    base_layer = base_layer.rotate(
+        angle=20,
+        expand=True,
+        fillcolor=primary,
+        resample=PIL.Image.BILINEAR
+        )
+
+    #put tilted speech bubble on background
+    background_layer = PIL.Image.new("RGBA", base_layer.size, color=primary)
+    unit_block = PIL.alpha_composite(background_layer, base_layer)
+
+    unit_block = unit_block.resize(
+        (
+            unit_block.size[0]//10,
+            unit_block.size[1]//10
+            ),
+        resample=PIL.Image.BILINEAR
+        )
+
+    output=PIL.Image.new(
+        "RGBA", 
+        (
+            unit_block.size[0]*25
+            unit_block.size[1]*15), 
+        color=(255,255,255,0)
+        )
+
+
+    for i in range(25):
+        for j in range(15)
+
+        output.paste(
+            unit_block,
+            (
+                unit_block.size[0]*i,
+                unit_block.size[1]*j
+                )
+            )
+
+    output_bytes=io.BytesIO()
+    output.save(output_bytes, format="PNG")
+    output_bytes.seek(0)
+    return send_file(output_bytes, mimetype="image/png")
+
 @app.get("/logo/<color>")
 @cache.memoize()
 def get_logo_color(color):
