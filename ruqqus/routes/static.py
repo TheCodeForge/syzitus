@@ -86,7 +86,7 @@ def get_logo_jumbotron():
             ),
         letter, 
         font=font,
-        fill=(255,255,255,255) if color in ["main", "inverted"] else primary
+        fill=(255,255,255,255)
         )
 
     text_layer = text_layer.rotate(
