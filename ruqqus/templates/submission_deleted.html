@@ -4,7 +4,7 @@
 
 {% set score=p.score_fuzzed %}
 {% if g.user %}
-{% set voted=v.vote_status_on_post(p) %}
+{% set voted=g.user.vote_status_on_post(p) %}
 {% set adjust=voted %}
 {% else %}
 {% set voted=-2 %}
