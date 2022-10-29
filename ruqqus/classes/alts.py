@@ -17,6 +17,8 @@ class Alt(Base):
     user2 = Column(Integer, ForeignKey("users.id"), index=True)
     is_manual=Column(Boolean, default=False)
 
+    unique_pairs = UniqueConstraint("user1", "user2")
+
     def __repr__(self):
 
         return f"<Alt(id={self.id})>"

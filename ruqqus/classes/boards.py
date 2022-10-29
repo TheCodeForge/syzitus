@@ -48,12 +48,10 @@ class Board(Base, Stndrd, Age_times):
     is_siegable=Column(Boolean, default=True)
     is_locked_category = Column(Boolean, default=False)
     subcat_id=Column(Integer, default=0)
-    secondary_color=Column(String(6), default="ffffff")
-    #public_chat=Column(Boolean, default=False)
-    #motd = Column(String(1000), default='')
+    #secondary_color=Column(String(6), default="ffffff")
 
     css_nonce=Column(Integer, default=0)
-    css=deferred(Column(String(65536), default=''))
+    css=deferred(Column(String(65536), default='', nullable=False))
 
     moderators=relationship("ModRelationship")
     subscribers=relationship("Subscription", lazy="dynamic")
