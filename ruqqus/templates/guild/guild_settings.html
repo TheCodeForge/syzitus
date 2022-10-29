@@ -18,8 +18,13 @@
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Ruqqus CSS -->
+  {% if b %}
   <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?v=3.0.11">
   <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?v=3.0.11">
+  {% else %}
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.11">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.11">
+  {% endif %}
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
