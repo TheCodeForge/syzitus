@@ -1,6 +1,6 @@
 import mistletoe
 
-from ruqqus.classes import *
+from ruqqus.classes.comment import Comment, CommentAux, Notification
 from flask import g
 from .markdown import *
 from .sanitize import *
