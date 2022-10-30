@@ -361,7 +361,9 @@ def settings():
 def settings_profile():
     eval_env={
         "user": g.user,
-        "db": g.db
+        "db": g.db,
+        "Board": Board,
+        "Submission": Submission
     }
 
     titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr, eval_env)]
