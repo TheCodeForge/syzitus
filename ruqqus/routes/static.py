@@ -11,7 +11,6 @@ from PIL import ImageFont, ImageDraw
 
 from ruqqus.helpers.wrappers import *
 from ruqqus.helpers.markdown import *
-import ruqqus.classes
 from ruqqus.classes import *
 from ruqqus.mail import *
 from ruqqus.__main__ import app, limiter, debug
@@ -360,7 +359,8 @@ def settings():
 @app.route("/settings/profile", methods=["GET"])
 @auth_required
 def settings_profile():
-    titles= [TITLES[x] for x in TITLES if TITLES[x].expr(g.user)]
+
+    titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr)]
     return render_template("settings_profile.html")
 
 
