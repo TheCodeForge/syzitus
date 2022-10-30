@@ -1013,10 +1013,6 @@ class User(Base, Stndrd, Age_times):
             return f"http{'s' if app.config['FORCE_HTTPS'] else ''}://{app.config['SERVER_NAME']}/assets/images/profiles/default-profile-pic.png"
 
     @property
-    def available_titles(self):
-        return [TITLES[x] for x in TITLES if TITLES[x].expr(self)]
-
-    @property
     def can_make_guild(self):
 
         if app.config["GUILD_CREATION_REQ"]==-1:

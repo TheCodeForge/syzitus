@@ -366,8 +366,9 @@ def settings_profile():
 @app.route("/help/titles", methods=["GET"])
 @auth_desired
 def titles():
+    titles= [TITLES[x] for x in TITLES if TITLES[x].expr(g.user)]
     return render_template("/help/titles.html",
-                           titles=list(TITLES.values())
+                           titles=titles)
                            )
 
 
