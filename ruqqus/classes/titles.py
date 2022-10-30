@@ -67,11 +67,11 @@ TITLE_DATA={
         'expr': lambda x: x.referred_by,
         'kind': 4,
         'text': ', the Invited'},
-    9: {'color': 'dd5555',
-        'description': f"Inadvertently break {app.config['SITE_NAME']}",
-        'expr': lambda x: x.has_badge(7),
-        'kind': 3,
-        'text': f", Breaker of {app.config['SITE_NAME']}"}
+    # 9: {'color': 'dd5555',
+    #     'description': f"Inadvertently break {app.config['SITE_NAME']}",
+    #     'expr': lambda x: x.has_badge(7),
+    #     'kind': 3,
+    #     'text': f", Breaker of {app.config['SITE_NAME']}"}
     11: {'color': '5555dd',
         'description': f"Make a contribution to the {app.config['SITE_NAME']} codebase",
         'expr': lambda x: x.has_badge(3),
