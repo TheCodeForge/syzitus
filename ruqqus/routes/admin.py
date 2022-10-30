@@ -151,7 +151,7 @@ def badge_grant_post():
         return redirect("/badge_grant?error=already_owned")
 
     badge = BADGE_DEFS[badge_id]
-    if badge.kind != 3:
+    if badge.kind != 2:
         abort(403)
 
     new_badge = Badge(badge_id=badge_id,
