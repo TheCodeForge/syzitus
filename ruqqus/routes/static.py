@@ -369,7 +369,6 @@ def titles():
     titles= [TITLES[x] for x in TITLES if TITLES[x].expr(g.user)]
     return render_template("/help/titles.html",
                            titles=titles)
-                           )
 
 
 @app.route("/help/badges", methods=["GET"])
