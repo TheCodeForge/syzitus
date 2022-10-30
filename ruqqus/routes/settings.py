@@ -128,12 +128,22 @@ def settings_profile_post():
     x = request.values.get("title_id", None)
     if x:
         x = int(x)
+
         if x == 0:
+
             g.user.title_id = None
             updated = True
+
         elif x > 0:
-            title = get_title(x)
-            if bool(eval(title.qualification_expr)):
+
+            eval_env={
+                "user": g.user,
+                "db": g.db,
+                "Board": Board,
+                "Submission": Submission
+            }
+            title = TITLES[x]
+            if eval(title.expr, eval_env):
                 g.user.title_id = title.id
                 updated = True
             else:
