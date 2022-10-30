@@ -319,7 +319,7 @@
 {% endblock %}
 
 {% block invitationModal %}
-{% if b.has_invite(v) %}
+{% if b.has_invite(g.user) %}
 {% include "guild/gm_invitation_modal.html" %}
 {% endif %}
 {% endblock %}
