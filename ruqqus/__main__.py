@@ -153,6 +153,7 @@ app.config["MAX_GUILD_COUNT"]=int(environ.get("MAX_GUILD_COUNT", "10").lstrip().
 app.config['UPLOAD_IMAGE_REP']=int(environ.get("UPLOAD_IMAGE_REP","10").lstrip().rstrip())
 
 app.config["DEBUG"]=bool(int(environ.get("DEBUG", 0)))
+app.config["GROWTH_HACK"]=bool(int(environ.get("GROWTH_HACK", 0)))
 
 app.config['DISCORD_SERVER_ID'] = environ.get("DISCORD_SERVER_ID",'').rstrip()
 app.config['DISCORD_CLIENT_ID'] = environ.get("DISCORD_CLIENT_ID",'').rstrip()
