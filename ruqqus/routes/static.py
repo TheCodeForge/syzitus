@@ -367,7 +367,9 @@ def settings_profile():
     }
 
     titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr, eval_env)]
-    return render_template("settings_profile.html")
+    return render_template(
+        "settings_profile.html",
+        titles=titles)
 
 
 @app.route("/help/titles", methods=["GET"])
