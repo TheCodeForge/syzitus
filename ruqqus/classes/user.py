@@ -11,15 +11,13 @@ import pyotp
 from ruqqus.helpers.base36 import *
 from ruqqus.helpers.security import *
 from ruqqus.helpers.lazy import lazy
-from ruqqus.helpers.alerts import send_notification
 import ruqqus.helpers.aws as aws
 from ruqqus.helpers.discord import add_role, delete_role, discord_log_event
-#from ruqqus.helpers.alerts import send_notification
 from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
 from .submission import Submission, SubmissionAux, SaveRelationship
-from .comment import Comment, Notification
+from .comment import Comment, CommentAux, Notification
 from .boards import Board
 from .board_relationships import *
 from .mix_ins import *
@@ -30,6 +28,39 @@ from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
 from ruqqus.__main__ import Base, cache, app
+
+
+#this is repeated here to avoid import circle
+def send_notification
+    with CustomRenderer() as renderer:
+        text_html = renderer.render(mistletoe.Document(text))
+
+    text_html = sanitize(text_html, linkgen=True)#, noimages=True)
+
+    new_comment = Comment(author_id=1,
+                          # body=text,
+                          # body_html=text_html,
+                          parent_submission=None,
+                          distinguish_level=6,
+                          is_offensive=False
+                          )
+    g.db.add(new_comment)
+
+    g.db.flush()
+
+    new_aux = CommentAux(id=new_comment.id,
+                         body=text,
+                         body_html=text_html
+                         )
+    g.db.add(new_aux)
+    g.db.commit()
+    # g.db.begin()
+
+    notif = Notification(comment_id=new_comment.id,
+                         user_id=user.id)
+    g.db.add(notif)
+    g.db.commit()
+
 
 
 class User(Base, Stndrd, Age_times):
