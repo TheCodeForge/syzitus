@@ -285,13 +285,13 @@ class User(Base, Stndrd, Age_times):
         if self.admin_level < 4:
             # admins can see everything
 
-            m = g.db.query(
+            m = select(
                 ModRelationship.board_id).filter_by(
                 user_id=self.id,
-                invite_rescinded=False).subquery()
-            c = g.db.query(
+                invite_rescinded=False)
+            c = select(
                 ContributorRelationship.board_id).filter_by(
-                user_id=self.id).subquery()
+                user_id=self.id)
             posts = posts.filter(
                 or_(
                     Submission.author_id == self.id,
@@ -301,12 +301,12 @@ class User(Base, Stndrd, Age_times):
                 )
             )
 
-            blocking = g.db.query(
+            blocking = select(
                 UserBlock.target_id).filter_by(
-                user_id=self.id).subquery()
-            # blocked = g.db.query(
-            #     UserBlock.user_id).filter_by(
-            #     target_id=self.id).subquery()
+                user_id=self.id)
+            blocked = select(
+                UserBlock.user_id).filter_by(
+                target_id=self.id)
 
             posts = posts.filter(
                 Submission.author_id.notin_(blocking) #,
@@ -386,13 +386,13 @@ class User(Base, Stndrd, Age_times):
         if g.user and g.user.admin_level >= 4:
             pass
         elif g.user:
-            m = g.db.query(
+            m = select(
                 ModRelationship.board_id).filter_by(
                 user_id=g.user.id,
-                invite_rescinded=False).subquery()
-            c = g.db.query(
+                invite_rescinded=False)
+            c = select(
                 ContributorRelationship.board_id).filter_by(
-                user_id=g.user.id).subquery()
+                user_id=g.user.id)
             submissions = submissions.filter(
                 or_(
                     Submission.author_id == g.user.id,
@@ -458,8 +458,8 @@ class User(Base, Stndrd, Age_times):
         if g.user and g.user.admin_level >= 4:
             pass
         elif g.user:
-            m = g.db.query(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False).subquery()
-            c = g.user.contributes.subquery()
+            m = select(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False)
+            c = select(ContributorRelationship).filter_by(user_id=g.user.id)
 
             comments = comments.join(m,
                                      m.c.board_id == Submission.board_id,
@@ -680,8 +680,8 @@ class User(Base, Stndrd, Age_times):
 
 
         if replies_only:
-            cs=g.db.query(Comment.id).filter(Comment.author_id==self.id).subquery()
-            ps=g.db.query(Submission.id).filter(Submission.author_id==self.id).subquery()
+            cs=select(Comment.id).filter(Comment.author_id==self.id)
+            ps=select(Submission.id).filter(Submission.author_id==self.id)
             notifications=notifications.filter(
                 or_(
                     Comment.parent_comment_id.in_(cs),
@@ -693,8 +693,8 @@ class User(Base, Stndrd, Age_times):
                 )
 
         elif mentions_only:
-            cs=g.db.query(Comment.id).filter(Comment.author_id==self.id).subquery()
-            ps=g.db.query(Submission.id).filter(Submission.author_id==self.id).subquery()
+            cs=select(Comment.id).filter(Comment.author_id==self.id)
+            ps=select(Submission.id).filter(Submission.author_id==self.id)
             notifications=notifications.filter(
                 and_(
                     Comment.parent_comment_id.notin_(cs),
@@ -759,8 +759,8 @@ class User(Base, Stndrd, Age_times):
     @property
     @lazy
     def mentions_count(self):
-        cs=g.db.query(Comment.id).filter(Comment.author_id==self.id).subquery()
-        ps=g.db.query(Submission.id).filter(Submission.author_id==self.id).subquery()
+        cs=select(Comment.id).filter(Comment.author_id==self.id)
+        ps=select(Submission.id).filter(Submission.author_id==self.id)
         return self.notifications.options(
             lazyload('*')
             ).join(
@@ -783,8 +783,8 @@ class User(Base, Stndrd, Age_times):
     @property
     @lazy
     def replies_count(self):
-        cs=g.db.query(Comment.id).filter(Comment.author_id==self.id).subquery()
-        ps=g.db.query(Submission.id).filter(Submission.author_id==self.id).subquery()
+        cs=select(Comment.id).filter(Comment.author_id==self.id)
+        ps=select(Submission.id).filter(Submission.author_id==self.id)
         return self.notifications.options(
             lazyload('*')
             ).join(
@@ -869,12 +869,12 @@ class User(Base, Stndrd, Age_times):
     @lazy
     def alts(self):
 
-        subq = g.db.query(Alt).filter(
+        subq = select(Alt).filter(
             or_(
                 Alt.user1==self.id,
                 Alt.user2==self.id
                 )
-            ).subquery()
+            )
 
         data = g.db.query(
             User,
@@ -899,30 +899,30 @@ class User(Base, Stndrd, Age_times):
         return output
     
     def alts_subquery(self):
-        return g.db.query(User.id).filter(
+        returnselect(User.id).filter(
             or_(
                 User.id.in_(
-                    g.db.query(Alt.user1).filter(
+                    select(Alt.user1).filter(
                         Alt.user2==self.id
-                    ).subquery()
+                    )
                 ),
                 User.id.in_(
-                    g.db.query(Alt.user2).filter(
+                    select(Alt.user2).filter(
                         Alt.user1==self.id
-                    ).subquery()
-                ).subquery()
+                    )
+                )
             )
-        ).subquery()
+        )
         
 
     def alts_threaded(self, db):
 
-        subq = db.query(Alt).filter(
+        subq = select(Alt).filter(
             or_(
                 Alt.user1==self.id,
                 Alt.user2==self.id
                 )
-            ).subquery()
+            )
 
         data = db.query(
             User,
@@ -1262,7 +1262,7 @@ class User(Base, Stndrd, Age_times):
             posts = posts.filter_by(over_18=False)
 
 
-        saved=g.db.query(SaveRelationship.submission_id).filter(SaveRelationship.user_id==self.id).subquery()
+        saved=select(SaveRelationship.submission_id).filter(SaveRelationship.user_id==self.id)
         posts=posts.filter(Submission.id.in_(saved))
 
 
@@ -1270,13 +1270,13 @@ class User(Base, Stndrd, Age_times):
         if self.admin_level < 4:
             # admins can see everything
 
-            m = g.db.query(
+            m = select(
                 ModRelationship.board_id).filter_by(
                 user_id=self.id,
-                invite_rescinded=False).subquery()
-            c = g.db.query(
+                invite_rescinded=False)
+            c = select(
                 ContributorRelationship.board_id).filter_by(
-                user_id=self.id).subquery()
+                user_id=self.id)
             posts = posts.filter(
                 or_(
                     Submission.author_id == self.id,
@@ -1286,12 +1286,12 @@ class User(Base, Stndrd, Age_times):
                 )
             )
 
-            blocking = g.db.query(
+            blocking = select(
                 UserBlock.target_id).filter_by(
-                user_id=self.id).subquery()
-            blocked = g.db.query(
+                user_id=self.id)
+            blocked = select(
                 UserBlock.user_id).filter_by(
-                target_id=self.id).subquery()
+                target_id=self.id)
 
             posts = posts.filter(
                 Submission.author_id.notin_(blocking),
