@@ -148,15 +148,15 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
         posts = posts.filter(Submission.is_bot==False)
 
     if g.user and g.user.admin_level >= 4:
-        board_blocks = g.db.select(
+        board_blocks = select(
             BoardBlock.board_id).filter_by(
             user_id=g.user.id)
 
         posts = posts.filter(Submission.board_id.notin_(board_blocks))
     elif g.user:
-        m = g.db.select(ModRelationship.board_id).filter_by(
+        m = select(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False)
-        c = g.db.select(
+        c = select(
             ContributorRelationship.board_id).filter_by(
             user_id=g.user.id)
 
@@ -169,10 +169,10 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
             )
         )
 
-        blocking = g.db.select(
+        blocking = select(
             UserBlock.target_id).filter_by(
             user_id=g.user.id)
-        blocked = g.db.select(
+        blocked = select(
              UserBlock.user_id).filter_by(
              target_id=g.user.id)
         posts = posts.filter(
@@ -180,7 +180,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
             Submission.author_id.notin_(blocked)
         )
 
-        board_blocks = g.db.select(
+        board_blocks = select(
             BoardBlock.board_id).filter_by(
             user_id=g.user.id)
 
@@ -194,7 +194,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
             or_(
                 Board.all_opt_out == False,
                 Submission.board_id.in_(
-                    g.db.select(
+                    select(
                         Subscription.board_id).filter_by(
                         user_id=g.user.id,
                         is_active=True)
@@ -639,9 +639,9 @@ Optional query parameters:
 
     b = g.db.query(Board)
 
-    contribs = g.db.select(ContributorRelationship.board_id).filter_by(user_id=g.user.id, is_active=True)
-    m = g.db.select(ModRelationship.board_id).filter_by(user_id=g.user.id, accepted=True)
-    s = g.db.select(Subscription.board_id).filter_by(user_id=g.user.id, is_active=True)
+    contribs = select(ContributorRelationship.board_id).filter_by(user_id=g.user.id, is_active=True)
+    m = select(ModRelationship.board_id).filter_by(user_id=g.user.id, accepted=True)
+    s = select(Subscription.board_id).filter_by(user_id=g.user.id, is_active=True)
 
     content = b.filter(
         or_(
@@ -690,7 +690,7 @@ Optional query parameters:
 
     u = g.db.query(User).filter_by(is_banned=0, is_deleted=False)
 
-    follows = g.db.select(Follow).filter_by(user_id=g.user.id)
+    follows = select(Follow).filter_by(user_id=g.user.id)
 
     content = u.join(follows,
                      User.id == follows.c.target_id,
@@ -736,7 +736,7 @@ def random_post():
         x = x.filter_by(is_bot=False)
 
     if g.user:
-        bans = g.db.select(
+        bans = select(
             BanRelationship.board_id).filter_by(
             user_id=g.user.id)
         x = x.filter(Submission.board_id.notin_(bans))
@@ -811,7 +811,7 @@ def random_user():
 @cache.memoize(600)
 def comment_idlist(page=1, nsfw=False, **kwargs):
 
-    posts = g.db.select(Submission).options(
+    posts = select(Submission).options(
         lazyload('*')).join(Submission.board)
 
     if not nsfw:
@@ -823,9 +823,9 @@ def comment_idlist(page=1, nsfw=False, **kwargs):
     if g.user and g.user.admin_level >= 4:
         pass
     elif g.user:
-        m = g.db.select(ModRelationship.board_id).filter_by(
+        m = select(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False)
-        c = g.db.select(
+        c = select(
             ContributorRelationship.board_id).filter_by(
             user_id=g.user.id)
 
@@ -852,10 +852,10 @@ def comment_idlist(page=1, nsfw=False, **kwargs):
 
     if g.user and g.user.admin_level <= 3:
         # blocks
-        blocking = g.db.select(
+        blocking = select(
             UserBlock.target_id).filter_by(
             user_id=g.user.id)
-        blocked = g.db.select(
+        blocked = select(
             UserBlock.user_id).filter_by(
             target_id=g.user.id)
 
