@@ -4,6 +4,9 @@ from flask import render_template
 from ruqqus.helpers.base36 import *
 from ruqqus.helpers.security import *
 from ruqqus.helpers.lazy import lazy
+
+from .submission import Submission
+
 from ruqqus.__main__ import Base, cache
 
 
@@ -99,7 +102,7 @@ TITLE_DATA={
         'text': ' the Artisan'},
     21: {'color': 'dd5555',
         'description': 'Get at least 100 Reputation from a single post.',
-        'expr': lambda x: x.submissions.filter(Submission.score_top>=100).count(),
+        'expr': lambda x: g.db.query(Submission).filter_by(Submission.author_id==x.id, Submission.score_top>=100).count(),
         'kind': 1,
         'text': ' the Hot'},
     23: {'color': '5555dd',
