@@ -150,7 +150,7 @@ def badge_grant_post():
     if user.has_badge(badge_id):
         return redirect("/badge_grant?error=already_owned")
 
-    badge = g.db.query(BadgeDef).filter_by(id=badge_id).first()
+    badge = BADGE_DEFS[badge_id]
     if badge.kind != 3:
         abort(403)
 
