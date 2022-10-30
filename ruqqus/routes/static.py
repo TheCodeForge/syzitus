@@ -360,13 +360,13 @@ def settings():
 @app.route("/settings/profile", methods=["GET"])
 @auth_required
 def settings_profile():
+    titles= [TITLES[x] for x in TITLES if TITLES[x].expr(g.user)]
     return render_template("settings_profile.html")
 
 
 @app.route("/help/titles", methods=["GET"])
 @auth_desired
 def titles():
-    titles= [TITLES[x] for x in TITLES if TITLES[x].expr(g.user)]
     return render_template("/help/titles.html",
                            titles=titles)
 
