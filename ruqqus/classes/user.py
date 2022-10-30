@@ -869,12 +869,12 @@ class User(Base, Stndrd, Age_times):
     @lazy
     def alts(self):
 
-        subq = select(Alt).filter(
+        subq = g.db.query(Alt).filter(
             or_(
                 Alt.user1==self.id,
                 Alt.user2==self.id
                 )
-            )
+            ).subquery()
 
         data = g.db.query(
             User,
