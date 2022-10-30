@@ -359,8 +359,11 @@ def settings():
 @app.route("/settings/profile", methods=["GET"])
 @auth_required
 def settings_profile():
+    eval_env={
+        "user": g.user
+    }
 
-    titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr)]
+    titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr, eval_env)]
     return render_template("settings_profile.html")
 
 
