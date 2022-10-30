@@ -12,6 +12,7 @@
 
 Tips to help ensure your website works nicely with {{ "SITE_NAME" | app_config }}
 
+{% if 'FORCE_HTTPS' | app_config %}
 ## SSL Required
 
 To help protect user privacy and safety, {{ "SITE_NAME" | app_config }} forces HTTPS on all assets uploaded and submitted to {{ "SITE_NAME" | app_config }}. This includes automatic conversion of all "http://" schemas into "https://".
@@ -19,6 +20,7 @@ To help protect user privacy and safety, {{ "SITE_NAME" | app_config }} forces H
 Make sure your website has a valid SSL certificate in order to ensure that {{ "SITE_NAME" | app_config }} users can navigate to it from {{ "SITE_NAME" | app_config }}. 
 
 We will not grant exemptions to https conversion.
+{% endif %}
 
 ## Share to {{ "SITE_NAME" | app_config }}
 
@@ -33,7 +35,7 @@ Thumbnail images for posts are determined by using the first successful conditio
 
 1. If the submitted link has a `Content-Type: image/*` header, the link itself is used as the thumbnail asset.
 2. If the submitted link has a `Content-Type: text/html` header, and there is a `<meta name="thumbnail">` element, the `content` attribute of that element will be scraped and used as the thumbnail. (Use this option to explicitly set a thumbnail)
-3. If the submitted link has a `Content-Type: text/html` header, and no thumbnail meta element is found, the `src` attribute of the first `img` element will be scraped and used as the thumbnail.
+3. If the submitted link has a `Content-Type: text/html` header, and no thumbnail meta element is found, the `src` attribute of the first significant `img` element will be scraped and used as the thumbnail.
 
 ## Applications
 
