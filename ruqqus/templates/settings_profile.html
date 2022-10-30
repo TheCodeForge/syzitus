@@ -285,7 +285,7 @@
                   <div class="input-group mb2">
                     <select id='title-selector' class="form-control" form="profile-settings" name="title_id" onchange="post_toast('/settings/profile?title_id='+document.getElementById('title-selector').value)">
                      <option value="0"{{ ' selected' if g.user.title_id==0 else '' }}>No title</option>
-                     {% for entry in g.user.available_titles %}
+                     {% for entry in titles %}
                      <option value="{{ entry.id }}"{{ ' selected' if g.user.title_id==entry.id else '' }}>{{ entry.text }}</option>
                      {% endfor %}
                    </select>
