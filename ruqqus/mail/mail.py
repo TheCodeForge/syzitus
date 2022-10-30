@@ -63,9 +63,9 @@ def send_verification_email(user, email=None):
 
 @app.route("/api/verify_email", methods=["POST"])
 @is_not_banned
-def api_verify_email(v):
+def api_verify_email():
 
-    send_verification_email(v)
+    send_verification_email(g.user)
 
     return "", 204
 
