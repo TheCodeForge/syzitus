@@ -360,7 +360,8 @@ def settings():
 @auth_required
 def settings_profile():
     eval_env={
-        "user": g.user
+        "user": g.user,
+        "db": g.db
     }
 
     titles= [TITLES[x] for x in TITLES if eval(TITLES[x].expr, eval_env)]
