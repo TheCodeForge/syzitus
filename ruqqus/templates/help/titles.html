@@ -83,28 +83,6 @@
 	</tbody>
 </table>
 
-<h2 class="h3" id="PoliticalCompass">Political Compass Titles</h2>
-
-<p>These titles are available for those who wish to indicate their political leanings. There are no requirements to use any of these titles.</p>
-
-<table class="table table-striped mb-5">
-	<thead class="bg-primary text-white">
-		<tr>
-			<th scope="col">Title</th>
-			<th scope="col">Description</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for t in titles if t.kind==5 %}
-		<tr>
-			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
-			<td>{{ t.description }}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
-
-
 <h2 class="h3" id="UnobtainableTitles">Unobtainable titles</h2>
 
 <p>There is no way to acquire these titles if you don't already have them.</p>
