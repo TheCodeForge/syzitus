@@ -40,7 +40,7 @@ def ban_user(user_id):
             text = f"Your Ruqqus account has been suspended for {days} days for the following reason:\n\n> {message}"
         else:
             text = f"Your Ruqqus account has been suspended for {days} days due to a Terms of Service violation."
-        user.ban(admin=v, reason=reason, days=days)
+        user.ban(admin=g.user, reason=reason, days=days)
 
     else:
         if message:
@@ -48,12 +48,12 @@ def ban_user(user_id):
         else:
             text = "Your Ruqqus account has been permanently suspended due to a Terms of Service violation."
 
-        user.ban(admin=v, reason=reason)
+        user.ban(admin=g.user, reason=reason)
 
 
     for x in user.alts:
         if not x.is_deleted:
-            x.ban(admin=v, reason=reason)
+            x.ban(admin=g.user, reason=reason)
 
 
 
