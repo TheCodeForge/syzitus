@@ -367,18 +367,8 @@ def settings_profile():
 @auth_desired
 def titles():
     return render_template("/help/titles.html",
-                           titles=TITLES
+                           titles=list(TITLES.values())
                            )
-
-
-@app.route("/help/terms", methods=["GET"])
-@auth_desired
-def help_terms():
-
-    cutoff = int(environ.get("tos_cutoff", 0))
-
-    return render_template("/help/terms.html",
-                           cutoff=cutoff)
 
 
 @app.route("/help/badges", methods=["GET"])

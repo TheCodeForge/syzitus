@@ -34,7 +34,6 @@
 	</thead>
 	<tbody>
 		{% for t in titles if t.kind==1 %}
-		{% set t=titles[t] %}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
 			<td>{{ t.description }}</td>
@@ -56,7 +55,6 @@
 	</thead>
 	<tbody>
 		{% for t in titles if t.kind==2 %}
-		{% set t=titles[t]%}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
 			<td>{{ t.description }}</td>
@@ -77,7 +75,6 @@
 	</thead>
 	<tbody>
 		{% for t in titles if t.kind==3 %}
-		{% set t=titles[t]%}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
 			<td>{{ t.description }}</td>
@@ -99,7 +96,6 @@
 	</thead>
 	<tbody>
 		{% for t in titles if t.kind==5 %}
-		{% set t=titles[t]%}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
 			<td>{{ t.description }}</td>
@@ -122,7 +118,6 @@
 	</thead>
 	<tbody>
 		{% for t in titles if t.kind==4 %}
-		{% set t=titles[t]%}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
 			<td>{{ t.requirement_string }}</td>

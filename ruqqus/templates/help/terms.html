@@ -153,10 +153,5 @@ These terms of service are governed by, and shall be interpreted in accordance w
 Whenever {{ "SITE_NAME" | app_config }} updates these terms of service or the Content Policy, your continued use of the {{ "SERVER_NAME" | app_config }} platform constitutes your agreement to the updated terms of service.
 
 {% endfilter %}
-
-{% if v and v.tos_agreed_utc < cutoff %}
-<a id="agreebox" href="javascript:void(0)" class="btn btn-primary" onclick="post('/api/agree_tos', callback=function(){window.history.back()})">I agree.</a>
-
-{% endif %}
 {% endblock %}
 
