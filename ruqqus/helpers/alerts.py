@@ -35,3 +35,4 @@ def send_notification(user, text):
     notif = Notification(comment_id=new_comment.id,
                          user_id=user.id)
     g.db.add(notif)
+    g.db.commit()
