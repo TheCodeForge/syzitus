@@ -377,7 +377,7 @@ class User(Base, Stndrd, Age_times):
         if g.user and g.user.hide_bot:
             submissions = submissions.filter_by(is_bot=False)
 
-        if not (g.user and (g.user.admin_level >= 3)):
+        if not g.user or (g.user and g.user.admin_level<3):
             submissions = submissions.filter_by(deleted_utc=0)
 
         if not (g.user and (g.user.admin_level >= 3 or g.user.id == self.id)):
