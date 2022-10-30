@@ -24,7 +24,7 @@ SCOPES = {
 
 @app.route("/oauth/authorize", methods=["GET"])
 @auth_required
-def oauth_authorize_prompt(v):
+def oauth_authorize_prompt():
     '''
     This page takes the following URL parameters:
     * client_id - Your application client ID
@@ -83,7 +83,6 @@ def oauth_authorize_prompt(v):
     permanent = bool(request.args.get("permanent"))
 
     return render_template("oauth.html",
-                           v=v,
                            application=application,
                            SCOPES=SCOPES,
                            state=state,
@@ -97,7 +96,7 @@ def oauth_authorize_prompt(v):
 
 @app.route("/oauth/authorize", methods=["POST"])
 @auth_required
-def oauth_authorize_post(v):
+def oauth_authorize_post():
 
     client_id = request.form.get("client_id")
     scopes_txt = request.form.get("scopes")
@@ -141,7 +140,7 @@ def oauth_authorize_post(v):
     new_auth = ClientAuth(
         oauth_client=application.id,
         oauth_code=secrets.token_urlsafe(128)[0:128],
-        user_id=v.id,
+        user_id=g.user.id,
         scope_identity="identity" in scopes,
         scope_create="create" in scopes,
         scope_read="read" in scopes,
@@ -245,12 +244,12 @@ def oauth_grant():
 
 @app.route("/help/api_keys", methods=["POST"])
 @is_not_banned
-def request_api_keys(v):
+def request_api_keys():
 
     new_app = OauthApp(
         app_name=request.form.get('name'),
         redirect_uri=request.form.get('redirect_uri'),
-        author_id=v.id,
+        author_id=g.user.id,
         description=request.form.get("description")[0:256],
         client_id=secrets.token_urlsafe(32)[0:32],
         client_secret=secrets.token_urlsafe(64)[0:64]
@@ -299,12 +298,12 @@ def edit_oauth_app(v, aid):
 @app.get("/api/v2/me")
 @auth_required
 @api("identity")
-def api_v1_identity(v):
+def api_v1_identity():
     """
 Get information about the currently authenticated user. Does not include email or security information.
 """
 
-    return jsonify(v.json)
+    return jsonify(g.user.json)
 
 
 @app.route("/admin/app/approve/<aid>", methods=["POST"])
@@ -347,7 +346,7 @@ def admin_app_id(v, aid):
     if not oauth:
         abort(404)
 
-    if v.id != oauth.author_id and v.admin_level<4:
+    if g.user.id != oauth.author_id and g.user.admin_level<4:
         abort(403)
 
     pids=oauth.idlist(page=int(request.args.get("page",1)),
@@ -356,10 +355,9 @@ def admin_app_id(v, aid):
     next_exists=len(pids)==101
     pids=pids[0:100]
 
-    posts=get_posts(pids, v=v)
+    posts=get_posts(pids)
 
     return render_template("admin/app.html",
-                           v=v,
                            app=oauth,
                            listing=posts,
                            next_exists=next_exists
@@ -382,11 +380,10 @@ def admin_app_id_comments(v, aid):
     next_exists=len(cids)==101
     cids=cids[0:100]
 
-    comments=get_comments(cids, v=v)
+    comments=get_comments(cids)
 
 
     return render_template("admin/app.html",
-                           v=v,
                            app=oauth,
                            comments=comments,
                            next_exists=next_exists,
@@ -396,7 +393,7 @@ def admin_app_id_comments(v, aid):
 
 @app.route("/admin/apps", methods=["GET"])
 @admin_level_required(3)
-def admin_apps_list(v):
+def admin_apps_list():
 
     apps = g.db.query(OauthApp).options(
         joinedload(
@@ -404,7 +401,7 @@ def admin_apps_list(v):
         OauthApp.client_id==None).order_by(
                 OauthApp.id.desc()).all()
 
-    return render_template("admin/apps.html", v=v, apps=apps)
+    return render_template("admin/apps.html", apps=apps)
 
 
 @app.route("/oauth/reroll/<aid>", methods=["POST"])
@@ -415,7 +412,7 @@ def reroll_oauth_tokens(aid, v):
 
     a = g.db.query(OauthApp).filter_by(id=aid).first()
 
-    if a.author_id != v.id:
+    if a.author_id != g.user.id:
         abort(403)
 
     a.client_secret = secrets.token_urlsafe(64)[0:64]
@@ -436,7 +433,7 @@ def oauth_rescind_app(aid, v):
     aid = base36decode(aid)
     auth = g.db.query(ClientAuth).filter_by(id=aid).first()
 
-    if auth.user_id != v.id:
+    if auth.user_id != g.user.id:
         abort(403)
 
     g.db.delete(auth)
@@ -447,12 +444,12 @@ def oauth_rescind_app(aid, v):
 @app.patch("/api/v2/auth")
 @auth_required
 @api()
-def oauth_release_auth(v):
+def oauth_release_auth():
     """Revoke the current Access Token. A new Access Token may be obtained using the Refresh Token. Permanent authorizations only."""
 
     token=request.headers.get("Authorization").split()[1]
 
-    auth = g.db.query(ClientAuth).filter_by(user_id=v.id, access_token=token).first()
+    auth = g.db.query(ClientAuth).filter_by(user_id=g.user.id, access_token=token).first()
     if not auth:
         abort(404)
 
@@ -468,12 +465,12 @@ def oauth_release_auth(v):
 @app.delete("/api/v2/auth")
 @auth_required
 @api()
-def oauth_kill_auth(v):
+def oauth_kill_auth():
     """Revoke the current authorization. A new Access Token may not be obtained without the user going through the OAuth process again."""
 
     token=request.headers.get("Authorization").split()[1]
 
-    auth = g.db.query(ClientAuth).filter_by(user_id=v.id, access_token=token).first()
+    auth = g.db.query(ClientAuth).filter_by(user_id=g.user.id, access_token=token).first()
     if not auth:
         abort(404)
 
