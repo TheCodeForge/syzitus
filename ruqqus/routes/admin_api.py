@@ -269,7 +269,7 @@ def admin_distinguish_comment(c_id):
 
 @app.route("/api/ban_guild/<bid>", methods=["POST"])
 @admin_level_required(4)
-def api_ban_guild(v, bid):
+def api_ban_guild(bid):
 
     board = get_board(bid)
 
@@ -284,7 +284,7 @@ def api_ban_guild(v, bid):
 
 @app.route("/api/unban_guild/<bid>", methods=["POST"])
 @admin_level_required(4)
-def api_unban_guild(v, bid):
+def api_unban_guild(bid):
 
     board = get_board(bid)
 
