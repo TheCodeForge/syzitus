@@ -10,7 +10,7 @@
 
     <h1 class="h2">{{ application.app_name}}</h1>
 
-    <p class="mb-md-5">wants to access your @{{ v.username }} account.</p>
+    <p class="mb-md-5">wants to access your @{{ g.user.username }} account.</p>
     <p>It will be able to:</p>
     <ul>
     {% for scope in scopes %}
@@ -28,7 +28,7 @@
 
     <form action="/oauth/authorize" method="post" class="mt-md-3" id="login">
 
-        <input type="hidden" name="formkey" value="{{ v.formkey }}">
+        <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
         <input type="hidden" name="scopes" value="{{ scopes_txt }}">
         <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}">
         <input type="hidden" name="permanent" value="{{ permanent}}">
