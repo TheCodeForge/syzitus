@@ -376,7 +376,7 @@ def settings_profile():
 @auth_desired
 def titles():
     return render_template("/help/titles.html",
-                           titles=titles)
+                           titles=TITLES)
 
 
 @app.route("/help/badges", methods=["GET"])
