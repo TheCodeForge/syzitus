@@ -666,7 +666,7 @@ Optional file data:
     g.db.add(new_post_aux)
     g.db.flush()
 
-    vote = Vote(user_id=g.user.id,
+    vote = Vote(user_id=author_id,
                 vote_type=1,
                 submission_id=new_post.id
                 )
