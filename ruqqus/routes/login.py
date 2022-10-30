@@ -64,6 +64,7 @@ def check_for_alts(current_id):
                 new_alt = Alt(user1=past_id,
                               user2=current_id)
                 g.db.add(new_alt)
+                g.db.commit()
 
             except BaseException:
                 pass
