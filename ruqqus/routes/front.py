@@ -176,7 +176,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
              UserBlock.user_id).filter_by(
              target_id=g.user.id)
         posts = posts.filter(
-            Submission.author_id.notin_(blocking) #,
+            Submission.author_id.notin_(blocking),
             Submission.author_id.notin_(blocked)
         )
 
