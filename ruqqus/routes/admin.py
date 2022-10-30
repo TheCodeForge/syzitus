@@ -837,7 +837,7 @@ def admin_siege_count():
 
 @app.route("/admin/purge_guild_images/<boardname>", methods=["POST"])
 @admin_level_required(5)
-def admin_purge_guild_images(boardname, v):
+def admin_purge_guild_images(boardname):
 
     #Iterates through all posts in guild with thumbnail, and nukes thumbnails and i.ruqqus uploads
 
