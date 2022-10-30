@@ -67,8 +67,6 @@
                         <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
                         <label for="title">Post Title</label>
-
-
                         <input class="form-control" id="post-title" aria-describedby="titleHelpRegister" type="text" name="title" placeholder="Required" value="{{ title }}" minlength="1" maxlength="250" required oninput="checkForRequired()">
 
                         <div id="urlblock">
@@ -133,6 +131,13 @@
                             <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
                             <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
                         </div>
+                        {% endif %}
+
+
+                        {% if g.user.admin_level and ( "GROWTH_HACK" | app_config )%}
+                        <!--admin growth hack-->
+                        <label for="ident">Post As</label>
+                        <input class="form-control" id="ident" type="text" name="ident">
                         {% endif %}
                     </form>
                 </div>

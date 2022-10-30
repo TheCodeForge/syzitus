@@ -309,7 +309,6 @@ def get_post_title():
 
 
 @app.route("/submit", methods=['POST'])
-@app.route("/api/vue/submit", methods=["POST"])
 @app.post("/api/v2/submissions")
 @limiter.limit("6/minute")
 @is_not_banned
@@ -623,8 +622,19 @@ Optional file data:
             is_offensive = True
             break
 
+    #admin growth hack
+    if g.user.admin_level and app.config["GROWTH_HACK"] and request.form.get("ident"):
+        author=get_user(request.form.get("ident"), graceful=True)
+        if not author:
+            return jsonify({"error": "That account doesn't exist."})
+        if author not in g.user.alts:
+            return jsonify({"error": "You can only altpost to accounts that you own."})
+        author_id = author.id
+    else:
+        author_id=g.user.id
+
     new_post = Submission(
-        author_id=g.user.id,
+        author_id=author_id,
         domain_ref=domain_obj.id if domain_obj else None,
         board_id=board.id,
         original_board_id=board.id,
