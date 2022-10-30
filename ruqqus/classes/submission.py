@@ -17,7 +17,6 @@ from .domains import Domain
 from .flags import Flag
 from .badwords import *
 from .comment import Comment
-from .titles import Title
 
 
 class SubmissionAux(Base):
@@ -455,10 +454,6 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     @property
     def voted(self):
         return self.__dict__.get("_voted", 0)
-
-    @property
-    def user_title(self):
-        return self.author.title
 
     @property
     def title(self):
