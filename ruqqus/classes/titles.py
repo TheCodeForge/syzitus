@@ -72,7 +72,7 @@ TITLE_DATA={
         'description': f"Inadvertently break {app.config['SITE_NAME']}",
         'expr': "user.has_badge(7)",
         'kind': 3,
-        'text': f", Breaker of {app.config['SITE_NAME']}"}
+        'text': f", Breaker of {app.config['SITE_NAME']}"},
     11: {'color': '5555dd',
         'description': f"Make a contribution to the {app.config['SITE_NAME']} codebase",
         'expr': "user.has_badge(3)",
