@@ -116,7 +116,7 @@ def ban_post(post_id):
         )
     g.db.add(ma)
     g.db.commit()
-    return (redirect(post.permalink), post)
+    return redirect(post.permalink)
 
 
 @app.route("/api/unban_post/<post_id>", methods=["POST"])
@@ -145,7 +145,7 @@ def unban_post(post_id):
     g.db.add(post)
     g.db.commit()
 
-    return (redirect(post.permalink), post)
+    return redirect(post.permalink)
 
 
 @app.route("/api/distinguish/<post_id>", methods=["POST"])
