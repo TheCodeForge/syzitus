@@ -120,29 +120,25 @@ def get_logo_jumbotron(color=None, letter=None):
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
-@app.get("/logo/<color>")
-@app.get("/logo/<color>/<letter>")
+@app.get("/logo/main/<color>/<letter>")
 @cache.memoize()
 def get_logo_color(color, letter=None):
 
-    color=app.config["COLOR_PRIMARY"]
-
-    primary_r=int(color[0:2], 16)
-    primary_g=int(color[2:4], 16)
-    primary_b=int(color[4:6], 16)
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
 
     primary = (primary_r, primary_g, primary_b, 255)
 
     base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
     text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
 
-    #flood fill main logo shape if needed
-    if color!="white":
-        ImageDraw.floodfill(
-            base_layer,
-            (base_layer.size[0]//2, base_layer.size[1]//2),
-            value=primary
-            )
+    #flood fill main logo shape
+    ImageDraw.floodfill(
+        base_layer,
+        (base_layer.size[0]//2, base_layer.size[1]//2),
+        value=primary
+        )
 
 
     #tilted letter layer
@@ -162,7 +158,57 @@ def get_logo_color(color, letter=None):
             ),
         letter, 
         font=font,
-        fill=primary if request.path=="/logo/white" else (255,255,255,255)
+        fill=(255,255,255,255)
+        )
+
+    text_layer = text_layer.rotate(
+        angle=20, 
+        expand=False, 
+        fillcolor=(255,255,255,0),
+        center=(
+            text_layer.size[0]//2,
+            text_layer.size[0]//2
+            ),
+        resample=PIL.Image.BILINEAR)
+
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
+    output_bytes=io.BytesIO()
+    output.save(output_bytes, format="PNG")
+    output_bytes.seek(0)
+    return send_file(output_bytes, mimetype="image/png")
+
+
+@app.get("/logo/white/<color>/<letter>")
+@cache.memoize()
+def get_logo_color(color, letter=None):
+
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+
+    primary = (primary_r, primary_g, primary_b, 255)
+
+    base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
+    text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
+
+    #tilted letter layer
+    font = ImageFont.truetype(
+        f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
+        size=base_layer.size[1]//2
+    )
+
+    letter = app.config["SITE_NAME"][0:1].lower()
+    box = font.getbbox(letter)
+
+    d = ImageDraw.Draw(text_layer)
+    d.text(
+        (
+            base_layer.size[0] // 2 - box[2] // 2, 
+            base_layer.size[0] // 2 - (box[3]+box[1]) // 2
+            ),
+        letter, 
+        font=font,
+        fill=primary
         )
 
     text_layer = text_layer.rotate(
