@@ -35,7 +35,7 @@
     {% endif %}
 
 <h1 class="article-title">Contact {{ "SITE_NAME" | app_config }}</h1>
-{% if v and v.is_activated and not v.is_suspended %}
+{% if g.user and g.user.is_activated and not g.user.is_suspended %}
 
 <p>Use this form to contact {{ "SITE_NAME" | app_config }} staff.</p>
 
@@ -58,12 +58,12 @@
 
 </form>
 
-{% elif v and v.is_suspended %}
+{% elif g.user and g.user.is_suspended %}
 
 <p>Your {{ "SITE_NAME" | app_config }} account has been suspended. You are not permitted to use this form.</p>
 
 
-{% elif v %}
+{% elif g.user %}
 
 <p>Please <a target="_blank" href="/settings/security">verify your email address</a> in order to ensure we can respond to your inquiry if needed. Then, refresh this page.</p>
 
