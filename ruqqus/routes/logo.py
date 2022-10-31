@@ -122,7 +122,7 @@ def get_logo_jumbotron(color=None, letter=None):
 
 @app.get("/logo/main/<color>/<letter>")
 @cache.memoize()
-def get_logo_color(color, letter=None):
+def get_logo_main(color, letter=None):
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
     primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
@@ -180,7 +180,7 @@ def get_logo_color(color, letter=None):
 
 @app.get("/logo/white/<color>/<letter>")
 @cache.memoize()
-def get_logo_color(color, letter=None):
+def get_logo_white(color, letter=None):
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
     primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
