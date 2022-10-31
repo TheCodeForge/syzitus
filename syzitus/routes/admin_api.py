@@ -91,7 +91,7 @@ def ban_post(post_id):
         abort(400)
 
     post.is_banned = True
-    post.is_approved = 0
+    post.is_approved = None
     post.approved_utc = 0
     post.stickied = False
     post.is_pinned = False
