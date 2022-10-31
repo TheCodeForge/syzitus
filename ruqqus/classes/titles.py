@@ -161,12 +161,12 @@ TITLE_DATA={
     34: {'color': '5555ff',
         'description': f'Join {app.config["SITE_NAME"]} during open Alpha.',
         'expr': "user.has_badge(15)",
-        'kind': 1,
+        'kind': 4,
         'text': ', the Very Early Adopter'},
     35: {'color': 'aaaa22',
         'description': f'Join {app.config["SITE_NAME"]} during open Beta.',
         'expr': "user.has_badge(15) or user.has_badge(16)",
-        'kind': 1,
+        'kind': 4,
         'text': ', the Early Adopter'}
 }
 
