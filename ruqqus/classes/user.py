@@ -1034,7 +1034,7 @@ class User(Base, Stndrd, Age_times):
         if self.has_banner:
             return f"https://{app.config['S3_BUCKET']}/uid/{self.base36id}/banner-{self.banner_nonce}.png"
         else:
-            return f"/logo/jumbotron/{app.config['COLOR_PRIMARY']}"
+            return f"/logo/jumbotron/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}"
 
     @property
     def profile_url(self):
