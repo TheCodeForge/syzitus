@@ -49,8 +49,9 @@ def main_css(color, file, n=None):
 
 @app.get("/logo/jumbotron")
 @app.get("/logo/jumbotron/<color>")
+@app.get("/logo/jumbotron/<color>/<letter>")
 @cache.memoize()
-def get_logo_jumbotron(color=None):
+def get_logo_jumbotron(color=None, letter=None):
 
     color = color or app.config["COLOR_PRIMARY"]
 
@@ -77,7 +78,7 @@ def get_logo_jumbotron(color=None):
         size=base_layer.size[1]//2
     )
 
-    letter = app.config["SITE_NAME"][0:1].lower()
+    letter = letter or app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
 
     d = ImageDraw.Draw(text_layer)
@@ -151,15 +152,16 @@ def get_logo_jumbotron(color=None):
     return send_file(output_bytes, mimetype="image/png")
 
 @app.get("/logo/<color>")
+@app.get("/logo/<color>/<letter>")
 @cache.memoize()
-def get_logo_color(color):
+def get_logo_color(color, letter=None):
 
-    if color not in ["main", "white", "inverted"]:
-        abort(404)
+    if color=="main":
+        color=app.config["COLOR_PRIMARY"]
 
-    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
-    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
-    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+    primary_r=int(color[0:2], 16)
+    primary_g=int(color[2:4], 16)
+    primary_b=int(color[4:6], 16)
 
     primary = (primary_r, primary_g, primary_b, 255)
 
@@ -167,17 +169,11 @@ def get_logo_color(color):
     text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
 
     #flood fill main logo shape if needed
-    if color=="main":
+    if color!="white":
         ImageDraw.floodfill(
             base_layer,
             (base_layer.size[0]//2, base_layer.size[1]//2),
             value=primary
-            )
-    elif color=="inverted":
-        ImageDraw.floodfill(
-            base_layer,
-            (base_layer.size[0]//2, base_layer.size[1]//2),
-            value=(255-primary_r, 255-primary_g, 255-primary_b, 255)
             )
 
 
@@ -187,7 +183,7 @@ def get_logo_color(color):
         size=base_layer.size[1]//2
     )
 
-    letter = app.config["SITE_NAME"][0:1].lower()
+    letter = letter or app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
 
     d = ImageDraw.Draw(text_layer)
@@ -198,7 +194,7 @@ def get_logo_color(color):
             ),
         letter, 
         font=font,
-        fill=(255,255,255,255) if color in ["main", "inverted"] else primary
+        fill=primary if request.path=="/logo/white" else (255,255,255,255)
         )
 
     text_layer = text_layer.rotate(
