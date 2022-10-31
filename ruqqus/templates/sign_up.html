@@ -10,7 +10,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-    <meta property="og:image" content="/assets/images/splash/1200/630" />
+    <meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
     <meta property="og:url" content="https://{{ 'SERVER_NAME' | app_config }}">
     <meta property="og:description" name="description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
     <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config | lower }}" />
@@ -21,7 +21,7 @@
     <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
     <meta name="twitter:creator" content="@{{ 'SITE_NAME' | app_config | lower }}">
     <meta name="twitter:description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design." />
-    <meta name="twitter:image" content="/assets/images/splash/1200/630" />
+    <meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
     <meta name="twitter:url" content="https://{{ 'SERVER_NAME' | app_config }}" />
 
     <title>{% if ref_user %}{{ ref_user.username }} invites you to {{ 'SITE_NAME' | app_config }}{% else %}Sign up - {{ 'SITE_NAME' | app_config }}{% endif %}</title>

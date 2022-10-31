@@ -5,9 +5,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<meta name="thumbnail" content="/assets/images/splash/640/480">
+	<meta name="thumbnail" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/640/480">
 
-  <link rel="icon" type="image/png" href="/assets/images/splash/64/64">
+  <link rel="icon" type="image/png" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/64/64">
   
 	{% block title %}
 	<title>{{ "SITE_NAME" | app_config }}: The Open-Source Platform for Independent Internet Communities</title>
@@ -15,7 +15,7 @@
   <meta property="og:type" content="article" />
   <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
   <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-  <meta property="og:image" content="/assets/images/splash/1200/630" />
+  <meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
   <meta property="og:url" content="{{ request.path | full_link }}">
   <meta property="og:description" name="description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
   <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config }}" />
@@ -26,7 +26,7 @@
   <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
   <meta name="twitter:creator" content="@{{ 'SITE_NAME' | app_config }}">
   <meta name="twitter:description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design." />
-  <meta name="twitter:image" content="/assets/images/splash/1200/630" />
+  <meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
   <meta name="twitter:url" content="{{ request.path | full_link }}" />
   {% endblock %}
 
@@ -41,40 +41,40 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/splash/180/180">
-  <link rel="icon" type="image/png" sizes="32x32" href=/assets/images/splash/32/32>
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/splash/16/16">
+  <link rel="apple-touch-icon" sizes="180x180" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/180/180">
+  <link rel="icon" type="image/png" sizes="32x32" href=/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/32/32>
+  <link rel="icon" type="image/png" sizes="16x16" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/16/16">
   <link rel="manifest" href="/assets/manifest.json">
-  <link rel="shortcut icon" href="/assets/images/splash/64/64">
+  <link rel="shortcut icon" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/64/64">
   <meta name="application-name" content="{{ 'SITE_NAME' | app_config }}">
   <meta name="msapplication-TileColor" content="#{{ 'COLOR_PRIMARY' | app_config }}">
   <meta name="theme-color" content="#{{ 'COLOR_PRIMARY' | app_config }}">
 
-  <link rel="apple-touch-startup-image" sizes="320x480" href="/assets/images/splash/320/480" />
-  <link rel="apple-touch-startup-image" sizes="640x960" href="/assets/images/splash/640/960" />
-  <link rel="apple-touch-icon" sizes="640x1136" href="/assets/images/splash/640/1136" />
-  <link rel="apple-touch-icon" sizes="750x1334" href="/assets/images/splash/750/1334" />
-  <link rel="apple-touch-startup-image" sizes="768x1004" href="/assets/images/splash/768/1004" />
-  <link rel="apple-touch-startup-image" sizes="768x1024" href="/assets/images/splash/768/1024" />
-  <link rel="apple-touch-startup-image" sizes="828x1792" href="/assets/images/splash/828/1792" />
-  <link rel="apple-touch-startup-image" sizes="1024x748" href="/assets/images/splash/1024/748" />
-  <link rel="apple-touch-startup-image" sizes="1024x768" href="/assets/images/splash/1024/768" />
-  <link rel="apple-touch-startup-image" sizes="1125x2436" href="/assets/images/splash/1125/2436" />
-  <link rel="apple-touch-startup-image" sizes="1242x2208" href="/assets/images/splash/1242/2208" />
-  <link rel="apple-touch-startup-image" sizes="1242x2688" href="/assets/images/splash/1242/2688" />
-  <link rel="apple-touch-startup-image" sizes="1334x750" href="/assets/images/splash/1334/750" />
-  <link rel="apple-touch-startup-image" sizes="1536x2008" href="/assets/images/splash/1536/2008" />
-  <link rel="apple-touch-startup-image" sizes="1536x2048" href="/assets/images/splash/1536/2048" />
-  <link rel="apple-touch-startup-image" sizes="1668x2224" href="/assets/images/splash/1668/2224" />
-  <link rel="apple-touch-startup-image" sizes="1792x828" href="/assets/images/splash/1792/828" />
-  <link rel="apple-touch-startup-image" sizes="2048x1496" href="/assets/images/splash/2048/1496" />
-  <link rel="apple-touch-startup-image" sizes="2048x1536" href="/assets/images/splash/2048/1536" />
-  <link rel="apple-touch-startup-image" sizes="2048x2732" href="/assets/images/splash/2048/2732" />
-  <link rel="apple-touch-startup-image" sizes="2208x1242" href="/assets/images/splash/2208/1242" />
-  <link rel="apple-touch-startup-image" sizes="2224x1668" href="/assets/images/splash/2224/1668" />
-  <link rel="apple-touch-startup-image" sizes="2436x1125" href="/assets/images/splash/2436/1125" />
-  <link rel="apple-touch-startup-image" sizes="2668x1242" href="/assets/images/splash/2668/1242" />
-  <link rel="apple-touch-startup-image" sizes="2737x2048" href="/assets/images/splash/2737/2048" />
+  <link rel="apple-touch-startup-image" sizes="320x480" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/320/480" />
+  <link rel="apple-touch-startup-image" sizes="640x960" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/640/960" />
+  <link rel="apple-touch-icon" sizes="640x1136" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/640/1136" />
+  <link rel="apple-touch-icon" sizes="750x1334" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/750/1334" />
+  <link rel="apple-touch-startup-image" sizes="768x1004" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/768/1004" />
+  <link rel="apple-touch-startup-image" sizes="768x1024" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/768/1024" />
+  <link rel="apple-touch-startup-image" sizes="828x1792" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/828/1792" />
+  <link rel="apple-touch-startup-image" sizes="1024x748" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1024/748" />
+  <link rel="apple-touch-startup-image" sizes="1024x768" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1024/768" />
+  <link rel="apple-touch-startup-image" sizes="1125x2436" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1125/2436" />
+  <link rel="apple-touch-startup-image" sizes="1242x2208" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1242/2208" />
+  <link rel="apple-touch-startup-image" sizes="1242x2688" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1242/2688" />
+  <link rel="apple-touch-startup-image" sizes="1334x750" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1334/750" />
+  <link rel="apple-touch-startup-image" sizes="1536x2008" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1536/2008" />
+  <link rel="apple-touch-startup-image" sizes="1536x2048" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1536/2048" />
+  <link rel="apple-touch-startup-image" sizes="1668x2224" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1668/2224" />
+  <link rel="apple-touch-startup-image" sizes="1792x828" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1792/828" />
+  <link rel="apple-touch-startup-image" sizes="2048x1496" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2048/1496" />
+  <link rel="apple-touch-startup-image" sizes="2048x1536" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2048/1536" />
+  <link rel="apple-touch-startup-image" sizes="2048x2732" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2048/2732" />
+  <link rel="apple-touch-startup-image" sizes="2208x1242" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2208/1242" />
+  <link rel="apple-touch-startup-image" sizes="2224x1668" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2224/1668" />
+  <link rel="apple-touch-startup-image" sizes="2436x1125" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2436/1125" />
+  <link rel="apple-touch-startup-image" sizes="2668x1242" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2668/1242" />
+  <link rel="apple-touch-startup-image" sizes="2737x2048" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/2737/2048" />
 
   <!-- Ruqqus CSS -->
   

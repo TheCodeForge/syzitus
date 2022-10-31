@@ -97,7 +97,6 @@
 <meta property="og:description" name="description" content="{{ comment_info.body }}" />
 <meta property="og:author" name="author" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}}" />
 <meta property="og:title" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}} comments on {{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
-<meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/splash/1200/630' | full_link }}{% endif %}" />
 <meta property="og:url" content="{{ comment_info.permalink | full_link }}" />
 <meta property="og:site_name" content="{{ p.board.permalink | full_link }}" />
 
@@ -105,8 +104,18 @@
 <meta name="twitter:title" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}} comments on {{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
 <meta name="twitter:creator" content="{{ '@'+comment_info.author.username if not comment_info.author.is_deleted else '[deleted account]'}}">
 <meta name="twitter:description" content="{{ comment_info.body }}" />
-<meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ '/assets/images/splash/1200/630' | full_link }}{% endif %}" />
 <meta name="twitter:url" content="{{ p.permalink | full_link }}" />
+
+{% if p.is_image %}
+<meta property="og:image" content="{{ p.url }}" />
+<meta name="twitter:image" content="{{ p.url }}" />
+{% elif p.has_thumb %}
+<meta property="og:image" content="{{ p.thumb_url }}" />
+<meta name="twitter:image" content="{{ p.thumb_url }}" />
+{% else %}
+<meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
+<meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
+{% endif %}
 
 {% if linked_comment.author.is_private %}
 <meta name="robots" content="noindex">
