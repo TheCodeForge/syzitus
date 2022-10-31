@@ -11,6 +11,7 @@ import pyotp
 from syzitus.helpers.base36 import *
 from syzitus.helpers.security import *
 from syzitus.helpers.lazy import lazy
+from syzirus.helpers.markdown import CustomRenderer
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 from .votes import Vote
