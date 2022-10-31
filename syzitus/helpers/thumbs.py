@@ -8,7 +8,7 @@ from io import BytesIO
 import time
 
 from .get import *
-from ruqqus.__main__ import app, db_session, debug
+from syzitus.__main__ import app, db_session, debug
 
 def expand_url(post_url, fragment_url):
 

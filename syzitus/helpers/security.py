@@ -5,7 +5,7 @@ import time
 import random
 import gevent
 
-from ruqqus.__main__ import app
+from syzitus.__main__ import app
 
 def generate_hash(string):
 
