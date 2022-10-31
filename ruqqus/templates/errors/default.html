@@ -11,10 +11,10 @@
     <div class="text-center py-7 py-md-8">
       {% block icon %}
       {% endblock %}
+      <h2 class="h5">{% block pagetitle %}{% endblock %}</h2>
+      {% block pagebody %}
+      {% endblock %}
     </div>
-    <h2 class="h5">{% block pagetitle %}{% endblock %}</h2>
-    {% block pagebody %}
-    {% endblock %}
   </div>
 </div>
 {% endblock %}
