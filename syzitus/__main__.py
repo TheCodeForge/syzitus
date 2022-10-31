@@ -64,7 +64,7 @@ app.config['DATABASE_URL'] = environ.get("DATABASE_URL","").replace("postgres://
 
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
-SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "ruqqus.com")).lstrip().rstrip()
+SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "syzitus.com")).lstrip().rstrip()
 # ONION_NAME = environ.get("ONION_NAME", "")
 
 class DomainMatcher(str):
@@ -131,7 +131,7 @@ app.config["CACHE_REDIS_URL"] = environ.get(
 app.config["CACHE_DEFAULT_TIMEOUT"] = 60
 app.config["CACHE_KEY_PREFIX"] = "flask_caching_"
 
-app.config["S3_BUCKET"]=environ.get("S3_BUCKET_NAME","i.ruqqus.com").lstrip().rstrip()
+app.config["S3_BUCKET"]=environ.get("S3_BUCKET_NAME","i.syzitus.com").lstrip().rstrip()
 
 app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 10))
 
@@ -279,12 +279,12 @@ def debug(text):
         print(text)
 
 # import and bind all routing functions
-import ruqqus.classes
-from ruqqus.routes import *
-import ruqqus.helpers.jinja2
+import syzitus.classes
+from syzitus.routes import *
+import syzitus.helpers.jinja2
 
 #purge css from cache
-cache.delete_memoized(ruqqus.routes.main_css)
+cache.delete_memoized(syzitus.routes.main_css)
 
 
 @cache.memoize(UA_BAN_CACHE_TTL)
@@ -297,8 +297,8 @@ def get_useragent_ban_response(user_agent_str):
     #    return False, (None, None)
 
     result = g.db.query(
-        ruqqus.classes.Agent).filter(
-        ruqqus.classes.Agent.kwd.in_(
+        syzitus.classes.Agent).filter(
+        syzitus.classes.Agent.kwd.in_(
             user_agent_str.split())).first()
     if result:
         return True, (result.mock or "Follow the robots.txt, dumbass",
