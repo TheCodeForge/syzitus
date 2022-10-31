@@ -14,7 +14,7 @@ from syzitus.__main__ import app
 SCOPES = {
     'identity': 'See your username',
     'create': 'Save posts and comments as you',
-    'read': 'View Ruqqus as you, including private or restricted content',
+    'read': f'View {app.config["SITE_NAME"]} as you, including private or restricted content',
     'update': 'Edit your posts and comments',
     'delete': 'Delete your posts and comments',
     'vote': 'Cast votes as you',
