@@ -15,7 +15,8 @@
 {% block pagetitle %}+{{ b.name }} is banned.{% endblock %}
 
 {% block pagebody %}
+<p class="text-muted">This Guild has been permanently removed from {{ 'SITE_NAME' | app_config }}.</p>
 {% if b.ban_reason %}
-<p class="text-muted mb-5">Reason: {{ b.ban_reason }}</p>
+<p class="text-small text-muted"><span class="font-weight-bold">Reason:</span> {{ b.ban_reason }}</p>
 {% endif %}
 {% endblock %}
