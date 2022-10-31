@@ -157,7 +157,17 @@ TITLE_DATA={
         'description': f'Refer 100 friends to join {app.config["SITE_NAME"]}.',
         'expr': "user.referral_count>=100",
         'kind': 1,
-        'text': ', Gold Recruiter'}
+        'text': ', Gold Recruiter'},
+    34: {'color': '5555ff',
+        'description': f'Join {app.config["SITE_NAME"]} during open Alpha.',
+        'expr': "user.has_badge(15)",
+        'kind': 1,
+        'text': ', the Very Early Adopter'},
+    35: {'color': 'aaaa22',
+        'description': f'Join {app.config["SITE_NAME"]} during open Beta.',
+        'expr': "user.has_badge(15) or user.has_badge(16)",
+        'kind': 1,
+        'text': ', the Early Adopter'}
 }
 
 TITLES={x:Title(id=x, **TITLE_DATA[x]) for x in TITLE_DATA}
