@@ -11,7 +11,6 @@ import pyotp
 from syzitus.helpers.base36 import *
 from syzitus.helpers.security import *
 from syzitus.helpers.lazy import lazy
-from syzitus.helpers.markdown import CustomRenderer
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 from .votes import Vote
@@ -33,8 +32,7 @@ from syzitus.__main__ import Base, cache, app
 
 #this is repeated here to avoid import circle
 def send_notification(user, text):
-    with CustomRenderer() as renderer:
-        text_html = renderer.render(mistletoe.Document(text))
+    text_html = mistletoe.markdown(text)
 
     text_html = sanitize(text_html, linkgen=True)#, noimages=True)
 
