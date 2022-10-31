@@ -161,13 +161,6 @@ body.using-mouse :focus {
     margin-top: 2rem;
 }
 
-// Hide sidebar on all error pages
-
-#error-400 .sidebar, #error-401 .sidebar, #error-403 .sidebar, #error-404 .sidebar, #error-405 .sidebar, #error-409 .sidebar,
-#error-410 .sidebar, #error-422 .sidebar, #error-429 .sidebar, #error-451 .sidebar, #error-500 .sidebar {
-    display: none!important;
-}
-
 // Message pages
 
 #message .sidebar, #message-success .sidebar {
@@ -3786,4 +3779,11 @@ img.emoji {
 
 .spoiler:hover { 
   color: white; 
+}
+
+
+/*error page bg*/
+
+body#error {
+    background-color: $white
 }
