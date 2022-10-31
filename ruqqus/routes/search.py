@@ -197,8 +197,6 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
 
 @app.route("/search", methods=["GET"])
-@app.route("/api/v1/search", methods=["GET"])
-@app.route("/api/vue/search")
 @auth_desired
 @api("read")
 def search(search_type="posts"):
@@ -361,9 +359,7 @@ def search_guild(name, search_type="posts"):
     if query.startswith(("+","@")):
         return redirect(f"/search?q={quote(query)}")
 
-    b = get_guild(name, graceful=True)
-    if not b:
-        abort(404)
+    b = get_guild(name)
 
     if b.is_banned:
         return render_template("board_banned.html", b=b)
