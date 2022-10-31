@@ -11,14 +11,18 @@
 <div class="row no-gutters mt-5">
   <div class="col-12">
     <div class="text-center py-7 py-md-8">
-      <div class="mb-4">
+      <div class="mb-4 fa-5x">
         {% block icon %}
         {% endblock %}
       </div>
       <h2 class="h5">{% block pagetitle %}{% endblock %}</h2>
       {% block pagebody %}
       {% endblock %}
+      {% block continue %}
+      <div><a href="/" class="btn btn-primary">Go to frontpage</a></div>
+      {% endblock %
     </div>
+  }
   </div>
 </div>
 {% endblock %}
