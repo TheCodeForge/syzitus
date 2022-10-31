@@ -94,7 +94,7 @@ TITLE_DATA={
         'kind': 1,
         'text': ', the Famous'},
     20: {'color': '5555dd',
-        'description': f'Made a contribution to {app.config["SITE_NAME"]} text or art.',
+        'description': f'Make a contribution to {app.config["SITE_NAME"]} text or art.',
         'expr': "user.has_badge(18)",
         'kind': 3,
         'text': ' the Artisan'},
