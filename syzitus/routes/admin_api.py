@@ -115,6 +115,7 @@ def ban_post(post_id):
         note="admin action"
         )
     g.db.add(ma)
+    g.db.commit()
     return (redirect(post.permalink), post)
 
 
@@ -142,6 +143,7 @@ def unban_post(post_id):
     post.approved_utc = int(time.time())
 
     g.db.add(post)
+    g.db.commit()
 
     return (redirect(post.permalink), post)
 
