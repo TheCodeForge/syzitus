@@ -353,7 +353,7 @@ def search(search_type="posts"):
 
 @app.route("/+<name>/search", methods=["GET"])
 @auth_desired
-def search_guild(name, v, search_type="posts"):
+def search_guild(name, search_type="posts"):
 
 
     query=request.args.get("q","").lstrip().rstrip()
