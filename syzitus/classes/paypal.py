@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship, deferred
 from flask import abort
 from .mix_ins import *
 
-from ruqqus.__main__ import Base, app
+from syzitus.__main__ import Base, app
 
 PAYPAL_ID=environ.get("PAYPAL_CLIENT_ID", "").rstrip()
 PAYPAL_SECRET=environ.get("PAYPAL_CLIENT_SECRET", "").rstrip()

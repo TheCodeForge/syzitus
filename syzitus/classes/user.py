@@ -8,11 +8,11 @@ from secrets import token_hex
 import random
 import pyotp
 
-from ruqqus.helpers.base36 import *
-from ruqqus.helpers.security import *
-from ruqqus.helpers.lazy import lazy
-import ruqqus.helpers.aws as aws
-from ruqqus.helpers.discord import add_role, delete_role, discord_log_event
+from syzitus.helpers.base36 import *
+from syzitus.helpers.security import *
+from syzitus.helpers.lazy import lazy
+import syzitus.helpers.aws as aws
+from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
@@ -27,7 +27,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
-from ruqqus.__main__ import Base, cache, app
+from syzitus.__main__ import Base, cache, app
 
 
 #this is repeated here to avoid import circle

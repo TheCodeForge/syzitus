@@ -1,5 +1,5 @@
 from sqlalchemy import *
-from ruqqus.__main__ import Base, cache
+from syzitus.__main__ import Base, cache
 from .mix_ins import *
 
 

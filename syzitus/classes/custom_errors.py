@@ -1,5 +1,5 @@
 from flask import *
-from ruqqus.__main__ import app
+from syzitus.__main__ import app
 
 class PaymentRequired(Exception):
     status_code=402

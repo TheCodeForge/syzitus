@@ -1,10 +1,10 @@
-from ruqqus.helpers.base36 import *
-from ruqqus.helpers.lazy import lazy
+from syzitus.helpers.base36 import *
+from syzitus.helpers.lazy import lazy
 import math
 import random
 import time
 
-from ruqqus.__main__ import cache, app
+from syzitus.__main__ import cache, app
 
 
 class Stndrd:

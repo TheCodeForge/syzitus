@@ -1,7 +1,7 @@
 from sqlalchemy import *
 import re
 
-from ruqqus.__main__ import Base
+from syzitus.__main__ import Base
 
 
 class BadWord(Base):

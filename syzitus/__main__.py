@@ -46,7 +46,7 @@ app = Flask(__name__,
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2)
 app.url_map.strict_slashes = False
 
-app.config["SITE_NAME"]=environ.get("SITE_NAME", "Ruqqus").lstrip().rstrip()
+app.config["SITE_NAME"]=environ.get("SITE_NAME", "Syzitus").lstrip().rstrip()
 
 app.config["COLOR_PRIMARY"]=environ.get("COLOR_PRIMARY", "805AD5").lstrip().rstrip()
 app.config["COLOR_SECONDARY"]=environ.get("COLOR_SECONDARY", "E2E8F0").lstrip().rstrip()

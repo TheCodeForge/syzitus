@@ -8,10 +8,10 @@ import random
 from os import environ
 import requests
 from .mix_ins import *
-from ruqqus.helpers.base36 import *
-from ruqqus.helpers.lazy import lazy
-import ruqqus.helpers.aws as aws
-from ruqqus.__main__ import Base, cache, app, debug
+from syzitus.helpers.base36 import *
+from syzitus.helpers.lazy import lazy
+import syzitus.helpers.aws as aws
+from syzitus.__main__ import Base, cache, app, debug
 from .votes import Vote, CommentVote
 from .domains import Domain
 from .flags import Flag

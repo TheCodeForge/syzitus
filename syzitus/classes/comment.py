@@ -6,9 +6,9 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from random import randint
 import math
 from .mix_ins import *
-from ruqqus.helpers.base36 import *
-from ruqqus.helpers.lazy import lazy
-from ruqqus.__main__ import Base, cache
+from syzitus.helpers.base36 import *
+from syzitus.helpers.lazy import lazy
+from syzitus.__main__ import Base, cache
 from .votes import CommentVote
 from .flags import CommentFlag
 from .badwords import *
