@@ -1,56 +1,20 @@
-{% extends "default.html" %}
-
-{% block pagetype %}userpage{% endblock %}
+{% extends "errors/default.html" %}
 
 {% block title %}
-<title>{{ u.username }}</title>
+<title>@{{ u.username }}</title>
 <meta name="description" content="[deleted]">
 {% endblock %}
 
-{% block sidebar %}{% endblock %}
-
-{% block adminpanel %}
-{% if g.user.admin_level >=3 and g.user.admin_level > u.admin_level %}
-{% if u.is_banned %}
-<form action="/api/unban_user/{{ u.id }}" method="post">
-  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
-  <input type="submit" class="btn btn-success" value="Unban user">
-</form>
-{% else %}
-<form action="/api/ban_user/{{ u.id }}", method="post">
-  <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
-  <input type="submit" class="btn btn-warning" value="Ban user">
-</form>
-{% endif %}
-{% endif %}
-{% if g.user.admin_level >=4 and g.user.admin_level > u.admin_level %}
-<table>
- <tr>
-  <th>Key</th>
-  <th>Value</th>
-</tr>
-<tr>
-  <td>Account Creation IP</td>
-  <td>{{ u.creation_ip }}</td>
-</tr>
-</table>
-{% endif %}
+{% block icon %}
+<span class="fa-stack fa-2x text-muted mb-4">
+  <i class="fas fa-square text-danger opacity-25 fa-stack-2x"></i>
+  <i class="fas text-danger fa-user-minus fa-stack-1x text-lg"></i>
+</span>
 {% endblock %}
 
-{% block content %}
-<div class="row no-gutters">
-  <div class="col-12">
-    <div class="text-center py-7 py-md-8">
-      <span class="fa-stack fa-2x text-muted mb-4">
-        <i class="fas fa-square text-danger opacity-25 fa-stack-2x"></i>
-        <i class="fas text-danger fa-user-minus fa-stack-1x text-lg"></i>
-      </span>
-      <h2 class="h5">Deactivated Account</h2>
-      <p class="text-muted">@{{ u.username }} left {{ 'SITE_NAME' | app_config }}.</p>
-    </div>
-  </div>
-</div>
+{% block pagetitle %}Deactivated Account{% endblock %}
+
+{% block pagebody %}
+<p class="text-muted">@{{ u.username }} left {{ 'SITE_NAME' | app_config }}.</p>
 {% endblock %}
 
-{% block pagenav %}
-{% endblock %}
