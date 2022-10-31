@@ -13,7 +13,7 @@ from syzitus.classes.images import BadPic
 from syzitus.__main__ import db_session
 from .base36 import hex2bin
 
-BUCKET = environ.get("S3_BUCKET_NAME",'i.ruqqus.com').lstrip().rstrip()
+BUCKET = environ.get("S3_BUCKET_NAME",'i.syzitus.com').lstrip().rstrip()
 CF_KEY = environ.get("CLOUDFLARE_KEY",'').lstrip().rstrip()
 CF_ZONE = environ.get("CLOUDFLARE_ZONE",'').lstrip().rstrip()
 
@@ -162,7 +162,7 @@ def check_csam(post):
     if parsed_url.netloc != BUCKET:
         return
 
-    headers = {"User-Agent": "Ruqqus webserver"}
+    headers = {"User-Agent": "syzitus webserver"}
     for i in range(10):
         x = requests.get(post.url, headers=headers)
 
@@ -240,7 +240,7 @@ def check_csam_url(url, v, delete_content_function):
     if parsed_url.netloc != BUCKET:
         return
 
-    headers = {"User-Agent": "Ruqqus webserver"}
+    headers = {"User-Agent": "syzitus webserver"}
     for i in range(10):
         x = requests.get(url, headers=headers)
 

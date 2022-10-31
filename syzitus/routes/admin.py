@@ -21,7 +21,7 @@ from syzitus.routes.admin_api import create_plot, user_stat_data
 from syzitus.classes.categories import CATEGORIES
 from flask import *
 
-import ruqqus.helpers.aws as aws
+import syzitus.helpers.aws as aws
 from syzitus.__main__ import app
 
 
@@ -839,7 +839,7 @@ def admin_siege_count():
 @admin_level_required(5)
 def admin_purge_guild_images(boardname):
 
-    #Iterates through all posts in guild with thumbnail, and nukes thumbnails and i.ruqqus uploads
+    #Iterates through all posts in guild with thumbnail, and nukes thumbnails and i.syzitus uploads
 
     board=get_guild(boardname)
 
@@ -861,7 +861,7 @@ def admin_purge_guild_images(boardname):
         aws.delete_file(urlparse(post.thumb_url).path.lstrip('/'))
         #post.has_thumb=False
 
-        if post.url and post.domain=="i.ruqqus.com":
+        if post.url and post.domain==app.config["S3_BUCKET"]:
             aws.delete_file(urlparse(post.url).path.lstrip('/'))
 
     i=0
@@ -1071,7 +1071,7 @@ def admin_siege_guild():
             error=f"@{user.username} is exiled from +{guild.name}."
             ), 403
 
-    # Cannot siege +general, +ruqqus, +ruqquspress, +ruqqusdmca
+    # Cannot siege certain admin guilds
     if not guild.is_siegable:
         return render_template("message.html",
                                title=f"Siege on +{guild.name} Failed",
