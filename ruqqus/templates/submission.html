@@ -113,8 +113,8 @@
 <meta property="og:image" content="{{ p.thumb_url }}" />
 <meta name="twitter:image" content="{{ p.thumb_url }}" />
 {% else %}
-<meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
-<meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
+<meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/1200/630" />
+<meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/1200/630" />
 {% endif %}
 
 {% if linked_comment.author.is_private %}
