@@ -4,3 +4,17 @@
 {% block sidebar %}{% endblock %}
 {% block customPadding %}{% endblock %}
 {% block pagenav %}{% endblock %}
+
+{% block content %}
+<div class="row no-gutters">
+  <div class="col-12">
+    <div class="text-center py-7 py-md-8">
+      {% block icon %}
+      {% endblock %}
+    </div>
+    <h2 class="h5">{% block pagetitle %}{% endblock %}</h2>
+    {% block pagebody %}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}

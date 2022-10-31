@@ -5,25 +5,23 @@
 <meta name="description" content="[banned]">
 {% endblock %}
 
-{% block content %}
-<div class="row no-gutters">
-  <div class="col-12">
-    <div class="text-center py-7 py-md-8">
-      <span class="fa-stack fa-2x text-muted mb-4">
-        <i class="fas fa-square text-danger opacity-25 fa-stack-2x"></i>
-        <i class="fas text-danger fa-user-slash fa-stack-1x text-lg"></i>
-      </span>
-      <h2 class="h5">@{{ u.username }} is banned</h2>
-      {% if u.unban_utc %}
-      <p class="text-muted">This account has been temporarily suspended from {{ 'SITE_NAME' | app_config }}. Check back later.</p>
-      {% else %}
-      <p class="text-muted">This account has been permanently suspended from {{ 'SITE_NAME' | app_config }}.</p>
-      {% endif %}
-      {% if u.ban_reason %}
-      <p class="text-small text-muted"><span class="font-weight-bold">Reason:</span> {{ u.ban_reason }}</p>
-      {% endif %}
-    </div>
-  </div>
-</div>
+{% block icon %}
+<span class="fa-stack fa-2x text-muted mb-4">
+  <i class="fas fa-square text-danger opacity-25 fa-stack-2x"></i>
+  <i class="fas text-danger fa-user-slash fa-stack-1x text-lg"></i>
+</span>
+{% endblock %}
+
+{% block pagetitle %}@{{ u.username }} is banned{% endblock %}
+
+{% block pagebody %}
+{% if u.unban_utc %}
+<p class="text-muted">This account has been temporarily suspended from {{ 'SITE_NAME' | app_config }}. Check back later.</p>
+{% else %}
+<p class="text-muted">This account has been permanently suspended from {{ 'SITE_NAME' | app_config }}.</p>
+{% endif %}
+{% if u.ban_reason %}
+<p class="text-small text-muted"><span class="font-weight-bold">Reason:</span> {{ u.ban_reason }}</p>
+{% endif %}
 {% endblock %}
 
