@@ -22,11 +22,11 @@ def guilded_server():
 
 @app.route("/discord", methods=["GET"])
 @auth_required
-def join_discord(v):
+def join_discord():
 
     now=int(time.time())
 
-    state=generate_hash(f"{now}+{v.id}+discord")
+    state=generate_hash(f"{now}+{g.user.id}+discord")
 
     state=f"{now}.{state}"
 
@@ -34,7 +34,7 @@ def join_discord(v):
 
 @app.route("/discord_redirect", methods=["GET"])
 @auth_required
-def discord_redirect(v):
+def discord_redirect():
 
 
     #validate state
@@ -48,7 +48,7 @@ def discord_redirect(v):
     if int(timestamp) < now-600:
         abort(400)
 
-    if not validate_hash(f"{timestamp}+{v.id}+discord", state):
+    if not validate_hash(f"{timestamp}+{g.user.id}+discord", state):
         abort(400)
 
     #get discord token
@@ -98,22 +98,22 @@ def discord_redirect(v):
     }
 
     #remove existing user if applicable
-    if v.discord_id and v.discord_id != x['id']:
-        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{v.discord_id}"
+    if g.user.discord_id and g.user.discord_id != x['id']:
+        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{g.user.discord_id}"
         requests.delete(url, headers=headers)
 
-    if g.db.query(User).filter(User.id!=v.id, User.discord_id==x["id"]).first():
+    if g.db.query(User).filter(User.id!=g.user.id, User.discord_id==x["id"]).first():
         return render_template("message.html", title="Discord account already linked.", error="That Discord account is already in use by another user.", v=v)
 
-    v.discord_id=x["id"]
+    g.user.discord_id=x["id"]
     g.db.add(v)
     g.db.commit()
 
     url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{x['id']}"
 
-    name=v.username
-    if v.real_id:
-        name+= f" | {v.real_id}"
+    name=g.user.username
+    if g.user.real_id:
+        name+= f" | {g.user.real_id}"
 
     data={
         "access_token":token,
@@ -124,11 +124,11 @@ def discord_redirect(v):
 
     if x.status_code in [201, 204]:
                         
-        if v.is_banned and v.unban_utc==0:
-            add_role(v, "banned")
+        if g.user.is_banned and g.user.unban_utc==0:
+            add_role(g.user,"banned")
 
-        if v.has_premium:
-            add_role(v, "premium")
+        if g.user.has_premium:
+            add_role(g.user,"premium")
 
     else:
         return jsonify(x.json())
@@ -138,11 +138,11 @@ def discord_redirect(v):
 
     if x.status_code==204:
 
-        if v.real_id:
-            add_role(v, "realid")
+        if g.user.real_id:
+            add_role(g.user, "realid")
 
 
-        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{v.discord_id}"
+        url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{g.user.discord_id}"
         data={
             "nick": name
         }
