@@ -15,18 +15,13 @@ from syzitus.classes import *
 from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug
 
-
-@app.get("/logo/jumbotron")
-@app.get("/logo/jumbotron/<color>")
-@app.get(f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(app.config["IMG_URL_JUMBOTRON"])
 @cache.memoize()
-def get_logo_jumbotron(color=None, letter=None):
+def get_logo_jumbotron():
 
-    color = color or app.config["COLOR_PRIMARY"]
-
-    primary_r=int(color[0:2], 16)
-    primary_g=int(color[2:4], 16)
-    primary_b=int(color[4:6], 16)
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
 
     primary = (primary_r, primary_g, primary_b, 255)
 
@@ -47,7 +42,7 @@ def get_logo_jumbotron(color=None, letter=None):
         size=base_layer.size[1]//2
     )
 
-    letter = letter or app.config["SITE_NAME"][0:1].lower()
+    letter = app.config["SITE_NAME"][0:1].lower()
     box = font.getbbox(letter)
 
     d = ImageDraw.Draw(text_layer)

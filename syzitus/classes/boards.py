@@ -456,7 +456,7 @@ class Board(Base, Stndrd, Age_times):
         if self.has_banner:
             return f"https://{app.config['S3_BUCKET']}/board/{self.name.lower()}/banner-{self.banner_nonce}.png"
         else:
-            return f"/logo/jumbotron/{self.color}/{app.config['SITE_NAME'][0].lower()}"
+            return app.config["IMG_URL_JUMBOTRON"]
 
     @property
     def profile_url(self):
