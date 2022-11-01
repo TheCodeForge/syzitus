@@ -1,7 +1,7 @@
 from os import environ
 import requests
 import threading
-from syzitus.__main__ import debug
+from syzitus.__main__ import app, debug
 
 DOMAIN=environ.get("SERVER_NAME",'ruqqus.com').lstrip().rstrip()
 
