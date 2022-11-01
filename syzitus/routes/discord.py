@@ -140,9 +140,6 @@ def discord_redirect(v):
 
     if x.status_code==204:
 
-        ##if user is already a member, remove old roles and update nick
-        delete_role(v, "nick")
-
         if v.real_id:
             add_role(v, "realid")
 
