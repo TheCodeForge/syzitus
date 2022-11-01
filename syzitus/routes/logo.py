@@ -18,7 +18,7 @@ from syzitus.__main__ import app, limiter, debug
 
 @app.get("/logo/jumbotron")
 @app.get("/logo/jumbotron/<color>")
-@app.get(f"/logo/jumbotron/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
 @cache.memoize()
 def get_logo_jumbotron(color=None, letter=None):
 
@@ -120,7 +120,7 @@ def get_logo_jumbotron(color=None, letter=None):
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
-@app.get(f"/logo/main{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(f"/logo/main{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
 @cache.memoize()
 def get_logo_main(color, letter=None):
 
@@ -178,7 +178,7 @@ def get_logo_main(color, letter=None):
     return send_file(output_bytes, mimetype="image/png")
 
 
-@app.get(f"/logo/white/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(f"/logo/white/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
 @cache.memoize()
 def get_logo_white(color, letter=None):
 
@@ -227,7 +227,7 @@ def get_logo_white(color, letter=None):
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
-@app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
+@app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cache.memoize()
 def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
