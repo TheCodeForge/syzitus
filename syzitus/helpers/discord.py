@@ -14,7 +14,6 @@ BOT_TOKEN = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
 ROLES={
     "banned":  environ.get("DISCORD_BANNED_ROLE_ID",'').rstrip(),
     "member":  environ.get("DISCORD_MEMBER_ROLE_ID",'').rstrip(),
-    "linked":  environ.get("DISCORD_LINKED_ROLE_ID",'').rstrip(),
     "realid":  environ.get("DISCORD_REALID_ROLE_ID",'').rstrip(),
     "premium": environ.get("DISCORD_PREMIUM_ROLE_ID",'').rstrip(),
 }

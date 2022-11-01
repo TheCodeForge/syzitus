@@ -123,8 +123,6 @@ def discord_redirect(v):
     x=requests.put(url, headers=headers, json=data)
 
     if x.status_code in [201, 204]:
-                    
-        add_role(v, "linked")
                         
         if v.is_banned and v.unban_utc==0:
             add_role(v, "banned")
@@ -155,9 +153,3 @@ def discord_redirect(v):
         #print(url)
 
     return redirect(f"https://discord.com/channels/{app.config['DISCORD_SERVER_ID']}/{WELCOME_CHANNEL}")
-
-
-#guilded redirect
-@app.route("/guilded", methods=["GET"])
-def guilded():
-    return redirect("https://www.guilded.gg/i/Y2VP1L8p")
