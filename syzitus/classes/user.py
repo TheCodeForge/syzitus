@@ -32,8 +32,7 @@ from syzitus.__main__ import Base, cache, app
 
 #this is repeated here to avoid import circle
 def send_notification(user, text):
-    with CustomRenderer() as renderer:
-        text_html = renderer.render(mistletoe.Document(text))
+    text_html = mistletoe.markdown(text)
 
     text_html = sanitize(text_html, linkgen=True)#, noimages=True)
 

@@ -95,7 +95,7 @@ class CustomRenderer(HTMLRenderer):
 
 
         try:
-            if g.v.admin_level == 0 and g.v.any_block_exists(user):
+            if g.user.admin_level == 0 and g.v.any_block_exists(user):
                 return f"{space}@{target}"
         except BaseException:
             pass
@@ -135,7 +135,7 @@ class CustomRenderer(HTMLRenderer):
             
             return f'<span data-toggle="tooltip" title=":{name}:"><img class="emoji" src="/assets/images/emojis/{name}"></span>'
         
-        elif g.v.has_premium and os.path.isfile(f"{app.config['RUQQUSPATH']}/assets/images/primojis/{name}"):
+        elif g.user.has_premium and os.path.isfile(f"{app.config['RUQQUSPATH']}/assets/images/primojis/{name}"):
             
             return f'<span data-toggle="tooltip" title=":{name}:"><img class="emoji" src="/assets/images/primojis/{name}"></span>'
 

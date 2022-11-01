@@ -7,15 +7,13 @@ DOMAIN=environ.get("SERVER_NAME",'ruqqus.com').lstrip().rstrip()
 SERVER_ID = environ.get("DISCORD_SERVER_ID",'').rstrip()
 CLIENT_ID = environ.get("DISCORD_CLIENT_ID",'').rstrip()
 CLIENT_SECRET = environ.get("DISCORD_CLIENT_SECRET",'').rstrip()
-DISCORD_ENDPOINT = "https://discordapp.com/api"
+DISCORD_ENDPOINT = "https://discordapp.com/api/v10"
 BOT_TOKEN = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
 
 
 ROLES={
     "banned":  environ.get("DISCORD_BANNED_ROLE_ID",'').rstrip(),
     "member":  environ.get("DISCORD_MEMBER_ROLE_ID",'').rstrip(),
-    "nick":    environ.get("DISCORD_NICK_ROLE_ID",'').rstrip(),
-    "linked":  environ.get("DISCORD_LINKED_ROLE_ID",'').rstrip(),
     "realid":  environ.get("DISCORD_REALID_ROLE_ID",'').rstrip(),
     "premium": environ.get("DISCORD_PREMIUM_ROLE_ID",'').rstrip(),
 }
