@@ -174,7 +174,7 @@ app.config["DISCORD_ROLE_IDS"]={
 }
 
 app.config["DISCORD_CHANNEL_IDS"]={
-    "welcome": environ.get("DISCORD_WELCOME_CHANNEL_ID").rstrip(),
+    "welcome": environ.get("DISCORD_WELCOME_CHANNEL_ID",'').rstrip(),
     "log": environ.get("DISCORD_LOG_CHANNEL_ID",'').rstrip()
 }
 
