@@ -80,14 +80,14 @@ def discord_log_event(action, target_user, admin_user, reason=None):
 
 @discord_wrap
 def add_role(user, role_name):
-    role_id = ROLES[role_name]
+    role_id = app.config['DISCORD_ROLE_IDS'][role_name]
     url = f"{DISCORD_ENDPOINT}/guilds/{app.config['DISCORD_SERVER_ID']}/members/{user.discord_id}/roles/{role_id}"
     headers = {"Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"}
     requests.put(url, headers=headers)
 
 @discord_wrap
 def delete_role(user, role_name):
-    role_id = ROLES[role_name]
+    role_id = app.config['DISCORD_ROLE_IDS'][role_name]
     url = f"{DISCORD_ENDPOINT}/guilds/{app.config['DISCORD_SERVER_ID']}/members/{user.discord_id}/roles/{role_id}"
     headers = {"Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"}
     requests.delete(url, headers=headers)
