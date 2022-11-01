@@ -84,6 +84,8 @@ app.config["SERVER_NAME"] = SERVER_NAME #DomainMatcher(SERVER_NAME, ONION_NAME)
 #        "SERVER_NAME", "")).lstrip().rstrip()
 
 
+
+# Cookie stuff
 app.config["SHORT_DOMAIN"]=environ.get("SHORT_DOMAIN","").lstrip().rstrip()
 app.config["SESSION_COOKIE_NAME"] = "session_ruqqus"
 app.config["VERSION"] = _version
@@ -126,14 +128,16 @@ app.config["COMMENT_SPAM_SIMILAR_THRESHOLD"] = float(
 app.config["COMMENT_SPAM_COUNT_THRESHOLD"] = int(
     environ.get("COMMENT_SPAM_COUNT_THRESHOLD", 5))
 
+# Redis configs
 app.config["CACHE_REDIS_URL"] = environ.get(
     "REDIS_URL").rstrip().lstrip() if environ.get("REDIS_URL") else None
 app.config["CACHE_DEFAULT_TIMEOUT"] = 60
 app.config["CACHE_KEY_PREFIX"] = "flask_caching_"
+app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 10))
 
+# AWS configs
 app.config["S3_BUCKET"]=environ.get("S3_BUCKET_NAME","i.syzitus.com").lstrip().rstrip()
 
-app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 10))
 
 redispool=ConnectionPool(
     max_connections=app.config["REDIS_POOL_SIZE"],
@@ -155,11 +159,25 @@ app.config['UPLOAD_IMAGE_REP']=int(environ.get("UPLOAD_IMAGE_REP","10").lstrip()
 app.config["DEBUG"]=bool(int(environ.get("DEBUG", 0)))
 app.config["GROWTH_HACK"]=bool(int(environ.get("GROWTH_HACK", 0)))
 
+#discord configs
 app.config['DISCORD_SERVER_ID'] = environ.get("DISCORD_SERVER_ID",'').rstrip()
 app.config['DISCORD_CLIENT_ID'] = environ.get("DISCORD_CLIENT_ID",'').rstrip()
 app.config['DISCORD_CLIENT_SECRET'] = environ.get("DISCORD_CLIENT_SECRET",'').rstrip()
 app.config['DISCORD_BOT_TOKEN'] = environ.get("DISCORD_BOT_TOKEN",'').rstrip()
 app.config['DISCORD_ENDPOINT'] = "https://discordapp.com/api/v6"
+
+app.config["DISCORD_ROLE_IDS"]={
+    "banned":  environ.get("DISCORD_BANNED_ROLE_ID",'').rstrip(),
+    "member":  environ.get("DISCORD_MEMBER_ROLE_ID",'').rstrip(),
+    "realid":  environ.get("DISCORD_REALID_ROLE_ID",'').rstrip(),
+    "premium": environ.get("DISCORD_PREMIUM_ROLE_ID",'').rstrip(),
+}
+
+app.config["DISCORD_CHANNEL_IDS"]={
+    "welcome": environ.get("DISCORD_WELCOME_CHANNEL_ID").rstrip(),
+    "log": environ.get("DISCORD_LOG_CHANNEL_ID",'').rstrip()
+}
+
 
 Markdown(app)
 cache = Cache(app)

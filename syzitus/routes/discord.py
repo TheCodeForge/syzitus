@@ -11,8 +11,6 @@ from syzitus.helpers.discord import add_role, delete_role
 from syzitus.__main__ import app, debug
 
 
-WELCOME_CHANNEL="775132151498407961"
-
 
 
 @app.route("/guilded", methods=["GET"])
@@ -155,4 +153,4 @@ def discord_redirect():
         #print(req.status_code)
         #print(url)
 
-    return redirect(f"https://discord.com/channels/{app.config['DISCORD_SERVER_ID']}/{WELCOME_CHANNEL}")
+    return redirect(f"https://discord.com/channels/{app.config['DISCORD_SERVER_ID']}/{app.config['DISCORD_CHANNEL_IDS']['welcome']}")
