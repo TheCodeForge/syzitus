@@ -41,7 +41,7 @@ def discord_log_event(action, target_user, admin_user, reason=None):
     channel_id=CHANNELS['log']
     url=f"{DISCORD_ENDPOINT}/channels/{channel_id}/messages"
     headers={
-        "Authorization": f"Bot {app.config["DISCORD_BOT_TOKEN"]}"
+        "Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"
     }
     data={
         "embeds":[
