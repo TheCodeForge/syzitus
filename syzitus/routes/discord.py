@@ -107,7 +107,7 @@ def discord_redirect():
         return render_template("message.html", title="Discord account already linked.", error="That Discord account is already in use by another user.")
 
     g.user.discord_id=x["id"]
-    g.db.add(v)
+    g.db.add(g.user)
     g.db.commit()
 
     url=f"https://discord.com/api/guilds/{app.config['DISCORD_SERVER_ID']}/members/{x['id']}"
