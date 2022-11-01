@@ -122,7 +122,7 @@
 
                         <div class="form-text text-small"><a href="/help/formatting" target="_blank">Formatting help</a></div>
 
-                        <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are Ruqqus communities. Enter a guild you would like your post to belong to."></i></label>
+                        <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are {{ 'SITE_NAME' | app_config }} communities. Enter a Guild you would like your post to belong to."></i></label>
                         <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
 
                         {% if g.user.over_18 %}
