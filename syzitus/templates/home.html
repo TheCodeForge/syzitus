@@ -257,7 +257,7 @@
     <div class="sidebar-section sidebar-guildmake">
       <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
       <div class="body">
-        <p class="text-muted">{% if not g.user.can_join_gms %}You already lead the maximum of 10 guilds.{% else %}You need 250 rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
+        <p class="text-muted">{% if not g.user.can_join_gms %}You already lead the maximum of {{ 'MAX_GUILD_COUNT' | app_config }} guilds.{% else %}You need {{ 'GUILD_CREATION_REQ' | app_config }} rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
         <a href="#" class="btn btn-primary btn-block disabled">Create Guild</a>
       </div>
     </div>
