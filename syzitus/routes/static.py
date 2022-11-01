@@ -128,7 +128,7 @@ def titles():
 @auth_desired
 def badges():
     return render_template("help/badges.html",
-                           badges=list(BADGE_DEFS.values())
+                           badges=sorted(list(BADGE_DEFS.values()), key=lambda x: x.description)
                            )
 
 
