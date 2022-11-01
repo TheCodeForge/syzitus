@@ -67,7 +67,7 @@ def discord_redirect():
     headers={
         'Content-Type': 'application/x-www-form-urlencoded'
     }
-    url="https://discord.com/api/oauth2/token"
+    url="https://discord.com/api/v10/oauth2/token"
 
     req=requests.post(url, headers=headers, data=data)
 
