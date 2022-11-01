@@ -26,6 +26,7 @@ def error_wrapper(f):
 
 @app.errorhandler(401)
 @error_wrapper
+@api()
 def error_401(e):
 
     # path = request.path
