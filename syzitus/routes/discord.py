@@ -69,15 +69,15 @@ def discord_redirect():
     }
     url="https://discord.com/api/oauth2/token"
 
-    x=requests.post(url, headers=headers, data=data)
+    req=requests.post(url, headers=headers, data=data)
 
-    x=x.json()
+    x=req.json()
 
 
     try:
         token=x["access_token"]
     except KeyError:
-        debug(x)
+        debug([req.status_code, x])
         abort(403)
 
 
