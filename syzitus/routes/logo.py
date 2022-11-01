@@ -120,7 +120,7 @@ def get_logo_jumbotron(color=None, letter=None):
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
-@app.get(f"/logo/main{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cache.memoize()
 def get_logo_main(color, letter=None):
 
@@ -178,7 +178,7 @@ def get_logo_main(color, letter=None):
     return send_file(output_bytes, mimetype="image/png")
 
 
-@app.get(f"/logo/white/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}")
+@app.get(app.config["IMG_URL_LOGO_WHITE"])
 @cache.memoize()
 def get_logo_white(color, letter=None):
 

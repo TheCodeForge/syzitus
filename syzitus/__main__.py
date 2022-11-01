@@ -178,6 +178,9 @@ app.config["DISCORD_CHANNEL_IDS"]={
     "log": environ.get("DISCORD_LOG_CHANNEL_ID",'').rstrip()
 }
 
+#precompute logo urls
+app.config["IMG_URL_LOGO_WHITE"] = f"/logo/white/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
+app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 
 Markdown(app)
 cache = Cache(app)
