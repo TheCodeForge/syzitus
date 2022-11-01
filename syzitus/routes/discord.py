@@ -8,7 +8,7 @@ from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.security import *
 from syzitus.helpers.discord import add_role, delete_role
-from syzitus.__main__ import app
+from syzitus.__main__ import app, debug
 
 
 WELCOME_CHANNEL="775132151498407961"
@@ -77,6 +77,7 @@ def discord_redirect():
     try:
         token=x["access_token"]
     except KeyError:
+        debug("did not get access_token")
         abort(403)
 
 
