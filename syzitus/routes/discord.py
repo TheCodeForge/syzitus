@@ -77,7 +77,7 @@ def discord_redirect():
     try:
         token=x["access_token"]
     except KeyError:
-        debug("did not get access_token")
+        debug(x)
         abort(403)
 
 
