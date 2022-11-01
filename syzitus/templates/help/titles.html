@@ -101,7 +101,7 @@
 		{% for t in titles if t.kind==4 %}
 		<tr>
 			<td>{% if g.user %}<a href="{{ g.user.permalink }}" class="user-name">{{ g.user.username }}</a>{% else %}[name]{% endif %}{{ t.rendered | safe }}</td>
-			<td>{{ t.requirement_string }}</td>
+			<td>{{ t.description }}</td>
 		</tr>
 		{% endfor %}
 	</tbody>
