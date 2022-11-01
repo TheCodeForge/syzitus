@@ -397,8 +397,6 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth"
                          )
-    # response.headers.add("Cache-Control",
-    #                      "maxage=600")
     response.headers.add("Strict-Transport-Security", "max-age=31536000")
     response.headers.add("Referrer-Policy", "same-origin")
     # response.headers.add("X-Content-Type-Options","nosniff")
@@ -409,7 +407,7 @@ def after_request(response):
 
 
     if not g.get('user'):
-        response.headers.add("Cache-Control", "public")
+        response.headers.add("Cache-Control", "public; max-age=2592000")
 
     # signups - hit discord webhook
     # if request.method == "POST" and response.status_code in [
@@ -419,14 +417,6 @@ def after_request(response):
     #         target=lambda: log_event(
     #             name="Account Signup", link=link))
     #     thread.start()
-
-    # req_stop = time.time()
-
-    # try:
-    #     req_time=req_stop - g.timestamp
-    #     site_performance(req_time)
-    # except AttributeError:
-    #     pass
 
     g.db.close()
 
