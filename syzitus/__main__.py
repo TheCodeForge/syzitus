@@ -407,7 +407,7 @@ def after_request(response):
 
 
     if request.path.startswith(("/assets/", "/logo/")) or not g.get('user'):
-        response.headers.add("Cache-Control", "public; max-age=2592000")
+        response.headers.add("Cache-Control", "public; max-age=2592000; immutable")
 
     # signups - hit discord webhook
     # if request.method == "POST" and response.status_code in [
