@@ -127,6 +127,8 @@ def discord_redirect():
                         
         if g.user.is_banned and g.user.unban_utc==0:
             add_role(g.user,"banned")
+        else:
+            add_role(g.user, "member")
 
         if g.user.has_premium:
             add_role(g.user,"premium")
