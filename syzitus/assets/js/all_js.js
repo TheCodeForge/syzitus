@@ -1172,28 +1172,24 @@ function vote_comment(comment_id, direction) {
 }
 
 // Yank Post
+$('.btn-yank-post').click(function(){
+  $("#post-author-url").text($(this).data('post-author'));
 
-function yank_postModal(id, author, comments, title, author_link, domain, timestamp) {
+  $("#post-comments").text($(this).data('comment-count'));
 
-  // Passed data for modal
+  $("#post-title").text($(this).data('title'));
 
-  document.getElementById("post-author-url").innerText = author;
+  $("#post-author-url").attr('href', $(this).data('author-link'));
 
-  document.getElementById("post-comments").textContent = comments;
+  $("#post-domain").text($(this).data('domain'));
 
-  document.getElementById("post-title").textContent = title;
-
-  document.getElementById("post-author-url").href = author_link;
-
-  document.getElementById("post-domain").textContent = domain;
-
-  document.getElementById("post-timestamp").textContent = timestamp;
+  $("#post-timestamp").text($(this).data('timestamp'));
 
 
-  document.getElementById("yank-post-form").action="/mod/take/"+id;
-  
+  $("yank-post-form").data('yank-url', "/mod/take/"+$(this).data('post-id'));
+})
 
-  document.getElementById("yankPostButton").onclick = function() {  
+  $("#yankPostButton").click(function() {  
 
 
     var yankError = document.getElementById("toast-error-message");
@@ -1201,7 +1197,7 @@ function yank_postModal(id, author, comments, title, author_link, domain, timest
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open("post", "/mod/take/"+id);
+    xhr.open("post", $(this).data('yank-url'));
     xhr.withCredentials=true;
     f=new FormData();
     f.append("formkey", formkey());
@@ -1217,8 +1213,7 @@ function yank_postModal(id, author, comments, title, author_link, domain, timest
       }
     }
     xhr.send(f);
-  }
-};
+  })
 
 //yt embed
 
