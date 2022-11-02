@@ -1612,7 +1612,8 @@ $('#expandImageModal').on('hidden.bs.modal', function (e) {
 
 // Bold Text
 
-makeBold = function (form) {
+$('.btn-make-bold').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1630,11 +1631,12 @@ makeBold = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + format + text.value.substring(endIndex);
   }
-}
+})
 
 // Italicize Comment Text
 
-makeItalics = function (form) {
+$('.btn-make-italic').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1652,11 +1654,12 @@ makeItalics = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + format + text.value.substring(endIndex);
   }
-}
+})
 
 // Quote Comment Text
 
-makeQuote = function (form) {
+$('.btn-make-quote').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1674,7 +1677,7 @@ makeQuote = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + text.value.substring(endIndex);
   }
-}
+})
 
 // Character Count
 
