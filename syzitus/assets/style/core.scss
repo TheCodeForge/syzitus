@@ -1722,8 +1722,8 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 }
 
 #frontpage.toggle-card-view .posts .card .post-preview-lg .post-body, #userpage.toggle-card-view .posts .card .post-preview-lg .post-body, #search.toggle-card-view .posts .card .post-preview-lg .post-body, #guild.toggle-card-view .posts .card .post-preview-lg .post-body { 
-    -webkit-mask-image: linear-gradient(180deg,$black 40%,transparent);
-    mask-image: linear-gradient(180deg,$black 40%,transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000 40%,transparent);
+    mask-image: linear-gradient(180deg, #000 40%,transparent);
     overflow: hidden;
 }
 
