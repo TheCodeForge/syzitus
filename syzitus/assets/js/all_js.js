@@ -1244,10 +1244,6 @@ $('#ytEmbed').html('<iframe width="100%" height="475" src="//www.youtube.com/emb
 
 function expandDesktopImage(image) {
 
-// GIPHY attribution div
-
-var attribution = document.getElementById("modal-image-attribution");
-
 // Link text
 
 var linkText = document.getElementById("desktop-expanded-image-link");
@@ -1260,7 +1256,7 @@ inlineImage.src = image;
 linkText.href = image;
 imgLink.href = image;
 
-if (image.includes("i.ruqqus.com")) {
+if (image.includes("i.syzitus.com")) {
   linkText.textContent = 'Go to website';
 }
 else {
