@@ -263,26 +263,7 @@
 
 <!-- ClipboardJS -->
 
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" importance="high"></script>
-
-<!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
-	var clipboard = new ClipboardJS('.copy-link');
-	clipboard.on('success', function(e) {
-
-		jQuery(function($) {
-			$('#toast-copy-success').toast('show');
-		})
-		console.log(e);
-	});
-	clipboard.on('error', function(e) {
-
-		jQuery(function($) {
-			$('#toast-copy-error').toast('show');
-		})
-		console.log(e);
-	});
-</script>
+<script id="clipboard-js" src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" importance="high"></script>
 
 <!-- Mobile "install the app" tooltip -->
 
