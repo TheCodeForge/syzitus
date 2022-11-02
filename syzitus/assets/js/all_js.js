@@ -749,7 +749,8 @@ $('.bell-button').click(function (event) {
 
 //Admin post modding
 
-function removePost(post_id) {
+$('.admin-remove-post').click(function() {
+  post_id=$(this).data('post-id')
   url="/api/ban_post/"+post_id
 
   callback=function(){
@@ -762,9 +763,10 @@ function removePost(post_id) {
     button.innerHTML='<i class="fas fa-clipboard-check"></i>Approve'
   }
   post(url, callback, "Unable to remove post at this time. Please try again later.")
-}
+})
 
-function approvePost(post_id) {
+$('.admin-approve-post').click(function() {
+  post_id=$(this).data('post-id')
   url="/api/unban_post/"+post_id
 
   callback=function(){
@@ -778,7 +780,7 @@ function approvePost(post_id) {
   }
 
   post(url, callback, "Unable to approve post at this time. Please try again later.")
-}
+})
 
 //Element deleter
 
