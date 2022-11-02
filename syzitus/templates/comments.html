@@ -245,7 +245,7 @@
 
               <a class="dropdown-item btn-toggle-comment-edit" data-comment-id="{{ c.base36id }}"><i class="fas fa-edit fa-fw"></i>Edit</a>
 
-              <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#deleteCommentModal" onclick="delete_commentModal('{{ c.base36id }}')"><i class="fas fa-trash-alt fa-fw"></i>Delete</a>
+              <a class="dropdown-item btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-trash-alt fa-fw"></i>Delete</a>
 
               {% endif %}
 
@@ -419,7 +419,7 @@
           {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 %}
           <li class="list-group-item"><a data-dismiss="modal" data-comment-id="{{ c.base36id }}" class="d-block btn-toggle-comment-edit"><i class="fas fa-edit"></i>Edit</a></li>
 
-          <li class="list-group-item"><a class="d-block" href="javascript:void(0)" data-toggle="modal" data-target="#deleteCommentModal" onclick="delete_commentModal('{{ c.base36id }}')"><i class="fas fa-trash-alt"></i>Delete</a></li>
+          <li class="list-group-item"><a class="d-block btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
           {% endif %}
 
           {% if g.user %}
