@@ -586,16 +586,14 @@ toggleEdit=function(id){
 
 // Post edit form
 
-togglePostEdit=function(id){
-
-  body=document.getElementById("post-body");
-  form=document.getElementById("edit-post-body-"+id);
+$(".btn-edit-post").click(function(){
   box=document.getElementById("post-edit-box-"+id);
 
-  body.classList.toggle("d-none");
-  form.classList.toggle("d-none");
+  $('#post-body').toggleClass("d-none");
+  $('#edit-post-body-'+$(this).data('target-id')).toggleClass("d-none");
   autoExpand(box);
-};
+}
+)
 
 //comment modding
 function removeComment(post_id) {
@@ -2261,24 +2259,24 @@ coin_quote = function() {
 }
 
 
-var tipModal2 = function(id, content, link, recipient, recipientPFP) {
+$(".btn-tip-modal-trigger").click(function() {
   console.log('opened modal, tipModal2 function triggered')
 
-  document.getElementById('tip-recipient-pfp').src = recipientPFP;
+  $('#tip-recipient-pfp').attr('src',$(this).data('target-author-profile-url'));
+  $("#tip-content-type").text($(this).data('target-type'));
 
-  document.getElementById("tip-content-type").innerText = content
-  document.getElementById("tip-recipient-username").innerText = recipient
-
-  document.getElementById("sendTipButton").onclick = function() {
-    post_toast('/gift_'+ content +'/' + id + '?coins=1',
-      callback = function() {
-        location.href = link
-      }
-      )
-  }
-
-  console.log(recipientPFP, id, content, link, recipient)
+  $("#tip-recipient-username").text($(this).data('target-author'));
 }
+)
+
+$("#sendTipButton").click(function() {
+  post_toast($(this).data('tip-url'),
+    callback = function() {
+      window.location.reload()
+    }
+  )
+}
+);
 
 var togglecat = function(sort, reload=false, delay=1000, page="/all") {
   var cbs = document.getElementsByClassName('cat-check');
@@ -2569,3 +2567,19 @@ $('#clipboard-js').on('load', function(){
   });
 }
 );
+
+//Transferring onclick garbage into this file
+
+$(".btn-guild-block").click(function(){
+  post_toast('/settings/block_guild?board='+$(this).data("board-name"))
+})
+$(".btn-guild-unblock").click(function(){
+  post_toast('/settings/unblock_guild?board='+$(this).data("board-name"))
+})
+
+$(".btn-guild-sub").click(function(){
+  post('/api/subscribe/'+$(this).data('board-name'), callback=toggleSub)
+})
+$(".btn-guild-unsub").click(function(){
+  post('/api/unsubscribe/'+$(this).data('board-name'), callback=toggleSub)
+})
