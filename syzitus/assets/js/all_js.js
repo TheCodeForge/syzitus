@@ -572,7 +572,7 @@ $('.btn-toggle-comment-edit').click(function(){
   $("#comment-text-"+id).toggleClass('d-none');
   $("#comment-edit-"+id).toggleClass('d-none');
   $('#comment-' + id +'-actions').toggleClass('d-none');
-  
+
   box=document.getElementById('edit-box-comment-'+id);
   autoExpand(box);
 })
@@ -2124,8 +2124,9 @@ hide_image=function(){
   }
 }
 
+$('.btn-save-edit-comment').click(function() {
 
-comment_edit=function(id){
+  id=$(this).data('comment-id')
 
   var commentError = document.getElementById("comment-error-text");
 
@@ -2156,7 +2157,7 @@ comment_edit=function(id){
   }
   xhr.send(form)
 
-}
+})
 
 
 filter_guild=function() {

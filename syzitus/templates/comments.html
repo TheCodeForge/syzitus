@@ -146,7 +146,7 @@
          <small class="format"><i class="fas fa-smile-beam" aria-hidden="true" onclick="commentForm('comment-edit-body-{{c.base36id}}');loadEmojis()" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom"  title="Emojis"></i></small>          
          <small class="format d-none"><i class="fas fa-link" aria-hidden="true"></i></small> 
          <a id="cancel-edit-{{ c.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-toggle-comment-edit">Cancel</a> 
-         <a href="javascript:void(0)" form="comment-edit-form-{{ c.base36id }}" class="btn btn-primary ml-2" onclick="comment_edit('{{ c.base36id }}')">Save Edit</a> </div> </form>
+         <a href="javascript:void(0)" form="comment-edit-form-{{ c.base36id }}" class="btn btn-primary ml-2 btn-save-edit-comment" data-comment-id="{{ c.base36id }}">Save Edit</a> </div> </form>
        </div>
        {% endif %}
 
