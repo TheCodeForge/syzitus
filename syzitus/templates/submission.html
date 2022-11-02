@@ -710,7 +710,7 @@
                 <div id="filename-show-reply-{{ p.base36id }}"><i class="far fa-image"></i></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" onchange="document.getElementById('filename-show-reply-{{ p.base36id }}').innerHTML=document.getElementById('file-upload-reply-{{ p.fullname }}').files[0].name;" hidden>
           </label>
-        <a id="save-reply-to-{{ p.fullname }}" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-whitebtn ml-auto btn-save-new-comment" data-parent-fullname="{{ p.fullname }}" data-submission="{{ p.base36id }}">Comment</a>
+        <a id="save-reply-to-{{ p.fullname }}" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-whitebtn ml-auto btn-save-new-comment" data-parent-fullname="{{ p.fullname }}">Comment</a>
       </div>
     </form>
   </div>
