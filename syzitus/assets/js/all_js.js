@@ -419,6 +419,7 @@ $('#new_email').on('input', function () {
         noGIFs.innerHTML = null;
         loadGIFs.innerHTML = null;
       } else {
+        default_gifs.classList.add('d-none')
         backBtn.innerHTML = '<button class="btn btn-link pl-0 pr-3" id="gifs-back-btn" onclick="getGif();"><i class="fas fa-long-arrow-left text-muted"></i></button>';
 
         cancelBtn.innerHTML = '<button class="btn btn-link pl-3 pr-0" id="gifs-cancel-btn" onclick="getGif();"><i class="fas fa-times text-muted"></i></button>';
@@ -447,12 +448,12 @@ $('#new_email').on('input', function () {
           // loop for fetching mutliple GIFs and creating the card divs
           if (gifs.length) {
             for (var i = 0; i < gifs.length; i++) {
-              container.innerHTML += ('<div class="card bg-white" style="overflow: hidden" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
+              container.innerHTML += ('<div class="card bg-white" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
               noGIFs.innerHTML = null;
               loadGIFs.innerHTML = '<div class="text-center py-3"><div class="mb-3"><i class="fad fa-grin-beam-sweat text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Thou&#39;ve reached the end of the list!</p></div>';
             }
           } else {
-            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
+            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
             container.innerHTML = null;
             loadGIFs.innerHTML = null;
           }
@@ -462,7 +463,7 @@ $('#new_email').on('input', function () {
     }
 
 $(".gif-cat-select").click(function(){getGif($(this).data('gif-search-term'))})
-$(".gif-search-input").click(function(){getGif($(this).val())})
+$("#gifSearch").click(function(){getGif($(this).val())})
 
   // Insert GIF markdown into comment box function
 
