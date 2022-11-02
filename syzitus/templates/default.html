@@ -152,6 +152,26 @@
       {% endblock %}
 
       {% block pagenav %}
+      {% if page %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm mb-0">
+          {% if page>1 %}
+          <li class="page-item">
+            <small><a class="page-link" href="{% block prev_link %}?page={{ page-1 }}{% endblock %}" tabindex="-1">Prev</a></small>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link">Prev</span></li>
+          {% endif %}
+          {% if next_exists %}
+          <li class="page-item">
+            <small><a class="page-link" href="{% block next_link %}?page={{ page+1 }}{% endblock %}">Next</a></small>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link">Next</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
       {% endblock %}
 
     </div>
