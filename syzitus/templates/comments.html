@@ -248,7 +248,7 @@
                   <div class="dropdown-divider"></div>
                   <h6 class="dropdown-header" class="text-muted">Admin actions</h6>
 
-                  <a class="dropdown-item" id="distinguish-{{ c.base36id }}" href="javascript:void(0)" onclick="admin_comment('{{ c.base36id }}')"><i class="fas fa-id-badge fa-fw"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a>
+                  <a class="dropdown-item" id="distinguish-{{ c.base36id }}" class="btn-distinguish-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-id-badge fa-fw"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a>
 
 
               {% endif %}
@@ -416,7 +416,7 @@
 
           {% if g.user %}
               {% if g.user.admin_level>=1 and g.user.id==c.author_id %}
-                      <li class="list-group-item"><a class="d-block" id="distinguish-{{ c.base36id }}" href="javascript:void(0)" onclick="admin_comment('{{ c.base36id }}')"><i class="fas fa-id-badge"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
+                      <li class="list-group-item"><a class="d-block" id="distinguish-{{ c.base36id }}" class="btn-distinguish-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-id-badge"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
               {% endif %}
               {% if g.user.admin_level>=3 %}
                 <li class="list-group-item"><a class="d-block btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
