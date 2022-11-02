@@ -15,7 +15,7 @@
 <div id="comment-{{ c.base36id }}" class="comment rounded">
 
 
-    <span class="comment-collapse" onclick="collapse_comment('{{ c.base36id }}')"></span>
+    <span class="comment-collapse" data-comment-id="{{ c.base36id }}"></span>
 
     <div class="comment-body">
 
@@ -90,7 +90,7 @@
 
   <span class="mr-2 d-block d-md-none"><a href="{{ c.author.permalink }}"><img src="{{ c.author.profile_url }}" class="profile-pic-25"></a></span>
 
-  <span class="comment-collapse d-md-block d-none" onclick="collapse_comment('{{ c.base36id }}')"></span>
+  <span class="comment-collapse d-md-block d-none" data-comment-id="{{ c.base36id }}"></span>
 
   <div class="comment-body">
 
@@ -115,7 +115,7 @@
         {% endif %}
         {% if c.award_count %}<span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ c.award_count }}</span></span>{% endif %}
 
-        <span class="comment-collapse d-md-none" onclick="collapse_comment('{{ c.base36id }}')"></span>
+        <span class="comment-collapse d-md-none" data-comment-id="{{ c.base36id }}"></span>
 
       </div>
 
@@ -165,7 +165,7 @@
           </li>
 
           {% else %}
-          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-none d-md-inline-block mr-2" onclick="location.href='/login';">
+          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-none d-md-inline-block mr-2 go-to-login">
           </li>
 
           {% endif %}
@@ -186,7 +186,7 @@
 
           {% else %}
 
-          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-none d-md-inline-block" onclick="location.href='/login';">
+          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-none d-md-inline-block go-to-login">
           </li>
 
           {% endif %}
@@ -211,7 +211,7 @@
           
 
           {% if g.user and g.user.id==c.author_id and c.post and c.is_guildmaster('content') %}
-          <li class="list-inline-item d-none d-md-inline-block"><a href="javascript:void(0)" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" onclick="herald_comment('{{ c.board.name }}','{{ c.base36id }}')" class="text-warning"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
+          <li class="list-inline-item d-none d-md-inline-block"><a class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
@@ -444,7 +444,7 @@
           {% endif %}
 
           {% if g.user and g.user.id==c.author_id and c.post and c.is_guildmaster('content') %}
-          <li class="list-group-item"><a href="javascript:void(0)" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" onclick="herald_comment('{{ c.board.name }}','{{ c.base36id }}')" class="text-warning"><i class="fas fa-crown text-warning"></i><span>Herald</span></a></li>
+          <li class="list-group-item"><a class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span>Herald</span></a></li>
           {% endif %}
             
           {% if g.user and c.post and c.is_guildmaster('content') %}

@@ -522,13 +522,9 @@ $('#new_email').on('input', function () {
 
 // Toggle comment collapse
 
-function collapse_comment(comment_id) {
-
-  var comment = "comment-" + comment_id;
-
-  document.getElementById(comment).classList.toggle("collapsed");
-
-};
+$('.comment-collapse').click(function() {
+  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
+})
 
 // Text Area Input handling
 
@@ -2067,11 +2063,10 @@ post_comment=function(fullname){
 
 }
 
-herald_comment=function(name,cid){
 
-
+$('.btn-herald-comment').click(function(){
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/mod/distinguish_comment/"+name+'/'+cid);
+  xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
   var form = new FormData();
 
@@ -2093,7 +2088,7 @@ herald_comment=function(name,cid){
   }
   xhr.send(form)
 
-}
+})
 
 pin_comment=function(name,cid){
 
@@ -2571,3 +2566,5 @@ $(".post-toast-url-reload").click(function(){
 $(".post-toast-url").click(function(){
   post_toast($(this).data('post-url'))
 })
+
+$(".go-to-login").click(function(){window.location.href="/login"})
