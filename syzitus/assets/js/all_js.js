@@ -902,23 +902,23 @@ if (document.getElementById("sidebar-left") && localStorage.sidebar_pref == 'col
 
 };
 
-function toggle_sidebar_collapse() {
+$('.toggle_sidebar_collapse').click(function() {
 
   // Store Pref
   localStorage.setItem('sidebar_pref', 'collapsed');
 
   document.getElementById('sidebar-left').classList.toggle('sidebar-collapsed');
 
-};
+})
 
-function toggle_sidebar_expand() {
+$('.toggle_sidebar_expand').click(function() {
 
   // Remove Pref
   localStorage.removeItem('sidebar_pref');
 
   document.getElementById('sidebar-left').classList.toggle('sidebar-collapsed');
 
-}
+})
 
 // Voting
 
@@ -2227,6 +2227,10 @@ $(".btn-guild-unsub").click(function(){
 
 $(".post-url-reload").click(function(){
   post($(this).data('post-url'), callback=function(){window.location.reload()})
+})
+
+$(".post-url").click(function(){
+  post($(this).data('post-url'))
 })
 
 $(".post-toast-url-reload").click(function(){

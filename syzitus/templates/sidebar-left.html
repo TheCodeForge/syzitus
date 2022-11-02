@@ -6,12 +6,12 @@
       <div class="mb-4">
         <div class="sidebar-collapsed-hidden collapsed-toggle-parent">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="text-small font-weight-bold text-muted text-uppercase" style="letter-spacing: 0.025rem;">{{ "SITE_NAME" | app_config }} Feeds</div>
-            <button class="btn" data-toggle="tooltip" data-placement="right" title="Collapse" onclick="toggle_sidebar_collapse();post('/settings/toggle_collapse');"><span class="collapsed-toggle"></span></button>
+            <div class="text-small font-weight-bold text-muted text-uppercase" >{{ "SITE_NAME" | app_config }} Feeds</div>
+            <button class="btn post-url toggle-sidebar-collapse" data-post-url="/settings/toggle_collapse" data-toggle="tooltip" data-placement="right" title="Collapse"><span class="collapsed-toggle"></span></button>
           </div>
         </div>
         <div class="sidebar-collapsed-visible collapsed-toggle-parent">
-          <button class="btn mb-3" onclick="toggle_sidebar_expand();post('/settings/toggle_collapse');"><span class="collapsed-toggle"></span></button>
+          <button class="btn mb-3 post-url toggle-sidebar-expand" data-post-url="/settings/toggle_collapse"><span class="collapsed-toggle"></span></button>
         </div>
         <div class="sidebar-collapsed-visible">
           <span class="fa-stack">
