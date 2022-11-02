@@ -423,7 +423,7 @@ def after_request(response):
     response.headers.add("Referrer-Policy", "same-origin")
     response.headers.add("X-Content-Type-Options","nosniff")
     response.headers.add("Permissions-Policy",
-        "geolocation=(none), midi=(none), notifications=(none), push=(none), sync-xhr=(none), microphone=(none), camera=(none), magnetometer=(none), gyroscope=(none), vibrate=(none), payment=(none)")
+        "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), vibrate=(), payment=()")
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
