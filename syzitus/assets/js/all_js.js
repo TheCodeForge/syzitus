@@ -768,23 +768,22 @@ function delete_postModal(id) {
 
 // Delete Comment
 
-function delete_commentModal(id) {
+$('btn-delete-comment').click(function() {
 
-  // Passed data for modal
+  $("#deleteCommentButton").data('delete-url')='/delete/comment/' + $(this).data('comment-id')
+})
 
-  document.getElementById("deleteCommentButton").onclick = function() {  
 
+$('#deleteCommentButton').click(function() {  
     this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting comment';  
     this.disabled = true; 
-    post('/delete/comment/' + id,
+    post($(this).data('delete-url'),
       callback = function() {
-
         location.reload();
       }
       )
   }
-
-};
+)
 
 //Email verification text
 
