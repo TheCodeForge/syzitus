@@ -193,7 +193,7 @@
 
           {% if g.user %}
           {% if (standalone or is_allowed_to_comment) and (c.is_guildmaster('content') or not c.is_blocked) %}
-          <li class="list-inline-item text-muted"><a href="javascript:void(0)" onclick="document.getElementById('reply-to-{{ c.base36id }}').classList.remove('d-none')"><i class="fas fa-reply"
+          <li class="list-inline-item text-muted"><a class="btn-reply-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-reply"
             aria-hidden="true"></i><span class="d-none d-md-inline-block">Reply</span></a>
           </li>
           {% endif %}

@@ -2564,3 +2564,7 @@ $(".go-to-login").click(function(){window.location.href="/login"})
 $(".btn-cancel-comment").click(function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
 })
+
+$('.btn-reply-comment').click(function(){
+  $('#reply-to-{{ c.base36id }}').removeClass('d-none')
+})
