@@ -327,7 +327,7 @@
         <input type="hidden" name="formkey" value="{{ g.user.formkey }}"> 
         <input type="hidden" name="parent_fullname" value="{{ c.fullname }}"> 
         <input id="reply-form-submission-{{ c.fullname }}" type="hidden" name="submission" value="{{ c.post.base36id }}"> 
-        <textarea name="body" form="reply-to-t3_{{ c.base36id }}" class="comment-box form-control rounded" id="reply-form-body-{{ c.fullname }}" onkeydown="textAreaOnKeyDown(event, (fullname = '{{ c.fullname }}') => post_comment(fullname))" aria-label="With textarea" placeholder="Add your comment..." rows="3"></textarea> 
+        <textarea name="body" form="reply-to-t3_{{ c.base36id }}" class="comment-box form-control rounded" id="reply-form-body-{{ c.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="3"></textarea> 
         <div class="comment-format" id="comment-format-bar-{{ c.base36id }}"> 
           <small class="format pl-0">
             <i class="fas fa-bold" aria-hidden="true" onclick="makeBold('reply-form-body-{{ c.fullname }}')" data-toggle="tooltip" data-placement="bottom" title="Bold"></i>
@@ -356,7 +356,7 @@
           </label>
 
           <a href="javascript:void(0)" onclick="document.getElementById('reply-to-{{ c.base36id }}').classList.add('d-none')" class="btn btn-link text-muted ml-auto cancel-form">Cancel</a> 
-          <a id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-parent-comment="{{ c.fullname }}" href="javascript:void(0)">Comment</a> 
+          <a id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-parent-comment-id="{{ c.fullname }}" href="javascript:void(0)">Comment</a> 
         </div> 
       </form> 
     </div>
