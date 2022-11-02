@@ -101,7 +101,7 @@
 <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
 
   {% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
-  <div class="row fixed-top" style="z-index:2000" id="mobile-prompt-row">
+  <div class="row fixed-top" id="mobile-prompt-row">
     <div id="mobile-prompt-container" class="ml-auto mr-5">
       <div id="mobile-prompt" href="javascript:void(0)" data-toggle="tooltip" data-container="#mobile-prompt-row" data-placement="top" data-trigger="click" title="" data-original-title="Install the {{ 'SITE_NAME' | app_config }} webapp by saving this page to your home screen!">
       </div>
@@ -183,17 +183,17 @@
         </div>
         <div class="body">
 
-          <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #F7931A!important">
+          <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
             <span class="fa-stack fa-1x ml-n1 mr-2">
-              <i class="fas fa-square fa-stack-2x" style="color: #FEEBC8!important; font-size: 2rem!important;"></i>
-              <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse" style="color: #F7931A!important;"></i>
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse"></i>
             </span>Donate Crypto
           </a>
 
-          <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #DC143C!important">
+          <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
             <span class="fa-stack fa-1x ml-n1 mr-2">
-              <i class="fas fa-square fa-stack-2x" style="color: #FC8181!important; font-size: 2rem!important;"></i>
-              <i class="fas fa-bug fa-stack-1x text-base fa-inverse" style="color: #DC143C!important;"></i>
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fas fa-bug fa-stack-1x text-base fa-inverse"></i>
             </span>Report Bugs
           </a>
 
@@ -206,7 +206,7 @@
         <div class="title"><i class="fas fa-user-shield mr-2"></i>Admin Panel</div>
         <div class="body">
           {% block adminpanel %}
-          <div class="text-center mb-2" style=""><i class="fad fa-ghost text-muted" style="font-size: 2.5rem"></i></div>
+          <div class="text-center mb-2"><i class="fad fa-ghost text-muted"></i></div>
           <p class="text-center text-small text-muted mb-0">No admin actions available</p>
           {% endblock %}
         </div>
