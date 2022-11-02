@@ -297,7 +297,7 @@
 
           {% endif %}
           {% if g.user and g.user.mods_anything and p.board.name == 'general' %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" onclick="yank_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.comment_count }}','{{ p.thumb_url }}','{{ p.title | js_str_escape }}','{{ p.author.permalink }}','{{ p.domain | js_str_escape }}','{{ p.age_string }}')" class="d-block"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
           {% endif %}
           {% if g.user %}
             {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
@@ -522,7 +522,7 @@
                   {% if g.user %}
 
                   {% if g.user.mods_anything and p.board_id == 1 %}
-                  <li class="list-inline-item"><a data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post"><i class="fas fa-hand-lizard"></i>Yank</a></li>
+                  <li class="list-inline-item"><a data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i>Yank</a></li>
                   {% endif %}
                   {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
                   <li class="list-inline-item"><a class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
