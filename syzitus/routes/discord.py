@@ -11,13 +11,6 @@ from syzitus.helpers.discord import add_role, delete_role
 from syzitus.__main__ import app, debug
 
 
-
-
-@app.route("/guilded", methods=["GET"])
-def guilded_server():
-    return redirect("https://www.guilded.gg/i/VEvjaraE")
-
-
 @app.route("/discord", methods=["GET"])
 @auth_required
 def join_discord():
