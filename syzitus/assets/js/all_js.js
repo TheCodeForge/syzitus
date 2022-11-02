@@ -2254,3 +2254,6 @@ $('.btn-reply-comment').click(function(){
   $('#reply-to-{{ c.base36id }}').removeClass('d-none')
 })
 
+$('.btn-file-input').change(function(){
+  $('#filename-show-reply-'+$(this).data('btn-id')).text(document.getElementById('file-upload-reply-{{ c.fullname }}').files[0].name);
+})
