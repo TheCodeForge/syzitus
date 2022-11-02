@@ -427,12 +427,7 @@ $(".dark-switch").click(function () {
 
 // Delete Post
 $('.btn-delete-post').click(function() {
-
-  // Passed data for modal
-
-  id=$(this).data('post-id')
-
-  $('.btn-delete-post-confirm').data('delete-url', '/delete_post/'+id)
+  $('.btn-delete-post-confirm').data('delete-url', '/delete_post/'+$(this).data('post-id'))
 })
 
 
