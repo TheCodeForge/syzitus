@@ -4,7 +4,7 @@
 {% set ups=c.upvotes_fuzzed %}
 {% set downs=c.downvotes_fuzzed %}
 {% set score=ups-downs %}
-{% include "emoji_modal.html" %}
+<!--{% include "emoji_modal.html" %}-->
 
 <!--conditions under which a comment might be hidden-->
 
@@ -146,11 +146,11 @@
           </small>
          {% if 'TENOR_KEY' | app_config %}
           <small class="format">
-            <span class="font-weight-bolder text-uppercase" aria-hidden="true" onclick="getGif();commentForm('comment-edit-body-{{ c.base36id }}')" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span>
+            <span class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-form-id="comment-edit-body-{{ c.base36id }}" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span>
           </small> 
          {% endif %}
            &nbsp;
-          <small class="format"><i class="fas fa-smile-beam" aria-hidden="true" onclick="commentForm('comment-edit-body-{{c.base36id}}');loadEmojis()" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom"  title="Emojis"></i></small>          
+          <!--<small class="format"><i class="fas fa-smile-beam btn-open-inserters" aria-hidden="true" data-form-id="comment-edit-body-{{c.base36id}}')" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom"  title="Emojis"></i></small>-->      
           <small class="format d-none"><i class="fas fa-link" aria-hidden="true"></i></small> 
           <a id="cancel-edit-{{ c.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-toggle-comment-edit">Cancel</a> 
           <a href="javascript:void(0)" form="comment-edit-form-{{ c.base36id }}" class="btn btn-primary ml-2 btn-save-edit-comment" data-comment-id="{{ c.base36id }}">Save Edit</a> </div> </form>
@@ -352,11 +352,13 @@
           </label> 
           {% endif %}
 
+          <!---
           &nbsp;
           <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{c.fullname}}">
              <i id="emoji-reply-btn-{{c.fullname}}" class="fas fa-smile-beam" onclick="commentForm('reply-form-body-{{c.fullname}}');loadEmojis()" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"></i>
           </label>
           &nbsp;
+        -->
 
           <label class="format btn btn-secondary m-0 ml-1 {% if g.user.can_upload_comment_image %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ c.fullname }}">
                 <div id="filename-show-reply-{{ c.base36id }}"><i class="far fa-image"></i></div>
@@ -435,7 +437,7 @@
 
               {% if not g.user.id==c.author_id %}
                   <li class="list-group-item">
-                    <a class="d-block" href="javascript:void(0)" onclick="post_toast('/settings/block?username={{ c.author.username }}')"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+                    <a class="d-block post-toast-url" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                   </li>
               {% endif %}
           {% endif %}
@@ -452,7 +454,7 @@
           {% endif %}
           {% if g.user and c.post and c.is_guildmaster('access') %}
             {% if c.author_id != g.user.id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
-              <li class="list-group-item"><a class="d-block text-danger" id="exile-comment2-{{ c.base36id }}" href="javascript:void(0)" onclick="post_toast('/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}')"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a></li>
+              <li class="list-group-item"><a class="d-block text-danger post-toast-url" id="exile-comment2-{{ c.base36id }}" href="javascript:void(0)" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a></li>
             {% endif %}
           {% endif %}  
 

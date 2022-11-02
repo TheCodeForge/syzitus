@@ -46,9 +46,9 @@ $('#new_email').on('input', function () {
 
   var commentFormID;
 
-  function commentForm(form) {
-    commentFormID = form;
-  };
+$('.btn-open-inserters').click(function(){
+  commentFormID=$(this).data('form-id')
+})
 
   function getEmoji(searchTerm) {
 
@@ -2575,3 +2575,4 @@ $(".btn-cancel-comment").click(function(){
 $('.btn-reply-comment').click(function(){
   $('#reply-to-{{ c.base36id }}').removeClass('d-none')
 })
+
