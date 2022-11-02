@@ -1706,10 +1706,10 @@ $('.btn-save-new-comment').click(function(){
   var form = new FormData();
 
   form.append('formkey', formkey());
-  form.append('parent_fullname', $(this).data('parent-comment-id'));
-  form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-comment-id')).value);
-  form.append('body', document.getElementById('reply-form-body-'+$(this).data('parent-comment-id')).value);
-  form.append('file', document.getElementById('file-upload-reply-'+$(this).data('parent-comment-id')).files[0]);
+  form.append('parent_fullname', $(this).data('parent-fullname'));
+  form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-fullname')).value);
+  form.append('body', document.getElementById('reply-form-body-'+$(this).data('parent-fullname')).value);
+  form.append('file', document.getElementById('file-upload-reply-'+$(this).data('parent-fullname')).files[0]);
 
 
   var xhr = new XMLHttpRequest();
@@ -1717,14 +1717,14 @@ $('.btn-save-new-comment').click(function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      commentForm=document.getElementById('comment-form-space-'+$(this).data('parent-comment-id'));
+      commentForm=document.getElementById('comment-form-space-'+$(this).data('parent-fullname'));
       commentForm.innerHTML=JSON.parse(xhr.response)["html"];
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
     }
     else {
-      $('#save-reply-to-'+$(this).data('parent-comment-id')).prop('disabled', false);
+      $('#save-reply-to-'+$(this).data('parent-fullname')).prop('disabled', false);
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
