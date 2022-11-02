@@ -329,9 +329,9 @@
 
             {% if g.user.admin_level >=3 %}
               {% if p.is_banned %}
-              <button class="btn btn-link btn-block btn-lg text-success text-left" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="far fa-check text-center text-success mr-3"></i>Approve</button>
+              <button class="btn btn-link btn-block btn-lg text-success text-left admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="far fa-check text-center text-success mr-3"></i>Approve</button>
               {% else %}
-              <button class="btn btn-link btn-block btn-lg text-danger text-left" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="removePost('{{ p.base36id }}')"><i class="far fa-ban text-center text-danger mr-3"></i>Remove</button>
+              <button class="btn btn-link btn-block btn-lg text-danger text-left admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="far fa-ban text-center text-danger mr-3"></i>Remove</button>
               {% endif %}
             {% endif %}
 
