@@ -721,8 +721,8 @@
             <div id="emoji-reply-btn-{{p.fullname}}" class="btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
           </label> 
           <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
-                <div id="filename-show-reply-{{ p.base36id }}"><i class="far fa-image"></i></div>
-                <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" onchange="document.getElementById('filename-show-reply-{{ p.base36id }}').innerHTML=document.getElementById('file-upload-reply-{{ p.fullname }}').files[0].name;" hidden>
+                <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
+                <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
           </label>
         <a id="save-reply-to-{{ p.fullname }}" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-whitebtn ml-auto btn-save-new-comment" data-parent-fullname="{{ p.fullname }}">Comment</a>
       </div>
