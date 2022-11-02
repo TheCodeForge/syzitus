@@ -427,7 +427,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src none; object-src none; style-src self unsafe-inline")
+            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src none; object-src none; style-src self unsafe-inline https:")
 
     if not request.path.startswith("/embed/"):
         response.headers.add("X-Frame-Options", "deny")
