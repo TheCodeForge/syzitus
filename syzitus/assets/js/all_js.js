@@ -613,11 +613,11 @@ $('.btn-mod-comment').click(function () {
 })
 
 
-admin_comment=function(cid){
+$('.btn-distinguish-comment').click(function(){
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/api/distinguish_comment/"+cid);
+  xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment-id));
 
   var form = new FormData();
 
@@ -626,7 +626,7 @@ admin_comment=function(cid){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+cid+'-only');
+      comment=document.getElementById('comment-'+$(this).data(comment-id)+'-only');
       comment.innerHTML=JSON.parse(xhr.response)["html"];
     }
     else {
@@ -638,7 +638,7 @@ admin_comment=function(cid){
     }
   }
   xhr.send(form)
-}
+})
 
 
 
