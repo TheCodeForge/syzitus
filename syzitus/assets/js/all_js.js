@@ -567,18 +567,15 @@ $('.comment-box').blur(function () {
 */
 
 // Comment edit form
-
-toggleEdit=function(id){
-  comment=document.getElementById("comment-text-"+id);
-  form=document.getElementById("comment-edit-"+id);
+$('.btn-toggle-comment-edit').click(function(){
+  id=$(this).data('comment-id')
+  $("#comment-text-"+id).toggleClass('d-none');
+  $("#comment-edit-"+id).toggleClass('d-none');
+  $('#comment-' + id +'-actions').toggleClass('d-none');
+  
   box=document.getElementById('edit-box-comment-'+id);
-  actions = document.getElementById('comment-' + id +'-actions');
-
-  comment.classList.toggle("d-none");
-  form.classList.toggle("d-none");
-  actions.classList.toggle("d-none");
   autoExpand(box);
-};
+})
 
 // Post edit form
 
