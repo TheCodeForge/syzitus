@@ -1768,25 +1768,22 @@ window.onload = function () {
       }
     }
 
-  // Execute if bottomBar exists
+    // Execute if bottomBar exists
 
-  if (topBar != null && dropdown != null) {
-    if (prevScrollpos > currentScrollPos) {
-      topBar.style.top = "49px";
-      navbar.classList.remove("shadow");
-    } 
-    else if (currentScrollPos <= 125) {
-      topBar.style.top = "49px";
-      navbar.classList.remove("shadow");
+    if (topBar != null && dropdown != null) {
+      if (prevScrollpos > currentScrollPos) {
+        topBar.style.top = "49px";
+      } 
+      else if (currentScrollPos <= 125) {
+        topBar.style.top = "49px";
+      }
+      else {
+        topBar.style.top = "-49px";
+        dropdown.classList.remove('show');
+      }
     }
-    else {
-      topBar.style.top = "-49px";
-      dropdown.classList.remove('show');
-      navbar.classList.add("shadow");
-    }
+    prevScrollpos = currentScrollPos;
   }
-  prevScrollpos = currentScrollPos;
-}
 }
 
 // Tooltips
