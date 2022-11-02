@@ -215,8 +215,7 @@
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" onclick="removeComment('{{ c.base36id }}')"><i class="fas fa-comment-times fa-fw"></i>Remove</a></li>
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" onclick="approveComment('{{ c.base36id }}')"><i class="fas fa-comment-check fa-fw"></i>Approve</a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
           {% endif %}
           <li class="list-inline-item d-none d-md-inline-block">
             <div class="dropdown show">
@@ -254,12 +253,7 @@
 
               {% endif %}
               {% if g.user.admin_level>=3 %}
-                {% if not c.is_banned %}
-                  <a class="dropdown-item" id="moderate-{{ c.base36id }}" href="javascript:void(0)" onclick="removeComment('{{ c.base36id }}')"><i class="fas fa-comment-times fa-fw"></i>Remove</a>
-                {% endif %}
-                {% if c.is_banned or request.path.startswith('/admin/') %}
-                  <a class="dropdown-item" id="moderate-{{ c.base36id }}" href="javascript:void(0)" onclick="approveComment('{{ c.base36id }}')"><i class="fas fa-comment-check fa-fw"></i>Approve</a>
-                {% endif %}
+                  <a class="dropdown-item btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove }}</span></a>
                 {% if c.author.is_deleted %}
                   <a class="dropdown-item" href="{{ c.author.permalink }}"><i class="fas fa-user-minus"></i>@{{ c.author.username }}</a>
                 {% endif %}
@@ -425,12 +419,7 @@
                       <li class="list-group-item"><a class="d-block" id="distinguish-{{ c.base36id }}" href="javascript:void(0)" onclick="admin_comment('{{ c.base36id }}')"><i class="fas fa-id-badge"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
               {% endif %}
               {% if g.user.admin_level>=3 %}
-                  {% if not c.is_banned %}
-                      <li class="list-group-item"><a class="d-block" id="moderate-{{ c.base36id }}" href="javascript:void(0)" onclick="removeComment('{{ c.base36id }}')"><i class="fas fa-comment-times"></i>Remove</a></li>
-                  {% endif %}
-                  {% if c.is_banned or '/admin/' in request.path %}
-                      <li class="list-group-item"><a class="d-block" id="moderate-{{ c.base36id }}" href="javascript:void(0)" onclick="approveComment('{{ c.base36id }}')"><i class="fas fa-comment-check"></i>Approve</a></li>
-                  {% endif %}
+                <li class="list-group-item"><a class="d-block btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
               {% endif %}
               {% if g.user.admin_level >=4 and c.oauth_app %}
                 <li class="list-group-item"><a class="d-block" href="{{ c.oauth_app.permalink }}/comments"><i class="fas fa-code"></i>API App</a></li>
