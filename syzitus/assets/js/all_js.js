@@ -794,27 +794,26 @@ function emailVerifyText() {
 
 //flagging
 // Flag Comment
+$('.btn-report-comment').click(function() {
 
-report_commentModal = function(id, author) {
-
-  document.getElementById("comment-author").textContent = author;
+  $("#comment-author").text($(this).data('target-author'));
 
   //offtopic.disabled=true;
 
-  document.getElementById("reportCommentButton").onclick = function() {
+  $("#reportCommentButton").data('report-url', '/api/flag/comment/'+$(this).data('comment-id'))
+  })
 
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting comment';
-    this.disabled = true;
-    post('/api/flag/comment/' + id,
-      callback = function() {
+$("#reportCommentButton").click(function() {
 
-        document.getElementById("reportCommentFormBefore").classList.add('d-none');
-        document.getElementById("reportCommentFormAfter").classList.remove('d-none');
-      }
-      )
-  }
-
-};
+  this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting comment';
+  this.disabled = true;
+  post($(this).data('report-url'),
+    callback = function() {
+      $("#reportCommentFormBefore").addClass('d-none');
+      $("#reportCommentFormAfter").removeClass('d-none');
+    }
+  )
+})
 
 $('#reportCommentModal').on('hidden.bs.modal', function () {
 
