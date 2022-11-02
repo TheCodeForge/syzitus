@@ -132,7 +132,7 @@
       <div id="comment-edit-{{ c.base36id }}" class="d-none comment-write collapsed child">
        <form id="comment-edit-form-{{ c.base36id }}" action="/edit_comment/{{ c.base36id }}" method="post" class="input-group">
         <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-        <textarea id="comment-edit-body-{{ c.base36id }}" name="body" form="comment-edit-form-{{ c.base36id }}" class="comment-box form-control rounded" id="edit-box-comment-{{ c.base36id }}" onkeydown="textAreaOnKeyDown(event, (id = '{{ c.base36id }}') => comment_edit(id))" aria-label="With textarea" placeholder="Add your comment..." rows="3">{{ c.body }}</textarea> 
+        <textarea id="comment-edit-body-{{ c.base36id }}" name="body" form="comment-edit-form-{{ c.base36id }}" class="comment-box form-control rounded" id="edit-box-comment-{{ c.base36id }}" aria-label="With textarea" placeholder="Add your comment..." rows="3">{{ c.body }}</textarea> 
         <div class="comment-format"> 
          <small class="format pl-0"><i class="fas fa-bold" aria-hidden="true" onclick="makeBold('comment-edit-body-{{ c.base36id }}')" data-toggle="tooltip" data-placement="bottom" title="Bold"></i></small> 
          <small class="format"><i class="fas fa-italic" aria-hidden="true" onclick="makeItalics('comment-edit-body-{{ c.base36id }}')" data-toggle="tooltip" data-placement="bottom" title="Italicize"></i></small> 
@@ -355,7 +355,7 @@
                 <input id="file-upload-reply-{{ c.fullname }}" type="file" name="file" accept="image/*" onchange="document.getElementById('filename-show-reply-{{ c.base36id }}').innerHTML=document.getElementById('file-upload-reply-{{ c.fullname }}').files[0].name;" hidden>
           </label>
 
-          <a href="javascript:void(0)" onclick="document.getElementById('reply-to-{{ c.base36id }}').classList.add('d-none')" class="btn btn-link text-muted ml-auto cancel-form">Cancel</a> 
+          <a href="javascript:void(0)" data-comment-id="{{ c.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-cancel-comment">Cancel</a> 
           <a id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-parent-comment-id="{{ c.fullname }}" href="javascript:void(0)">Comment</a> 
         </div> 
       </form> 
