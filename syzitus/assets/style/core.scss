@@ -3265,6 +3265,18 @@ pre .clo, pre .opn, pre .pun, code .clo, code .opn, code .pun {
     border-radius: $border-radius;
 }
 
+.gif-cat-overlay .gif-cat-text {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.scroll-y {
+    overflow-y: scroll;
+}
+
 // Responsive media queries
 
 // Medium devices (tablets, less than 992px)
