@@ -1913,6 +1913,7 @@ $(".btn-tip-modal-trigger").click(function() {
   $("#tip-content-type").text($(this).data('target-type'));
 
   $("#tip-recipient-username").text($(this).data('target-author'));
+  $("#sendTipButton").data('tip-url', $(this).data('tip-url'))
 }
 )
 
