@@ -29,11 +29,9 @@
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
-  <script>
-    function formkey() {
-      return '{{ g.user.formkey }}';
-    }
-  </script>
+  {% if g.user %}
+  <link id="formkey_element" data-formkey="{{ g.user.formkey }}">
+  {% endif %}
 
 </head>
 

@@ -1,3 +1,7 @@
+function formkey() {
+      return $('#formkey_element').data('formkey');
+}
+
 // Using mouse
 
 document.body.addEventListener('mousedown', function() {
