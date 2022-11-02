@@ -3782,6 +3782,12 @@ img.emoji {
     object-fit: contain;
 }
 
+.btn-emoji {
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+}
+
 /* Light mode spoiler */
 .spoiler{ 
   color: black; 
