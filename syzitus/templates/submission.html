@@ -342,8 +342,8 @@
           {% endif %}
 
           {% if g.user and not g.user.id==p.author_id and  p.deleted_utc == 0 and not p.author.is_deleted %}
-            <button id="block-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Block @{{ p.author.username }}</button>
-            <button id="unblock-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Unblock @{{ p.author.username }}</button>
+            <button id="block-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Block @{{ p.author.username }}</button>
+            <button id="unblock-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Unblock @{{ p.author.username }}</button>
             {% if p.is_guildmaster('access') and not p.author.is_deleted %}
               <button id="exile-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger post-toast-url" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-minus mr-3 text-danger"></i>Exile @{{ p.author.username }}</a></button>
             {% endif %}
