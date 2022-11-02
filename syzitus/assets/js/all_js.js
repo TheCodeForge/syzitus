@@ -592,32 +592,26 @@ $(".btn-edit-post").click(function(){
 )
 
 //comment modding
-function removeComment(post_id) {
-  url="/api/ban_comment/"+post_id
+$('.btn-mod-comment').click(function () {
 
-  callback=function(){
-    document.getElementById("comment-"+post_id+"-only").classList.add("banned");
+  var url;
 
-    button=document.getElementById("moderate-"+post_id);
-    button.onclick=function(){approveComment(post_id)};
-    button.innerHTML="approve"
+  if ($("#comment-"+$(this).data('comment-id')+"-only").hasClass("banned")) {
+    url="/api/unban_comment/"+$(this).data('comment-id');
+    callback=function(){
+      $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
+      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Approve")
+    }
+  } else {
+    url="/api/ban_comment/"+$(this).data('comment-id');
+    callback=function(){
+      $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
+      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Remove")
+    }
   }
-  post(url, callback, "Unable to remove post at this time. Please try again later.")
-};
+  post_toast(url, callback)
+})
 
-function approveComment(post_id) {
-  url="/api/unban_comment/"+post_id
-
-  callback=function(){
-    document.getElementById("comment-"+post_id+"-only").classList.remove("banned");
-
-    button=document.getElementById("moderate-"+post_id);
-    button.onclick=function(){removeComment(post_id)};
-    button.innerHTML="remove"
-  }
-
-  post(url, callback, "Unable to approve post at this time. Please try again later.")
-}
 
 admin_comment=function(cid){
 
