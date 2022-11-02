@@ -2563,3 +2563,7 @@ $(".post-toast-url").click(function(){
 })
 
 $(".go-to-login").click(function(){window.location.href="/login"})
+
+$(".btn-cancel-comment").click(function(){
+  $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
+})
