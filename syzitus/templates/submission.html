@@ -549,10 +549,10 @@
 
                   {% if g.user.admin_level >=3 %}
                   {% if p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a class="text-success" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="fas fa-check text-success"></i>Approve</a></li>
+                  <li class="list-inline-item"><a class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
                   {% endif %}
                   {% if not p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="removePost('{{ p.base36id }}')"><i class="fas fa-ban"></i>Remove</a></li>
+                  <li class="list-inline-item"><a class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
                   {% endif %}
                   {% endif %}
 
