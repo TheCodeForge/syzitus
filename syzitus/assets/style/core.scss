@@ -745,7 +745,7 @@ label.color-radio span {
 
 .form-control:hover {
     color: $black;
-    background-color: #ffffff;
+    background-color: $white;
     outline: 0;
     border-color: $primary;
     box-shadow: none;
@@ -753,7 +753,7 @@ label.color-radio span {
 
 .form-control:focus, .form-control:active {
     color: $black;
-    background-color: #ffffff;
+    background-color: $white;
     outline: 0;
     border-color: $primary;
     box-shadow: none;
@@ -1540,7 +1540,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     text-align: center;
     object-fit: cover;
     color: $white;
-    background-color: #FFFFFF;
+    background-color: $white;
 }
 
 .profile-pic .letter {
@@ -1661,7 +1661,7 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
     border-radius: 50%;
     text-align: center;
     object-fit: cover;
-    background-color: #FFFFFF;
+    background-color: $white;
 }
 
 .profile-pic-overlap {
