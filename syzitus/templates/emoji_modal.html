@@ -1,60 +1,366 @@
 <!-- Emoji Selection Modal -->
+
+{% set emojis={'animated': ['anime-dance',
+              'cat-vibe',
+              'crumb-dance',
+              'dance-kid',
+              'dance',
+              'falling-kermit',
+              'minecraft',
+              'pepe-saber',
+              'pop-cat',
+              'wavy-sad',
+              'who',
+              'yoshi-hammer',
+              'lmao-spin',
+              'gigachad-gif',
+              'yes-cat',
+              'no-cat',
+              'is4me',
+              'frogroll',
+              'alert',
+              'shrug'],
+ 'classic': ['2thumbsup',
+             'aliendj',
+             'ambulance',
+             'angry',
+             'angrywhip',
+             'argue',
+             'aroused',
+             'ashamed',
+             'badass',
+             'banana',
+             'band',
+             'banghead',
+             'batman',
+             'bigeyes',
+             'bite',
+             'blind',
+             'blowkiss',
+             'blush',
+             'bong',
+             'bounce',
+             'bow',
+             'breakheart',
+             'bs',
+             'cartwheel',
+             'cat',
+             'celebrate',
+             'chad',
+             'chainsaw',
+             'cheers',
+             'clap',
+             'cold',
+             'confused',
+             'crazyeyes',
+             'cry',
+             'cthulhu',
+             'cute',
+             'D',
+             'daydream',
+             'ddr',
+             'deadpool',
+             'devilsmile',
+             'diddle',
+             'die',
+             'distress',
+             'disturbing',
+             'dizzy',
+             'domo',
+             'doughboy',
+             'drink',
+             'drool',
+             'dudeweedlmao',
+             'edward',
+             'electro',
+             'elephant',
+             'embarrassed',
+             'emo',
+             'emo2',
+             'evil',
+             'evilclown',
+             'evilgrin',
+             'facepalm',
+             'fap',
+             'flamethrower',
+             'flipbird',
+             'flirt',
+             'frown',
+             'gasp',
+             'glomp',
+             'go',
+             'gooby',
+             'grr',
+             'gtfo',
+             'guitar',
+             'haha',
+             'handshake',
+             'happydance',
+             'headbang',
+             'heart',
+             'heartbeat',
+             'hearts',
+             'highfive',
+             'hmm',
+             'hmph',
+             'holdhands',
+             'horny',
+             'hug',
+             'hugging',
+             'hugs',
+             'hump',
+             'humpbed',
+             'hysterical',
+             'ily',
+             'inlove',
+             'jason',
+             'jawdrop',
+             'jedi',
+             'jester',
+             'kaboom',
+             'kick',
+             'kiss',
+             'kitty',
+             'laughchair',
+             'lick',
+             'link',
+             'lol',
+             'lolbeat',
+             'loving',
+             'makeout',
+             'medal',
+             'megaman',
+             'megamanguitar',
+             'meow',
+             'metime',
+             'mooning',
+             'mummy',
+             'na',
+             'nauseous',
+             'nervous',
+             'ninja',
+             'nod',
+             'nono',
+             'omg',
+             'onfire',
+             'ooo',
+             'orly',
+             'p',
+             'paddle',
+             'panda',
+             'pandabutt',
+             'paranoid',
+             'party',
+             'pat',
+             'peek',
+             'pikachu',
+             'pimp',
+             'plzdie',
+             'poke',
+             'popcorn',
+             'pout',
+             'probe',
+             'puke',
+             'punch',
+             'quote',
+             'raccoon',
+             'roar',
+             'rofl',
+             'roflmao',
+             'rolleyes',
+             'sad',
+             'sadeyes',
+             'sadhug',
+             'samurai',
+             'sarcasm',
+             'scoot',
+             'scream',
+             'shmoopy',
+             'shrug',
+             'skull',
+             'slap',
+             'slapfight',
+             'sleepy',
+             'smackfish',
+             'smackhead',
+             'smh',
+             'smile',
+             'smoke',
+             'sonic',
+             'spank',
+             'sparta',
+             'sperm',
+             'spiderman',
+             'stab',
+             'star',
+             'stare',
+             'stfu',
+             'suicide',
+             'surprisehug',
+             'suspicious',
+             'sweat',
+             'swordfight',
+             'taco',
+             'talk2hand',
+             'tantrum',
+             'teehee',
+             'thinking',
+             'threesome',
+             'throw',
+             'throwaway',
+             'tickle',
+             'typing',
+             'uhuh',
+             'vampbat',
+             'viking',
+             'violin',
+             'vulgar',
+             'wah',
+             'wat',
+             'whip',
+             'whipping',
+             'wink',
+             'witch',
+             'wizard',
+             'woah',
+             'woo',
+             'work',
+             'worship',
+             'wow',
+             'XD',
+             'yay',
+             'zzz'],
+ 'reaction': ['finger-guns',
+              'isforme',
+              'lmao',
+              'lfg',
+              'pepe-blanket',
+              'pepe-cozy',
+              'pepe-sus',
+              'pepe-toast',
+              'pepe-flushed',
+              'weirdhd',
+              'copium',
+              'clueless',
+              'trollface',
+              'gigachad',
+              'hahayes',
+              'mikewazowski',
+              'breadstare',
+              'pain',
+              'tobey-sad',
+              'facepalm',
+              'kekw',
+              'jackie-chan-wtf',
+              'leo',
+              'pathetic',
+              'pogchamp',
+              'press-f',
+              'shrek-yep',
+              'strong-doge',
+              'stonks',
+              'not-stonks',
+              'think-mark',
+              'tom-unsettled',
+              'vue',
+              'this-tbh',
+              'king'],
+ 'ruqqus': ['500',
+            '503',
+            'poggers',
+            'ruqqking',
+            'ruqqie',
+            'ruqqie-cowboy',
+            'ruqqie-love',
+            'ruqqie-pensive',
+            'ruqqie-sip',
+            'ruqqie-upvote',
+            'dexter']}
+    %}
+
+
+<button class="btn btn-white m-1 p-0 btn-emoji" onclick="getEmoji(\'${arr[j]}\')" ><img class="emoji" src="/assets/images/${dir}/${arr[j]}"/></button>
+
+
 <div class="modal fade" id="emojiModal" tabindex="-1" role="dialog" aria-labelledby="emojiModalTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered p-5" role="document">
-		<div class="modal-content" id="emojiTabs">
-			<div class="modal-header border-bottom-0">
-				<div>
-					<h5 class="modal-title">
-						Select an emoji
-					</h5>
-				</div>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<i class="fal fa-times text-muted"></i>
-				</button>
-			</div>
-			<ul class="nav nav-tabs px-3">
-				<li class="nav-item flex-fill text-center">
-					<a class="nav-link text-small active" data-toggle="tab" href="#emoji-tab-ruqqus">Ruqqus</a>
-				</li>
-				<li class="nav-item flex-fill text-center">
-					<a class="nav-link text-small" data-toggle="tab" href="#emoji-tab-animated">Animated</a>
-				</li>
-				<li class="nav-item flex-fill text-center">
-					<a class="nav-link text-small" data-toggle="tab" href="#emoji-tab-reaction">Reaction</a>
-				</li>
-			</ul>
-			<div style="overflow-y: scroll;">
-				<div class="modal-body p-0" id="emoji-modal-body">
-					<div id="no-emojis-found"></div>
-					<div class="tab-content">
-						<div class="tab-pane fade show active" id="emoji-tab-ruqqus">
-							<div class="d-flex flex-wrap p-3" id="EMOJIS_ruqqus"></div>
-						</div>
-						<div class="position-relative tab-pane fade" id="emoji-tab-animated">
-							{% if not g.user.has_premium %}
-							<div class="position-absolute w-full h-100 d-flex align-items-center justify-content-center" style="left: 0; right: 0;z-index: 1">
-								<div class="text-center">
-									<div class="h6">
-										Unlock animated emojis with Ruqqus Premium.
-									</div>
-									<div class="text-small-extra text-muted mb-3">
-										Support Ruqqus today :)
-									</div>
-									<a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm">
-										<img src="/assets/images/icons/ruqqus-coin.png" class="mr-2 mt-n1" style="width: 15px;"/>
-										Get coins
-									</a>
-								</div>
-							</div>
-							{% endif %}
-							<div class="d-flex flex-wrap p-3" id="EMOJIS_animated" {% if not g.user.has_premium %}style="opacity: .13;"{% endif %}></div>
-						</div>
-						<div class="tab-pane fade" id="emoji-tab-reaction">
-							<div class="d-flex flex-wrap p-3" id="EMOJIS_reaction"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered p-5" role="document">
+    <div class="modal-content" id="emojiTabs">
+      <div class="modal-header border-bottom-0">
+        <div>
+          <h5 class="modal-title">
+            Select an emoji
+          </h5>
+        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="fal fa-times text-muted"></i>
+        </button>
+      </div>
+      <ul class="nav nav-tabs px-3">
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link text-small active" data-toggle="tab" href="#emoji-tab-ruqqus">{{ 'SITE_NAME' | app_config }}</a>
+        </li>
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link text-small" data-toggle="tab" href="#emoji-tab-animated">Animated</a>
+        </li>
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link text-small" data-toggle="tab" href="#emoji-tab-reaction">Reaction</a>
+        </li>
+        <li class="nav-item flex-fill text-center">
+          <a class="nav-link text-small" data-toggle="tab" href="#emoji-tab-classic">classic</a>
+        </li>
+      </ul>
+      <div class="scroll-y">
+        <div class="modal-body p-0" id="emoji-modal-body">
+          <div id="no-emojis-found"></div>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="emoji-tab-ruqqus">
+              <div class="d-flex flex-wrap p-3" id="EMOJIS_ruqqus">
+                {% for emoji in emojis['ruqqus'] %}
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="position-relative tab-pane fade" id="emoji-tab-animated">
+              {% if not g.user.has_premium %}
+              <div class="position-absolute w-full h-100 d-flex align-items-center justify-content-center" style="left: 0; right: 0;z-index: 1">
+                <div class="text-center">
+                  <div class="h6">
+                    Unlock animated emojis with Ruqqus Premium.
+                  </div>
+                  <div class="text-small-extra text-muted mb-3">
+                    Support Ruqqus today :)
+                  </div>
+                  <a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm">
+                    <img src="/assets/images/icons/ruqqus-coin.png" class="mr-2 mt-n1" style="width: 15px;"/>
+                    Get coins
+                  </a>
+                </div>
+              </div>
+              {% else %}
+              <div class="d-flex flex-wrap p-3 {% if not g.user.has_premium %} text-muted{% endif %}" id="EMOJIS_animated">
+                {% for emoji in emojis['animated'] %}
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/primojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="tab-pane fade" id="emoji-tab-reaction">
+              <div class="d-flex flex-wrap p-3" id="EMOJIS_reaction">
+                {% for emoji in emojis['reaction'] %}
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane fade" id="emoji-tab-classic">
+              <div class="d-flex flex-wrap p-3" id="EMOJIS_classic">
+                {% for emoji in emojis['classic'] %}
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
