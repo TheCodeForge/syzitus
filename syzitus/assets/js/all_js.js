@@ -2020,16 +2020,16 @@ block_user=function() {
 
 }
 
-post_comment=function(fullname){
+$('.btn-save-new-comment').click(function(){
 
 
   var form = new FormData();
 
   form.append('formkey', formkey());
-  form.append('parent_fullname', fullname);
-  form.append('submission', document.getElementById('reply-form-submission-'+fullname).value);
-  form.append('body', document.getElementById('reply-form-body-'+fullname).value);
-  form.append('file', document.getElementById('file-upload-reply-'+fullname).files[0]);
+  form.append('parent_fullname', $(this).data('parent-comment-id'));
+  form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-comment-id')).value);
+  form.append('body', document.getElementById('reply-form-body-'+$(this).data('parent-comment-id')).value);
+  form.append('file', document.getElementById('file-upload-reply-'+$(this).data('parent-comment-id')).files[0]);
 
 
   var xhr = new XMLHttpRequest();
@@ -2037,13 +2037,14 @@ post_comment=function(fullname){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      commentForm=document.getElementById('comment-form-space-'+fullname);
+      commentForm=document.getElementById('comment-form-space-'+$(this).data('parent-comment-id'));
       commentForm.innerHTML=JSON.parse(xhr.response)["html"];
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
     }
     else {
+      $('#save-reply-to-'+$(this).data('parent-comment-id')).prop('disabled', false);
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -2053,9 +2054,9 @@ post_comment=function(fullname){
   }
   xhr.send(form)
 
-  document.getElementById('save-reply-to-'+fullname).classList.add('disabled');
+  $('#save-reply-to-'+fullname).prop('disabled', true);
 
-}
+})
 
 
 $('.btn-herald-comment').click(function(){
@@ -2084,11 +2085,11 @@ $('.btn-herald-comment').click(function(){
 
 })
 
-pin_comment=function(name,cid){
+$(".btn-pin-comment").click(function(){
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/mod/comment_pin/"+name+'/'+cid);
+  xhr.open("post", "/mod/comment_pin/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
   var form = new FormData();
 
@@ -2097,7 +2098,7 @@ pin_comment=function(name,cid){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+cid+'-only');
+      comment=document.getElementById('comment-'+$(this).data('comment-id')+'-only');
       comment.innerHTML=JSON.parse(xhr.response)["html"];
     }
     else {

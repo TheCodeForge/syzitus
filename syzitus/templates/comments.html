@@ -264,7 +264,7 @@
         {% endif %}
 
             {% if g.user and not g.user.id==c.author_id %}
-            <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block?username={{ c.author.username }}')"
+            <a class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/settings/block?username={{ c.author.username }}"
             ><i class="fas fa-user-slash text-danger fa-fw"></i>Block user</a>
             {% endif %}
             
@@ -272,12 +272,12 @@
             {% if g.user and c.post and c.is_guildmaster('content') %}
             <div class="dropdown-divider"></div>
               {% if c.is_top_level %}
-                <a class="dropdown-item text-info" id="pin-comment-{{ c.base36id }}" href="javascript:void(0)" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" onclick="pin_comment('{{ c.board.name }}','{{ c.base36id }}')"><i class="fas fa-thumbtack fa-rotate--45 fa-fw text-info"></i>{{ "Unpin" if c.is_pinned else "Pin" }}</a>
+                <a class="dropdown-item text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 fa-fw text-info"></i>{{ "Unpin" if c.is_pinned else "Pin" }}</a>
               {% endif %}
             {% endif %}
             {% if g.user and c.post and c.is_guildmaster('access') %}
               {% if g.user.id!=c.author_id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
-                <a class="dropdown-item text-danger" id="exile-comment-{{ c.base36id }}" href="javascript:void(0)" onclick="post_toast('/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}')"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a>
+                <a class="dropdown-item text-danger post-toast-url" id="exile-comment-{{ c.base36id }}" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a>
               {% endif %}
             {% endif %}
 
@@ -295,7 +295,7 @@
         <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
         </li>
         {% else %}
-        <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-inline-block d-md-none mr-2" onclick="location.href='/login';">
+        <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-inline-block d-md-none mr-2 go-to-login">
         </li>
         {% endif %}
         <li class="list-inline-item d-inline-block d-md-none mr-2">
@@ -310,7 +310,7 @@
         <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
         </li>
         {% else %}
-        <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-inline-block d-md-none" onclick="location.href='/login';">
+        <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-inline-block d-md-none go-to-login">
         </li>
         {% endif %}
       </ul>
@@ -356,7 +356,7 @@
           </label>
 
           <a href="javascript:void(0)" onclick="document.getElementById('reply-to-{{ c.base36id }}').classList.add('d-none')" class="btn btn-link text-muted ml-auto cancel-form">Cancel</a> 
-          <a id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2" onclick="post_comment('{{ c.fullname }}');" href="javascript:void(0)">Comment</a> 
+          <a id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-parent-comment="{{ c.fullname }}" href="javascript:void(0)">Comment</a> 
         </div> 
       </form> 
     </div>
@@ -438,7 +438,7 @@
             
           {% if g.user and c.post and c.is_guildmaster('content') %}
             {% if c.is_top_level %}
-              <li class="list-group-item"><a class="d-block text-info" id="pin-comment-{{ c.base36id }}" href="javascript:void(0)" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" onclick="pin_comment('{{ c.board.name }}','{{ c.base36id }}')"><i class="fas fa-thumbtack fa-rotate--45 text-info"></i>{{ 'Unpin' if c.is_pinned else 'Pin' }}</a>
+              <li class="list-group-item"><a class="d-block text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}"data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 text-info"></i>{{ 'Unpin' if c.is_pinned else 'Pin' }}</a>
               </li>
             {% endif %}
           {% endif %}
