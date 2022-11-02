@@ -278,7 +278,7 @@
         <ul class="list-group post-actions">
           {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
           <button class="btn btn-link btn-block btn-lg text-left text-warning btn-tip-modal-trigger" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="far fa-star text-center text-warning mr-3"></i>Tip</button>
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.board.name }}')" class="d-block"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}" class="d-block btn-report-post"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
           {% endif %}
           {% if g.user and g.user.id==p.author_id %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted btn-edit-post" data-dismiss="modal" data-target-id="{{ p.base36id }}"><i class="far fa-edit text-center text-muted mr-3"></i>Edit</button>
@@ -288,11 +288,11 @@
 
           {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
           {% if not p.board.over_18 %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" onclick="post('/api/toggle_post_nsfw/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
           {% endif %}
 
           {% if not p.board.is_nsfl %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" onclick="post('/api/toggle_post_nsfl/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="far fa-skull text-center text-muted mr-3"></i>Toggle NSFL</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="far fa-skull text-center text-muted mr-3"></i>Toggle NSFL</button>
           {% endif %}
 
           {% endif %}
@@ -301,11 +301,11 @@
           {% endif %}
           {% if g.user %}
             {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
-            <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post('/user/kick/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-chess-rook text-center text-muted mr-3"></i>Remove from +{{ p.board.name }}</button>
+            <button class="btn btn-link btn-block btn-lg text-danger text-left post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="far fa-chess-rook text-center text-muted mr-3"></i>Remove from +{{ p.board.name }}</button>
             {% endif %}
 
             {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-            <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post_toast('/retry_thumb/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
+            <button class="btn btn-link btn-block btn-lg text-danger text-left post-toast-url-reload" data-post-url="/retry_thumb/{{ p.base36id }"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
             {% endif %}
 
             {% if g.user and not g.user.is_suspended %}
@@ -315,16 +315,16 @@
             {% if p.is_guildmaster('content') %}
 
               {% if g.user.id == p.author_id %}
-              <button class="btn btn-link btn-block btn-lg text-left text-warning" onclick="post('/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.href = '{{p.permalink}}';})"><i class="far fa-crown text-center text-warning mr-3"></i>Herald</button>
+              <button class="btn btn-link btn-block btn-lg text-left text-warning post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}"><i class="far fa-crown text-center text-warning mr-3"></i>Herald</button>
               {% endif %}
 
               {% if p.is_pinned %}
-              <button class="btn btn-link btn-block btn-lg text-info text-left" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0', callback=function(){window.location.reload(true)})"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Unpin</button>
+              <button class="btn btn-link btn-block btn-lg text-info text-left post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Unpin</button>
               {% elif p.board.can_pin_another %}
-              <button class="btn btn-link btn-block btn-lg text-info text-left" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1', callback=function(){window.location.reload(true)})"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Pin</button>
+              <button class="btn btn-link btn-block btn-lg text-info text-left post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Pin</button>
               {% endif %}
 
-              <button class="btn btn-link btn-block btn-lg text-danger text-left" id="kick-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/kick/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.reload(true)})"><i class="far fa-sign-out fa-flip-horizontal text-center text-danger mr-3"></i>Kick</button>
+              <button class="btn btn-link btn-block btn-lg text-danger text-left post-url-reload" id="kick-post-{{ p.base36id }}" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="far fa-sign-out fa-flip-horizontal text-center text-danger mr-3"></i>Kick</button>
             {% endif %}
 
             {% if g.user.admin_level >=3 %}
@@ -483,8 +483,8 @@
                   <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
                   {% if g.user and not g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="fas fa-star"></i>Tip</a></li>
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}', '{{ p.author.username }}','{{ p.board.name }}')"><i class="fas fa-flag"></i>Flag</a></li>
+                  <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i>Tip</a></li>
+                  <li class="list-inline-item"><a class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i>Flag</a></li>
                   {% endif %}
 
                   {% if g.user and g.user.id==p.author_id %}

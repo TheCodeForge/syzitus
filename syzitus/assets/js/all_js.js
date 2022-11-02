@@ -845,52 +845,28 @@ $('#reportCommentModal').on('hidden.bs.modal', function () {
 
 
 // Flag Submission
+$('.btn-report-post').click(function() {
 
-report_postModal = function(id, author, board) {
+  $("#post-author").text($(this).data('target-author'));
 
-  document.getElementById("post-author").textContent = author;
-
-  offtopic=document.getElementById('report-post-to-guild-dropdown-option');
-  offtopic.innerHTML= 'This post is off-topic for +' + board;
+  $('#report-post-to-guild-dropdown-option').text('This post is off-topic for +' + $(this).data('target-board'));
 
   if (board=='general') {
-    offtopic.disabled=true;
+    $('#report-post-to-guild-dropdown-option').prop('disabled', true);
   }
   else {
-    offtopic.disabled=false;
+    $('#report-post-to-guild-dropdown-option').prop('disabled', false);
   }
 
-  selectbox=document.getElementById('report-type-dropdown');
-  selectbox.value='reason_not_selected';
+  $('#report-type-dropdown').val('reason_not_selected');
 
-  submitbutton=document.getElementById("reportPostButton");
-  submitbutton.disabled=true;
+  $("#reportPostButton").prop('disabled',true)
+  $("#reportPostButton").data('report-url', $(this).data('report-url'))
+  })
 
-  submitbutton.onclick = function() {
-
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting post';
-    this.disabled = true;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/api/flag/post/'+id, true);
-    var form = new FormData()
-    form.append("formkey", formkey());
-
-    dropdown=document.getElementById("report-type-dropdown");
-    form.append("report_type", dropdown.options[dropdown.selectedIndex].value);
-
-    xhr.withCredentials=true;
-
-    xhr.onload=function() {
-      document.getElementById("reportPostFormBefore").classList.add('d-none');
-      document.getElementById("reportPostFormAfter").classList.remove('d-none');
-    };
-
-    xhr.onerror=function(){alert(errortext)};
-    xhr.send(form);
-
-  }
-};
+$('#reportPostButton').click(function() {
+  post_toast($(this).data('report-url'))
+})
 
 $('#reportPostModal').on('hidden.bs.modal', function () {
 
@@ -2582,4 +2558,12 @@ $(".btn-guild-sub").click(function(){
 })
 $(".btn-guild-unsub").click(function(){
   post('/api/unsubscribe/'+$(this).data('board-name'), callback=toggleSub)
+})
+
+$(".post-url-reload").click(function(){
+  post($(this).data('post-url'), callback=function(){window.location.reload()})
+})
+
+$(".post-toast-url-reload").click(function(){
+  post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
 })

@@ -45,7 +45,7 @@ def api_flag_post(pid):
 
     g.db.add(flag)
 
-    return "", 204
+    return jsonify({"message": "Your report has been received."})
 
 
 @app.route("/api/flag/comment/<cid>", methods=["POST"])
@@ -68,4 +68,4 @@ def api_flag_comment(cid):
 
     g.db.add(flag)
 
-    return "", 204
+    return jsonify({"message": "Your report has been received."})
