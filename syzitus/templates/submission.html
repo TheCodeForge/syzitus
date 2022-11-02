@@ -490,7 +490,7 @@
                   {% if g.user and g.user.id==p.author_id %}
                   <li class="list-inline-item"><a data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i>Edit</a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" onclick="delete_postModal('{{ p.base36id }}')"><i class="fas fa-trash-alt"></i>Delete</a></li>
+                  <li class="list-inline-item"><a class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
                   {% endif %}
 
                   {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}

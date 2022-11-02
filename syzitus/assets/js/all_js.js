@@ -426,34 +426,33 @@ $(".dark-switch").click(function () {
 })
 
 // Delete Post
-
-function delete_postModal(id) {
+$('.btn-delete-post').click(function() {
 
   // Passed data for modal
 
-  document.getElementById("deletePostButton-mobile").addEventListener("click", delete_post);
+  id=$(this).data('post-id')
 
-  document.getElementById("deletePostButton").addEventListener("click", delete_post);
+  $('.btn-delete-post-confirm').data('delete-url', '/delete_post/'+id)
+})
 
-  function delete_post(){  
 
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting post';  
-    this.disabled = true; 
-    post('/delete_post/' + id,
-      callback = function() {
+$('.btn-delete-post-confirm').click(function(){  
 
-        location.reload();
-      }
-      )
+  this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting post';  
+  this.disabled = true; 
+  post($(this).data('delete-url'),
+    callback = function() {
+      location.reload();
+    }
+    )
   }
-
-};
+)
 
 // Delete Comment
 
 $('btn-delete-comment').click(function() {
 
-  $("#deleteCommentButton").data('delete-url')='/delete/comment/' + $(this).data('comment-id')
+  $("#deleteCommentButton").data('delete-url', '/delete/comment/' + $(this).data('comment-id'))
 })
 
 
