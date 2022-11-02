@@ -2567,3 +2567,7 @@ $(".post-url-reload").click(function(){
 $(".post-toast-url-reload").click(function(){
   post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
 })
+
+$(".post-toast-url").click(function(){
+  post_toast($(this).data('post-url'))
+})
