@@ -87,13 +87,14 @@ app.config["SERVER_NAME"] = SERVER_NAME #DomainMatcher(SERVER_NAME, ONION_NAME)
 
 # Cookie stuff
 app.config["SHORT_DOMAIN"]=environ.get("SHORT_DOMAIN","").lstrip().rstrip()
-app.config["SESSION_COOKIE_NAME"] = f"__Secure-{app.config['SITE_NAME']}"
+app.config["SESSION_COOKIE_NAME"] = f"__Host-{app.config['SITE_NAME']}"
 app.config["VERSION"] = _version
 app.config['MAX_CONTENT_LENGTH'] = 64 * 1024 * 1024
 app.config["SESSION_COOKIE_SECURE"] = bool(int(environ.get("FORCE_HTTPS", 1)))
 app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_DOMAIN"] = False
+app.config["SESSION_COOKIE_PATH"] = "/"
 
 app.config["PERMANENT_SESSION_LIFETIME"] = 60 * 60 * 24 * 365
 app.config["SESSION_REFRESH_EACH_REQUEST"] = True
