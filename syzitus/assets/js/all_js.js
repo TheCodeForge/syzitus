@@ -2244,7 +2244,7 @@ $(".post-toast-url").click(function(){
   post_toast($(this).data('post-url'))
 })
 
-$(".go-to-login").click(function(){window.location.href="/login"})
+$(".go-to-login").click(function(){window.location.href="/login?redirect="+window.location.pathname})
 
 $(".btn-cancel-comment").click(function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
@@ -2256,4 +2256,28 @@ $('.btn-reply-comment').click(function(){
 
 $('.btn-file-input').change(function(){
   $('#filename-show-reply-'+$(this).data('btn-id')).text(document.getElementById('file-upload-reply-{{ c.fullname }}').files[0].name);
+})
+
+$('.btn-block-user').click(function() {
+  name=$(this).data('target-user');
+  id=$(this).data('post-id');
+  post_toast(
+    '/settings/block?username='+name, 
+    callback=function(){
+    $('#block-user-'+id).toggleClass('d-none');
+    $('#unblock-user-'+id).toggleClass('d-none');
+  }
+  )
+})
+
+$('.btn-unblock-user').click(function() {
+  name=$(this).data('target-user');
+  id=$(this).data('post-id');
+  post_toast(
+    '/settings/unblock?username='+name, 
+    callback=function(){
+    $('#block-user-'+id).toggleClass('d-none');
+    $('#unblock-user-'+id).toggleClass('d-none');
+  }
+  )
 })

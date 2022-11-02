@@ -557,14 +557,10 @@
                   		  <i class="fas fa-ellipsis-h text-small mr-0"></i>
                       </a>
                       <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
-                        <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/block?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                        ><i class="fas fa-user-slash text-danger"></i>Block user</a>
-                        <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/unblock?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                        ><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
-
+                        <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+                        <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                         {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted%}
-                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}')"
-                        ><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
+                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                         {% endif %}
                       </div>
                     </div>
@@ -593,10 +589,10 @@
           {% else %}
 
           <div id="voting" class="voting d-none d-md-block mb-auto">
-            <div id="post-{{ p.base36id }}-up" tabindex="0" class="arrow-up mx-auto" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+            <div id="post-{{ p.base36id }}-up" tabindex="0" class="arrow-up mx-auto go-to-login">
             </div>
             <span id="post-{{ p.base36id }}-score-none" class="score text-muted"{% if not p.is_banned %} data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
-            <div id="post-{{ p.base36id }}-down" tabindex="0" class="arrow-down mx-auto" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+            <div id="post-{{ p.base36id }}-down" tabindex="0" class="arrow-down mx-auto go-to-login">
             </div>
           </div>
 
@@ -643,7 +639,7 @@
           <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
           </span>
           {% else %}
-          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
             <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
           </span>
           {% endif %}
@@ -654,7 +650,7 @@
           <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
           </span>
           {% else %}
-          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
             <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
           </span>
           {% endif %}
