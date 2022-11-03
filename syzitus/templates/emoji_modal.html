@@ -278,6 +278,7 @@
             'dexter']}
     %}
 
+{% if 'FEATURE_ENABLE_EMOJI' | app_config %}
 <div class="modal fade" id="emojiModal" tabindex="-1" role="dialog" aria-labelledby="emojiModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered p-5" role="document">
     <div class="modal-content" id="emojiTabs">
@@ -360,3 +361,4 @@
     </div>
   </div>
 </div>
+{% endif %}
