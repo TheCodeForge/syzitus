@@ -475,7 +475,7 @@
                 <small class="format d-none">
                   <i class="fas fa-link" aria-hidden="true"></i>
                 </small> 
-                <a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-edit-post">Cancel</a> 
+                <a href="#" data-target-id="{{ p.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-edit-post">Cancel</a> 
                 <button form="post-edit-form-{{ p.base36id }}" class="btn btn-primary ml-2">Save Edit</button>
               </div>
             </form>
@@ -500,7 +500,7 @@
 
                   <li class="list-inline-item"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+                  <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
                   {% if g.user and not g.user.id==p.author_id %}
                   <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i>Tip</a></li>
@@ -580,7 +580,7 @@
                         <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                         <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                         {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted%}
-                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
+                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="#" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                         {% endif %}
                       </div>
                     </div>
@@ -646,7 +646,7 @@
 
         <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-        <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
+        <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
         {% if g.user %}
         <li class="list-inline-item">
           <a href="#" data-toggle="modal" data-target="#actionsModal">
