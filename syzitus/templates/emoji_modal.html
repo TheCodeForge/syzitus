@@ -316,7 +316,7 @@
             <div class="tab-pane fade show active" id="emoji-tab-ruqqus">
               <div class="d-flex flex-wrap p-3" id="EMOJIS_ruqqus">
                 {% for emoji in emojis['ruqqus'] %}
-                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}.gif" alt="{{ emoji }}"/></button>
                 {% endfor %}
               </div>
             </div>
@@ -339,7 +339,7 @@
               {% else %}
               <div class="d-flex flex-wrap p-3 {% if not g.user.has_premium %} text-muted{% endif %}" id="EMOJIS_animated">
                 {% for emoji in emojis['animated'] %}
-                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/primojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/primojis/{{ emoji }}.gif" alt="{{ emoji }}"/></button>
                 {% endfor %}
               </div>
               {% endif %}
@@ -347,14 +347,14 @@
             <div class="tab-pane fade" id="emoji-tab-reaction">
               <div class="d-flex flex-wrap p-3" id="EMOJIS_reaction">
                 {% for emoji in emojis['reaction'] %}
-                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}.gif" alt="{{ emoji }}"/></button>
                 {% endfor %}
               </div>
             </div>
             <div class="tab-pane fade" id="emoji-tab-classic">
               <div class="d-flex flex-wrap p-3" id="EMOJIS_classic">
                 {% for emoji in emojis['classic'] %}
-                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}" alt="{{ emoji }}"/></button>
+                <button class="btn btn-white m-1 p-0 btn-emoji" data-emoji="{{ emoji }}" ><img class="emoji" src="/assets/images/emojis/{{ emoji }}.gif" alt="{{ emoji }}"/></button>
                 {% endfor %}
               </div>
             </div>
