@@ -1784,7 +1784,7 @@ $(".btn-pin-comment").click(function(){
   }
   xhr.send(form)
 
-}
+})
 
 
 
