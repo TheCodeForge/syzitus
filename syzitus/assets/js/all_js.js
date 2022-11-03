@@ -1550,8 +1550,9 @@ if (window.location.pathname=='/submit') {
 }
 
 // Exile Member
+$('#exileUserButton').click(function(){
 
-function exile_from_guild(boardname) {
+  boardname=$(this).data('board-name')
 
   var exileForm = document.getElementById("exile-form");
 
@@ -1584,7 +1585,7 @@ function exile_from_guild(boardname) {
     xhr.send(f)
   }
 
-}
+})
 
 // Approve user
 function approve_from_guild(boardid) {
