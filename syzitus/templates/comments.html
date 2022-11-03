@@ -4,7 +4,6 @@
 {% set ups=c.upvotes_fuzzed %}
 {% set downs=c.downvotes_fuzzed %}
 {% set score=ups-downs %}
-<!--{% include "emoji_modal.html" %}-->
 
 <!--conditions under which a comment might be hidden-->
 
@@ -484,3 +483,7 @@
     <i class="fas fa-exclamation-circle mr-2"></i><span id="comment-error-text"></span>
   </div>
 </div>
+
+{% if 'FEATURE_ENABLE_EMOJI' | app_config %}
+{% include "emoji_modal.html" %}
+{$ endif %}
