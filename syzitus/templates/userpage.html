@@ -193,14 +193,14 @@
         {% endif %}
         {% if g.user and g.user.id != u.id and not u.is_nofollow %}
         <div id="button-unsub-mobile" {% if not is_following %}class="d-none"{% endif %}>
-          <button class="btn btn-secondary btn-block" onclick="post('/api/unfollow/{{ u.username }}', callback=function(){document.getElementById('button-unsub-mobile').classList.toggle('d-none');document.getElementById('button-sub-mobile').classList.toggle('d-none');})">Unfollow
+          <button class="btn btn-secondary btn-block btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}">Unfollow
           </button>
           <button class="btn btn-transparent bell-button" data-url="/@{{ u.username }}/toggle_bell">
             <i class="fas bell-icon fa-fw {% if u.is_following and u.is_following.get_notifs %}fa-bell-on text-purple{% else %}fa-bell{% endif %}"></i>
           </button>
         </div>
         <div id="button-sub-mobile" {% if is_following %}class="d-none"{% endif %}>
-          <button class="btn btn-primary" onclick="post('/api/follow/{{ u.username }}', callback=function(){document.getElementById('button-unsub-mobile').classList.toggle('d-none');document.getElementById('button-sub-mobile').classList.toggle('d-none');})">
+          <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}">
             Follow
           </button>
         </div>
