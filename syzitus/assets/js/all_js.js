@@ -2283,6 +2283,10 @@ $('.btn-demod-user').click(function(){
   $('#demod-user').toggleClass('d-none');
 })
 
+$('.btn-ban-user').click(function(){
+  $('#btn-confirm-ban-user').toggleClass('d-none');
+})
+
 $('.$btn-toggle-follow').click(function(){
   post(
     $(this).data("post-url"),

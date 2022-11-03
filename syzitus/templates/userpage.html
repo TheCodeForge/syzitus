@@ -314,10 +314,11 @@
 {% else %}
 <form action="/api/ban_user/{{ u.id }}" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-  <input id="user-ban-message" type="text" class="form-control" name="message" placeholder="Ban Message Reason" onchange="document.getElementById('user-ban-submit').disabled=false">
-  <input id="user-ban-reason" type="text" class="form-control" name="reason" placeholder="Ban Reason (public)" onchange="document.getElementById('user-ban-submit').disabled=false">
+  <input id="user-ban-message" type="text" class="form-control" name="message" placeholder="Ban Message Reason">
+  <input id="user-ban-reason" type="text" class="form-control" name="reason" placeholder="Ban Reason (public)">
   <input id="user-ban-days" type="number" class="form-control" name="days" placeholder="Days (blank = permanent)">
-  <input id="user-ban-submit" type="submit" class="btn btn-warning" value="Ban user" disabled>
+  <a href="#" class="btn btn-warning w-100 btn-ban-user">Ban user</a>
+  <input id="user-ban-submit d-none" type="submit" class="btn btn-danger" value="Confirm ban user">
 </form>
 {% endif %}
 {% endif %}
