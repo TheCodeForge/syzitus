@@ -2278,3 +2278,14 @@ $('.btn-unblock-user').click(function() {
   }
   )
 })
+
+$('.btn-demod-user').click(function(){
+  $('#demod-user').toggleClass('d-none');
+})
+
+$('.$btn-toggle-follow').click(function(){
+  post(
+    $(this).data("post-url"),
+    callback=toggleSub
+    )
+})

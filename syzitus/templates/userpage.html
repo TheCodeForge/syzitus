@@ -113,12 +113,12 @@
           <div>
            {% if g.user and g.user.id != u.id and not u.is_private and not u.is_nofollow %}
            <div id="button-sub" {% if is_following %}class="d-none"{% endif %}>
-            <button class="btn btn-primary" onclick="post('/api/follow/{{ u.username }}', callback=toggleSub)">
+            <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}">
               Follow
             </button>
           </div>
           <div id="button-unsub" class="{% if not is_following %}d-none{% endif %}" role="group" aria-label="Unfollow this user">
-            <button class="btn btn-secondary" onclick="post('/api/unfollow/{{ u.username }}', callback=toggleSub)">
+            <button class="btn btn-secondary btn-toggle-follow" data-post-url="/api/unfollow/{{ u.username }}">
               Unfollow
             </button>
             <button class="btn btn-transparent bell-button" data-toggle="tooltip" data-placement="bottom" title="Be notified when this user publishes new content." data-url="/@{{ u.username }}/toggle_bell">
@@ -334,7 +334,7 @@
 </ul>
 {% endif %}
 
-<a href="javascript:void(0)" class="btn btn-warning w-100" onclick="document.getElementById('demod-user').classList.toggle('d-none')">De-Mod User</a>
+<a href="#" class="btn btn-warning w-100 btn-demod-user">De-Mod User</a>
 <form action="/admin/demod_user" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="user" value="{{ u.username }}">
