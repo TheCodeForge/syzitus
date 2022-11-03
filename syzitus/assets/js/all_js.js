@@ -2248,7 +2248,7 @@ $(".btn-cancel-comment").click(function(){
 })
 
 $('.btn-reply-comment').click(function(){
-  $('#reply-to-{{ c.base36id }}').removeClass('d-none')
+  $('#reply-to-'+$(this).data('comment-id')).removeClass('d-none')
 })
 
 $('.btn-file-input').change(function(){
