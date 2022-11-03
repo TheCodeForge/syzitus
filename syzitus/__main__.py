@@ -395,23 +395,7 @@ def before_request():
         g.system="other/other"
 
 
-# def log_event(name, link):
-
-#     x = requests.get(link)
-
-#     if x.status_code != 200:
-#         return
-
-#     text = f'> **{name}**\r> {link}'
-
-#     url = os.environ.get("DISCORD_WEBHOOK")
-#     headers = {"Content-Type": "application/json"}
-#     data = {"username": "ruqqus",
-#             "content": text
-#             }
-
-#     x = requests.post(url, headers=headers, json=data)
-#     print(x.status_code)
+    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
 
 
 @app.after_request
@@ -431,7 +415,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src *.hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' maxcdn.bootstrapcdn.com; script-src 'self' *.hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
+            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src *.hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
 
 
     if not request.path.startswith("/embed/"):
