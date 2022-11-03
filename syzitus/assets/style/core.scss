@@ -3827,7 +3827,7 @@ img.coin-ruqqus {
     margin-bottom: 3px;
 }
 
-#navbar-dropdown-menu {
+.navbar-dropdown-menu {
     position: absolute;
     will-change: transform; 
     top: 0px; 
@@ -3839,4 +3839,9 @@ img.coin-ruqqus {
     z-index: 100; 
     top: 49px; 
     transition: top 220ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.jumbotron-docs {
+    background-image: url(/assets/images/jumbotron/docs_jumbotron_bg.jpg); 
+    background-position: center;
 }
