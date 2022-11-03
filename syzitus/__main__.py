@@ -187,7 +187,6 @@ app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY']
 
 #options to take out certain features
 app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
-app.config["FEATURE_ENABLE_GIFS"]=bool(int(environ.get("FEATURE_ENABLE_GIFS",1)))
 
 Markdown(app)
 cache = Cache(app)

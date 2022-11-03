@@ -461,7 +461,7 @@
                   <i class="fas fa-quote-right btn-make-quote" aria-hidden="true" data-form-id="post-edit-box-{{ p.base36id }}" data-toggle="tooltip" data-placement="bottom" title="Quote"></i>
                 </small>
 
-                {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+                {% if 'TENOR_KEY' | app_config %}
                 <small class="format">
                   <span class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span>
                 </small> 
@@ -720,7 +720,7 @@
         <small class="format"><i class="fas fa-italic data-make-italic" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Italicize"></i></small>
         <small class="format"><i class="fas fa-quote-right data-make-quote" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
 
-          {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+          {% if 'TENOR_KEY' | app_config %}
           <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ p.fullname }}">
             <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
           </label>
@@ -810,7 +810,7 @@
 {% block GIFpicker %}
 {% if g.user %}
 
-  {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+  {% if 'TENOR_KEY' | app_config %}
   {% include "gif_modal.html" %}
   {% endif %}
 
