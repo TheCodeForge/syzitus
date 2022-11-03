@@ -2301,3 +2301,7 @@ $('.btn-cat-toggle').click(function(){
 $('#btn-all-cats').click(function(){
   togglecat('hot', reload=true, delay=0, page='/')
 })
+
+$('#report-type-dropdown').change(function(){
+  $('#reportPostButton').prop('disabled', false);"
+})
