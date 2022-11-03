@@ -2303,5 +2303,5 @@ $('#btn-all-cats').click(function(){
 })
 
 $('#report-type-dropdown').change(function(){
-  $('#reportPostButton').prop('disabled', false);"
+  $('#reportPostButton').prop('disabled', false)
 })
