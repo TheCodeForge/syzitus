@@ -56,7 +56,7 @@
 
     <div class="card-header bg-transparent border-0 d-flex flex-row flex-nowrap pl-2 pl-md-0 p-0 mr-md-2">
 
-      <div class="position-relative d-none d-md-block" style="z-index: 3;">
+      <div class="position-relative d-none d-md-block zi-3">
         {% if p.thumb_url and p.is_image %}
         <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
@@ -89,7 +89,7 @@
       </div>
 
 
-      <div class="d-block d-md-none" style="z-index: 3;">
+      <div class="d-block d-md-none zi-3">
         {% if p.thumb_url and not p.is_image %}
         <a href="{{ p.url }}" rel="nofollow noopener">
           <img src="{{ p.thumb_url }}" class="post-img" alt="link post thumbnail">
@@ -106,7 +106,7 @@
 
         <div class="card-block text-left x-scroll-parent my-md-auto w-100">
 
-          <div style="height: 21px" class="d-block d-md-none mb-1">
+          <div class="d-block d-md-none mb-1">
 
             <div class="post-meta text-left x-scroll" style="overflow-x: scroll;">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
               {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
