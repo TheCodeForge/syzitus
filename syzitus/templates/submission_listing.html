@@ -108,7 +108,7 @@
 
           <div class="d-block d-md-none mb-1">
 
-            <div class="post-meta text-left x-scroll" style="overflow-x: scroll;">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
+            <div class="post-meta text-left x-scroll">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
               {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
               {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
               {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
@@ -116,7 +116,7 @@
               {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %} <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_date }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
               {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
               {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
-              {% endif %}{% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({{ p.domain }})
+              {% endif %}{% if p.award_count %} · <span><img class="coin-ruqqus" src="/assets/images/icons/ruqqus-coin.png" /><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({{ p.domain }})
               {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible to you because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
               {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
               {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
@@ -133,7 +133,7 @@
           {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
           {% endif %}
           {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
-          {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
+          {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" class="coin-ruqqus"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
           {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
           {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}
           {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
@@ -341,7 +341,7 @@
     <div class="modal-content">
       <div class="modal-header p-3">
         <h5 class="col modal-title text-center h6">More options</h5>
-        <button type="button" class="close position-absolute py-3" style="right: 1rem;" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close position-absolute py-3" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fas fa-times-circle text-gray-500"></i></span>
         </button>
       </div>
