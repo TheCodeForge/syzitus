@@ -27,6 +27,13 @@
 <meta name="twitter:description" content="{{ u.true_score }} Rep · Joined {{ u.created_date }} ·{% if u.stored_subscriber_count >=1 and not u.is_private and not u.is_nofollow %}{{ u.stored_subscriber_count }} Subscribers ·{% endif %} {% if not u.is_private %} {{ u.post_count }} Posts · {{ u.comment_count }} Comments ·{% endif %} {{u.bio}}" />
 <meta name="twitter:image" content="{% if u.has_banner %}{{ u.banner_url }}{% else %}{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}{% endif %}" />
 <meta name="twitter:url" content="{{ u.permalink | full_link}}" />
+
+
+<style nonce="{{g.nonce}}">
+  #div-jumbotron {
+    background-image: url({{ u.banner_url }});
+  }
+</style>
 {% endblock %}
 
 <!-- Left Sidebar (navigation-purposes, hidden on devices smaller than "large") -->
@@ -39,7 +46,7 @@
 <!-- Desktop -->
 <div class="row d-none d-md-block">
   <div class="col px-0">
-    <div class="jumbotron jumbotron-fluid jumbotron-guild d-none d-md-block" style="background-image: url({{ u.banner_url }})">
+    <div id="div-jumbotron" class="jumbotron jumbotron-fluid jumbotron-guild d-none d-md-block">
       <div class="jumbotron-overlay"></div>
       <div class="w-100 my-3">
         <div class="container-fluid">
