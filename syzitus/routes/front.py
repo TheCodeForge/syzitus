@@ -100,7 +100,7 @@ def notifications_posts():
             'api': lambda: jsonify({"data": [x.json for x in listing]})
             }
 
-@cache.memoize(timeout=900)
+@cache.memoize(timeout=60)
 def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
               t=None, categories=[], filter_words='', **kwargs):
 
