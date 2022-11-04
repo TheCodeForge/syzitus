@@ -435,7 +435,7 @@ def after_request(response):
         response.headers.add("X-Frame-Options", "deny")
 
 
-    if request.path.startswith(("/assets/", "/logo/")) or not g.get('user'):
+    if request.path.startswith(("/assets/", "/logo/")):
         response.headers.add("Cache-Control", "public; max-age=2592000; immutable")
 
     # signups - hit discord webhook
