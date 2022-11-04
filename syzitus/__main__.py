@@ -342,8 +342,8 @@ def drop_connection():
 @app.before_request
 def before_request():
 
-    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
     g.timestamp = int(time.time())
+    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
     g.db = db_session()
 
     if request.method.lower() != "get" and app.config["READ_ONLY"] and request.path != "/login":
