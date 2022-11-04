@@ -428,7 +428,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src youtube.com twitter.com; object-src none; style-src 'self' maxcdn.bootstrapcdn.com; script-src 'self' hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
+            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' maxcdn.bootstrapcdn.com; script-src 'self' hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
 
 
     if not request.path.startswith("/embed/"):
