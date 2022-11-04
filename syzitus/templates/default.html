@@ -7,7 +7,7 @@
 
 	<meta name="thumbnail" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/640/480">
 
-  <link rel="icon" type="image/png" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/64/64">
+  <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
   
 	{% block title %}
 	<title>{{ "SITE_NAME" | app_config }}: The Open-Source Platform for Independent Internet Communities</title>
