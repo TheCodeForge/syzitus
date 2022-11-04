@@ -342,16 +342,15 @@ def drop_connection():
 @app.before_request
 def before_request():
 
+    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
+    g.timestamp = int(time.time())
+    g.db = db_session()
+
     if request.method.lower() != "get" and app.config["READ_ONLY"] and request.path != "/login":
         return jsonify({"error":f"{app.config['SITE_NAME']} is currently in read-only mode."}), 400
 
     if app.config["BOT_DISABLE"] and request.headers.get("X-User-Type")=="Bot":
         abort(503)
-
-
-    g.timestamp = int(time.time())
-
-    g.db = db_session()
 
     ipban= g.db.query(IP).filter(
         IP.addr==request.remote_addr,
@@ -393,9 +392,6 @@ def before_request():
         g.system="ios/webview"
     else:
         g.system="other/other"
-
-
-    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
 
 
 @app.after_request
