@@ -184,7 +184,7 @@ app.config["DISCORD_CHANNEL_IDS"]={
 app.config["IMG_URL_LOGO_WHITE"] = f"/logo/white/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
-app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app_config['COLOR_PRIMARY']}/{app_config['SITE_NAME'][0].lower()}/64/64"
+app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
 
 Markdown(app)
 cache = Cache(app)
