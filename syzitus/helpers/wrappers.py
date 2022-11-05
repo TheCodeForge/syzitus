@@ -18,6 +18,7 @@ def get_logged_in_user():
         uid = session.get("user_id")
         nonce = session.get("login_nonce", 0)
         if not uid:
+            debug([request.path, "no user ID in session"])
             g.user=None
             g.client=None
             return
@@ -31,18 +32,23 @@ def get_logged_in_user():
             is_deleted=False
             ).first()
 
+        debug([request.path, user])
+
         if request.path.startswith("/api/v2/") and user.admin_level<3:
             g.user=None
             g.client=None
+            debug("user cookie denied for api endpoint as non-admin")
             return
 
         if user and (nonce < user.login_nonce):
             g.user=None
             g.client=None
+            debug("user cookie denied for login nonce")
             return
         else:
             g.user=user
             g.client=None
+            debug("user cookie approved")
             return
 
 
