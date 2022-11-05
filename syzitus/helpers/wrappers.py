@@ -51,6 +51,8 @@ def get_logged_in_user():
             debug("user cookie approved")
             return
 
+    debug("user id not in session")
+
 
     if request.path.startswith("/api/v1"):
 
@@ -104,6 +106,8 @@ def get_logged_in_user():
         g.user=client.user
         g.client=client
         return
+
+    debug('no session or api token')
 
     g.user=None
     g.client=None
