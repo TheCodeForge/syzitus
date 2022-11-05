@@ -7,6 +7,7 @@ from os import environ
 from secrets import token_hex
 import random
 import pyotp
+import mistletoe
 
 from syzitus.helpers.base36 import *
 from syzitus.helpers.security import *
