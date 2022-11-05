@@ -13,8 +13,6 @@ from syzitus.__main__ import Base, app, g, debug
 
 def get_logged_in_user():
 
-    debug(session)
-
     if "user_id" in session:
 
         uid = session.get("user_id")
