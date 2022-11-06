@@ -52,7 +52,7 @@ def main_css(color, file, n=None):
 
     colors=list(set([TITLES[x].color for x in TITLES]))
 
-    output += "\n".join([f".title-color-{x} \{color: {x};\}" for x in colors])
+    output += "\n".join([f".title-color-{x}"+"{color: #"+x+";}" for x in colors])
 
     resp = Response(output, mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
