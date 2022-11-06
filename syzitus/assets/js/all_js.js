@@ -2297,7 +2297,7 @@ $('.$btn-toggle-follow').click(function(){
 
 $('.btn-cat-toggle').click(function(){
   cattoggle($(this).data('cat-id'))
-}
+})
 
 $('#btn-all-cats').click(function(){
   togglecat('hot', reload=true, delay=0, page='/')
