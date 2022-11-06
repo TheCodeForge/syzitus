@@ -52,7 +52,7 @@
             <a class="navbar-brand" href="/">{{ 'SITE_NAME' | app_config }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500" style="font-size: 2rem;"></i></span>
+            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500 fa-2x"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -66,9 +66,7 @@
 
 <!-- Hero -->
 
-<section class="d-flex align-items-center py-7 py-md-8" style="background-color: #805AD4; background-image: linear-gradient(62deg, #805AD4 0%, #A3BFFA
-    100%);
-    min-height: 100%; min-height: 100vh;">
+<section class="d-flex align-items-center py-7 py-md-8 bg-primary">
     <div class="container">
         <div class="row text-white text-md-left justify-content-between align-items-center">
             <div class="col-12 col-md-5 col-lg-6">
@@ -116,13 +114,13 @@
 
 <!-- Why Choose {{ 'SITE_NAME' | app_config }} -->
 
-<section class="py-7" style="background-color: #ffffff; background-image: linear-gradient(180deg, #ffffff 75%, #f5f7fa 100%);">
+<section id="donate-whychoose" class="py-7 bg-white">
     <div class="container">
         <div class="row justify-content-center text-center">
 
             <div class="col col-md-7">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Why donate?</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary">Why donate?</p>
 
                 <h2 class="h3">We're taking on Big Tech and traditional social media</h2>
                 <p class="text-muted mb-6 mb-md-7">Our crack team of developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
@@ -134,7 +132,7 @@
             <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up">
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
-                    <i class="fad fa-server text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-server text-primary mb-4"></i>
 
                     <h3 class="h5">Help {{ 'SITE_NAME' | app_config }} Grow</h3>
 
@@ -147,7 +145,7 @@
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
 
-                    <i class="fad fa-podium-star text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-podium-star text-primary mb-4"></i>
 
                     <h3 class="h5">Support Freedom of Speech</h3>
 
@@ -210,24 +208,12 @@
 
                     <div class="col">
 
-                        <div class="nav nav-pills justify-content-between" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical" style="top: 2px; position: relative;">
-                        <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill"
-                        href="#v-pills-voting" role="tab" aria-controls="v-pills-voting"
-                        aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2"
-                        aria-hidden="true"></i>Voting</a>
-                        <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill"
-                        href="#v-pills-submission" role="tab" aria-controls="v-pills-submission"
-                        aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a>
-                        <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill"
-                        href="#v-pills-user" role="tab" aria-controls="v-pills-user"
-                        aria-selected="false"><i class="far fa-user-circle mr-2"
-                        aria-hidden="true"></i>User</a>
-                        <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab"
-                        data-toggle="pill" href="#v-pills-comment" role="tab"
-                        aria-controls="v-pills-comment" aria-selected="true"><i
-                        class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
-                    </div>
+                        <div class="nav nav-pills justify-content-between mt-2 position-relative" id="v-pills-tab" role="tablist"
+                        aria-orientation="vertical">
+                          <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill" href="#v-pills-voting" role="tab" aria-controls="v-pills-voting" aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2" aria-hidden="true"></i>Voting</a>
+                          <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill" href="#v-pills-submission" role="tab" aria-controls="v-pills-submission" aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a> <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false"><i class="far fa-user-circle mr-2" aria-hidden="true"></i>User</a>
+                          <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true"><i class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
+                        </div>
 
                 </div>
 
