@@ -42,7 +42,6 @@
         {% for x in data %}
         <div class="border rounded p-3 mb-3">
           <div class="" data-toggle="collapse" href="#collapse-{{ loop.index0 }}" role="button" aria-expanded="true" aria-controls="collapse-{{ loop.index0 }}">
-            <i class="fab fa-bitcoin text-lg text-center mr-1" style="color: #F39231; width: 1.25rem;"></i>
             <span class="h6 text-muted">[{{ x | upper }}] {{ data[x]['name'] }}</span>
             <span class="float-right"><i class="fa text-gray-400"></i></span>
           </div>
