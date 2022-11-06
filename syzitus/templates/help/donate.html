@@ -170,7 +170,7 @@
 
             <div class="col-12 col-md-6">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Transparency</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary">Transparency</p>
 
                 <h2 class="text-capitalize">
                     Support a fair and open platform
@@ -182,7 +182,7 @@
                     algorithms right from your browser. No biased trending or sorting manipulation on {{ 'SITE_NAME' | app_config }}.
                 </p>
 
-                <ul class="list-inline no-bullets mb-6 mb-md-5" style="opacity: .1">
+                <ul class="list-inline no-bullets mb-6 mb-md-5">
                     <li class="list-inline-item mr-3">
                         <i class="fab fa-python"></i>
                     </li>
@@ -206,7 +206,7 @@
 
             <div class="col-12 col-md-6 d-none d-md-block">
 
-                <div class="row no-gutters mb-3" style="border-bottom: 2px solid #E0E4E9;">
+                <div class="row no-gutters mb-3">
 
                     <div class="col">
 
@@ -349,29 +349,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
-<!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
-
-    var clipboard = new ClipboardJS('.copy-link', {
-        container: document.getElementById('donateCryptoModal')
-    }); 
-
-    clipboard.on('success', function(e) {
-
-        jQuery(function($) {
-            $('#toast-success').toast('show');
-        })
-        console.log(e);
-    });
-    clipboard.on('error', function(e) {
-
-        jQuery(function($) {
-            $('#toast-error').toast('show');
-        })
-        console.log(e);
-    });
-</script>
-
 <!-- {{ 'SITE_NAME' | app_config }} JS -->
 
 <script src="/assets/js/all_js.js"></script>
@@ -382,8 +359,8 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<script>
-    AOS.init();
+    <script nonce="{{ g.nonce }}">
+      AOS.init();
 
         // You can also pass an optional settings object
         // below listed default settings
@@ -394,6 +371,6 @@
         });
     </script>
 
-</body>
+  </body>
 
 </html>
