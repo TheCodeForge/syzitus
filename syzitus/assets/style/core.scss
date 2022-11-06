@@ -3905,3 +3905,11 @@ img.coin-ruqqus {
     bottom: 0px; 
     transition: bottom cubic-bezier(0, 0, 0.2, 1) 220ms;
 }
+
+#desktop-expanded-image {
+    min-width: 250px;
+}
+
+.w-fc {
+    width: fit-content;
+}
