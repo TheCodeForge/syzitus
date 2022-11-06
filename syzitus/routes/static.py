@@ -67,10 +67,10 @@ def static_service(path):
 @app.route("/robots.txt", methods=["GET"])
 def robots_txt():
 
-    banned_robot_uas = ["Mozilla", "Chrome", "Safari"]
+    # banned_robot_uas = ["Mozilla", "Chrome", "Safari"]
 
-    if request.headers.get("User-Agent") and not any([x in request.headers["User-Agent"] for x in banned_robot_uas]):
-        return make_response("User-Agent: *\nDisallow: /", mimetype="text/plain")
+    # if request.headers.get("User-Agent") and not any([x in request.headers["User-Agent"] for x in banned_robot_uas]):
+    #     return make_response("User-Agent: *\nDisallow: /", mimetype="text/plain")
 
     return send_file("./assets/robots.txt")
 

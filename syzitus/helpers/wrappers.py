@@ -46,6 +46,7 @@ def get_logged_in_user():
             return
 
 
+
     if request.path.startswith("/api/v1"):
 
         token = request.headers.get("Authorization")

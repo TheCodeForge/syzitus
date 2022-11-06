@@ -7,6 +7,7 @@ from os import environ
 from secrets import token_hex
 import random
 import pyotp
+import mistletoe
 
 from syzitus.helpers.base36 import *
 from syzitus.helpers.security import *
@@ -31,7 +32,7 @@ from syzitus.__main__ import Base, cache, app
 
 
 #this is repeated here to avoid import circle
-def send_notification(user, text):
+def send_notif(user, text):
     text_html = mistletoe.markdown(text)
 
     text_html = sanitize(text_html, linkgen=True)#, noimages=True)
@@ -1192,7 +1193,7 @@ class User(Base, Stndrd, Age_times):
             action=f"automatically {action}"
 
         text = f'Your {app.config["SITE_NAME"]} account has been {action}'
-        send_notification(self, text)
+        send_notif(self, text)
 
         if days > 0:
             ban_time = int(time.time()) + (days * 86400)
@@ -1236,7 +1237,7 @@ class User(Base, Stndrd, Age_times):
         discord_log_event("Unban", self, g.v, reason=self.ban_reason)
 
         text = f'Your {app.config["SITE_NAME"]} account has been reinstated. Please review the [Terms of Service](/help/terms) and [Rules](/help/rules), and avoid breaking them in the future.'
-        send_notification(self, text)
+        send_notif(self, text)
 
     @property
     def is_suspended(self):

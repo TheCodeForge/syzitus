@@ -91,7 +91,7 @@ app.config["SESSION_COOKIE_NAME"] = f"__Host-{app.config['SITE_NAME']}"
 app.config["VERSION"] = _version
 app.config['MAX_CONTENT_LENGTH'] = 64 * 1024 * 1024
 app.config["SESSION_COOKIE_SECURE"] = bool(int(environ.get("FORCE_HTTPS", 1)))
-app.config["SESSION_COOKIE_SAMESITE"] = "Strict"
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_DOMAIN"] = False
 
@@ -184,6 +184,7 @@ app.config["DISCORD_CHANNEL_IDS"]={
 app.config["IMG_URL_LOGO_WHITE"] = f"/logo/white/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
+app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
 
 #options to take out certain features
 app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
@@ -411,7 +412,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src *.hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
+            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src *.hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net;")
 
     if not request.path.startswith("/embed/"):
         response.headers.add("X-Frame-Options", "deny")
