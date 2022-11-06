@@ -43,7 +43,18 @@ def main_css(color, file, n=None):
     scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
     scss = scss.replace("{downvote}", downvote_color)
 
-    resp = Response(sass.compile(string=scss), mimetype='text/css')
+    #compile the regular css
+    output=sass.compile(string=scss), mimetype='text/css'
+
+    #add title classes
+
+    output +="\n\n"
+
+    colors=list(set([TITLES[x].color for x in TITLES]))
+
+    output += "\n".join([f".title-color-{x} \{color: {x};\}" for x in colors])
+
+    resp = Response(output)
     resp.headers.add("Cache-Control", "public")
     return resp
 
