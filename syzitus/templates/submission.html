@@ -173,7 +173,7 @@
       </div>
       <div class="d-flex align-items-center p-3">
         <div class="dropdown dropdown-actions">
-          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+          <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
             <i class="far fa-ellipsis-h text-base text-black"></i>
           </a>
           <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
@@ -475,7 +475,7 @@
                 <small class="format d-none">
                   <i class="fas fa-link" aria-hidden="true"></i>
                 </small> 
-                <a href="#" data-target-id="{{ p.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-edit-post">Cancel</a> 
+                <a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-edit-post">Cancel</a> 
                 <button form="post-edit-form-{{ p.base36id }}" class="btn btn-primary ml-2">Save Edit</button>
               </div>
             </form>
@@ -572,7 +572,7 @@
                   {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
                   <li class="list-inline-item d-none d-md-inline-block">
                   	<div class="dropdown show">
-                  		<a href="#" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
+                  		<a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
                   		aria-expanded="false">
                   		  <i class="fas fa-ellipsis-h text-small mr-0"></i>
                       </a>
@@ -580,7 +580,7 @@
                         <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                         <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                         {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted%}
-                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="#" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
+                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                         {% endif %}
                       </div>
                     </div>
@@ -649,7 +649,7 @@
         <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
         {% if g.user %}
         <li class="list-inline-item">
-          <a href="#" data-toggle="modal" data-target="#actionsModal">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>
@@ -691,7 +691,7 @@
       {% endif %}
       <div class="post-filter ml-auto"><span>Sort By:</span>
         <span class="dropdown">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+          <a class="dropdown-toggle" href="javascript:void(0)" role="button" id="dropdownMenuLink"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
         </a>
@@ -700,7 +700,7 @@
           <a class="dropdown-item" href="?sort=old">Old</a>
           <a class="dropdown-item" href="?sort=top">Top</a>
           <a class="dropdown-item" href="?sort=disputed">Disputed</a>
-          <a class="dropdown-item d-none" href="#">Based</a>
+          <a class="dropdown-item d-none" href="javascript:void(0)">Based</a>
         </span>
       </span>
     </div>
