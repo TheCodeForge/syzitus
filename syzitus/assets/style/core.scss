@@ -3344,6 +3344,9 @@ body, #settings, #notifications, #submit{
 
 #fixed-bar-mobile {
     box-shadow: $box-shadow;
+    z-index: 100; 
+    top: 49px; 
+    transition: top 220ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .mobile-nav-icon {
@@ -3810,12 +3813,6 @@ body#error {
 /* Moving inline styles here*/
 #mobile-prompt-row {
     z-index: 2000;
-}
-
-#fixed-bar-mobile {
-    z-index: 100; 
-    top: 49px; 
-    transition: top 220ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .zi-3 {
