@@ -44,7 +44,7 @@ def main_css(color, file, n=None):
     scss = scss.replace("{downvote}", downvote_color)
 
     #compile the regular css
-    output=sass.compile(string=scss), mimetype='text/css'
+    output=sass.compile(string=scss)
 
     #add title classes
 
@@ -54,7 +54,7 @@ def main_css(color, file, n=None):
 
     output += "\n".join([f".title-color-{x} \{color: {x};\}" for x in colors])
 
-    resp = Response(output)
+    resp = Response(output, mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
     return resp
 
