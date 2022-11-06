@@ -62,10 +62,10 @@ def main_css(color, file, n=None):
 @limiter.exempt
 def static_service(path):
 
-    #try:
-    resp = make_response(send_file(safe_join('./assets', path)))
-    #except FileNotFoundError:
-    #       abort(404)
+    try:
+        resp = make_response(send_file(safe_join('./assets', path)))
+    except FileNotFoundError:
+           abort(404)
     resp.headers.add("Cache-Control", "public")
 
     if request.path.endswith('.css'):
