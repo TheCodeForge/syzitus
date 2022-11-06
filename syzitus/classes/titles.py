@@ -1,5 +1,6 @@
 from sqlalchemy import *
 from flask import render_template
+import mistletoe
 
 from syzitus.helpers.base36 import *
 from syzitus.helpers.security import *
