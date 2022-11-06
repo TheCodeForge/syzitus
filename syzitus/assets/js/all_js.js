@@ -2288,7 +2288,7 @@ $('.btn-ban-user').click(function(){
   $('#btn-confirm-ban-user').toggleClass('d-none');
 })
 
-$('.$btn-toggle-follow').click(function(){
+$('.btn-toggle-follow').click(function(){
   post(
     $(this).data("post-url"),
     callback=toggleSub
