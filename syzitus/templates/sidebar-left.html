@@ -1,4 +1,4 @@
-<div class="col sidebar sidebar-left hide-scrollbar bg-white border-right d-none d-lg-block pt-3{% if session.get('sidebar_collapsed',False) %} sidebar-collapsed{%endif %}" id="sidebar-left" style="overflow-y: auto; height: calc(100vh - 49px);">
+<div class="col sidebar sidebar-left hide-scrollbar bg-white border-right d-none d-lg-block pt-3{% if session.get('sidebar_collapsed',False) %} sidebar-collapsed{%endif %}" id="sidebar-left">
 
   <div class="sidebar-section sidebar-trending" style="word-break: break-word">
     <div class="body p-0">
@@ -34,7 +34,7 @@
               <a href="/all?sort=new">
                 <div class="d-flex">
                   <span class="fa-stack">
-                    <i class="fa-2x fas fa-circle text-primary fa-stack-2x" style=""></i>
+                    <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
                     <i class="fa-stack-1x fas fa-globe-americas fa-inverse d-inline-block text-white"></i>
                   </span>
                   <span class="my-auto ml-2 text-black font-weight-normal">All</span>
@@ -45,7 +45,7 @@
               <a href="/all?sort=hot">
                 <div class="d-flex">
                   <span class="fa-stack">
-                    <i class="fa-2x fas fa-circle text-primary fa-stack-2x" style=""></i>
+                    <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
                     <i class="fa-stack-1x fas fa-fire fa-inverse d-inline-block text-white"></i>
                   </span>
                   <span class="my-auto ml-2 text-black font-weight-normal">Trending</span>
@@ -58,7 +58,7 @@
                 <li class="guild-recommendations-item">
                   <a href="/">
                     <span class="fa-stack">
-                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x" style=""></i>
+                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
                       <i class="fa-stack-1x fas fa-home fa-inverse d-inline-block text-white"></i>
                     </span>
                   </a>
@@ -66,7 +66,7 @@
                 <li class="guild-recommendations-item">
                   <a href="/all?sort=new">
                     <span class="fa-stack">
-                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x" style=""></i>
+                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
                       <i class="fa-stack-1x fas fa-globe-americas fa-inverse d-inline-block text-white"></i>
                   </span>
                   </a>
@@ -74,7 +74,7 @@
                 <li class="guild-recommendations-item">
                   <a href="/all?sort=hot">
                     <span class="fa-stack">
-                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x" style=""></i>
+                      <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
                       <i class="fa-stack-1x fas fa-fire fa-inverse d-inline-block text-white"></i>
                     </span>
                   </a>
@@ -180,7 +180,7 @@
         {% if not g.user %}
         <div class="sidebar-section sidebar-guild-recommendations bg-gray-100 sidebar-collapsed-hidden">
           <div class="body">
-            <div class="my-3" style="">
+            <div class="my-3">
               <i class="fad fa-telescope text-primary" style="font-size:3rem"></i>
             </div>
             <h5>Discover amazing communities across <span class="text-purple">{{ "SITE_NAME" | app_config }}</span>.</h5>

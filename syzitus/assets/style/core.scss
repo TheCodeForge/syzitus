@@ -3897,3 +3897,8 @@ img.coin-ruqqus {
     right: -6px; 
     top: -4px;
 }
+
+#sidebar-left {
+    overflow-y: auto; 
+    height: calc(100vh - 49px);
+}
