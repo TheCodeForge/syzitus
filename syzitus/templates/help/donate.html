@@ -274,14 +274,8 @@
 
             <div class="col col-md-10">
 
-                <div class="text-white text-center p-3 p-md-7 position-relative" style="
-                overflow: hidden;
-                ">
-                <div class="w-100">
-
-                    <p class="text-uppercase font-weight-bold text-small text-white" style="
-                    letter-spacing: .025rem;
-                    ">Donate today</p>
+                <div class="text-white text-center p-3 p-md-7 position-relative overflow-hidden">
+                <div class="w-100">Donate today</p>
                     <h2 class="h1">Help support the future of online discourse</h2>
                     <p class="text-white opacity-80">Now accepting Bitcoin, Litecoin, and Ethereum. Every donation counts :)</p>
 
@@ -309,7 +303,7 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-12 col-md-3 mb-4 mb-md-0">
-                <img class="mb-3" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}" style="width:32px">
+                <img class="mb-3 footer-logo" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}">
                 <p class="text-white">Awesome online communities, without censorship</p>
             </div>
             <div class="col-12 col-md-9">
@@ -329,13 +323,13 @@
 
 <!-- Clipboard Toast -->
 
-<div class="toast clipboard" id="toast-success" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 99999" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
     <div class="toast-body bg-success text-center text-white">
         <i class="fas fa-check-circle mr-2"></i>Crypto address copied to clipboard
     </div>
 </div>
 
-<div class="toast clipboard" id="toast-error" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 99999" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
     <div class="toast-body bg-danger text-center text-white">
         <i class="fas fa-exclamation-circle mr-2"></i>Unable to copy crypto address
     </div>
