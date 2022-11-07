@@ -21,9 +21,9 @@
   <div class="body">
     {{ b.description_html | safe }}
 
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-1" style="letter-spacing: 0.025rem;">Founded</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-1">Founded</div>
     <p>{{ b.created_date }}</p>
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.025rem;">Guildmasters</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2">Guildmasters</div>
     <div class="d-flex align-items-center">
       {% for mod in b.mods_list[0:3] %}
       <a href="{{ mod.user.permalink }}">
@@ -41,7 +41,7 @@
       {% endfor %}
     </div>
 
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3" style="letter-spacing: 0.025rem;">Settings</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3">Settings</div>
     <div class="text-primary">
       <i class="fas fa-filter"data-toggle="tooltip" data-placement="bottom" title="Category: {% if b.subcat %}{{ b.subcat.category.name }} / {{ b.subcat.name }}{% else %}Uncategorized{% endif %}"></i>
       {% if b.is_private %}<i class="fas fa-eye-slash"data-toggle="tooltip" data-placement="bottom" title="Private mode."></i>{% endif %}
@@ -166,14 +166,14 @@
         </div>
       </div>
       <div class="border-right py-3 px-3">
-        <a href="{{ p.board.permalink }}/mod/mods" class="text-black" style="text-decoration: none;">Guildmasters<span class="text-primary"> {{ p.board.mods_count }}</span></a>
+        <a href="{{ p.board.permalink }}/mod/mods" class="text-black">Guildmasters<span class="text-primary"> {{ p.board.mods_count }}</span></a>
       </div>
       <div class="border-right p-3">
         Member{{ 's' if p.board.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ p.board.stored_subscriber_count }}</span>
       </div>
       <div class="d-flex align-items-center p-3">
         <div class="dropdown dropdown-actions">
-          <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+          <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="far fa-ellipsis-h text-base text-black"></i>
           </a>
           <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
@@ -208,8 +208,7 @@
 
 {% block mobileBanner %}
 <!-- Mobile -->
-{% if p.board_id %}
-<div class="jumbotron jumbotron-fluid jumbotron-guild text-white d-block d-md-none" style="background-image: url({{ p.board.banner_url }});">
+<div id="mobile-guild-modal-jumbotron" class="jumbotron jumbotron-fluid jumbotron-guild text-white d-block d-md-none">
   <div class="w-100 position-absolute text-center bg-white" style="bottom: 0;">
     <div class="container">
       <div style="margin-top: -34px;">
@@ -228,7 +227,11 @@
     </div>
   </div>
 </div>
-{% endif %}
+<style nonce="{{ g.nonce }}">
+  #mobile-guild-modal-jumbotron {
+    background-image: url({{ p.board.banner_url }});
+  }
+</style>
 {% endblock %}
 
 {% block adminpanel %}
