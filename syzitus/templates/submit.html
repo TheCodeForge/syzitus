@@ -22,11 +22,11 @@
 
     <!-- Ruqqus Board CSS -->
     {% if b %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.30">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.30">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.31">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.31">
     {% else %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.30">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.30">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.31">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.31">
     {% endif %}
 
     <!-- Font Awesome -->
@@ -201,7 +201,7 @@
 
     <!-- Ruqqus JS -->
 
-    <script src="/assets/js/all_js.js?v=3.0.30"></script>
+    <script src="/assets/js/all_js.js?v=3.0.31"></script>
 
     <!-- ClipboardJS -->
 

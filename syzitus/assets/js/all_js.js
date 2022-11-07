@@ -696,12 +696,12 @@ function post_response(url, callback, errortext) {
 // sub/unsub
 
 function toggleSub(thing_id){
-  $('#button-unsub'+thing_id).toggleClass('d-none');
-  $('#button-sub'+thing_id).toggleClass('d-none');
-  $('#button-unsub-modal'+thing_id).toggleClass('d-none');
-  $('#button-sub-modal'+thing_id).toggleClass('d-none');
-  $('#button-unsub-mobile'+thing_id).toggleClass('d-none');
-  $('#button-sub-mobile'+thing_id).toggleClass('d-none');
+  $('#button-unsub-'+thing_id).toggleClass('d-none');
+  $('#button-sub-'+thing_id).toggleClass('d-none');
+  $('#button-unsub-modal-'+thing_id).toggleClass('d-none');
+  $('#button-sub-modal-'+thing_id).toggleClass('d-none');
+  $('#button-unsub-mobile-'+thing_id).toggleClass('d-none');
+  $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
 function post_toast(url, callback) {
@@ -2222,11 +2222,11 @@ $(".btn-guild-unblock").click(function(){
 })
 
 $(".btn-guild-sub").click(function(){
-  id=$(this).data('thing-id')
+  id=$(this).data('thing-id');
   post('/api/subscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 $(".btn-guild-unsub").click(function(){
-  id=$(this).data('thing-id')
+  id=$(this).data('thing-id');
   post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 
