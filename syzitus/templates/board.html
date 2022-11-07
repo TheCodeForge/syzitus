@@ -258,10 +258,10 @@
 
       {% if g.user %}
       <div id="button-sub-{{ b.fullname }}" class="{% if b.is_subscribed %}d-none{% endif %}">
-        <button class="btn btn-primary btn-guild-sub" data-board-name="{{ b.name }}" data-thing_id="{{ b.fullname }}">Join guild</button>
+        <button class="btn btn-primary btn-guild-sub" data-board-name="{{ b.name }}" data-thing-id="{{ b.fullname }}">Join guild</button>
       </div>
       <div id="button-unsub-{{ b.fullname }}" class="{% if not b.is_subscribed %}d-none{% endif %}" role="group" aria-label="Leave guild desktop">
-        <button class="btn btn-secondary btn-guild-unsub " data-board-name="{{ b.name }}" data-thing_id="{{ b.fullname }}">Leave</button>
+        <button class="btn btn-secondary btn-guild-unsub " data-board-name="{{ b.name }}" data-thing-id="{{ b.fullname }}">Leave</button>
         <button class="btn btn-transparent bell-button" data-toggle="tooltip" data-placement="bottom" title="Be notified when this guild has new content." data-url="/+{{ b.name }}/toggle_bell">
           <i class="fas fa-fw bell-icon {% if b.is_subscribed and b.is_subscribed.get_notifs %}fa-bell-on text-primary{% else %}fa-bell{% endif %}"></i>
         </button>
@@ -319,12 +319,12 @@
 
       {% if g.user %}
         <div id="button-sub-mobile-{{ b.fullname }}" {% if b.is_subscribed %}class="d-none"{% endif %}>
-          <button class="btn btn-primary btn-block btn-guild-sub" data-board-name="{{ b.name }}" data-thing_id="{{ b.fullname }}">
+          <button class="btn btn-primary btn-block btn-guild-sub" data-board-name="{{ b.name }}" data-thing-id="{{ b.fullname }}">
             Join guild
           </button>
         </div>
         <div id="button-unsub-mobile-{{ b.fullname }}" {% if not b.is_subscribed %}class="d-none"{% endif %}>
-          <button class="btn btn-secondary btn-block btn-guild-unsub" data-board-name="{{ b.name }}" data-thing_id="{{ b.fullname }}">
+          <button class="btn btn-secondary btn-block btn-guild-unsub" data-board-name="{{ b.name }}" data-thing-id="{{ b.fullname }}">
             Leave
           </button>
           <button class="btn btn-transparent bell-button" data-url="/+{{ b.name }}/toggle_bell">
