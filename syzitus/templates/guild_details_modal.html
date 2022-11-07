@@ -41,8 +41,8 @@
         </div>
 
       {% if g.user%}
-      <div id="button-sub-modal" {% if board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post('/api/subscribe/{{ board.name }}', callback=toggleSub)">Join guild</a></div>
-      <div id="button-unsub-modal" {% if not board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post('/api/unsubscribe/{{ board.name }}', callback=toggleSub)">Leave</a></div>
+      <div id="button-sub-modal-{{ b.fullname }}" {% if board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Join guild</a></div>
+      <div id="button-unsub-modal-{{ b.fullname }}" {% if not board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Leave</a></div>
       {% elif not g.user%}
       <a class="btn btn-primary" href="/signup">Join guild</a>
       {% endif %}
