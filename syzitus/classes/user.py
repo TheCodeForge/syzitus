@@ -276,7 +276,7 @@ class User(Base, Stndrd, Age_times):
         return TITLES.get(self.title_id)
     
 
-    @cache.memoize(timeout=300)
+    #@cache.memoize(timeout=300)
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
