@@ -3954,3 +3954,10 @@ section#donate-whychoose {
     width: 275px; 
     z-index: 1000
 }
+
+#guild-details-modal-banner {
+    height: 100px; 
+    overflow: hidden; 
+    object-fit: cover; 
+    background-size: cover;
+}
