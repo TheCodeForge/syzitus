@@ -3828,6 +3828,14 @@ img.coin-ruqqus {
     width: 24px;
 }
 
+.navbar-dropdown {
+    position: absolute; 
+    will-change: transform; 
+    top: 0px; 
+    left: 0px; 
+    transform: translate3d(21px, 18px, 0px);
+}
+
 .navbar-dropdown-menu {
     position: absolute;
     will-change: transform; 
@@ -3935,4 +3943,14 @@ section#donate-hero {
 
 section#donate-whychoose {
     background-image: linear-gradient(180deg, #ffffff 75%, #f5f7fa 100%);
+}
+
+#toast-error-gif {
+    position: fixed; 
+    bottom: 1.5rem; 
+    margin: 0 auto; 
+    left: 0; 
+    right: 0; 
+    width: 275px; 
+    z-index: 1000
 }
