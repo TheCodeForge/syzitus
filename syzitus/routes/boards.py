@@ -52,8 +52,7 @@ def multiboard(name):
 
         board_ids.append(board.id)
 
-    posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False).filter(Submission.deleted_utc == 0,
-                                                                                                                                                Submission.board_id.in_(tuple(board_ids)))
+    posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False).filter(Submission.deleted_utc == 0, Submission.board_id.in_(tuple(board_ids)))
     
     if g.user:
         blocking = g.db.query(UserBlock.target_id).filter_by(user_id=g.user.id).subquery()
