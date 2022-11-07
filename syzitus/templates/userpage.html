@@ -112,12 +112,12 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
            {% if g.user and g.user.id != u.id and not u.is_private and not u.is_nofollow %}
-           <div id="button-sub" {% if is_following %}class="d-none"{% endif %}>
+           <div id="button-sub-{{ u.fullname }}" {% if is_following %}class="d-none"{% endif %}>
             <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">
               Follow
             </button>
           </div>
-          <div id="button-unsub" class="{% if not is_following %}d-none{% endif %}" role="group" aria-label="Unfollow this user">
+          <div id="button-unsub-{{ u.fullname }}" class="{% if not is_following %}d-none{% endif %}" role="group" aria-label="Unfollow this user">
             <button class="btn btn-secondary btn-toggle-follow" data-post-url="/api/unfollow/{{ u.username }}" data-thing-id="{{ u.fullname }}">
               Unfollow
             </button>
@@ -192,13 +192,13 @@
         <a href="/settings/profile" class="btn btn-secondary btn-sm">Edit profile</a>
         {% endif %}
         {% if g.user and g.user.id != u.id and not u.is_nofollow %}
-        <div id="button-unsub-mobile" {% if not is_following %}class="d-none"{% endif %}>
+        <div id="button-unsub-mobile-{{ u.fullname }}" {% if not is_following %}class="d-none"{% endif %}>
           <button class="btn btn-secondary btn-block btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">Unfollow</button>
           <button class="btn btn-transparent bell-button" data-url="/@{{ u.username }}/toggle_bell">
             <i class="fas bell-icon fa-fw {% if u.is_following and u.is_following.get_notifs %}fa-bell-on text-purple{% else %}fa-bell{% endif %}"></i>
           </button>
         </div>
-        <div id="button-sub-mobile" {% if is_following %}class="d-none"{% endif %}>
+        <div id="button-sub-mobile-{{ u.fullname }}" {% if is_following %}class="d-none"{% endif %}>
           <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">Follow</button>
         </div>
         {% endif %}
