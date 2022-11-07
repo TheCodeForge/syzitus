@@ -695,13 +695,13 @@ function post_response(url, callback, errortext) {
 
 // sub/unsub
 
-function toggleSub(xhr){
-  document.getElementById('button-unsub').classList.toggle('d-none');
-  document.getElementById('button-sub').classList.toggle('d-none');
-  document.getElementById('button-unsub-modal').classList.toggle('d-none');
-  document.getElementById('button-sub-modal').classList.toggle('d-none');
-  document.getElementById('button-unsub-mobile').classList.toggle('d-none');
-  document.getElementById('button-sub-mobile').classList.toggle('d-none');
+function toggleSub(thing_id){
+  document.getElementById('button-unsub'+thing_id).classList.toggle('d-none');
+  document.getElementById('button-sub'+thing_id).classList.toggle('d-none');
+  document.getElementById('button-unsub-modal'+thing_id).classList.toggle('d-none');
+  document.getElementById('button-sub-modal'+thing_id).classList.toggle('d-none');
+  document.getElementById('button-unsub-mobile'+thing_id).classList.toggle('d-none');
+  document.getElementById('button-sub-mobile'+thing_id).classList.toggle('d-none');
 }
 
 function post_toast(url, callback) {
@@ -2222,10 +2222,10 @@ $(".btn-guild-unblock").click(function(){
 })
 
 $(".btn-guild-sub").click(function(){
-  post('/api/subscribe/'+$(this).data('board-name'), callback=toggleSub)
+  post('/api/subscribe/'+$(this).data('board-name'), callback=function(){toggleSub($(this).data('thing-id'))})
 })
 $(".btn-guild-unsub").click(function(){
-  post('/api/unsubscribe/'+$(this).data('board-name'), callback=toggleSub)
+  post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub($(this).data('thing-id'))})
 })
 
 $(".post-url-reload").click(function(){
@@ -2293,7 +2293,7 @@ $('.btn-ban-user').click(function(){
 $('.btn-toggle-follow').click(function(){
   post(
     $(this).data("post-url"),
-    callback=toggleSub
+    callback=function(){toggleSub($(this).data('thing-id'))}
     )
 })
 
