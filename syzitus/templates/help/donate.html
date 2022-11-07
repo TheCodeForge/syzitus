@@ -13,7 +13,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-    <meta property="og:image" content="/assets/images/splash/1200/630" />
+    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
     <meta property="og:url" content="{{ request.path | full_link }}">
     <meta property="og:description" name="description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.">
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
@@ -21,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
     <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
-    <meta name="twitter:image" content="/assets/images/splash/1200/630" />
+    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
     <meta name="twitter:url" content="{{ request.path | full_link }}" />
     {% endblock %}
 
