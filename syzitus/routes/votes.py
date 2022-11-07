@@ -169,7 +169,7 @@ URL path parameters:
     g.db.add(comment)
     g.db.flush()
 
-    # comment.score_disputed=comment.rank_fiery
+    comment.score_disputed=comment.rank_fiery
     comment.score_hot = comment.rank_hot
     comment.score_top = comment.score
 
