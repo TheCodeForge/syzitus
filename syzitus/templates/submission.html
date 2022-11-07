@@ -207,30 +207,37 @@
 
 {% block mobileBanner %}
 <!-- Mobile -->
-<div id="mobile-guild-modal-jumbotron" class="jumbotron jumbotron-fluid jumbotron-guild text-white d-block d-md-none">
-  <div class="w-100 position-absolute text-center bg-white">
-    <div class="container">
+
+<div class="container-fluid text-center bg-white d-md-none">
+  <div class="row">
+    <div class="col px-0">
+      <img src="{{ p.board.banner_url }}" class="jumbotron-mobile">
+    </div>
+  </div>
+  <div class="row border-bottom">
+    <div class="col">
       <div class="img-mobile-profile-div">
         <a href="{{ p.board.permalink }}"><img src="{{ p.board.profile_url }}" class="profile-pic-65 border-2 border-white mb-2"></a>
       </div>
-      <a href="{{ p.board.permalink }}" class="text-black">
-        <h1 class="h5 d-inline-block mb-0">+{{ p.board.name }}
-          {% if p.board.over_18 %}
-          <span class="badge badge-danger text-small align-top">nsfw</span>
-          {% endif %}
-          {% if p.board.is_nsfl %}
-          <span class="badge badge-black text-small align-top">nsfl</span>
-          {% endif %}
-        </h1>
-      </a>
+      <div class="mt-n3 py-3">
+        <a href="{{ p.board.permalink }}" class="text-black">
+          <h1 class="h5 d-inline-block">+{{ b.name }}
+            {% if p.board.over_18 %}
+            <span class="badge badge-danger text-small align-top">nsfw</span>
+            {% endif %}
+            {% if p.board.is_nsfl %}
+            <span class="badge badge-black text-small align-top">nsfl</span>
+            {% endif %}
+            {% if p.board.is_private %}
+            <span class="badge badge-warning text-small align-top" data-toggle="tooltip" data-placement="bottom" title="This guild is private. Content posted prior to the guild being set to private is visible to everyone.">private</span>
+            {% endif %}
+          </h1>
+        </a>
+      </div>
     </div>
   </div>
 </div>
-<style nonce="{{ g.nonce }}">
-  #mobile-guild-modal-jumbotron {
-    background-image: url({{ p.board.banner_url }});
-  }
-</style>
+
 {% endblock %}
 
 {% block adminpanel %}
