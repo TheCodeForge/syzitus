@@ -2293,9 +2293,10 @@ $('.btn-ban-user').click(function(){
 })
 
 $('.btn-toggle-follow').click(function(){
+  id=$(this).data('thing-id');
   post(
     $(this).data("post-url"),
-    callback=function(){toggleSub($(this).data('thing-id'))}
+    callback=function(){toggleSub(id)}
     )
 })
 
