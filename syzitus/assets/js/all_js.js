@@ -2222,10 +2222,12 @@ $(".btn-guild-unblock").click(function(){
 })
 
 $(".btn-guild-sub").click(function(){
-  post('/api/subscribe/'+$(this).data('board-name'), callback=function(){toggleSub($(this).data('thing-id'))})
+  id=$(this).data('thing-id')
+  post('/api/subscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 $(".btn-guild-unsub").click(function(){
-  post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub($(this).data('thing-id'))})
+  id=$(this).data('thing-id')
+  post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 
 $(".post-url-reload").click(function(){
