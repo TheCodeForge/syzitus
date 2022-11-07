@@ -194,8 +194,8 @@
     </div>
     <div class="ml-auto">
       {% if g.user %}
-      <div id="button-sub" class="{% if p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-primary btn-guild-sub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Join guild</a></div>
-      <div id="button-unsub" class="{% if not p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-secondary btn-guild-unsub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Leave</a></div>
+      <div id="button-sub-{{ p.board.fullname }}" class="{% if p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-primary btn-guild-sub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Join guild</a></div>
+      <div id="button-unsub-{{ p.board.fullname }}" class="{% if not p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-secondary btn-guild-unsub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Leave</a></div>
       {% elif not v %}
       <a class="btn btn-primary" href="/signup?redirect={{ request.path | urlencode}}">Join guild</a>
       {% endif %}
