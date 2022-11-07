@@ -696,12 +696,12 @@ function post_response(url, callback, errortext) {
 // sub/unsub
 
 function toggleSub(thing_id){
-  document.getElementById('button-unsub'+thing_id).classList.toggle('d-none');
-  document.getElementById('button-sub'+thing_id).classList.toggle('d-none');
-  document.getElementById('button-unsub-modal'+thing_id).classList.toggle('d-none');
-  document.getElementById('button-sub-modal'+thing_id).classList.toggle('d-none');
-  document.getElementById('button-unsub-mobile'+thing_id).classList.toggle('d-none');
-  document.getElementById('button-sub-mobile'+thing_id).classList.toggle('d-none');
+  $('#button-unsub'+thing_id).toggleClass('d-none');
+  $('#button-sub'+thing_id).toggleClass('d-none');
+  $('#button-unsub-modal'+thing_id).toggleClass('d-none');
+  $('#button-sub-modal'+thing_id).toggleClass('d-none');
+  $('#button-unsub-mobile'+thing_id).toggleClass('d-none');
+  $('#button-sub-mobile'+thing_id).toggleClass('d-none');
 }
 
 function post_toast(url, callback) {
