@@ -35,7 +35,7 @@ def get_logo_jumbotron(color):
     ImageDraw.floodfill(
         base_layer,
         (base_layer.size[0]//2, base_layer.size[1]//2),
-        value=(128,128,128,128) if use_black else (255, 255, 255, 128)
+        value=(128,128,128,128) if use_grey else (255, 255, 255, 128)
         )
 
     #tilted letter layer
