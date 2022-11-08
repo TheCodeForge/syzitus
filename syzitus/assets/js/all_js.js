@@ -2191,27 +2191,6 @@ $('.toast-form-submit').click(function(){postformtoast($(this))});
 $('.toast-form-change-submit').change(function(){postformtoast($(this))});
 
 
-
-//instantiate clipboard
-$('#clipboard-js').on('load', function(){
-  var clipboard = new ClipboardJS('.copy-link');
-  clipboard.on('success', function(e) {
-
-    jQuery(function($) {
-      $('#toast-copy-success').toast('show');
-    })
-    console.log(e);
-  });
-  clipboard.on('error', function(e) {
-
-    jQuery(function($) {
-      $('#toast-copy-error').toast('show');
-    })
-    console.log(e);
-  });
-}
-);
-
 //Transferring onclick garbage into this file
 
 $(".btn-guild-block").click(function(){

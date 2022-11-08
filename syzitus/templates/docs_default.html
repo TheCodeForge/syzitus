@@ -163,17 +163,7 @@
 
 <!-- Clipboard Toast -->
 
-<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-check-circle text-success mr-2"></i>Link copied to clipboard
-  </div>
-</div>
-
-<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-exclamation-circle text-danger mr-2"></i>Unable to copy link
-  </div>
-</div>
+{% include "toasts.html" %}
 
 {% include "bootstrap.html" %}
 
@@ -182,22 +172,26 @@
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 <!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
+<script nonce="{{ g.nonce }}">
+//instantiate clipboard
+$('#clipboard-js').on('load', function(){
   var clipboard = new ClipboardJS('.copy-link');
   clipboard.on('success', function(e) {
 
     jQuery(function($) {
-      $('#toast-success').toast('show');
+      $('#toast-copy-success').toast('show');
     })
     console.log(e);
   });
   clipboard.on('error', function(e) {
 
     jQuery(function($) {
-      $('#toast-error').toast('show');
+      $('#toast-copy-error').toast('show');
     })
     console.log(e);
   });
+}
+);
 </script>
 
 
