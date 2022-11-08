@@ -26,14 +26,16 @@ def get_logo_jumbotron(color):
     primary = (primary_r, primary_g, primary_b, 255)
 
 
+
     base_layer = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/logo_base.png")
     text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
 
-    #make base layer white with 50% opacity
+    #make base layer white or black with 50% opacity
+    use_black = (primary_r+primary_g+primary_b)//3 >= 128
     ImageDraw.floodfill(
         base_layer,
         (base_layer.size[0]//2, base_layer.size[1]//2),
-        value=(255, 255, 255, 128)
+        value=(0,0,0,128) if use_black else (255, 255, 255, 128)
         )
 
     #tilted letter layer
