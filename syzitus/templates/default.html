@@ -262,6 +262,28 @@
 
 <script id="clipboard-js" src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" importance="high"></script>
 
+<script>
+  //instantiate clipboard
+$('#clipboard-js').on('load', function(){
+  var clipboard = new ClipboardJS('.copy-link');
+  clipboard.on('success', function(e) {
+
+    jQuery(function($) {
+      $('#toast-copy-success').toast('show');
+    })
+    console.log(e);
+  });
+  clipboard.on('error', function(e) {
+
+    jQuery(function($) {
+      $('#toast-copy-error').toast('show');
+    })
+    console.log(e);
+  });
+}
+);
+</script>
+
 <script src="/assets/js/all_js.js?v=3.0.17" importance="high" ></script>
 
 
