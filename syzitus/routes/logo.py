@@ -31,11 +31,11 @@ def get_logo_jumbotron(color):
     text_layer = PIL.Image.new("RGBA", base_layer.size, color=(255,255,255,0))
 
     #make base layer white or black with 50% opacity
-    use_black = (primary_r+primary_g+primary_b)//3 >= 128
+    use_grey = (primary_r+primary_g+primary_b)//3 >= 192
     ImageDraw.floodfill(
         base_layer,
         (base_layer.size[0]//2, base_layer.size[1]//2),
-        value=(0,0,0,128) if use_black else (255, 255, 255, 128)
+        value=(128,128,128,128) if use_black else (255, 255, 255, 128)
         )
 
     #tilted letter layer
