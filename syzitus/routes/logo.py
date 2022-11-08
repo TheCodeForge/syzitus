@@ -23,11 +23,11 @@ def get_logo_jumbotron(color):
     primary_g=int(color[2:4], 16)
     primary_b=int(color[4:6], 16)
 
-    if (primary_r+primary_g+primary_b)//3 > 0xdf:
+    if (primary_r+primary_g+primary_b)//3 > 0xcf:
         primary=(
-            (primary_r + 0xbf)//2,
-            (primary_g + 0xbf)//2,
-            (primary_b + 0xbf)//2,
+            (primary_r + 0xaf)//2,
+            (primary_g + 0xaf)//2,
+            (primary_b + 0xaf)//2,
             255
             )
     else:
