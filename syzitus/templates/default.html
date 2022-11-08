@@ -260,11 +260,10 @@
 {% include "bootstrap.html" %}
 <!-- ClipboardJS -->
 
-<script id="clipboard-js" src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" importance="high"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
-<script>
-  //instantiate clipboard
-$('#clipboard-js').on('load', function(){
+<!-- Instantiate clipboard by passing a string selector -->
+<script type="text/javascript">
   var clipboard = new ClipboardJS('.copy-link');
   clipboard.on('success', function(e) {
 
@@ -280,8 +279,6 @@ $('#clipboard-js').on('load', function(){
     })
     console.log(e);
   });
-}
-);
 </script>
 
 <script src="/assets/js/all_js.js?v=3.0.18" importance="high" ></script>
