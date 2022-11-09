@@ -369,7 +369,7 @@ def before_request():
             new_ip=syzitus.classes.IP(
                 addr=request.remote_addr,
                 unban_utc=None,
-                reason="archive",
+                reason="archive instaban",
                 banned_by=1
                 )
             g.db.add(new_ip)
