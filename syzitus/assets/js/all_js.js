@@ -1526,7 +1526,7 @@ function checkForRequired() {
 $('.submit-form-input').on('input', checkForRequired);
 
 // Auto-suggest title given URL
-$("#post-URL").on("change", function()  {
+function autoSuggestTitle() {
 
   var urlField = $("#post-URL");
   var titleField = $("#post-title");
@@ -1547,7 +1547,9 @@ $("#post-URL").on("change", function()  {
     x.send();
 
   };
-})
+}
+
+$("#post-URL").on("change", autoSuggestTitle )
 
 // Run AutoSuggestTitle function on load
 
