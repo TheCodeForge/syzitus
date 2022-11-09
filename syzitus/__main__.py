@@ -346,10 +346,12 @@ def before_request():
 
     session.permanent = True
 
+    useragent=request.headers.get("User-Agent", "NoAgent")
+
     ua_ban = g.db.query(
         syzitus.classes.Agent).filter(
             or_(
-                syzitus.classes.Agent.kwd.in_(user_agent_str.split()),
+                syzitus.classes.Agent.kwd.in_(useragent.split()),
                 syzitus.classes.Agent.kwd==user_agent_str
                 )
             ).first()
