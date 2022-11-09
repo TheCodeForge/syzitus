@@ -363,7 +363,7 @@ def before_request():
         ipban.unban_utc
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
     elif ipban and not request.path.startswith(("/assets/", "/logo/")):
-        abort(418)
+        return render_template("errors/archive.html")
 
 
     session.permanent = True

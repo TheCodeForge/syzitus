@@ -1,0 +1,16 @@
+{% extends "errors/default.html" %}
+
+{% block title %}
+<title>503 Service Unavailable</title>
+{% endblock %}
+
+{% block icon %}
+<span class="fa-stack text-muted">
+  <i class="far fa-cloud fa-stack-2x text-muted"></i>
+  <i class="fad fa-fire fa-stack-1x text-danger"></i>
+</span>
+{% endblock %}
+{% block pagetitle %}503 Service Unavailable{% endblock %}
+{% block pagebody %}
+<p class="text-muted mb-5">{{ 'SITE_NAME' | app_config }} is down right now.</p>
+{% endblock %}
