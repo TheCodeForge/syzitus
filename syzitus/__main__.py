@@ -22,7 +22,7 @@ import psycopg2
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError, StatementError, InternalError
+from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError
 from sqlalchemy.orm import Session, sessionmaker, scoped_session, Query as _Query
 from sqlalchemy import *
 from sqlalchemy.pool import QueuePool
@@ -373,8 +373,10 @@ def before_request():
                 banned_by=1
                 )
             g.db.add(new_ip)
-            g.db.commit()
-    
+            try:
+                g.db.commit()
+            except IntegrityError:
+                pass    
     if ua_ban and "archive" in ua_ban.reason:
             g.db.ua=ua_ban
             g.is_archive=True
