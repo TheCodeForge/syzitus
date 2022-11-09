@@ -1357,7 +1357,7 @@ $('.btn-make-quote').click(function () {
 
 // Character Count
 
-function charLimit(form, text) {
+$('.textarea-form-input').on('change', function() {
 
   var input = $(this);
 
@@ -1385,7 +1385,9 @@ function charLimit(form, text) {
 
   text.text(maxLength - length);
 
-}
+})
+
+
 
 // Mobile bottom navigation bar
 
