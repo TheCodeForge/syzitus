@@ -312,28 +312,6 @@ import syzitus.helpers.jinja2
 #purge css from cache
 cache.delete_memoized(syzitus.routes.main_css)
 
-
-#@cache.memoize(UA_BAN_CACHE_TTL)
-def get_useragent_ban_response(user_agent_str):
-    """
-    Given a user agent string, returns a tuple in the form of:
-    (is_user_agent_banned, (insult, status_code))
-    """
-    #if request.path.startswith("/socket.io/"):
-    #    return False, (None, None)
-
-    result = g.db.query(
-        syzitus.classes.Agent).filter(
-            or_(
-                syzitus.classes.Agent.kwd.in_(user_agent_str.split()),
-                syzitus.classes.Agent.kwd==user_agent_str
-                )
-            ).first()
-    if result:
-        return True, (result.mock or "Follow the robots.txt, dumbass",
-                      result.status_code or 418)
-    return False, (None, None)
-
 def drop_connection():
 
     g.db.close()
