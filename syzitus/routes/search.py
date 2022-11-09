@@ -127,11 +127,11 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
     if g.user and g.user.admin_level >= 4:
         pass
     elif g.user:
-        m = g.db.query(ModRelationship.board_id).filter_by(
-            user_id=g.user.id, invite_rescinded=False).subquery()
-        c = g.db.query(
+        m = select(ModRelationship.board_id).filter_by(
+            user_id=g.user.id, invite_rescinded=False)
+        c = select(
             ContributorRelationship.board_id).filter_by(
-            user_id=g.user.id).subquery()
+            user_id=g.user.id)
         posts = posts.filter(
             or_(
                 Submission.author_id == g.user.id,
@@ -141,16 +141,16 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
             )
         )
 
-        blocking = g.db.query(
+        blocking = select(
             UserBlock.target_id).filter_by(
-            user_id=g.user.id).subquery()
-        blocked = g.db.query(
+            user_id=g.user.id)
+        blocked = select(
             UserBlock.user_id).filter_by(
-            target_id=g.user.id).subquery()
+            target_id=g.user.id)
 
         posts = posts.filter(
             Submission.author_id.notin_(blocking),
-            #Submission.author_id.notin_(blocked),
+            Submission.author_id.notin_(blocked),
             Board.is_banned==False,
         )
     else:
