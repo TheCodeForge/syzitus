@@ -23,14 +23,7 @@
 
             <div class="user-info">{% if standalone and c.over_18 %}<span class="badge badge-danger">NSFW<span> {% endif %}
               <span>
-                [
-                {% if c.is_banned %}Removed by administrators
-                {% elif c.deleted_utc > 0 %}Deleted by author
-                {% elif c.is_blocking %}You are blocking @{{ c.author.username }}
-                {% elif c.is_blocked %}This user has blocked you
-                {% elif g.is_archive and c.author.is_private %}User opted to block archiving
-                {% endif %}
-                ]
+                [{% if c.is_banned %}Removed by administrators{% elif c.deleted_utc > 0 %}Deleted by author{% elif c.is_blocking %}You are blocking @{{ c.author.username }}{% elif c.is_blocked %}This user has blocked you{% elif g.is_archive and c.author.is_private %}Comment not archived due to its author's privacy settings{% endif %}]
               </span>
             </div>
 

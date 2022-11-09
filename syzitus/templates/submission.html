@@ -384,7 +384,7 @@
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
             {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}
-            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[archiving blocked]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[username not archived due to privacy settings]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
             {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
@@ -410,7 +410,7 @@
             {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
             {% if p.is_nsfl %}{% include "tags/nsfl.html" %} · {% endif %}
             {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %}
-            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[archiving blocked]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[username not archived due to privacy settings]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
             {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
