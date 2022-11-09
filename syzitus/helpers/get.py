@@ -1008,7 +1008,7 @@ def get_ip(addr):
 
     # return the most specific domain - the one with the longest domain
     # property
-    ips = sorted(ip, key=lambda x: len(x.addr), reverse=True)
+    ips = sorted(ips, key=lambda x: len(x.addr), reverse=True)
 
     return ips[0]
 
