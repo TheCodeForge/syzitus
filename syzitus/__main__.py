@@ -185,6 +185,7 @@ app.config["IMG_URL_LOGO_WHITE"] = f"/logo/white/{app.config['COLOR_PRIMARY'].lo
 app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
+app.config["IMG_URL_THUMBNAIL"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
 
 Markdown(app)
 cache = Cache(app)
@@ -323,8 +324,11 @@ def get_useragent_ban_response(user_agent_str):
 
     result = g.db.query(
         syzitus.classes.Agent).filter(
-        syzitus.classes.Agent.kwd.in_(
-            user_agent_str.split())).first()
+            or_(
+                syzitus.classes.Agent.kwd.in_(user_agent_str.split()),
+                syzitus.classes.Agent.kwd==user_agent_str
+                )
+            ).first()
     if result:
         return True, (result.mock or "Follow the robots.txt, dumbass",
                       result.status_code or 418)
