@@ -126,7 +126,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
     if g.user and g.user.admin_level >= 4:
         pass
-    elif v:
+    elif g.user:
         m = g.db.query(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False).subquery()
         c = g.db.query(
@@ -223,7 +223,7 @@ def search(search_type="posts"):
         if not (g.user and g.user.admin_level >= 3):
             boards = boards.filter_by(is_banned=False)
 
-        if v:
+        if g.user:
             joined = g.db.query(Subscription).filter_by(user_id=g.user.id, is_active=True).subquery()
 
             boards=boards.join(
