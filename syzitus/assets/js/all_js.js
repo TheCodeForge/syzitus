@@ -2298,3 +2298,14 @@ $('#btn-all-cats').click(function(){
 $('#report-type-dropdown').change(function(){
   $('#reportPostButton').prop('disabled', false)
 })
+
+$('#submit-image-div').on('dragover', function(event){
+  event.preventDefault();
+});
+$('#submit-image-div').on('drop', function(event){
+  event.preventDefault();
+  let input=$('#file-upload');
+  input[0].files=event.dataTransfer.files;
+  input.change();
+});
+

@@ -22,11 +22,11 @@
 
     <!-- Ruqqus Board CSS -->
     {% if b %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.34">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.34">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.35">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.35">
     {% else %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.34">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.34">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.35">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.35">
     {% endif %}
 
     <!-- Font Awesome -->
@@ -75,33 +75,33 @@
                             <small class="form-text text-muted">To post an image, use a direct image link such as i.imgur.com</small>
                         </div>
 
-                        <div {% if not g.user.can_submit_image %} class="d-none"{% else %} ondrop="event.preventDefault();let input=document.getElementById('file-upload');input.files=event.dataTransfer.files;input.onchange();" ondragover="event.preventDefault();"{% endif %}>
+                        <div id="submit-image-div" {% if not g.user.can_submit_image %} class="d-none"{% endif %}>
 
-                        {% if g.user.can_submit_image %}
-                        <div id="image-upload-block">
-                            <div><label class="mt-3">Image Upload</label></div>
+                            {% if g.user.can_submit_image %}
+                            <div id="image-upload-block">
+                                <div><label class="mt-3">Image Upload</label></div>
 
-                            <img id="image-preview" class="w-100 d-block">
+                                <img id="image-preview" class="w-100 d-block">
 
-                            <label class="btn btn-secondary m-0" for="file-upload">
-                                <div id="filename-show">Select Image</div>
-                                <input id="file-upload" type="file" name="file" accept="image/*" hidden>
-                            </label>
+                                <label class="btn btn-secondary m-0" for="file-upload">
+                                    <div id="filename-show">Select Image</div>
+                                    <input id="file-upload" type="file" name="file" accept="image/*" hidden>
+                                </label>
 
-                            <small class="form-text text-muted">Images uploaded will be public. Optional if you have text.</small>
-                        </div>
-                        {% else %}
-                        <div id="image-upload-block">
-                            <div><label class="mt-3">Image Upload</label></div>
+                                <small class="form-text text-muted">Images uploaded will be public. Optional if you have text.</small>
+                            </div>
+                            {% else %}
+                            <div id="image-upload-block">
+                                <div><label class="mt-3">Image Upload</label></div>
 
-                            <label class="btn btn-secondary m-0 disabled" for="file-upload">
-                                <div id="filename-show">Select Image</div>
-                                <input id="file-upload" type="file" accept="image/*" hidden disabled>
-                            </label>
+                                <label class="btn btn-secondary m-0 disabled" for="file-upload">
+                                    <div id="filename-show">Select Image</div>
+                                    <input id="file-upload" type="file" accept="image/*" hidden disabled>
+                                </label>
 
-                            <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
-                        </div>
-                        {% endif %}
+                                <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
+                            </div>
+                            {% endif %}
                         </div>
 
                         <label for="body" class="mt-3">Text<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Uses markdown. Limited to 10000 characters."></i></label>
@@ -200,7 +200,7 @@
     {% include "bootstrap.html" %}
 
     <!-- Syzitus JS -->
-    <script src="/assets/js/all_js.js?v=3.0.34"></script>
+    <script src="/assets/js/all_js.js?v=3.0.35"></script>
 
     <!-- ClipboardJS -->
 
