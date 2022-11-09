@@ -990,7 +990,7 @@ def get_ip(addr):
         return g.db.query(Domain).filter_by(addr=addr).first()
 
     # parse ip into subnets
-    parts = s.split(".")
+    parts = addr.split(".")
 
     ip_list = tuple(
         [
