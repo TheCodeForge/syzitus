@@ -1,16 +1,16 @@
 {% extends "errors/default.html" %}
 
 {% block title %}
-<title>503 Service Unavailable</title>
+<title>Archiving Prohibited</title>
 {% endblock %}
 
 {% block icon %}
 <span class="fa-stack text-muted">
-  <i class="far fa-cloud fa-stack-2x text-muted"></i>
-  <i class="fad fa-fire fa-stack-1x text-danger"></i>
+  <i class="fad fa-floppy-disk fa-stack-1x text-danger"></i>
+  <i class="far fa-ban fa-stack-2x text-danger"></i>
 </span>
 {% endblock %}
-{% block pagetitle %}503 Service Unavailable{% endblock %}
+{% block pagetitle %}Archiving Prohibited{% endblock %}
 {% block pagebody %}
-<p class="text-muted mb-5">{{ 'SITE_NAME' | app_config }} is down right now.</p>
+<p class="text-muted mb-5">To help protect user safety, third-party archiving is prohibited.</p>
 {% endblock %}
