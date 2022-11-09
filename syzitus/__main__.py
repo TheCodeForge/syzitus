@@ -186,8 +186,6 @@ app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lowe
 app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
 app.config["IMG_URL_THUMBSPLASH"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
-
-#options to take out certain features
 app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
 
 Markdown(app)
@@ -315,27 +313,9 @@ import syzitus.helpers.jinja2
 #purge css from cache
 cache.delete_memoized(syzitus.routes.main_css)
 
-
-@cache.memoize(UA_BAN_CACHE_TTL)
-def get_useragent_ban_response(user_agent_str):
-    """
-    Given a user agent string, returns a tuple in the form of:
-    (is_user_agent_banned, (insult, status_code))
-    """
-    #if request.path.startswith("/socket.io/"):
-    #    return False, (None, None)
-
-    result = g.db.query(
-        syzitus.classes.Agent).filter(
-        syzitus.classes.Agent.kwd.in_(
-            user_agent_str.split())).first()
-    if result:
-        return True, (result.mock or "Follow the robots.txt, dumbass",
-                      result.status_code or 418)
-    return False, (None, None)
-
 def drop_connection():
 
+    g.db.rollback()
     g.db.close()
     gevent.getcurrent().kill()
 
@@ -354,21 +334,55 @@ def before_request():
     if app.config["BOT_DISABLE"] and request.headers.get("X-User-Type")=="Bot":
         abort(503)
 
-    ipban= g.db.query(IP).filter(
-        IP.addr==request.remote_addr,
-        IP.unban_utc>g.timestamp
-        ).first()
-    if ipban:
-        ipban.unban_utc
+    g.timestamp = int(time.time())
+
+    g.db = db_session()
+    g.ip=None
+    g.ua=None
+    g.is_archive=False
+
+    ip_ban= get_ip(request.remote_addr)
+
+    if ip_ban and ip_ban.unban_utc and ip_ban.unban_utc > g.timestamp:
+        ip_ban.unban_utc = g.timestamp + 60*60
+        g.db.add(ip_ban)
+        g.db.commit()
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
+    elif ip_ban and ip_ban.reason=="archive":
+        g.ip=ip_ban
+        g.is_archive=True
+    elif ip_ban:
+        abort(418)
 
 
     session.permanent = True
 
-    ua_banned, response_tuple = get_useragent_ban_response(
-        request.headers.get("User-Agent", "NoAgent"))
-    if ua_banned:
-        return response_tuple
+    useragent=request.headers.get("User-Agent", "NoAgent")
+
+    ua_ban = g.db.query(
+        syzitus.classes.Agent).filter(
+            or_(
+                syzitus.classes.Agent.kwd.in_(useragent.split()),
+                syzitus.classes.Agent.kwd==useragent
+                )
+            ).first()
+
+    if ua_ban and ua_ban.instaban:
+        existing_ban=get_ip(request.remote_addr)
+        if not existing_ban:
+            new_ip=syzitus.classes.IP(
+                addr=request.remote_addr,
+                unban_utc=None,
+                reason="user agent instaban",
+                banned_by=1
+                )
+            g.db.add(new_ip)
+            g.db.commit()
+    elif ua_ban and ua_ban.reason=="archive":
+            g.db.ua=ua_ban
+            g.is_archive=True
+    elif ua_ban:
+        abort(418)
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
