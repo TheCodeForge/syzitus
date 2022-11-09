@@ -333,19 +333,21 @@ def before_request():
     g.timestamp = int(time.time())
 
     g.db = db_session()
-    g.db.ip=None
-    g.db.ua=None
+    g.ip=None
+    g.ua=None
+    g.is_archive=False
 
-    ipban= get_ip(request.remote_addr)
+    ip_ban= get_ip(request.remote_addr)
 
-    if ipban and ipban.unban_utc and ipban.unban_utc > g.timestamp:
-        ipban.unban_utc = g.timestamp + 60*60
-        g.db.add(ipban)
+    if ip_ban and ip_ban.unban_utc and ip_ban.unban_utc > g.timestamp:
+        ip_ban.unban_utc = g.timestamp + 60*60
+        g.db.add(ip_ban)
         g.db.commit()
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
-    elif ipban and ipban.reason=="archive":
-        g.ip=ipban
-    elif ipban:
+    elif ip_ban and ip_ban.reason=="archive":
+        g.ip=ip_ban
+        g.is_archive=True
+    elif ip_ban:
         abort(418)
 
 
@@ -361,22 +363,22 @@ def before_request():
                 )
             ).first()
 
-    if ua_ban:
-        if ua_ban.instaban:
-            existing_ban=get_ip(request.remote_addr)
-            if not existing_ban:
-                new_ip=syzitus.classes.IP(
-                    addr=request.remote_addr,
-                    unban_utc=None,
-                    reason="user agent instaban",
-                    banned_by=1
-                    )
-                g.db.add(new_ip)
-                g.db.commit()
-        if ua_ban.reason=="archive":
+    if ua_ban and ua_ban.instaban:
+        existing_ban=get_ip(request.remote_addr)
+        if not existing_ban:
+            new_ip=syzitus.classes.IP(
+                addr=request.remote_addr,
+                unban_utc=None,
+                reason="user agent instaban",
+                banned_by=1
+                )
+            g.db.add(new_ip)
+            g.db.commit()
+    elif ua_ban and ua_ban.reason=="archive":
             g.db.ua=ua_ban
-        else:
-            abort(418)
+            g.is_archive=True
+    elif ua_ban:
+        abort(418)
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
