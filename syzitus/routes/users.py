@@ -130,7 +130,7 @@ Optional query parameters:
                 }
 
     if g.is_archive and u.is_private:
-        return render_template("userpage_noarchive.html")
+        return render_template("errors/archive.html")
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
@@ -223,7 +223,7 @@ Optional query parameters:
                 }
 
     if g.is_archive and u.is_private:
-        return render_template("userpage_noarchive.html")
+        return render_template("errors/archive.html")
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
