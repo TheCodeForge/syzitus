@@ -351,14 +351,8 @@ def before_request():
 
     g.db = db_session()
 
-    ipban= g.db.query(IP).filter(
-        IP.addr==request.remote_addr,
-        or_(
-            IP.unban_utc>g.timestamp,
-            IP.unban_utc==None,
-            IP.unban_utc==0
-            )
-        ).first()
+    ipban= get_ip(request.remote_addr)
+    
     if ipban and ipban.unban_utc:
         ipban.unban_utc
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429

@@ -984,17 +984,33 @@ def get_domain(s):
 
     return doms[0]
 
+def get_ip(addr):
 
-# def get_title(x):
+    if '.' not in addr:
+        return g.db.query(Domain).filter_by(addr=addr).first()
 
-#     title = g.db.query(Title).filter_by(id=x).first()
+    # parse ip into subnets
+    parts = s.split(".")
 
-#     if not title:
-#         abort(400)
+    ip_list = tuple(
+        [
+        f'{parts[0]}.*.*.*',
+        f'{parts[0]}.{parts[1]}.*.*',
+        f'{parts[0]}.{parts[1]}.{parts[2]}.*',
+        f'{parts[0]}.{parts[1]}.{parts[2]}.{parts[3]}'
+        ])
 
-#     else:
-#         return title
+    ips = [x for x in g.db.query(IP).filter(
+        IP.addr.in_(ips)).all()]
 
+    if not ips:
+        return None
+
+    # return the most specific domain - the one with the longest domain
+    # property
+    ips = sorted(ip, key=lambda x: len(x.addr), reverse=True)
+
+    return ips[0]
 
 def get_mod(uid, bid):
 
