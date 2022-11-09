@@ -1001,7 +1001,7 @@ def get_ip(addr):
         ])
 
     ips = [x for x in g.db.query(IP).filter(
-        IP.addr.in_(ips)).all()]
+        IP.addr.in_(ip_list)).all()]
 
     if not ips:
         return None
