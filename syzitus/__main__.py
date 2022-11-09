@@ -313,7 +313,7 @@ import syzitus.helpers.jinja2
 cache.delete_memoized(syzitus.routes.main_css)
 
 
-@cache.memoize(UA_BAN_CACHE_TTL)
+#@cache.memoize(UA_BAN_CACHE_TTL)
 def get_useragent_ban_response(user_agent_str):
     """
     Given a user agent string, returns a tuple in the form of:
