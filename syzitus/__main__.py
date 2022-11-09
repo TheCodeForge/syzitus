@@ -360,14 +360,14 @@ def before_request():
         if ua_ban.instaban:
             existing_ban=get_ip(request.remote_addr)
             if not existing_ban:
-            new_ip=syzitus.classes.IP(
-                addr=request.remote_addr,
-                unban_utc=None,
-                reason="user agent instaban",
-                banned_by=1
-                )
-            g.db.add(new_ip)
-            g.db.commit()
+                new_ip=syzitus.classes.IP(
+                    addr=request.remote_addr,
+                    unban_utc=None,
+                    reason="user agent instaban",
+                    banned_by=1
+                    )
+                g.db.add(new_ip)
+                g.db.commit()
         return (ua_ban.mock or "follow the robots.txt", ua_ban.status_code or 418)
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
