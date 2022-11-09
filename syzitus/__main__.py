@@ -314,6 +314,7 @@ cache.delete_memoized(syzitus.routes.main_css)
 
 def drop_connection():
 
+    g.db.rollback()
     g.db.close()
     gevent.getcurrent().kill()
 
@@ -332,16 +333,20 @@ def before_request():
     g.timestamp = int(time.time())
 
     g.db = db_session()
+    g.db.ip=None
+    g.db.ua=None
 
     ipban= get_ip(request.remote_addr)
 
-    if ipban and ipban.unban_utc:
+    if ipban and ipban.unban_utc and ipban.unban_utc > g.timestamp:
         ipban.unban_utc = g.timestamp + 60*60
         g.db.add(ipban)
         g.db.commit()
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
-    elif ipban and not request.path.startswith(("/assets/", "/logo/")):
-        return render_template("errors/archive.html")
+    elif ipban and ipban.reason=="archive":
+        g.ip=ipban
+    elif ipban:
+        abort(418)
 
 
     session.permanent = True
@@ -368,7 +373,10 @@ def before_request():
                     )
                 g.db.add(new_ip)
                 g.db.commit()
-        return (ua_ban.mock or "follow the robots.txt", ua_ban.status_code or 418)
+        if ua_ban.reason=="archive":
+            g.db.ua=ua_ban
+        else:
+            abort(418)
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
