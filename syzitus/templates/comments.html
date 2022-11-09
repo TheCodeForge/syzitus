@@ -8,7 +8,7 @@
 
 <!--conditions under which a comment might be hidden-->
 
-{% if ((c.is_banned or c.deleted_utc) or ((c.is_blocking) and not (c.is_guildmaster('content') and c.original_board_id==c.post.board_id))) and not c.distinguish_level and not (v and g.user.admin_level>=3) %}
+{% if (((c.is_banned or c.deleted_utc) or ((c.is_blocking) and not (c.is_guildmaster('content') and c.original_board_id==c.post.board_id))) and not c.distinguish_level and not (v and g.user.admin_level>=3)) or (g.is_archive and c.author.is_private) %}
 
 
 
@@ -22,7 +22,16 @@
         <div id="comment-{{ c.base36id }}-only">
 
             <div class="user-info">{% if standalone and c.over_18 %}<span class="badge badge-danger">NSFW<span> {% endif %}
-                [{% if c.is_banned %}Removed by administrators{% elif c.deleted_utc > 0 %}Deleted by author{% elif c.is_blocking %}You are blocking @{{ c.author.username }}{% elif c.is_blocked %}This user has blocked you{% endif %}]
+              <span>
+                [
+                {% if c.is_banned %}Removed by administrators
+                {% elif c.deleted_utc > 0 %}Deleted by author
+                {% elif c.is_blocking %}You are blocking @{{ c.author.username }}
+                {% elif c.is_blocked %}This user has blocked you
+                {% elif g.is_archive and c.author.is_private %}User opted to block archiving
+                {% endif %}
+                ]
+              </span>
             </div>
 
 

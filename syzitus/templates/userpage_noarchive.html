@@ -1,7 +1,8 @@
 {% extends "errors/default.html" %}
 
 {% block title %}
-<title>Archiving Prohibited</title>
+<title>Archiving Blocked</title>
+<meta name="description" content="Archiving Blocked">
 {% endblock %}
 
 {% block icon %}
@@ -10,8 +11,10 @@
   <i class="far fa-ban fa-stack-2x text-danger"></i>
 </span>
 {% endblock %}
-{% block pagetitle %}Archiving Prohibited{% endblock %}
+
+{% block pagetitle %}Archiving Blocked{% endblock %}
+
 {% block pagebody %}
-<p class="text-muted mb-5">To help protect user safety, third-party archiving is prohibited.</p>
+<p class="text-muted">This user has opted to block content archiving services.</p>
 {% endblock %}
-{% block continue %}{% endblock %}
+

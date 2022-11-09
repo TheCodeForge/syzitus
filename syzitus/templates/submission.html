@@ -4,17 +4,6 @@
 {% set downs=p.downvotes_fuzzed %}
 {% set score=ups-downs %}
 
-
-{% block darkswitchMobile %}
-{% if g.user and g.user.can_use_darkmode and session.get("dark_mode_enabled")%}
-<li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-on fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
-{% elif g.user and g.user.can_use_darkmode %}
-<li class="nav-item"><a class="nav-link" href="javascript:void(0)" onclick="switch_css_board()"><i class="fad fa-toggle-off fa-fw mr-3" id="dark-switch"></i>Dark mode</a></li>
-{% else %}
-<li class="nav-item"><a class="nav-link" href="/settings/profile#referral"><i class="fad fa-toggle-off fa-fw mr-3"></i>Dark mode</a></li>
-{% endif %}
-{% endblock %}
-
 {% block sidebarblock %}
 <div class="sidebar-section sidebar-info">
   <div class="title"><i class="fas fa-info-circle mr-2"></i>Post Info</div>
@@ -394,7 +383,8 @@
           <div class="post-meta text-left d-none d-md-block mb-md-2">
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
-            {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}<span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}
+            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[archiving blocked]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
             {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
@@ -420,7 +410,7 @@
             {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
             {% if p.is_nsfl %}{% include "tags/nsfl.html" %} · {% endif %}
             {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %}
-            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
+            <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_datetime }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[archiving blocked]{% else %}<a href="{{ p.author.permalink }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-25 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}{% endif %}
             {% if p.is_exiled_for %}{% include "tags/exile.html" %}{% endif %}
             {% if p.is_bot %}{% include "tags/blocking.html" %}{% endif %}
             {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
