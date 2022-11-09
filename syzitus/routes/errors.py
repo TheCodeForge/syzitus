@@ -260,9 +260,7 @@ def allow_nsfl_logged_out(bid):
 @app.route("/error/<eid>", methods=["GET"])
 @auth_desired
 def error_all_preview(eid):
-
-     eid=int(eid)
-     return render_template(f"errors/{eid}.html")
+     return render_template(safe_join('errors', f"{eid}.html"))
 
 
 
