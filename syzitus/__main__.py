@@ -368,11 +368,6 @@ def before_request():
             g.db.commit()
         return (ua_ban.mock or "follow the robots.txt", ua_ban.status_code or 418)
 
-    # ua_banned, response_tuple = get_useragent_ban_response(
-    #     request.headers.get("User-Agent", "NoAgent"))
-    # if ua_banned:
-    #     return response_tuple
-
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
         url = request.url.replace("http://", "https://", 1)
