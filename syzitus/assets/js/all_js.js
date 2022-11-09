@@ -1357,7 +1357,7 @@ $('.btn-make-quote').click(function () {
 
 // Character Count
 
-$('.textarea-form-input').on('change', function() {
+$('.textarea-form-input').on('input', function() {
 
   var input = $(this);
 
