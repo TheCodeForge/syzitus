@@ -352,9 +352,11 @@ def before_request():
     g.db = db_session()
 
     ipban= get_ip(request.remote_addr)
-    
+
     if ipban and ipban.unban_utc:
-        ipban.unban_utc
+        ipban.unban_utc = g.timestamp + 60*60
+        g.db.add(ipban)
+        g.db.commit()
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
     elif ipban and not request.path.startswith(("/assets/", "/logo/")):
         return render_template("errors/archive.html")
