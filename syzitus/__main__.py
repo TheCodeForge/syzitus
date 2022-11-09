@@ -353,11 +353,17 @@ def before_request():
 
     ipban= g.db.query(IP).filter(
         IP.addr==request.remote_addr,
-        IP.unban_utc>g.timestamp
+        or_(
+            IP.unban_utc>g.timestamp,
+            IP.unban_utc==None,
+            IP.unban_utc==0
+            )
         ).first()
-    if ipban:
+    if ipban and ipban.unban_utc:
         ipban.unban_utc
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
+    elif ipban and not request.path.startswith(("/assets/", "/logo/")):
+        abort(418)
 
 
     session.permanent = True
