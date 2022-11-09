@@ -24,3 +24,4 @@ class Agent(Base):
     banned_by = Column(Integer, ForeignKey("users.id"))
     mock = Column(String(256), default="")
     status_code = Column(Integer, default=418)
+    instaban = Column(Boolean, default=False)

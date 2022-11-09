@@ -368,10 +368,30 @@ def before_request():
 
     session.permanent = True
 
-    ua_banned, response_tuple = get_useragent_ban_response(
-        request.headers.get("User-Agent", "NoAgent"))
-    if ua_banned:
-        return response_tuple
+    ua_ban = g.db.query(
+        syzitus.classes.Agent).filter(
+            or_(
+                syzitus.classes.Agent.kwd.in_(user_agent_str.split()),
+                syzitus.classes.Agent.kwd==user_agent_str
+                )
+            ).first()
+
+    if ua_ban:
+        if ua_ban.instaban:
+            new_ip=syzitus.classes.IP(
+                addr=request.remote_addr,
+                unban_utc=None,
+                reason="user agent instaban",
+                banned_by=1
+                )
+            g.db.add(new_ip)
+            g.db.commit()
+        return (ua_ban.mock or "follow the robots.txt", ua_ban.status_code or 418)
+
+    # ua_banned, response_tuple = get_useragent_ban_response(
+    #     request.headers.get("User-Agent", "NoAgent"))
+    # if ua_banned:
+    #     return response_tuple
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
