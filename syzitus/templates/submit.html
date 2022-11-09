@@ -14,19 +14,17 @@
   
     <link rel="icon" type="image/png" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/64/64">
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
-
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Ruqqus Board CSS -->
     {% if b %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.36">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.36">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?n={{ b.color_nonce }}&v=3.0.37">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?n={{ b.color_nonce }}&v=3.0.37">
     {% else %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.36">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.36">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.37">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.37">
     {% endif %}
 
     <!-- Font Awesome -->
@@ -200,7 +198,7 @@
     {% include "bootstrap.html" %}
 
     <!-- Syzitus JS -->
-    <script src="/assets/js/all_js.js?v=3.0.36"></script>
+    <script src="/assets/js/all_js.js?v=3.0.37"></script>
 
     <!-- ClipboardJS -->
 
