@@ -2066,7 +2066,7 @@ if (("standalone" in window.navigator) &&       // Check if "standalone" propert
   if (window.innerWidth <= 737){
     try {
       $('#mobile-prompt').tooltip('show')
-      $('.tooltip')[0].addEventListener(
+      $('.tooltip').on(
         'click',
         function(event){
           $('#mobile-prompt').tooltip('hide')
