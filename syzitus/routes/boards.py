@@ -1562,7 +1562,7 @@ URL path parameters:
     g.db.flush()
 
     # clear your cached guild listings
-    cache.delete_memoized(User.idlist, g.user, kind="board")
+    #cache.delete_memoized(User.idlist, g.user, kind="board")
 
     # update board trending rank
     board.rank_trending = board.trending_rank

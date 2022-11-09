@@ -22,7 +22,7 @@ import psycopg2
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError, StatementError, InternalError
+from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError
 from sqlalchemy.orm import Session, sessionmaker, scoped_session, Query as _Query
 from sqlalchemy import *
 from sqlalchemy.pool import QueuePool
@@ -348,7 +348,7 @@ def before_request():
         g.db.add(ip_ban)
         g.db.commit()
         return jsonify({"error":"Your ban has been reset for another hour. Slow down."}), 429
-    elif ip_ban and ip_ban.reason=="archive":
+    elif ip_ban and "archive" in ip_ban.reason:
         g.ip=ip_ban
         g.is_archive=True
     elif ip_ban:
@@ -373,12 +373,15 @@ def before_request():
             new_ip=syzitus.classes.IP(
                 addr=request.remote_addr,
                 unban_utc=None,
-                reason="user agent instaban",
+                reason="archive instaban",
                 banned_by=1
                 )
             g.db.add(new_ip)
-            g.db.commit()
-    elif ua_ban and ua_ban.reason=="archive":
+            try:
+                g.db.commit()
+            except IntegrityError:
+                pass    
+    if ua_ban and "archive" in ua_ban.reason:
             g.db.ua=ua_ban
             g.is_archive=True
     elif ua_ban:

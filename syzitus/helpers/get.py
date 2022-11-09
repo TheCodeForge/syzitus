@@ -987,7 +987,7 @@ def get_domain(s):
 def get_ip(addr):
 
     if '.' not in addr:
-        return g.db.query(Domain).filter_by(addr=addr).first()
+        return g.db.query(IP).filter_by(addr=addr).first()
 
     # parse ip into subnets
     parts = addr.split(".")
