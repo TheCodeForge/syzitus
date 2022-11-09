@@ -1359,25 +1359,31 @@ $('.btn-make-quote').click(function () {
 
 function charLimit(form, text) {
 
-  var input = document.getElementById(form);
+  var input = $(this);
 
-  var text = document.getElementById(text);
+  var text = $('#'+$(this).data('text'));
 
-  var length = input.value.length;
+  var length = input.val().length;
 
-  var maxLength = input.getAttribute("maxlength");
+  var maxLength = input.attr("maxlength");
 
   if (length >= maxLength) {
-    text.style.color = "#E53E3E";
+    text.addClass('text-danger');
+    text.removeClass('text-warning');
+    text.removeClass('text-muted');
   }
   else if (length >= maxLength * .72){
-    text.style.color = "#FFC107";
+    text.addClass('text-warning');
+    text.removeClass('text-danger');
+    text.removeClass('text-muted');
   }
   else {
-    text.style.color = "#A0AEC0";
+    text.addClass('text-muted');
+    text.removeClass('text-danger');
+    text.removeClass('text-warning');
   }
 
-  text.innerText = maxLength - length;
+  text.text(maxLength - length);
 
 }
 
@@ -1471,79 +1477,75 @@ document.addEventListener('paste', function (event) {
 
 function checkForRequired() {
 
-// Divs
+  // Divs
 
-var title = document.getElementById("post-title");
+  var title = $("#post-title");
 
-var url = document.getElementById("post-URL");
+  var url = $("#post-URL");
 
-var text = document.getElementById("post-text");
+  var text = $("#post-text");
 
-var button = document.getElementById("create_button");
+  var button = $("#create_button");
 
-var image = document.getElementById("file-upload");
+  var image = $("#file-upload");
 
-// Toggle reuqired attribute
+  // Toggle reuqired attribute
 
-if (url.value.length > 0 || image.value.length > 0) {
-  text.required = false;
-  url.required=false;
-} else if (text.value.length > 0 || image.value.length > 0) {
-  url.required = false;
-} else {
-  text.required = true;
-  url.required = true;
+  if (url.val().length > 0 || image.val().length > 0) {
+    text.prop('required', false);
+    url.prop('required', false);
+  } else if (text.val().length > 0 || image.val().length > 0) {
+    url.prop('required', false);
+  } else {
+    text.prop('required',true);
+    url.prop('required', false);
+  }
+
+  // Validity check
+
+  var isValidTitle = title[0].checkValidity();
+
+  var isValidURL = url[0].checkValidity();
+
+  var isValidText = text[0].checkValidity();
+
+  // Disable submit button if invalid inputs
+
+  if (isValidTitle && (isValidURL || image.val().length>0)) {
+    button.prop('disabled',false);
+  } else if (isValidTitle && isValidText) {
+    button.prop('disabled',false);
+  } else {
+    button.prop('disabled',true);
+  }
 }
 
-// Validity check
-
-var isValidTitle = title.checkValidity();
-
-var isValidURL = url.checkValidity();
-
-var isValidText = text.checkValidity();
-
-// Disable submit button if invalid inputs
-
-if (isValidTitle && (isValidURL || image.value.length>0)) {
-  button.disabled = false;
-} else if (isValidTitle && isValidText) {
-  button.disabled = false;
-} else {
-  button.disabled = true;
-}
-
-}
+//attach the above function to Input and Change
+$('.submit-form-input').on('input', checkForRequired);
 
 // Auto-suggest title given URL
+$("#post-URL").on("change", function()  {
 
-function autoSuggestTitle()  {
-
-  var urlField = document.getElementById("post-URL");
-
-  var titleField = document.getElementById("post-title");
-
-  var isValidURL = urlField.checkValidity();
+  var urlField = $("#post-URL");
+  var titleField = $("#post-title");
+  var isValidURL = urlField[0].checkValidity();
 
   if (isValidURL && urlField.value.length > 0 && titleField.value === "") {
 
     var x = new XMLHttpRequest();
     x.withCredentials=true;
-    x.onreadystatechange = function() {
-      if (x.readyState == 4 && x.status == 200) {
-
+    x.onload = function() {
+      if (x.status == 200) {
         title=JSON.parse(x.responseText)["title"];
         titleField.value=title;
-
         checkForRequired()
       }
     }
     x.open('get','/submit/title?url=' + urlField.value);
-    x.send(null);
+    x.send();
 
   };
-
-};
+})
 
 // Run AutoSuggestTitle function on load
 
@@ -1701,6 +1703,8 @@ $('.btn-save-new-comment').click(function(){
 
   var form = new FormData();
 
+  var fullname=$(this).data('parent-fullname');
+
   form.append('formkey', formkey());
   form.append('parent_fullname', $(this).data('parent-fullname'));
   form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-fullname')).value);
@@ -1720,7 +1724,7 @@ $('.btn-save-new-comment').click(function(){
       $('#toast-comment-success').toast('show');
     }
     else {
-      $('#save-reply-to-'+$(this).data('parent-fullname')).prop('disabled', false);
+      $('#save-reply-to-'+fullname).prop('disabled', false);
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -1793,7 +1797,7 @@ $(".btn-pin-comment").click(function(){
 
 //part of submit page js
 
-hide_image=function(){
+$('#post-URL').on('input', function(){
   x=document.getElementById('image-upload-block');
   url=document.getElementById('post-URL').value;
   if (url.length>=1){
@@ -1802,7 +1806,9 @@ hide_image=function(){
   else {
     x.classList.remove('d-none');
   }
-}
+})
+
+
 
 $('.btn-save-edit-comment').click(function() {
 
