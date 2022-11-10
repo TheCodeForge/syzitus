@@ -58,13 +58,13 @@
 
               <div class="d-flex">
 
-                 <form action="/mod/{{ b.base36id }}/color" id="color-form" method="post" class="color-picker" style="line-height: 0">
+                 <form action="/mod/{{ b.base36id }}/color" id="color-form" method="post" class="color-picker">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
                     {% for color in [('COLOR_PRIMARY' | app_config | lower ),'2a96f3','62ca56','eb4963','f39731','30409f','805ad5','e4432d','7b9ae4','ec72de','7f8fa6'] %}
-                    <input type="radio" name="color" id="color-{{ color }}" value="{{ color }}" {% if b.color == color %}checked{% endif %} onclick="document.getElementById('color-form').submit()"/>
+                    <input type="radio" name="color" id="color-{{ color }}" value="{{ color }}" {% if b.color == color %}checked{% endif %} class="toast-form-submit" data-form="color-form"/>
                     <label class="color-radio" for="color-{{ color }}">
-                      <span style="background-color: #{{ color }}">
+                      <span id="label-color-{{ color }}">
                       {% if b.color.lower() == color %}
                         <i class="fas fa-check text-white"></i>
                       {% else %}
@@ -72,22 +72,24 @@
                       {% endif %}
                       </span>
                     </label>
+                    <style nonce="{{ g.nonce }}">
+                      #label-color-{{ color }} {background-color: #{{ color }};}
+                    </style>
                     {% endfor %}
 
                 </form>
 
               </div>
               
-              <p class="text-small mb-2">Or type a color code:</p>
+              <p class="text-small mb-2">Or type a RGB color code:</p>
               
               <div class="d-flex">
               
                 <form action="/mod/{{ b.base36id }}/color" id="color-code-form" method="post">
                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-
                    <input class="form-control" type="text" name="color" id="color-code" value="{{ b.color }}">
-                   <label class="btn btn-secondary text-capitalize mr-2 mt-2 mb-0">Update<input type="text" for="color-code" onclick="form.submit()" hidden=""></label>
                 </form>
+                <a class="btn btn-secondary text-capitalize mr-2 mt-2 mb-0 toast-form-submit" data-form="color-code-form">Update</a>
                 
               </div>
 
