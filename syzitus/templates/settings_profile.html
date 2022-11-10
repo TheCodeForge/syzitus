@@ -240,17 +240,17 @@
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <input type="text" name="name" class="form-control" value="{{ g.user.username }}">
                     <small>Your original username will always stay reserved for you: <code>{{ g.user.original_username }}</code></small>
-                    <div class="d-flex mt-2">
-                      <small>5-25 characters, including letters, numbers, and _</small>
-                      {% if g.user.can_change_name %}
-                      <button class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</button>
-                      {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config) %}
-                      <input class="btn btn-primary ml-auto" id="nameSave" value="{{ ('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config)-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
-                      {% else %}
-                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>{{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins required</a>
-                      {% endif %}
-                    </div>
                   </form>
+                  <div class="d-flex mt-2">
+                    <small>5-25 characters, including letters, numbers, and _</small>
+                    {% if g.user.can_change_name %}
+                    <a href="javascript:void(0)" class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</a>
+                    {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config) %}
+                    <input class="btn btn-primary ml-auto" id="nameSave" value="{{ ('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config)-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
+                    {% else %}
+                    <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>{{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins required</a>
+                    {% endif %}
+                  </div>
                 </div>
 
               </div>

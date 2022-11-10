@@ -2517,11 +2517,12 @@ function mod_post(url, type, id) {
 
 //post form toast utility function
 var postformtoast = function(x){
+
   var form_id=x.data('form')
   var xhr = new XMLHttpRequest();
   url=$('#'+form_id).prop('action');
-  xhr.open("POST", $('#'+form_id).prop('action'), true);
-  var form = new FormData(document.querySelector('#'+form_id));
+  xhr.open("POST", url, true);
+  var form = new FormData($('#'+form_id)[0]);
   xhr.withCredentials=true;
   xhr.onerror=function() { 
       $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
