@@ -526,3 +526,21 @@ def post_reset():
     return render_template("message_success.html",
                            title="Password reset successful!",
                            message="Login normally to access your account.")
+
+
+@app.get("/<path:path>.php")
+@app.get("/<path:path>.aspx")
+def malicious_scraper_honeypot(path):
+
+    new_ipban = IP(
+        addr=request.remote_addr,
+        unban_utc=0,
+        banned_by=1,
+        reason="malicious scraper honeypot"
+        )
+
+    g.db.add(new_ipban)
+    g.db.commit()
+
+    abort(418)
+
