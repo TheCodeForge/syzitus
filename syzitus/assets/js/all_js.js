@@ -1844,7 +1844,7 @@ $('.btn-save-edit-comment').click(function() {
 })
 
 
-filter_guild=function() {
+$('#filter-guild-button').click(function(){
 
   var exileForm = document.getElementById("exile-form");
 
@@ -1876,8 +1876,7 @@ filter_guild=function() {
     }
     xhr.send(f)
   }
-
-}
+})
 
 coin_quote = function() {
 
