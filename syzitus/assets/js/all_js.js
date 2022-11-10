@@ -464,12 +464,6 @@ $('#deleteCommentButton').click(function() {
 
 //Email verification text
 
-function emailVerifyText() {
-
-  document.getElementById("email-verify-text").innerHTML = "Verification email sent! Please check your inbox.";
-
-}
-
 //flagging
 // Flag Comment
 $('.btn-report-comment').click(function() {
@@ -2331,3 +2325,7 @@ $("#nofollowswitch").change(function(){
 })
 
 $('.onchange-form-submit').change(function(){form.submit()})
+
+$('#2faToggle').change(function(){
+  $('#2faModal').modal('toggle')
+})

@@ -107,7 +107,7 @@
                 <input class="form-control" id="new_email" {% if g.user.email %}placeholder="{{ g.user.email }}"{% else %}placeholder="Your email"{% endif %}
                 aria-describedby="new_email" type="email" name="new_email" required>
                 {% if g.user.email and not g.user.is_activated %}
-                <div class="text-danger text-small-extra mt-1" id="email-verify-text">Email not verified. You will not be able to recover your account with this email until you verify it. <u><a href="javascript:void(0)" onclick="post('/api/verify_email');emailVerifyText();" class="text-danger">Verify now.</a></u></div>
+                <div class="text-danger text-small-extra mt-1" id="email-verify-text">Email not verified. You will not be able to recover your account with this email until you verify it. <u><a href="javascript:void(0)" class="text-danger post-toast-url" data-post-url="/api/verify_email">Verify now.</a></u></div>
                 {% elif not g.user.email %}
                 <div class="text-danger text-small-extra mt-1" id="email-verify-text">Add an email to secure your account in case you forget your password.</div>
                 {% endif %}
@@ -164,11 +164,11 @@
         <div class="body w-lg-100">
 
           <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="2faToggle" name="2faToggle" onchange="$('#2faModal').modal('toggle')" {% if not mfa_secret %}checked=""{% endif %}>
+          <input type="checkbox" class="custom-control-input" id="2faToggle" name="2faToggle" {% if not mfa_secret %}checked=""{% endif %}>
           <label class="custom-control-label" for="2faToggle"></label>
           </div>
 
-          <span class="text-small-extra text-muted">This requires entering a randomly-generated, 6-digit code and your password to login. See <a href="#">Google Authenticator</a> or <a href="#">Authy</a> for more details.</span>
+          <span class="text-small-extra text-muted">This requires entering a 6-digit code when logging in, in addition to your password. You need a two-factor code app like Google Authenticator or Authy.</span>
 
         </div>
 
