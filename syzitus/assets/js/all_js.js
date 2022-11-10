@@ -1715,7 +1715,7 @@ $('.btn-save-new-comment').click(function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      $('#comment-form-space-'+$(this).data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
+      $('#comment-form-space-'+fullname).html(JSON.parse(xhr.response)["html"]);
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
