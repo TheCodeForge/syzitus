@@ -223,7 +223,7 @@ function textAreaOnKeyDown(e, func){
   return;
 }
 
-function isCtrlEnterSubmit(e) {
+function isCtrlEnterSubmit(e){
   // If the user has pressed enter + ctrl/command
   if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey))
   {
@@ -1721,8 +1721,7 @@ $('.btn-save-new-comment').click(function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      commentForm=document.getElementById('comment-form-space-'+$(this).data('parent-fullname'));
-      commentForm.innerHTML=JSON.parse(xhr.response)["html"];
+      $('#comment-form-space-'+$(this).data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
