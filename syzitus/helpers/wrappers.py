@@ -108,18 +108,18 @@ def get_logged_in_user():
 def validate_csrf_token():
 
     if request.method not in ["POST", "PUT", "PATCH", "DELETE"]:
-        debug("req does not need csrf")
+        #debug("req does not need csrf")
         return
 
     if request.path.startswith("/api/v2/") and g.user:
-        debug("req is api call, does not need csrf")
+        #debug("req is api call, does not need csrf")
 
     submitted_key = request.values.get("formkey", "none")
 
     #logged in users
     if g.user:
         if not g.user.validate_formkey(submitted_key):
-            debug('logged in user, failed token')
+            #debug('logged in user, failed token')
             abort(403)
 
     else:
@@ -127,14 +127,14 @@ def validate_csrf_token():
         t=int(request.values.get("time", 0))
 
         if g.timestamp-t > 3600:
-            debug('logged out user, token expired')
+            #debug('logged out user, token expired')
             abort(403)
 
         if not validate_hash(f"{t}+{session['session_id']}", submitted_key):
-            debug('logged out user, invalid token')
+            #debug('logged out user, invalid token')
             abort(403)
 
-    debug("successful csrf")
+    #debug("successful csrf")
 
 def check_ban_evade():
 
