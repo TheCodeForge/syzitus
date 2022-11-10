@@ -1910,6 +1910,8 @@ coin_quote = function() {
   }
   xhr.send()
 }
+$('input#promo-code').on('input', coin_quote)
+$('select#select-coins').on('change', coin_quote)
 
 
 $(".btn-tip-modal-trigger").click(function() {
