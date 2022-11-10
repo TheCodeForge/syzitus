@@ -464,12 +464,6 @@ $('#deleteCommentButton').click(function() {
 
 //Email verification text
 
-function emailVerifyText() {
-
-  document.getElementById("email-verify-text").innerHTML = "Verification email sent! Please check your inbox.";
-
-}
-
 //flagging
 // Flag Comment
 $('.btn-report-comment').click(function() {
@@ -1728,6 +1722,7 @@ $('.btn-save-new-comment').click(function(){
     }
     else {
       $('#save-reply-to-'+fullname).prop('disabled', false);
+      $('#save-reply-to-'+fullname).removeClass('disabled')
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -1737,7 +1732,8 @@ $('.btn-save-new-comment').click(function(){
   }
   xhr.send(form)
 
-  $('#save-reply-to-'+fullname).prop('disabled', true);
+  $('#save-reply-to-'+fullname).prop('disabled', true)
+  $('#save-reply-to-'+fullname).addClass('disabled');
 
 })
 
@@ -1848,42 +1844,6 @@ $('.btn-save-edit-comment').click(function() {
 
 })
 
-
-filter_guild=function() {
-
-  var exileForm = document.getElementById("exile-form");
-
-  var exileError = document.getElementById("toast-error-message");
-
-  var boardField = document.getElementById("exile-username");
-
-  var isValidUsername = boardField.checkValidity();
-
-  boardname = boardField.value;
-
-  if (isValidUsername) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("post", "/settings/block_guild");
-    xhr.withCredentials=true;
-    f=new FormData();
-    f.append("board", boardname);
-    f.append("formkey", formkey());
-    xhr.onload=function(){
-      if (xhr.status<300) {
-        window.location.reload(true);
-      }
-      else {
-        $('#toast-exile-error').toast('dispose');
-        $('#toast-exile-error').toast('show');
-        exileError.textContent = JSON.parse(xhr.response)["error"];
-      }
-    }
-    xhr.send(f)
-  }
-
-}
-
 coin_quote = function() {
 
   var coins = document.getElementById('select-coins');
@@ -1909,6 +1869,8 @@ coin_quote = function() {
   }
   xhr.send()
 }
+$('input#promo-code').on('input', coin_quote)
+$('select#select-coins').on('change', coin_quote)
 
 
 $(".btn-tip-modal-trigger").click(function() {
@@ -2168,11 +2130,12 @@ function mod_post(url, type, id) {
 
 //post form toast utility function
 var postformtoast = function(x){
+
   var form_id=x.data('form')
   var xhr = new XMLHttpRequest();
   url=$('#'+form_id).prop('action');
-  xhr.open("POST", $('#'+form_id).prop('action'), true);
-  var form = new FormData(document.querySelector('#'+form_id));
+  xhr.open("POST", url, true);
+  var form = new FormData($('#'+form_id)[0]);
   xhr.withCredentials=true;
   xhr.onerror=function() { 
       $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
@@ -2310,3 +2273,42 @@ $('#submit-image-div').on('drop', function(event){
   input.change();
 });
 
+$('#title-selector').change(function(){
+  post_toast('/settings/profile?title_id='+$(this).val())
+})
+$('#defaultsorting').change(function(){
+  post_toast('/settings/profile?defaultsorting='+$(this).val())
+})
+$('#defaulttime').change(function(){
+  post_toast('/settings/profile?defaulttime='+$(this).val())
+})
+$("#privateswitch").change(function(){
+  post_toast('/settings/profile?private='+$(this).prop('checked'))
+})
+$("#nofollowswitch").change(function(){
+  post_toast('/settings/profile?nofollow='+$(this).prop('checked'))
+})
+
+$('.onchange-form-submit').change(function(){form.submit()})
+
+$('#2faToggle').change(function(){
+  $('#2faModal').modal('toggle')
+})
+
+$('#over18').change(function(){
+  post_toast('/settings/profile?over18='+$(this).prop('checked'));
+  $('#filter-nsfw-option').toggleClass('d-none')
+})
+
+$('#filter-nsfw').change(function(){
+  post_toast('/settings/profile?filter_nsfw='+$(this).prop('checked'))
+})
+$('#hidensfl').change(function(){
+  post_toast('/settings/profile?show_nsfl='+$(this).prop('checked'))
+})
+$('#hideoffensive').change(function(){
+  post_toast('/settings/profile?hide_offensive='+$(this).prop('checked'))
+})
+$('#hidebot').change(function(){
+  post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
+})

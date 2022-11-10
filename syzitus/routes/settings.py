@@ -662,16 +662,16 @@ def settings_name_change():
         return jsonify({"error":"Verified ID users can't change their name."}), 403
 
     #7 day cooldown
-    if g.user.name_changed_utc > int(time.time()) - 60*60*24*7:
-        return jsonify({"error":f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait 7 days between name changes."}), 401
+    if g.user.name_changed_utc > int(time.time()) - 60*60*24*app.config["COOLDOWN_DAYS_CHANGE_USERNAME"]:
+        return jsonify({"error":f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait {app.config['COOLDOWN_DAYS_CHANGE_USERNAME']} days between name changes."}), 401
 
     #costs 20 coins
-    if g.user.coin_balance < 20:
-        return jsonify({"error":f"Username changes cost 20 coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
+    if g.user.coin_balance < app.config["COINS_REQUIRED_CHANGE_USERNAME"]:
+        return jsonify({"error":f"Username changes cost {app.config['COINS_REQUIRED_CHANGE_USERNAME']} coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
 
     #verify acceptability
     if not re.match(valid_username_regex, new_name):
-        return jsonify({"error":"That isn't a valid username."}), 403
+        return jsonify({"error":"That isn't a valid username."}), 400
 
     #verify availability
     name=new_name.replace('_','\_')

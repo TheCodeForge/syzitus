@@ -32,7 +32,7 @@
                 <form action="/settings/images/profile" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="profile" onchange="form.submit()">
+                    Update<input type="file" hidden name="profile" class="onchange-form-submit">
                   </label>
                 </form>
 
@@ -87,7 +87,7 @@
                 <form action="/settings/images/banner" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="banner" onchange="form.submit()">
+                    Update<input type="file" hidden name="banner" class="onchange-form-submit">
                   </label>
                 </form>
 
@@ -233,24 +233,24 @@
                 <label for="bio" class="text-black w-lg-25">Display Name</label>
 
                 <div class="w-lg-100">
-                  <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs 20 Coins and may be done once every 7 days.</p>
+                  <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs {{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins and may be done once every {{ 'COOLDOWN_DAYS_CHANGE_USERNAME' | app_config }} days.</p>
 
 
                   <form id="display-name-form" action="/settings/name_change" method="post">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <input type="text" name="name" class="form-control" value="{{ g.user.username }}">
                     <small>Your original username will always stay reserved for you: <code>{{ g.user.original_username }}</code></small>
-                    <div class="d-flex mt-2">
-                      <small>5-25 characters, including letters, numbers, and _</small>
-                      {% if g.user.can_change_name %}
-                      <button class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</button>
-                      {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*7 %}
-                      <input class="btn btn-primary ml-auto" id="nameSave" value="{{ 7-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
-                      {% else %}
-                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>20 Coins required</a>
-                      {% endif %}
-                    </div>
                   </form>
+                  <div class="d-flex mt-2">
+                    <small>5-25 characters, including letters, numbers, and _</small>
+                    {% if g.user.can_change_name %}
+                    <a href="javascript:void(0)" class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</a>
+                    {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config) %}
+                    <input class="btn btn-primary ml-auto" id="nameSave" value="{{ ('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config)-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
+                    {% else %}
+                    <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>{{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins required</a>
+                    {% endif %}
+                  </div>
                 </div>
 
               </div>
@@ -268,11 +268,11 @@
                       placeholder="Tell the {{ 'SITE_NAME' | app_config }} community a bit about yourself."
                       rows="3" name="bio" form="profile-bio" maxlength="256">{{ g.user.bio }}</textarea>
                     </div>
-                    <div class="d-flex">
-                      <small>Limit of 256 characters</small>
-                      <button class="btn ml-auto toast-form-submit btn-primary" data-form="profile-bio">Save Changes</button>
-                    </div>
                   </form>
+                  <div class="d-flex">
+                    <small>Limit of 256 characters</small>
+                    <button class="btn ml-auto toast-form-submit btn-primary" data-form="profile-bio">Save Changes</button>
+                  </div>
                 </div>
 
               </div>
@@ -283,7 +283,7 @@
                 <div class="w-lg-100">
                   <p>Titles change the way your name is displayed across {{ 'SITE_NAME' | app_config }}, allowing you to show off a site achievement.</p>
                   <div class="input-group mb2">
-                    <select id='title-selector' class="form-control" form="profile-settings" name="title_id" onchange="post_toast('/settings/profile?title_id='+document.getElementById('title-selector').value)">
+                    <select id='title-selector' class="form-control" form="profile-settings" name="title_id">
                      <option value="0"{{ ' selected' if g.user.title_id==0 else '' }}>No title</option>
                      {% for entry in titles %}
                      <option value="{{ entry.id }}"{{ ' selected' if g.user.title_id==entry.id else '' }}>{{ entry.text }}</option>
@@ -302,9 +302,9 @@
                 <div class="w-lg-100">
                   <p>Change the default sorting for posts.</p>
                   <div class="input-group mb2">
-                    <select id='defaultsorting' class="form-control" form="profile-settings" name="defaultsorting" onchange="post_toast('/settings/profile?defaultsorting='+document.getElementById('defaultsorting').value)">
+                    <select id='defaultsorting' class="form-control" form="profile-settings" name="defaultsorting">
                      {% for entry in ["hot", "new", "old", "top", "disputed", "activity"] %}
-                     <option value="{{ entry }}"{{ ' selected' if g.user.defaultsorting==entry else '' }}>{{ entry }}</option>
+                     <option value="{{ entry }}"{% if g.user.defaultsorting==entry %} selected{% endif %}>{{ entry }}</option>
                      {% endfor %}
                    </select>
                   </div>
@@ -319,9 +319,9 @@
                 <div class="w-lg-100">
                   <p>Change the default time filter for posts.</p>
                   <div class="input-group mb2">
-                    <select id='defaulttime' class="form-control" form="profile-settings" name="defaulttime" onchange="post_toast('/settings/profile?defaulttime='+document.getElementById('defaulttime').value)">
+                    <select id='defaulttime' class="form-control" form="profile-settings" name="defaulttime">
                      {% for entry in ["day", "week", "month", "year", "all"] %}
-                     <option value="{{ entry }}"{{ ' selected' if g.user.defaulttime==entry else '' }}>{{ entry }}</option>
+                     <option value="{{ entry }}"{% if g.user.defaulttime==entry %} selected{% endif %}>{{ entry }}</option>
                      {% endfor %}
                    </select>
                   </div>
@@ -339,7 +339,7 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="privateswitch" name="private"{% if g.user.is_private%} checked{% endif %} onchange="post_toast('/settings/profile?private='+document.getElementById('privateswitch').checked)">
+                  <input type="checkbox" class="custom-control-input" id="privateswitch" name="private"{% if g.user.is_private%} checked{% endif %}>
                   <label class="custom-control-label" for="privateswitch"></label>
                 </div>
 
@@ -357,7 +357,7 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="nofollowswitch" name="nofollow"{% if g.user.is_nofollow%} checked{% endif %} onchange="post_toast('/settings/profile?nofollow='+document.getElementById('nofollowswitch').checked)">
+                  <input type="checkbox" class="custom-control-input" id="nofollowswitch" name="nofollow"{% if g.user.is_nofollow%} checked{% endif %}>
                   <label class="custom-control-label" for="nofollowswitch"></label>
                 </div>
 

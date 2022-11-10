@@ -96,6 +96,15 @@ def error_413(e):
            "api": lambda: (jsonify({"error": "413 Request Payload Too Large"}), 413)
            }
 
+@app.errorhandler(418)
+@error_wrapper
+@auth_desired
+@api()
+def error_418(e):
+    return{"html": lambda: (render_template('errors/418.html'), 418),
+           "api": lambda: (jsonify({"error": "418 I'm a teapot, and you're toast. Don't come back."}), 418)
+           }
+
 
 @app.errorhandler(422)
 @error_wrapper

@@ -8,11 +8,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <link rel="icon" type="image/png" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/64/64">
+  <link rel="icon" type="image/png" href="{{ 'IMG_URL_THUMBSPLASH' | app_config }}">
 
   <title>{% block pagetitle %}Settings - {{ 'SITE_NAME' | app_config  }}{% endblock %}</title>
-
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -159,7 +157,7 @@
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 <!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{ g.nonce }}">
   var clipboard = new ClipboardJS('.copy-link');
   clipboard.on('success', function(e) {
 
@@ -181,8 +179,6 @@
 {% include "toasts.html" %}
 
 <script src="/assets/js/all_js.js"></script>
-
-{% block onload %}{% endblock %}
 
 </body>
 
