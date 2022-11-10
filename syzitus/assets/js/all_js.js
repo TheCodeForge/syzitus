@@ -2080,6 +2080,7 @@ post_comment=function(fullname){
       $('#toast-comment-success').toast('show');
     }
     else {
+      $('#save-reply-to-'+fullname).removeClass('disabled');
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -2089,7 +2090,7 @@ post_comment=function(fullname){
   }
   xhr.send(form)
 
-  document.getElementById('save-reply-to-'+fullname).classList.add('disabled');
+  $('#save-reply-to-'+fullname).addClass('disabled');
 
 }
 
