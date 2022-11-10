@@ -64,7 +64,7 @@
 
             <td>
               <div class="dropdown float-right dropdown-actions">
-                <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+                <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-ellipsis-h text-muted"></i>
                 </a>
                 <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
@@ -102,22 +102,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Changes to your guild filters may take up to 15 minutes to take effect.</p>
-          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-          <input type="text" name="guildname" placeholder="enter guild name (no + needed)" id="exile-username" class="form-control" maxlength=25 required>
+          <form id="hide-guild-form" action="/settings/block_guild">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+            <input type="text" name="guildname" placeholder="enter guild name (no + needed)" id="exile-username" class="form-control" maxlength=25 required>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="hide-guild-button">Hide Guild</button>
+          <button type="button" class="btn btn-primary toast-form-submit" data-form="hide-guild-form" id="hide-guild-button">Hide Guild</button>
         </div>
       </div>
     </form>
-  </div>
-</div>
-
-<div class="toast error" id="toast-exile-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-exclamation-circle text-danger mr-2"></i><span id="toast-error-message">Error. Please try again.</span>
   </div>
 </div>
 
