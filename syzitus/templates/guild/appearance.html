@@ -115,10 +115,10 @@
 
               <div>
 
-               <form action="/mod/{{ b.base36id }}/images/profile" method="post" enctype="multipart/form-data">
+               <form action="/mod/{{ b.base36id }}/images/profile" method="post" enctype="multipart/form-data" id="guild-icon-update-form">
                 <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                 <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                  Update<input type="file" hidden name="profile" onchange="form.submit()">
+                  Update<input type="file" hidden name="profile" class="toast-form-change-submit" data-form="guild-icon-update-form">
                 </label>
               </form>
 
@@ -159,10 +159,10 @@
 
             <div>
 
-             <form action="/mod/{{ b.base36id }}/images/banner" method="post" enctype="multipart/form-data">
+             <form action="/mod/{{ b.base36id }}/images/banner" method="post" enctype="multipart/form-data" id="guild-banner-update-form">
               <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
               <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                Update<input type="file" hidden name="banner" onchange="form.submit()">
+                Update<input type="file" hidden name="banner" class="toast-form-change-submit" data-form="guild-banner-update-form">
               </label>
             </form>
 
