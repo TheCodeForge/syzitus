@@ -1453,7 +1453,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def can_change_name(self):
-        return self.name_changed_utc < int(time.time())-60*60*24*7 and self.coin_balance>=20
+        return self.name_changed_utc < g.timestamp - 60*60*24*app.config['COOLDOWN_DAYS_CHANGE_USERNAME'] and self.coin_balance>=app.config['COINS_REQUIRED_CHANGE_USERNAME']
 
     @property
     @cache.memoize(60*60*24)

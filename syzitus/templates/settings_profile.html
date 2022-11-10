@@ -244,10 +244,10 @@
                       <small>5-25 characters, including letters, numbers, and _</small>
                       {% if g.user.can_change_name %}
                       <button class="btn ml-auto toast-form-submit btn-primary" data-form="display-name-form">Change Display Name</button>
-                      {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*7 %}
-                      <input class="btn btn-primary ml-auto" id="nameSave" value="{{ 7-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
+                      {% elif g.timestamp-g.user.name_changed_utc < 60*60*24*('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config) %}
+                      <input class="btn btn-primary ml-auto" id="nameSave" value="{{ ('COOLDOWN_DAYS_CHANGE_USERNAME'|app_config)-((g.timestamp-g.user.name_changed_utc)//(60*60*24)) }} days remaining" disabled>
                       {% else %}
-                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>20 Coins required</a>
+                      <a class="btn btn-primary ml-auto" id="nameSave" href="/settings/premium" disabled>{{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins required</a>
                       {% endif %}
                     </div>
                   </form>
