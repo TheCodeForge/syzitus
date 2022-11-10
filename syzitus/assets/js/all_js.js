@@ -2295,3 +2295,21 @@ $('.onchange-form-submit').change(function(){form.submit()})
 $('#2faToggle').change(function(){
   $('#2faModal').modal('toggle')
 })
+
+$('#over18').change(function(){
+  post_toast('/settings/profile?over18='+$(this).prop('checked'));
+  $('#filter-nsfw-option').toggleClass('d-none')
+})
+
+$('#filter-nsfw').change(function(){
+  post_toast('/settings/profile?filter_nsfw='+$(this).prop('checked'))
+})
+$('#hidensfl').change(function(){
+  post_toast('/settings/profile?show_nsfl='+$(this).prop('checked'))
+})
+$('#hideoffensive').change(function(){
+  post_toast('/settings/profile?hide_offensive='+$(this).prop('checked'))
+})
+$('#hidebot').change(function(){
+  post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
+})
