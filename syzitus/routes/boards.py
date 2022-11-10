@@ -1813,10 +1813,7 @@ def mod_board_color(bid, board):
         color = color[1:]
 
     if len(color) != 6:
-        return render_template("guild/appearance.html", 
-            b=board, 
-            error="Invalid color code."
-            ), 400
+        return jsonify({"error":f"{color} is not a valid RGB color code."}), 400
 
     red = color[0:1]
     green = color[2:3]
@@ -1824,17 +1821,10 @@ def mod_board_color(bid, board):
 
     try:
         if any([int(x, 16) > 255 for x in [red, green, blue]]):
-            return render_template(
-                "guild/appearance.html", 
-                b=board, 
-                error="Invalid color code."
-                ), 400
+            return jsonify({"error":f"{color} is not a valid RGB color code."}), 400
 
     except ValueError:
-        return render_template("guild/appearance.html",
-            b=board, 
-            error="Invalid color code."
-            ), 400
+        return jsonify({"error":f"{color} is not a valid RGB color code."}), 400
 
     board.color = color
 
@@ -1856,7 +1846,7 @@ def mod_board_color(bid, board):
 
     g.db.commit()
 
-    return redirect(f"/+{board.name}/mod/appearance?msg=Success")
+    return jsonify({"redirect":f"/+{board.name}/mod/appearance"}), 301
 
 
 @app.route("/mod/approve/<guildname>", methods=["POST"])
