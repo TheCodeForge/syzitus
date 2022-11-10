@@ -2314,3 +2314,20 @@ $('#submit-image-div').on('drop', function(event){
   input.change();
 });
 
+$('#title-selector').change(function(){
+  post_toast('/settings/profile?title_id='+$(this).val())
+})
+$('#defaultsorting').change(function(){
+  post_toast('/settings/profile?defaultsorting='+$(this).val())
+})
+$('#defaulttime').change(function(){
+  post_toast('/settings/profile?defaulttime='+$(this).val())
+})
+$("#privateswitch").change(function(){
+  post_toast('/settings/profile?private='+$(this).prop('checked'))
+})
+$("#nofollowswitch").change(function(){
+  post_toast('/settings/profile?nofollow='+$(this).prop('checked'))
+})
+
+$('.onchange-form-submit').change(function(){form.submit()})

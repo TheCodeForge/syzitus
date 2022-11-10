@@ -32,7 +32,7 @@
                 <form action="/settings/images/profile" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="profile" onchange="form.submit()">
+                    Update<input type="file" hidden name="profile" class="onchange-form-submit">
                   </label>
                 </form>
 
@@ -87,7 +87,7 @@
                 <form action="/settings/images/banner" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="banner" onchange="form.submit()">
+                    Update<input type="file" hidden name="banner" class="onchange-form-submit">
                   </label>
                 </form>
 
@@ -283,7 +283,7 @@
                 <div class="w-lg-100">
                   <p>Titles change the way your name is displayed across {{ 'SITE_NAME' | app_config }}, allowing you to show off a site achievement.</p>
                   <div class="input-group mb2">
-                    <select id='title-selector' class="form-control" form="profile-settings" name="title_id" onchange="post_toast('/settings/profile?title_id='+document.getElementById('title-selector').value)">
+                    <select id='title-selector' class="form-control" form="profile-settings" name="title_id">
                      <option value="0"{{ ' selected' if g.user.title_id==0 else '' }}>No title</option>
                      {% for entry in titles %}
                      <option value="{{ entry.id }}"{{ ' selected' if g.user.title_id==entry.id else '' }}>{{ entry.text }}</option>
@@ -302,9 +302,9 @@
                 <div class="w-lg-100">
                   <p>Change the default sorting for posts.</p>
                   <div class="input-group mb2">
-                    <select id='defaultsorting' class="form-control" form="profile-settings" name="defaultsorting" onchange="post_toast('/settings/profile?defaultsorting='+document.getElementById('defaultsorting').value)">
+                    <select id='defaultsorting' class="form-control" form="profile-settings" name="defaultsorting">
                      {% for entry in ["hot", "new", "old", "top", "disputed", "activity"] %}
-                     <option value="{{ entry }}"{{ ' selected' if g.user.defaultsorting==entry else '' }}>{{ entry }}</option>
+                     <option value="{{ entry }}"{% if g.user.defaultsorting==entry %} selected{% endif %}>{{ entry }}</option>
                      {% endfor %}
                    </select>
                   </div>
@@ -319,9 +319,9 @@
                 <div class="w-lg-100">
                   <p>Change the default time filter for posts.</p>
                   <div class="input-group mb2">
-                    <select id='defaulttime' class="form-control" form="profile-settings" name="defaulttime" onchange="post_toast('/settings/profile?defaulttime='+document.getElementById('defaulttime').value)">
+                    <select id='defaulttime' class="form-control" form="profile-settings" name="defaulttime">
                      {% for entry in ["day", "week", "month", "year", "all"] %}
-                     <option value="{{ entry }}"{{ ' selected' if g.user.defaulttime==entry else '' }}>{{ entry }}</option>
+                     <option value="{{ entry }}"{% if g.user.defaulttime==entry %} selected{% endif %}>{{ entry }}</option>
                      {% endfor %}
                    </select>
                   </div>
@@ -339,7 +339,7 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="privateswitch" name="private"{% if g.user.is_private%} checked{% endif %} onchange="post_toast('/settings/profile?private='+document.getElementById('privateswitch').checked)">
+                  <input type="checkbox" class="custom-control-input" id="privateswitch" name="private"{% if g.user.is_private%} checked{% endif %}>
                   <label class="custom-control-label" for="privateswitch"></label>
                 </div>
 
@@ -357,7 +357,7 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="nofollowswitch" name="nofollow"{% if g.user.is_nofollow%} checked{% endif %} onchange="post_toast('/settings/profile?nofollow='+document.getElementById('nofollowswitch').checked)">
+                  <input type="checkbox" class="custom-control-input" id="nofollowswitch" name="nofollow"{% if g.user.is_nofollow%} checked{% endif %}>
                   <label class="custom-control-label" for="nofollowswitch"></label>
                 </div>
 
