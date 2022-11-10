@@ -1723,6 +1723,7 @@ $('.btn-save-new-comment').click(function(){
     }
     else {
       $('#save-reply-to-'+fullname).prop('disabled', false);
+      $('#save-reply-to-'+fullname).removeClass('disabled')
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -1732,7 +1733,8 @@ $('.btn-save-new-comment').click(function(){
   }
   xhr.send(form)
 
-  $('#save-reply-to-'+fullname).prop('disabled', true);
+  $('#save-reply-to-'+fullname).prop('disabled', true)
+  $('#save-reply-to-'+fullname).addClass('disabled');
 
 })
 
