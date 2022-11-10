@@ -113,6 +113,7 @@ def validate_csrf_token():
 
     if request.path.startswith("/api/v2/") and g.user:
         #debug("req is api call, does not need csrf")
+        pass
 
     submitted_key = request.values.get("formkey", "none")
 

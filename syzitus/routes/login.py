@@ -531,6 +531,7 @@ def post_reset():
 @app.get("/<path:path>.php")
 @app.get("/<path:path>.aspx")
 @app.get("/<path:path>.xml")
+@app.get("/wp-<path:path>")
 def malicious_scraper_honeypot(path):
 
     #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
