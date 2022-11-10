@@ -233,7 +233,7 @@
                 <label for="bio" class="text-black w-lg-25">Display Name</label>
 
                 <div class="w-lg-100">
-                  <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs 20 Coins and may be done once every 7 days.</p>
+                  <p>Your display name is how you are known across {{ 'SITE_NAME' | app_config }}. Changing your display name costs {{ 'COINS_REQUIRED_CHANGE_USERNAME' | app_config }} Coins and may be done once every {{ 'COOLDOWN_DAYS_CHANGE_USERNAME' | app_config }} days.</p>
 
 
                   <form id="display-name-form" action="/settings/name_change" method="post">
