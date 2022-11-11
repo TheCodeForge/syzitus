@@ -72,10 +72,7 @@ def settings_profile_post():
         bio=preprocess(bio)
 
         if bio == g.user.bio:
-            return {"html":lambda:render_template("settings_profile.html",
-                                   error="You didn't change anything"),
-		    "api":lambda:jsonify({"error":"You didn't change anything"})
-		   }
+            return jsonify({"error":"You didn't change anything"}), 400
 
 
         with CustomRenderer() as renderer:
@@ -113,10 +110,7 @@ def settings_profile_post():
         filters=request.values.get("filters")[0:1000].lstrip().rstrip()
 
         if filters==g.user.custom_filter_list:
-            return {"html":lambda:render_template("settings_profile.html",
-                                   error="You didn't change anything"),
-		    "api":lambda:jsonify({"error":"You didn't change anything"})
-		   }
+            return jsonify({"error":"You didn't change anything"}), 400
 
         g.user.custom_filter_list=filters
         g.db.add(g.user)
