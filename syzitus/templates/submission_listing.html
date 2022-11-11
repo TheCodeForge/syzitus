@@ -56,7 +56,7 @@
 
     <div class="card-header bg-transparent border-0 d-flex flex-row flex-nowrap pl-2 pl-md-0 p-0 mr-md-2">
 
-      <div class="position-relative d-none d-md-block" style="z-index: 3;">
+      <div class="position-relative d-none d-md-block zi-3">
         {% if p.thumb_url and p.is_image %}
         <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
@@ -89,7 +89,7 @@
       </div>
 
 
-      <div class="d-block d-md-none" style="z-index: 3;">
+      <div class="d-block d-md-none zi-3">
         {% if p.thumb_url and not p.is_image %}
         <a href="{{ p.url }}" rel="nofollow noopener">
           <img src="{{ p.thumb_url }}" class="post-img" alt="link post thumbnail">
@@ -106,9 +106,9 @@
 
         <div class="card-block text-left x-scroll-parent my-md-auto w-100">
 
-          <div style="height: 21px" class="d-block d-md-none mb-1">
+          <div class="d-block d-md-none mb-1">
 
-            <div class="post-meta text-left x-scroll" style="overflow-x: scroll;">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
+            <div class="post-meta text-left x-scroll">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
               {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
               {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
               {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
@@ -116,7 +116,7 @@
               {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %} <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_date }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[username not archived due to privacy settings]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
               {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
               {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
-              {% endif %}{% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({{ p.domain }})
+              {% endif %}{% if p.award_count %} · <span><img class="coin-ruqqus" src="/assets/images/icons/ruqqus-coin.png" /><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({{ p.domain }})
               {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible to you because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
               {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
               {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
@@ -133,7 +133,7 @@
           {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
           {% endif %}
           {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
-          {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
+          {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" class="coin-ruqqus"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
           {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
           {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}
           {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
@@ -170,7 +170,7 @@
 
             <li class="list-inline-item"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-            <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+            <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
             {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
             <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="fas fa-star"></i>Tip</a></li>
@@ -216,7 +216,7 @@
             {% if g.user %}
             <li class="list-inline-item d-none d-md-inline-block">
               <div class="dropdown show">
-                <a href="#" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
+                <a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
                 <i class="fas fa-ellipsis-h text-small mr-0"></i>
               </a>
@@ -273,10 +273,10 @@
         {% endif %}
         
 
-        <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
+        <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
         {% if g.user %}
         <li class="list-inline-item">
-          <a href="#" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>
@@ -341,13 +341,13 @@
     <div class="modal-content">
       <div class="modal-header p-3">
         <h5 class="col modal-title text-center h6">More options</h5>
-        <button type="button" class="close position-absolute py-3" style="right: 1rem;" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close position-absolute py-3" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fas fa-times-circle text-gray-500"></i></span>
         </button>
       </div>
       <div class="modal-body">
         <ul class="list-group post-actions">
-          <li class="list-group-item d-none"><a href="#" class="d-block"><i class="fas fa-save"></i>Save</a></li>
+          <li class="list-group-item d-none"><a href="javascript:void(0)" class="d-block"><i class="fas fa-save"></i>Save</a></li>
           {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
           <button class="btn btn-link btn-block btn-lg text-left text-warning" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="far fa-star fa-fw text-center text-warning mr-3"></i>Tip</button>
           {% endif %}

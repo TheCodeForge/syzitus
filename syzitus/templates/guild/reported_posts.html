@@ -11,7 +11,7 @@
 {% if b %}
 <div class="sidebar-section sidebar-profile-basic">
   <div class="body">
-    <h1 class="h6 d-inline-block mb-0" style="color:black">{{ '+'+b.name+' ' if b else ''}}Reported Posts</h1>
+    <h1 class="h6 d-inline-block mb-0 text-black">{{ '+'+b.name+' ' if b else ''}}Reported Posts</h1>
 	<p>Posts in {{ '+'+b.name if b else 'your guilds'}} that users have reported as being off-topic.</p>
 
 </div>
@@ -19,7 +19,7 @@
 {% else %}
 <div class="sidebar-section sidebar-profile-basic">
   <div class="body">
-    <h1 class="h6 d-inline-block mb-0" style="color:black">Reported Posts</h1>
+    <h1 class="h6 d-inline-block mb-0 text-black">Reported Posts</h1>
 
 	<p>Posts in your guilds that users have reported as being off-topic.</p>
 </div>

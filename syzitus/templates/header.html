@@ -7,7 +7,7 @@
       <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
         <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q">
         <span class="input-group-append">
-          <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;">
+          <span class="input-group-text border-0 bg-transparent ml--3">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
         </span>
@@ -22,7 +22,7 @@
     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon {% if g.user and g.user.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
       {% if g.user and g.user.notifications_count %}
-      <i class="fas fa-circle text-danger text-small-extra position-absolute" style="right: -6px; top: -4px;"></i>
+      <i id="red-notif-circle-mobile" class="fas fa-circle text-danger text-small-extra position-absolute"></i>
       {% endif %}
     </span>
   </button>
@@ -109,7 +109,7 @@
             </div>
             <hr class="my-2">
             <div class="px-2">
-              <a class="dropdown-item" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
+              <a class="dropdown-item post-url-reload" data-post-url="/logout"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@
       <form id="searchform" class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
         <input class="form-control form-control-sm w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q">
         <span class="input-group-append">
-          <span class="input-group-text border-0 bg-transparent" style="margin-left: -2.5rem;" onclick="document.getElementById('searchform').submit()">
+          <span class="input-group-text border-0 bg-transparent ml--3" onclick="document.getElementById('searchform').submit()">
             <i class="fa fa-search" aria-hidden="true"></i>
           </span>
         </span>
@@ -147,7 +147,7 @@
         <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications?all=true">
           <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
           {% if g.user.notifications_count %}
-          <i class="fas fa-circle text-danger position-absolute" style="left: 19px; top: 5px; font-size: 10px;"></i>
+          <i class="fas fa-circle text-danger position-absolute" id="red-notif-circle"></i>
           {% endif %}
         </a>
       </li>
@@ -172,7 +172,7 @@
         {% endif %}
 
       <li class="nav-item border-top border-bottom mt-2 pt-2">
-        <a class="nav-link" href="javascript:void(0)", onclick="post('/logout', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
+        <a class="nav-link post-url-reload" data-post-url="/logout"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
       </li>
     {% else %}
       <li class="nav-item d-flex align-items-center justify-content-center pb-3">

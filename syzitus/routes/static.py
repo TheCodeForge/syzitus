@@ -43,7 +43,18 @@ def main_css(color, file, n=None):
     scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
     scss = scss.replace("{downvote}", downvote_color)
 
-    resp = Response(sass.compile(string=scss), mimetype='text/css')
+    #compile the regular css
+    output=sass.compile(string=scss)
+
+    #add title classes
+
+    output +="\n\n"
+
+    colors=list(set([TITLES[x].color for x in TITLES]))
+
+    output += "\n".join([f".title-color-{x}"+"{color: #"+x+";}" for x in colors])
+
+    resp = Response(output, mimetype='text/css')
     resp.headers.add("Cache-Control", "public")
     return resp
 
@@ -51,10 +62,10 @@ def main_css(color, file, n=None):
 @limiter.exempt
 def static_service(path):
 
-    #try:
-    resp = make_response(send_file(safe_join('./assets', path)))
-    #except FileNotFoundError:
-    #       abort(404)
+    try:
+        resp = make_response(send_file(safe_join('./assets', path)))
+    except FileNotFoundError:
+           abort(404)
     resp.headers.add("Cache-Control", "public")
 
     if request.path.endswith('.css'):

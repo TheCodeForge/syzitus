@@ -67,7 +67,7 @@ def api_verify_email():
 
     send_verification_email(g.user)
 
-    return "", 204
+    return jsonify({"message":"Verification email sent! Please check your inbox."})
 
 
 @app.route("/activate", methods=["GET"])

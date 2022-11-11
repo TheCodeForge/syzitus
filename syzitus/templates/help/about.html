@@ -39,7 +39,7 @@
             <a class="navbar-brand" href="/">{{ "SITE_NAME" | app_config }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500" style="font-size: 2rem;"></i></span>
+            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500 fa-2x"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -59,7 +59,7 @@
 
 <!-- Hero -->
 
-<section class="pt-5 pt-md-7" style="background-color: #BEE3F8;">
+<section class="pt-5 pt-md-7 bg-primary">
  <div class="container">
     <div class="row text-dark text-center justify-content-md-center">
         <div class="col col-md-10 col-lg-8 col-xl-6">
@@ -75,7 +75,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col px-0">
-            <img src="/assets/images/jumbotron/ruqqus_landscape_4.svg" style="object-fit: cover; object-position: 0px 1px;">
+            <img src="/assets/images/jumbotron/ruqqus_landscape_4.svg" class='jumbotron'>
         </div>
     </div>
 </div>
@@ -109,7 +109,7 @@
 
             <div class="col col-md-7">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary text-white opacity-80" style="letter-spacing: .025rem;">The gist</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary text-white opacity-80">The gist</p>
 
                 <h2 class="h3 text-white">
                     Share, vote, and discuss. All without censorship.
@@ -123,7 +123,7 @@
             <div class="col-12 col-md-4 col-lg-3 aos-init aos-animate pb-4" data-aos="fade-up">
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
-                    <i class="fad fa-feather-alt text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-feather-alt text-primary mb-4 fa-3x"></i>
 
                     <h3 class="h5">Share</h3>
 
@@ -135,7 +135,7 @@
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
 
-                    <i class="fad fa-podium-star text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-podium-star text-primary mb-4 fa-3x"></i>
 
                     <h3 class="h5">Discuss</h3>
 
@@ -148,7 +148,7 @@
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
 
-                    <i class="fad fa-arrow-alt-up text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-arrow-alt-up text-primary mb-4 fa-3x"></i>
 
                     <h3 class="h5">Vote</h3>
 
@@ -171,7 +171,7 @@
 
             <div class="col-12 col-md-6">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Open source</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary">Open source</p>
 
                 <h2 class="text-capitalize">
                     Fair And Transparent Algorithms
@@ -180,7 +180,7 @@
                 <p class="text-muted">We like to keep things transparent. For this reason, our entire codebase is open-source and available on GitHub. View our algorithms right from your browser. No biased trending or sorting manipulation on {{ "SITE_NAME" | app_config }}.
                 </p>
 
-                <ul class="list-inline no-bullets mb-6 mb-md-5" style="opacity: .1">
+                <ul class="list-inline no-bullets mb-6 mb-md-5 opacity-0-1">
                     <li class="list-inline-item mr-3">
                         <i class="fab fa-python"></i>
                     </li>
@@ -204,27 +204,19 @@
 
             <div class="col-12 col-md-6 d-none d-md-block">
 
-                <div class="row no-gutters mb-3" style="border-bottom: 2px solid #E0E4E9;">
+                <div class="row no-gutters mb-3 about-section-bottom-border">
 
                     <div class="col">
 
-                        <div class="nav nav-pills justify-content-between" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical" style="top: 2px; position: relative;">
-                        <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill"
-                        href="#v-pills-voting" role="tab" aria-controls="v-pills-voting"
-                        aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2"
-                        aria-hidden="true"></i>Voting</a>
-                        <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill"
-                        href="#v-pills-submission" role="tab" aria-controls="v-pills-submission"
-                        aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a>
-                        <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill"
-                        href="#v-pills-user" role="tab" aria-controls="v-pills-user"
-                        aria-selected="false"><i class="far fa-user-circle mr-2"
-                        aria-hidden="true"></i>User</a>
-                        <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab"
-                        data-toggle="pill" href="#v-pills-comment" role="tab"
-                        aria-controls="v-pills-comment" aria-selected="true"><i
-                        class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
+                        <div class="nav nav-pills justify-content-between" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                          <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill" href="#v-pills-voting" role="tab" aria-controls="v-pills-voting" aria-selected="false">
+                            <i class="far fa-arrow-alt-circle-up mr-2" aria-hidden="true"></i>Voting</a>
+                          <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill" href="#v-pills-submission" role="tab" aria-controls="v-pills-submission" aria-selected="false">
+                            <i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a>
+                          <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false">
+                            <i class="far fa-user-circle mr-2" aria-hidden="true"></i>User</a>
+                          <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true">
+                            <i class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
                     </div>
 
                 </div>
@@ -233,39 +225,36 @@
 
             <div class="row">
 
-                <div class="col">
+              <div class="col">
 
-                    <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
+                <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
 
-                        <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel"
-                        aria-labelledby="v-pills-voting-tab">
-                        <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                        style="height: 330px; overflow-x: hidden;">{{ "ruqqus/classes/votes.py" | source_code }}</pre>
-                    </div>
+                  <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel" aria-labelledby="v-pills-voting-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
+                      {{ "ruqqus/classes/votes.py" | source_code }}
+                    </pre>
+                  </div>
 
-                    <div class="tab-pane fade" id="v-pills-submission" role="tabpanel"
-                    aria-labelledby="v-pills-submission-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                    style="height: 330px; overflow-x: hidden;">{{ "ruqqus/classes/submission.py" | source_code }}</pre>
+                  <div class="tab-pane fade" id="v-pills-submission" role="tabpanel" aria-labelledby="v-pills-submission-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
+                      {{ "ruqqus/classes/submission.py" | source_code }}
+                    </pre>
+                  </div>
+
+                  <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
+                      {{ "ruqqus/classes/user.py" | source_code }}
+                    </pre>
+                  </div>
+
+                  <div class="tab-pane fade" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
+                      {{ "ruqqus/classes/comment.py" | source_code }}
+                    </pre>
+                  </div>
                 </div>
-
-                <div class="tab-pane fade" id="v-pills-user" role="tabpanel"
-                aria-labelledby="v-pills-user-tab">
-                <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                style="height: 330px; overflow-x: hidden;">{{ "ruqqus/classes/user.py" | source_code }}</pre>
+              </div>
             </div>
-
-            <div class="tab-pane fade" id="v-pills-comment" role="tabpanel"
-            aria-labelledby="v-pills-comment-tab">
-            <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-            style="height: 330px; overflow-x: hidden;">{{ "ruqqus/classes/comment.py" | source_code }}</pre>
-        </div>
-
-    </div>
-
-</div>
-
-</div>
 
 </div>
 
@@ -285,24 +274,16 @@
 
             <div class="col col-md-10">
 
-                <div class="rounded d-flex justify-content-between align-items-center border-0 shadow-lg bg-dark text-white p-3 p-md-7 position-relative" style="
-                overflow: hidden;
-                ">
+                <div class="rounded d-flex justify-content-between align-items-center border-0 shadow-lg bg-dark text-white p-3 p-md-7 position-relative overflow-hidden">
                 <div class="w-md-50">
 
-                    <p class="text-uppercase font-weight-bold text-small text-primary" style="
-                    letter-spacing: .025rem;
-                    ">get started</p>
+                    <p class="text-uppercase font-weight-bold text-small text-primary">get started</p>
                     <h2>Join the future of online discourse</h2>
-                    <p class="text-white opacity-80">Create a {{ "SITE_NAME" | app_config }} account in seconds and join your favorite communities. Usernames aplenty. No email required.
-                    </p>
+                    <p class="text-white opacity-80">Create a {{ "SITE_NAME" | app_config }} account in seconds and join your favorite communities. Usernames aplenty. No email required.</p>
                     <a href="/signup" class="btn btn-primary btn-lg">Sign up</a>
 
                 </div>
-                <div class="d-none d-md-block position-absolute" style="
-                right: -5rem;
-                opacity: .25;
-                ">
+                <div id="about-page-svg-div" class="d-none d-md-block position-absolute">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="550px" height="auto" viewBox="0 0 1024 768" version="1.1">
                     <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
                     <title>character/moshing</title>

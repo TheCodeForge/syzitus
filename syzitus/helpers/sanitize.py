@@ -88,7 +88,7 @@ _allowed_tags_in_bio = [
 _allowed_attributes = {
     'a': ['href', 'title', "rel", "data-original-name"],
     'i': [],
-    'span': ['style', 'class', 'data-toggle', 'title'],
+    'span': ['class', 'data-toggle', 'title'],
     'img': ['src', 'class']
     }
 
@@ -96,10 +96,6 @@ _allowed_protocols = [
     'http', 
     'https'
     ]
-
-_allowed_styles =[
-    'color'
-]
 
 # filter to make all links show domain on hover
 
@@ -140,7 +136,6 @@ _clean_wo_links = bleach.Cleaner(tags=_allowed_tags,
 _clean_w_links = bleach.Cleaner(tags=_allowed_tags_with_links,
                                 attributes=_allowed_attributes,
                                 protocols=_allowed_protocols,
-                                #styles=_allowed_styles,
                                 filters=[partial(LinkifyFilter,
                                                  skip_tags=["pre"],
                                                  parse_email=False,
@@ -168,7 +163,6 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
         text = bleach.Cleaner(tags=no_images,
                               attributes=_allowed_attributes,
                               protocols=_allowed_protocols,
-                              styles=_allowed_styles,
                               filters=[partial(LinkifyFilter,
                                                skip_tags=["pre"],
                                                parse_email=False,
@@ -202,7 +196,6 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
                     # set classes and wrap in link
 
                     tag["rel"] = "nofollow"
-                    tag["style"] = "max-height: 100px; max-width: 100%;"
                     tag["class"] = "in-comment-image rounded-sm my-2"
 
                     link = soup.new_tag("a")

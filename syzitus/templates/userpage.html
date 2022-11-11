@@ -27,6 +27,13 @@
 <meta name="twitter:description" content="{{ u.true_score }} Rep · Joined {{ u.created_date }} ·{% if u.stored_subscriber_count >=1 and not u.is_private and not u.is_nofollow %}{{ u.stored_subscriber_count }} Subscribers ·{% endif %} {% if not u.is_private %} {{ u.post_count }} Posts · {{ u.comment_count }} Comments ·{% endif %} {{u.bio}}" />
 <meta name="twitter:image" content="{% if u.has_banner %}{{ u.banner_url }}{% else %}{{ '/assets/images/preview-images/ruqqus_og_image.png' | full_link }}{% endif %}" />
 <meta name="twitter:url" content="{{ u.permalink | full_link}}" />
+
+
+<style nonce="{{g.nonce}}">
+  #div-jumbotron {
+    background-image: url({{ u.banner_url }});
+  }
+</style>
 {% endblock %}
 
 <!-- Left Sidebar (navigation-purposes, hidden on devices smaller than "large") -->
@@ -39,7 +46,7 @@
 <!-- Desktop -->
 <div class="row d-none d-md-block">
   <div class="col px-0">
-    <div class="jumbotron jumbotron-fluid jumbotron-guild d-none d-md-block" style="background-image: url({{ u.banner_url }})">
+    <div id="div-jumbotron" class="jumbotron jumbotron-fluid jumbotron-guild d-none d-md-block">
       <div class="jumbotron-overlay"></div>
       <div class="w-100 my-3">
         <div class="container-fluid">
@@ -105,13 +112,13 @@
         <div class="d-flex justify-content-between align-items-center">
           <div>
            {% if g.user and g.user.id != u.id and not u.is_private and not u.is_nofollow %}
-           <div id="button-sub" {% if is_following %}class="d-none"{% endif %}>
-            <button class="btn btn-primary" onclick="post('/api/follow/{{ u.username }}', callback=toggleSub)">
+           <div id="button-sub-{{ u.fullname }}" {% if is_following %}class="d-none"{% endif %}>
+            <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">
               Follow
             </button>
           </div>
-          <div id="button-unsub" class="{% if not is_following %}d-none{% endif %}" role="group" aria-label="Unfollow this user">
-            <button class="btn btn-secondary" onclick="post('/api/unfollow/{{ u.username }}', callback=toggleSub)">
+          <div id="button-unsub-{{ u.fullname }}" class="{% if not is_following %}d-none{% endif %}" role="group" aria-label="Unfollow this user">
+            <button class="btn btn-secondary btn-toggle-follow" data-post-url="/api/unfollow/{{ u.username }}" data-thing-id="{{ u.fullname }}">
               Unfollow
             </button>
             <button class="btn btn-transparent bell-button" data-toggle="tooltip" data-placement="bottom" title="Be notified when this user publishes new content." data-url="/@{{ u.username }}/toggle_bell">
@@ -146,12 +153,12 @@
 <div class="container-fluid text-center bg-white d-md-none">
   <div class="row">
     <div class="col px-0">
-      <img src="{{ u.banner_url }}" style="width: 100%; height: 65px; object-fit: cover;">
+      <img src="{{ u.banner_url }}" class="jumbotron-mobile">
     </div>
   </div>
   <div class="row border-bottom">
     <div class="col">
-      <div style="margin-top: -34px;">
+      <div class="img-mobile-profile-div">
         <a href="{{ u.permalink }}"><img src="{{ u.profile_url }}" class="profile-pic-65 bg-white border-2 border-white mb-2"></a>
       </div>
       <div class="mt-n3 py-3">
@@ -185,17 +192,14 @@
         <a href="/settings/profile" class="btn btn-secondary btn-sm">Edit profile</a>
         {% endif %}
         {% if g.user and g.user.id != u.id and not u.is_nofollow %}
-        <div id="button-unsub-mobile" {% if not is_following %}class="d-none"{% endif %}>
-          <button class="btn btn-secondary btn-block" onclick="post('/api/unfollow/{{ u.username }}', callback=function(){document.getElementById('button-unsub-mobile').classList.toggle('d-none');document.getElementById('button-sub-mobile').classList.toggle('d-none');})">Unfollow
-          </button>
+        <div id="button-unsub-mobile-{{ u.fullname }}" {% if not is_following %}class="d-none"{% endif %}>
+          <button class="btn btn-secondary btn-block btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">Unfollow</button>
           <button class="btn btn-transparent bell-button" data-url="/@{{ u.username }}/toggle_bell">
             <i class="fas bell-icon fa-fw {% if u.is_following and u.is_following.get_notifs %}fa-bell-on text-purple{% else %}fa-bell{% endif %}"></i>
           </button>
         </div>
-        <div id="button-sub-mobile" {% if is_following %}class="d-none"{% endif %}>
-          <button class="btn btn-primary" onclick="post('/api/follow/{{ u.username }}', callback=function(){document.getElementById('button-unsub-mobile').classList.toggle('d-none');document.getElementById('button-sub-mobile').classList.toggle('d-none');})">
-            Follow
-          </button>
+        <div id="button-sub-mobile-{{ u.fullname }}" {% if is_following %}class="d-none"{% endif %}>
+          <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">Follow</button>
         </div>
         {% endif %}
       </div>
@@ -241,35 +245,35 @@
 
     <a href="https://github.com/thecodeforge/syzitus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
       <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x text-gray-300" style="font-size: 2rem!important;"></i>
+        <i class="fas fa-square fa-stack-2x text-gray-300"></i>
         <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
       </span>Contribute Code
     </a>
 
     <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #F7931A!important">
       <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x" style="color: #FEEBC8!important; font-size: 2rem!important;"></i>
+        <i class="fas fa-square fa-stack-2x"></i>
         <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse" style="color: #F7931A!important;"></i>
       </span>Donate Cash or Crypto
     </a>
 
     <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #805ad5!important">
       <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x" style="color: #dabef9!important; font-size: 2rem!important;"></i>
-        <i class="fas fa-coins fa-stack-1x text-base fa-inverse" style="color: #805ad5!important;"></i>
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fas fa-coins fa-stack-1x text-base fa-inverse"></i>
       </span>{{ "SITE_NAME" | app_config }} Premium
     </a>
 
     <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #DC143C!important">
       <span class="fa-stack fa-1x ml-n1 mr-2">
-        <i class="fas fa-square fa-stack-2x" style="color: #FC8181!important; font-size: 2rem!important;"></i>
-        <i class="fas fa-bug fa-stack-1x text-base fa-inverse" style="color: #DC143C!important;"></i>
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fas fa-bug fa-stack-1x text-base fa-inverse"></i>
       </span>Report Bugs
     </a>
     
     <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
       <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
-      <div class="progress" style="border-radius: 3px;">
+      <div class="progress br-3">
         <div class="progress-bar bg-primary" role="progressbar" style="width: {{ g.timestamp | coin_goal }}%;" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
     </div>
@@ -307,10 +311,11 @@
 {% else %}
 <form action="/api/ban_user/{{ u.id }}" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-  <input id="user-ban-message" type="text" class="form-control" name="message" placeholder="Ban Message Reason" onchange="document.getElementById('user-ban-submit').disabled=false">
-  <input id="user-ban-reason" type="text" class="form-control" name="reason" placeholder="Ban Reason (public)" onchange="document.getElementById('user-ban-submit').disabled=false">
+  <input id="user-ban-message" type="text" class="form-control" name="message" placeholder="Ban Message Reason">
+  <input id="user-ban-reason" type="text" class="form-control" name="reason" placeholder="Ban Reason (public)">
   <input id="user-ban-days" type="number" class="form-control" name="days" placeholder="Days (blank = permanent)">
-  <input id="user-ban-submit" type="submit" class="btn btn-warning" value="Ban user" disabled>
+  <a href="javascript:void(0)" class="btn btn-warning w-100 btn-ban-user">Ban user</a>
+  <input id="btn-confirm-ban-user" type="submit" class="btn btn-danger d-none" value="Confirm ban user">
 </form>
 {% endif %}
 {% endif %}
@@ -327,7 +332,7 @@
 </ul>
 {% endif %}
 
-<a href="javascript:void(0)" class="btn btn-warning w-100" onclick="document.getElementById('demod-user').classList.toggle('d-none')">De-Mod User</a>
+<a href="javascript:void(0)" class="btn btn-warning w-100 btn-demod-user">De-Mod User</a>
 <form action="/admin/demod_user" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="user" value="{{ u.username }}">

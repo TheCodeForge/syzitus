@@ -64,11 +64,11 @@
 
             <td>
               <div class="dropdown float-right dropdown-actions">
-                <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+                <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-ellipsis-h text-muted"></i>
                 </a>
-                <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
-                  <a class="dropdown-item" href="javascript:void(0)" onclick="post('/settings/unblock_guild?board={{ block.board.name }}', callback=function(){window.location.reload(true)})"><i class="fas fa-eye"></i>Show in /all</a>
+                <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
+                  <a class="dropdown-item post-toast-url-reload" href="javascript:void(0)" data-post-url="/settings/unblock_guild?board={{ block.board.name }}"><i class="fas fa-eye"></i>Show in /all</a>
                 </div>
               </div>
             </td>
@@ -81,7 +81,7 @@
     </div>
     {% else %}
     <div class="text-center border-md rounded py-7">
-      <i class="fad fa-ghost text-gray-500 mb-3" style="font-size: 3.5rem;"></i>
+      <i class="fad fa-ghost text-gray-500 mb-3 fa-3x"></i>
       <p class="font-weight-bold text-gray-500 mb-0">No hidden guilds</p>
     </div>
     {% endif %}
@@ -102,22 +102,17 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Changes to your guild filters may take up to 15 minutes to take effect.</p>
-          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-          <input type="text" name="guildname" placeholder="enter guild name (no + needed)" id="exile-username" class="form-control" maxlength=25 required>
+          <form id="hide-guild-form" action="/settings/block_guild">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+            <input type="text" name="guildname" placeholder="enter guild name (no + needed)" id="exile-username" class="form-control" maxlength=25 required>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="exileUserButton" onclick="filter_guild()">Hide Guild</button>
+          <button type="button" class="btn btn-primary toast-form-submit" data-form="hide-guild-form" id="hide-guild-button">Hide Guild</button>
         </div>
       </div>
     </form>
-  </div>
-</div>
-
-<div class="toast error" id="toast-exile-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-exclamation-circle text-danger mr-2"></i><span id="toast-error-message">Error. Please try again.</span>
   </div>
 </div>
 

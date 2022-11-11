@@ -98,18 +98,21 @@ def get_logo_jumbotron(color):
         resample=PIL.Image.BILINEAR
         )
 
+    width_units=19
+    height_units=11
+
     output=PIL.Image.new(
         "RGBA", 
         (
-            unit_block.size[0]*25,
-            unit_block.size[1]*15
+            unit_block.size[0]*width_units,
+            unit_block.size[1]*height_units5
             ), 
         color=(255,255,255,0)
         )
 
 
-    for i in range(25):
-        for j in range(15):
+    for i in range(width_units):
+        for j in range(height_units):
 
             output.paste(
                 unit_block,

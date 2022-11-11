@@ -13,7 +13,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-    <meta property="og:image" content="/assets/images/splash/1200/630" />
+    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
     <meta property="og:url" content="{{ request.path | full_link }}">
     <meta property="og:description" name="description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.">
     <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
@@ -21,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
     <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
-    <meta name="twitter:image" content="/assets/images/splash/1200/630" />
+    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
     <meta name="twitter:url" content="{{ request.path | full_link }}" />
     {% endblock %}
 
@@ -32,8 +32,8 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- {{ 'SITE_NAME' | app_config }} CSS -->
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/36827f/dark.css?v=3.0.8">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/36827f/light.css?v=3.0.8">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.0.46">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.0.46">
 
     <!-- Font Awesome -->
     <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
@@ -52,7 +52,7 @@
             <a class="navbar-brand" href="/">{{ 'SITE_NAME' | app_config }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
             aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500" style="font-size: 2rem;"></i></span>
+            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500 fa-2x"></i></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -66,9 +66,7 @@
 
 <!-- Hero -->
 
-<section class="d-flex align-items-center py-7 py-md-8" style="background-color: #805AD4; background-image: linear-gradient(62deg, #805AD4 0%, #A3BFFA
-    100%);
-    min-height: 100%; min-height: 100vh;">
+<section class="d-flex align-items-center py-7 py-md-8 bg-primary">
     <div class="container">
         <div class="row text-white text-md-left justify-content-between align-items-center">
             <div class="col-12 col-md-5 col-lg-6">
@@ -116,13 +114,13 @@
 
 <!-- Why Choose {{ 'SITE_NAME' | app_config }} -->
 
-<section class="py-7" style="background-color: #ffffff; background-image: linear-gradient(180deg, #ffffff 75%, #f5f7fa 100%);">
+<section id="donate-whychoose" class="py-7 bg-white">
     <div class="container">
         <div class="row justify-content-center text-center">
 
             <div class="col col-md-7">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Why donate?</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary">Why donate?</p>
 
                 <h2 class="h3">We're taking on Big Tech and traditional social media</h2>
                 <p class="text-muted mb-6 mb-md-7">Our crack team of developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
@@ -134,7 +132,7 @@
             <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up">
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
-                    <i class="fad fa-server text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-server text-primary mb-4"></i>
 
                     <h3 class="h5">Help {{ 'SITE_NAME' | app_config }} Grow</h3>
 
@@ -147,7 +145,7 @@
 
                 <div class="card h-100 border-0 text-center shadow-lg p-5">
 
-                    <i class="fad fa-podium-star text-primary mb-4" style="font-size: 2.5rem;"></i>
+                    <i class="fad fa-podium-star text-primary mb-4"></i>
 
                     <h3 class="h5">Support Freedom of Speech</h3>
 
@@ -170,7 +168,7 @@
 
             <div class="col-12 col-md-6">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary" style="letter-spacing: .025rem;">Transparency</p>
+                <p class="text-uppercase font-weight-bold text-small text-primary">Transparency</p>
 
                 <h2 class="text-capitalize">
                     Support a fair and open platform
@@ -182,7 +180,7 @@
                     algorithms right from your browser. No biased trending or sorting manipulation on {{ 'SITE_NAME' | app_config }}.
                 </p>
 
-                <ul class="list-inline no-bullets mb-6 mb-md-5" style="opacity: .1">
+                <ul class="list-inline no-bullets mb-6 mb-md-5">
                     <li class="list-inline-item mr-3">
                         <i class="fab fa-python"></i>
                     </li>
@@ -206,74 +204,48 @@
 
             <div class="col-12 col-md-6 d-none d-md-block">
 
-                <div class="row no-gutters mb-3" style="border-bottom: 2px solid #E0E4E9;">
+                <div class="row no-gutters mb-3">
 
                     <div class="col">
 
-                        <div class="nav nav-pills justify-content-between" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical" style="top: 2px; position: relative;">
-                        <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill"
-                        href="#v-pills-voting" role="tab" aria-controls="v-pills-voting"
-                        aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2"
-                        aria-hidden="true"></i>Voting</a>
-                        <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill"
-                        href="#v-pills-submission" role="tab" aria-controls="v-pills-submission"
-                        aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a>
-                        <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill"
-                        href="#v-pills-user" role="tab" aria-controls="v-pills-user"
-                        aria-selected="false"><i class="far fa-user-circle mr-2"
-                        aria-hidden="true"></i>User</a>
-                        <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab"
-                        data-toggle="pill" href="#v-pills-comment" role="tab"
-                        aria-controls="v-pills-comment" aria-selected="true"><i
-                        class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
-                    </div>
+                        <div class="nav nav-pills justify-content-between mt-2 position-relative" id="v-pills-tab" role="tablist"
+                        aria-orientation="vertical">
+                          <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill" href="#v-pills-voting" role="tab" aria-controls="v-pills-voting" aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2" aria-hidden="true"></i>Voting</a>
+                          <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill" href="#v-pills-submission" role="tab" aria-controls="v-pills-submission" aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a> <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false"><i class="far fa-user-circle mr-2" aria-hidden="true"></i>User</a>
+                          <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true"><i class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
+                        </div>
 
                 </div>
 
             </div>
 
             <div class="row">
+              <div class="col">
+                <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
 
-                <div class="col">
+                  <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel"aria-labelledby="v-pills-voting-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/votes.py" | source_code }}</pre>
+                  </div>
 
-                    <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
+                  <div class="tab-pane fade" id="v-pills-submission" role="tabpanel" aria-labelledby="v-pills-submission-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/submission.py" | source_code }}</pre>
+                  </div>
+                  <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/user.py" | source_code }}</pre>
+                  </div>
 
-                        <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel"
-                        aria-labelledby="v-pills-voting-tab">
-                        <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                        style="height: 330px; overflow-x: hidden;">{{ "syzitus/classes/votes.py" | source_code }}</pre>
-                    </div>
+                  <div class="tab-pane fade" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
+                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/comment.py" | source_code }}</pre>
+                  </div>
 
-                    <div class="tab-pane fade" id="v-pills-submission" role="tabpanel"
-                    aria-labelledby="v-pills-submission-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                    style="height: 330px; overflow-x: hidden;">{{ "syzitus/classes/submission.py" | source_code }}</pre>
                 </div>
-
-                <div class="tab-pane fade" id="v-pills-user" role="tabpanel"
-                aria-labelledby="v-pills-user-tab">
-                <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-                style="height: 330px; overflow-x: hidden;">{{ "syzitus/classes/user.py" | source_code }}</pre>
+              </div>
             </div>
+          </div>
+      </div>
 
-            <div class="tab-pane fade" id="v-pills-comment" role="tabpanel"
-            aria-labelledby="v-pills-comment-tab">
-            <pre class="prettyprint lang-python linenums bg-dark border-0 px-3"
-            style="height: 330px; overflow-x: hidden;">{{ "syzitus/classes/comment.py" | source_code }}</pre>
-        </div>
 
     </div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 
 </section>
 
@@ -287,14 +259,8 @@
 
             <div class="col col-md-10">
 
-                <div class="text-white text-center p-3 p-md-7 position-relative" style="
-                overflow: hidden;
-                ">
-                <div class="w-100">
-
-                    <p class="text-uppercase font-weight-bold text-small text-white" style="
-                    letter-spacing: .025rem;
-                    ">Donate today</p>
+                <div class="text-white text-center p-3 p-md-7 position-relative overflow-hidden">
+                <div class="w-100">Donate today</p>
                     <h2 class="h1">Help support the future of online discourse</h2>
                     <p class="text-white opacity-80">Now accepting Bitcoin, Litecoin, and Ethereum. Every donation counts :)</p>
 
@@ -322,7 +288,7 @@
     <div class="container">
         <div class="row mb-5">
             <div class="col-12 col-md-3 mb-4 mb-md-0">
-                <img class="mb-3" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}" style="width:32px">
+                <img class="mb-3 footer-logo" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}">
                 <p class="text-white">Awesome online communities, without censorship</p>
             </div>
             <div class="col-12 col-md-9">
@@ -342,13 +308,13 @@
 
 <!-- Clipboard Toast -->
 
-<div class="toast clipboard" id="toast-success" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 99999" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
     <div class="toast-body bg-success text-center text-white">
         <i class="fas fa-check-circle mr-2"></i>Crypto address copied to clipboard
     </div>
 </div>
 
-<div class="toast clipboard" id="toast-error" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 99999" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
     <div class="toast-body bg-danger text-center text-white">
         <i class="fas fa-exclamation-circle mr-2"></i>Unable to copy crypto address
     </div>
@@ -362,29 +328,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
-<!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
-
-    var clipboard = new ClipboardJS('.copy-link', {
-        container: document.getElementById('donateCryptoModal')
-    }); 
-
-    clipboard.on('success', function(e) {
-
-        jQuery(function($) {
-            $('#toast-success').toast('show');
-        })
-        console.log(e);
-    });
-    clipboard.on('error', function(e) {
-
-        jQuery(function($) {
-            $('#toast-error').toast('show');
-        })
-        console.log(e);
-    });
-</script>
-
 <!-- {{ 'SITE_NAME' | app_config }} JS -->
 
 <script src="/assets/js/all_js.js"></script>
@@ -395,8 +338,8 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<script>
-    AOS.init();
+    <script nonce="{{ g.nonce }}">
+      AOS.init();
 
         // You can also pass an optional settings object
         // below listed default settings
@@ -407,6 +350,6 @@
         });
     </script>
 
-</body>
+  </body>
 
 </html>

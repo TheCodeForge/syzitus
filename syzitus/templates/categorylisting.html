@@ -19,7 +19,7 @@
   </div>
   <div class="card-columns bg-white p-md-4 pb-md-3 rounded">
   {% for cat in categories.values() %}
-    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if cat.id in session.get('groupids',[]) %} selected{% endif %}" onclick="cattoggle('{{ cat.base36id }}')" id="cat-card-{{ cat.base36id }}">
+    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if cat.id in session.get('groupids',[]) %} selected{% endif %} btn-cat-toggle" data-cat-id="{{ cat.base36id }}" id="cat-card-{{ cat.base36id }}">
       <img src="/assets/images/categories/{{ cat.name | lower }}.gif" class="card-img h-100 object-cover" alt="{{ cat.name }}">
       <div class="card-img-overlay onboarding-card-overlay d-flex justify-content-center align-items-center">
         <h5 class="card-title h4 mb-0">{{ cat.name }}</h5>
@@ -33,7 +33,7 @@
       {% endfor %}
     </div>
   {% endfor %}
-    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if 0 in session.get('groupids',[]) %} selected{% endif %}" onclick="cattoggle('0')" id="cat-card-0">
+    <div class="card rounded-lg text-primary border-0 overflow-hidden onboarding-card text-white{% if 0 in session.get('groupids',[]) %} selected{% endif %} btn-cat-toggle" data-cat-id="0" id="cat-card-0">
       <img src="/assets/images/categories/uncategorized.gif" class="card-img h-100" alt="...">
       <div class="card-img-overlay onboarding-card-overlay d-flex justify-content-center align-items-center">
         <h5 class="card-title h4 mb-0">Uncategorized</h5>
@@ -47,7 +47,7 @@
   <div class="row">
     <div class="mr-3 ml-auto mb-5 mt-3">
       <a href="javascript:void(0)" id="show-all-cats-btn" class="btn btn-secondary ml-auto mr-2">Show all</a>
-      <a href="javascript:void(0)" onclick="togglecat('hot', reload=true, delay=0, page='/')" class="btn btn-primary">Apply Selections</a>
+      <a href="javascript:void(0)" class="btn btn-primary"id="btn-all-cats">Apply Selections</a>
     </div>
   </div>
 </div>

@@ -21,9 +21,9 @@
   <div class="body">
     {{ b.description_html | safe }}
 
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-1" style="letter-spacing: 0.025rem;">Founded</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-1">Founded</div>
     <p>{{ b.created_date }}</p>
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.025rem;">Guildmasters</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2">Guildmasters</div>
     <div class="d-flex align-items-center">
       {% for mod in b.mods_list[0:3] %}
       <a href="{{ mod.user.permalink }}">
@@ -41,7 +41,7 @@
       {% endfor %}
     </div>
 
-    <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3" style="letter-spacing: 0.025rem;">Settings</div>
+    <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3">Settings</div>
     <div class="text-primary">
       <i class="fas fa-filter"data-toggle="tooltip" data-placement="bottom" title="Category: {% if b.subcat %}{{ b.subcat.category.name }} / {{ b.subcat.name }}{% else %}Uncategorized{% endif %}"></i>
       {% if b.is_private %}<i class="fas fa-eye-slash"data-toggle="tooltip" data-placement="bottom" title="Private mode."></i>{% endif %}
@@ -102,8 +102,8 @@
 <meta property="og:image" content="{{ p.thumb_url }}" />
 <meta name="twitter:image" content="{{ p.thumb_url }}" />
 {% else %}
-<meta property="og:image" content="{{ 'IMG_URL_THUMBNAIL' | app_config }}">
-<meta name="twitter:image" content="{{ 'IMG_URL_THUMBNAIL' | app_config }}" />
+<meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
+<meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
 {% endif %}
 
 {% if linked_comment.author.is_private %}
@@ -121,7 +121,7 @@
 <meta property="og:description" name="description" content="{{ p.body }}" />
 <meta property="og:author" name="author" content="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}" />
 <meta property="og:title" content="{{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
-<meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBNAIL' | app_config | full_link }}{% endif %}" />
+<meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBSPLASH' | app_config }}{% endif %}" />
 <meta property="og:url" content="{{ p.permalink | full_link}}" />
 <meta property="og:site_name" content="{{ p.board.permalink | full_link }}" />
 
@@ -130,7 +130,7 @@
 <meta name="twitter:title" content="{{ p.title }} - {{ 'SITE_NAME' | app_config }}" />
 <meta name="twitter:creator" content="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}">
 <meta name="twitter:description" content="{{ p.body }}" />
-<meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb %}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBNAIL' | app_config | full_link }}{% endif %}" />
+<meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb %}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBSPLASH' | app_config }}{% endif %}" />
 <meta name="twitter:url" content="{{ p.permalink | full_link}}" />
 
 {% if p.author.is_private %}
@@ -148,7 +148,7 @@
 <span id="guild-name-reference" class="d-none">{{ p.board.name }}</span>
 
 <!-- Desktop -->
-<div class="row border-bottom sticky guild-border-top d-none d-md-block bg-white" style="overflow: visible;">
+<div class="row border-bottom sticky guild-border-top d-none d-md-block bg-white overflow-visible">
   <div class="col">
     <div class="d-flex align-items-center">
       <div class="d-flex align-items-center border-right py-2 pr-3">
@@ -166,18 +166,17 @@
         </div>
       </div>
       <div class="border-right py-3 px-3">
-        <a href="{{ p.board.permalink }}/mod/mods" class="text-black" style="text-decoration: none;">Guildmasters<span class="text-primary"> {{ p.board.mods_count }}</span></a>
+        <a href="{{ p.board.permalink }}/mod/mods" class="text-black">Guildmasters<span class="text-primary"> {{ p.board.mods_count }}</span></a>
       </div>
       <div class="border-right p-3">
         Member{{ 's' if p.board.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ p.board.stored_subscriber_count }}</span>
       </div>
       <div class="d-flex align-items-center p-3">
         <div class="dropdown dropdown-actions">
-          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+          <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="far fa-ellipsis-h text-base text-black"></i>
           </a>
-          <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
-          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+          <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
           <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
           <a class="dropdown-item" href="{{ b.permalink }}/mod/log"><i class="fas fa-scroll-old"></i>Moderation log</a>
 
@@ -186,17 +185,17 @@
           {% endif %}
 
           {% if g.user and not g.user.has_blocked_guild(p.board) %}
-          <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ p.board.name }}')"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
+          <a class="dropdown-item text-danger btn-guild-block" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Hide from /all</a>
           {% elif g.user %}
-          <a class="dropdown-item" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ p.board.name }}')"><i class="fas fa-eye"></i>Show in /all</a>
+          <a class="dropdown-item btn-guild-unblock"><i class="fas fa-eye"></i>Show in /all</a>
           {% endif %}
         </div>
       </div>
     </div>
     <div class="ml-auto">
       {% if g.user %}
-      <div id="button-sub" {% if p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-primary" href="javascript:void(0)" onclick="post('/api/subscribe/{{ p.board.name }}', callback=toggleSub)">Join guild</a></div>
-      <div id="button-unsub" {% if not p.board.has_subscriber(v) %}class="d-none"{% endif %}><a class="btn btn-secondary" href="javascript:void(0)" onclick="post('/api/unsubscribe/{{ p.board.name }}', callback=toggleSub)">Leave</a></div>
+      <div id="button-sub-{{ p.board.fullname }}" class="{% if p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-primary btn-guild-sub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Join guild</a></div>
+      <div id="button-unsub-{{ p.board.fullname }}" class="{% if not p.board.has_subscriber(v) %} d-none{% endif %}"><a class="btn btn-secondary btn-guild-unsub" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.board.fullname }}">Leave</a></div>
       {% elif not v %}
       <a class="btn btn-primary" href="/signup?redirect={{ request.path | urlencode}}">Join guild</a>
       {% endif %}
@@ -208,27 +207,37 @@
 
 {% block mobileBanner %}
 <!-- Mobile -->
-{% if p.board_id %}
-<div class="jumbotron jumbotron-fluid jumbotron-guild text-white d-block d-md-none" style="background-image: url({{ p.board.banner_url }});">
-  <div class="w-100 position-absolute text-center bg-white" style="bottom: 0;">
-    <div class="container">
-      <div style="margin-top: -34px;">
+
+<div class="container-fluid text-center bg-white d-md-none">
+  <div class="row">
+    <div class="col px-0">
+      <img src="{{ p.board.banner_url }}" class="jumbotron-mobile">
+    </div>
+  </div>
+  <div class="row border-bottom">
+    <div class="col">
+      <div class="img-mobile-profile-div">
         <a href="{{ p.board.permalink }}"><img src="{{ p.board.profile_url }}" class="profile-pic-65 border-2 border-white mb-2"></a>
       </div>
-      <a href="{{ p.board.permalink }}" class="text-black">
-        <h1 class="h5 d-inline-block mb-0">+{{ p.board.name }}
-          {% if p.board.over_18 %}
-          <span class="badge badge-danger text-small align-top">nsfw</span>
-          {% endif %}
-          {% if p.board.is_nsfl %}
-          <span class="badge badge-black text-small align-top">nsfl</span>
-          {% endif %}
-        </h1>
-      </a>
+      <div class="mt-n3 py-3">
+        <a href="{{ p.board.permalink }}" class="text-black">
+          <h1 class="h5 d-inline-block">+{{ b.name }}
+            {% if p.board.over_18 %}
+            <span class="badge badge-danger text-small align-top">nsfw</span>
+            {% endif %}
+            {% if p.board.is_nsfl %}
+            <span class="badge badge-black text-small align-top">nsfl</span>
+            {% endif %}
+            {% if p.board.is_private %}
+            <span class="badge badge-warning text-small align-top" data-toggle="tooltip" data-placement="bottom" title="This guild is private. Content posted prior to the guild being set to private is visible to everyone.">private</span>
+            {% endif %}
+          </h1>
+        </a>
+      </div>
     </div>
   </div>
 </div>
-{% endif %}
+
 {% endblock %}
 
 {% block adminpanel %}
@@ -270,42 +279,42 @@
     <div class="modal-content">
       <div class="modal-header p-3">
         <h5 class="col modal-title text-center h6">More options</h5>
-        <button type="button" class="close position-absolute py-3" style="right: 1rem;" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close position-absolute py-3 ml-auto" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="fas fa-times-circle text-gray-500"></i></span>
         </button>
       </div>
       <div class="modal-body">
         <ul class="list-group post-actions">
           {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
-          <button class="btn btn-link btn-block btn-lg text-left text-warning" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="far fa-star text-center text-warning mr-3"></i>Tip</button>
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.board.name }}')" class="d-block"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-warning btn-tip-modal-trigger" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="far fa-star text-center text-warning mr-3"></i>Tip</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}" class="d-block btn-report-post"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
           {% endif %}
           {% if g.user and g.user.id==p.author_id %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-dismiss="modal" onclick="togglePostEdit('{{ p.base36id }}')"><i class="far fa-edit text-center text-muted mr-3"></i>Edit</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted btn-edit-post" data-dismiss="modal" data-target-id="{{ p.base36id }}"><i class="far fa-edit text-center text-muted mr-3"></i>Edit</button>
 
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" onclick="delete_postModal('{{ p.base36id }}')"><i class="far fa-trash-alt text-center text-muted mr-3"></i>Delete</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="far fa-trash-alt text-center text-muted mr-3"></i>Delete</button>
           {% endif %}
 
           {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
           {% if not p.board.over_18 %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" onclick="post('/api/toggle_post_nsfw/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
           {% endif %}
 
           {% if not p.board.is_nsfl %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" onclick="post('/api/toggle_post_nsfl/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="far fa-skull text-center text-muted mr-3"></i>Toggle NSFL</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="far fa-skull text-center text-muted mr-3"></i>Toggle NSFL</button>
           {% endif %}
 
           {% endif %}
           {% if g.user and g.user.mods_anything and p.board.name == 'general' %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" onclick="yank_postModal('{{ p.base36id }}','{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]'}}','{{ p.comment_count }}','{{ p.thumb_url }}','{{ p.title | js_str_escape }}','{{ p.author.permalink }}','{{ p.domain | js_str_escape }}','{{ p.age_string }}')" class="d-block"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
           {% endif %}
           {% if g.user %}
             {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
-            <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post('/user/kick/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-chess-rook text-center text-muted mr-3"></i>Remove from +{{ p.board.name }}</button>
+            <button class="btn btn-link btn-block btn-lg text-danger text-left post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="far fa-chess-rook text-center text-muted mr-3"></i>Remove from +{{ p.board.name }}</button>
             {% endif %}
 
             {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-            <button class="btn btn-link btn-block btn-lg text-danger text-left" onclick="post_toast('/retry_thumb/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
+            <button class="btn btn-link btn-block btn-lg text-danger text-left post-toast-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
             {% endif %}
 
             {% if g.user and not g.user.is_suspended %}
@@ -315,23 +324,23 @@
             {% if p.is_guildmaster('content') %}
 
               {% if g.user.id == p.author_id %}
-              <button class="btn btn-link btn-block btn-lg text-left text-warning" onclick="post('/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.href = '{{p.permalink}}';})"><i class="far fa-crown text-center text-warning mr-3"></i>Herald</button>
+              <button class="btn btn-link btn-block btn-lg text-left text-warning post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}"><i class="far fa-crown text-center text-warning mr-3"></i>Herald</button>
               {% endif %}
 
               {% if p.is_pinned %}
-              <button class="btn btn-link btn-block btn-lg text-info text-left" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0', callback=function(){window.location.reload(true)})"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Unpin</button>
+              <button class="btn btn-link btn-block btn-lg text-info text-left post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Unpin</button>
               {% elif p.board.can_pin_another %}
-              <button class="btn btn-link btn-block btn-lg text-info text-left" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1', callback=function(){window.location.reload(true)})"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Pin</button>
+              <button class="btn btn-link btn-block btn-lg text-info text-left post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="far fa-thumbtack fa-fw fa-rotate--45 text-center text-info mr-3"></i>Pin</button>
               {% endif %}
 
-              <button class="btn btn-link btn-block btn-lg text-danger text-left" id="kick-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/kick/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.reload(true)})"><i class="far fa-sign-out fa-flip-horizontal text-center text-danger mr-3"></i>Kick</button>
+              <button class="btn btn-link btn-block btn-lg text-danger text-left post-url-reload" id="kick-post-{{ p.base36id }}" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="far fa-sign-out fa-flip-horizontal text-center text-danger mr-3"></i>Kick</button>
             {% endif %}
 
             {% if g.user.admin_level >=3 %}
               {% if p.is_banned %}
-              <button class="btn btn-link btn-block btn-lg text-success text-left" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="far fa-check text-center text-success mr-3"></i>Approve</button>
+              <button class="btn btn-link btn-block btn-lg text-success text-left admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="far fa-check text-center text-success mr-3"></i>Approve</button>
               {% else %}
-              <button class="btn btn-link btn-block btn-lg text-danger text-left" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="removePost('{{ p.base36id }}')"><i class="far fa-ban text-center text-danger mr-3"></i>Remove</button>
+              <button class="btn btn-link btn-block btn-lg text-danger text-left admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="far fa-ban text-center text-danger mr-3"></i>Remove</button>
               {% endif %}
             {% endif %}
 
@@ -342,12 +351,10 @@
           {% endif %}
 
           {% if g.user and not g.user.id==p.author_id and  p.deleted_utc == 0 and not p.author.is_deleted %}
-            <button id="block-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger{% if p.is_blocking %} d-none{% endif %}" data-dismiss="modal" onclick="post_toast('/settings/block?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-button-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-button-{{ p.base36id }}').classList.toggle('d-none');})"
-            ><i class="fas fa-user-slash text-danger mr-3"></i>Block @{{ p.author.username }}</button>
-            <button id="unblock-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger{% if not p.is_blocking %} d-none{% endif %}" data-dismiss="modal" onclick="post_toast('/settings/unblock?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-button-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-button-{{ p.base36id }}').classList.toggle('d-none');})"
-            ><i class="fas fa-user-slash text-danger mr-3"></i>Unblock @{{ p.author.username }}</button>
+            <button id="block-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Block @{{ p.author.username }}</button>
+            <button id="unblock-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}" data-dismiss="modal" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger mr-3"></i>Unblock @{{ p.author.username }}</button>
             {% if p.is_guildmaster('access') and not p.author.is_deleted %}
-              <button id="exile-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger" onclick="post_toast('/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}')"><i class="fas fa-user-minus mr-3 text-danger"></i>Exile @{{ p.author.username }}</a></button>
+              <button id="exile-user-button-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-danger post-toast-url" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-minus mr-3 text-danger"></i>Exile @{{ p.author.username }}</a></button>
             {% endif %}
           {% endif %}
         </ul>
@@ -373,7 +380,11 @@
 
         {% if p.thumb_url and not p.embed_url and not p.is_crosspost %}
         <div class="card-header bg-transparent border-0 d-none d-md-flex flex-row flex-nowrap pl-3 p-0">
-          <a style="height: fit-content;" target="_blank" rel="nofollow" {% if p.is_image %}href="javascript:void(0)" data-toggle="modal" data-target="#expandImageModal" onclick="expandDesktopImage('{{ p.url }}')"{% else %}href="{{ p.url }}"{% endif %}><img src="{{ p.thumb_url }}" class="post-img d-none d-md-block" alt="Unable to load image"></a>
+          {% if p.is_image %}
+          <a target="_blank" rel="nofollow" data-toggle="modal" data-target="#expandImageModal" class="expandable-image" data-url="{{ p.url }}"><img src="{{ p.thumb_url }}" class="post-img d-none d-md-block" alt="Unable to load image"></a>
+          {% else %}
+          <a target="_blank" rel="nofollow" href="{{ p.url }}"><img src="{{ p.thumb_url }}" class="post-img d-none d-md-block" alt="Unable to load image"></a>
+          {% endif %}
 
         </div>
         {% endif %}
@@ -391,7 +402,7 @@
             {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
             {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
             {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
-            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %}){% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}
+            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" class="coin-ruqqus"><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %}){% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}{% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}
             {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}
             {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
             {% if p.is_repost %} · {% include "tags/repost.html" %}{% endif %}
@@ -417,7 +428,7 @@
             {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
             {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
             {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
-            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" style="width: 15px; margin-bottom: 3px;"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %}
+            {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" class="coin-ruqqus"><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %}
             {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(v) }}"></i>{% endif %}
             {% if p.edited_utc %} · Edited <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ edited_datetime }}">{{ p.edited_string }}</span>{% endif %}
           </div>
@@ -450,13 +461,31 @@
               <input type="hidden" name="current_page" value="{{ request.path }}">
               <textarea name="body" id="post-edit-box-{{ p.base36id }}" form="post-edit-form-{{ p.base36id }}" class="comment-box form-control rounded" onkeydown="textAreaOnKeyDown(event, ()=>{document.getElementById('post-edit-form-{{ p.base36id }}').submit()})" aria-label="With textarea" placeholder="Add text to your post..." rows="3">{{ p.body }}</textarea> 
               <div class="comment-format"> 
-                <small class="format pl-0"><i class="fas fa-bold" aria-hidden="true" onclick="makeBold('post-edit-box-{{ p.base36id }}')" data-toggle="tooltip" data-placement="bottom" title="Bold"></i></small> 
-                <small class="format"><i class="fas fa-italic" aria-hidden="true" onclick="makeItalics('post-edit-box-{{ p.base36id }}')" data-toggle="tooltip" data-placement="bottom" title="Italicize"></i></small> 
-                <small class="format"><i class="fas fa-quote-right" aria-hidden="true" onclick="makeQuote('post-edit-box-{{ p.base36id }}')" data-toggle="tooltip" data-placement="bottom" title="Quote"></i></small>
-                <small class="format"><span class="font-weight-bolder text-uppercase" onclick="getGif();commentForm('post-edit-box-{{ p.base36id }}')" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span></small> 
-                <small class="format"><i class="fas fa-smile-beam" onclick="commentForm('post-edit-box-{{p.base36id}}');loadEmojis()" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom"  title="Add EMOJI"></i></small>
-                <small class="format d-none"><i class="fas fa-link" aria-hidden="true"></i></small> 
-                <a href="javascript:void(0)" onclick="togglePostEdit('{{ p.base36id }}')" class="btn btn-link text-muted ml-auto cancel-form">Cancel</a> 
+                <small class="format pl-0">
+                  <i class="fas fa-bold btn-make-bold" aria-hidden="true" data-form-id="post-edit-box-{{ p.base36id }}" data-toggle="tooltip" data-placement="bottom" title="Bold"></i>
+                </small> 
+                <small class="format">
+                  <i class="fas fa-italic btn-make-italic" aria-hidden="true" data-form-id="post-edit-box-{{ p.base36id }}" data-toggle="tooltip" data-placement="bottom" title="Italicize"></i>
+                </small> 
+                <small class="format">
+                  <i class="fas fa-quote-right btn-make-quote" aria-hidden="true" data-form-id="post-edit-box-{{ p.base36id }}" data-toggle="tooltip" data-placement="bottom" title="Quote"></i>
+                </small>
+
+                {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
+                <small class="format">
+                  <span class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span>
+                </small> 
+                {% endif %}
+                {% if 'FEATURE_ENABLE_EMOJI' | app_config %}
+                <small class="format">
+                  <i class="fas fa-smile-beam btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom"  title="Add EMOJI"></i>
+                </small>
+                {% endif %}
+
+                <small class="format d-none">
+                  <i class="fas fa-link" aria-hidden="true"></i>
+                </small> 
+                <a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-edit-post">Cancel</a> 
                 <button form="post-edit-form-{{ p.base36id }}" class="btn btn-primary ml-2">Save Edit</button>
               </div>
             </form>
@@ -481,27 +510,27 @@
 
                   <li class="list-inline-item"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
                   {% if g.user and not g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="fas fa-star"></i>Tip</a></li>
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" onclick="report_postModal('{{ p.base36id }}', '{{ p.author.username }}','{{ p.board.name }}')"><i class="fas fa-flag"></i>Flag</a></li>
+                  <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i>Tip</a></li>
+                  <li class="list-inline-item"><a class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i>Flag</a></li>
                   {% endif %}
 
                   {% if g.user and g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="togglePostEdit('{{ p.base36id }}')"><i class="fas fa-edit"></i>Edit</a></li>
+                  <li class="list-inline-item"><a data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i>Edit</a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" onclick="delete_postModal('{{ p.base36id }}')"><i class="fas fa-trash-alt"></i>Delete</a></li>
+                  <li class="list-inline-item"><a class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
                   {% endif %}
 
                   {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
 
                   {% if not p.board.over_18 %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/api/toggle_post_nsfw/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="fas fa-eye-evil"></i>Toggle NSFW</a></li>
+                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="fas fa-eye-evil"></i>Toggle NSFW</a></li>
                   {% endif %}
 
                   {% if not p.board.is_nsfl %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/api/toggle_post_nsfl/{{ p.base36id }}', function(){window.location.reload(true);})"><i class="fas fa-skull"></i>Toggle NSFL</a></li>
+                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="fas fa-skull"></i>Toggle NSFL</a></li>
                   {% endif %}
 
                   {% endif %}
@@ -509,37 +538,37 @@
                   {% if g.user %}
 
                   {% if g.user.mods_anything and p.board_id == 1 %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" onclick="yank_postModal('{{ p.base36id }}','{{ p.author.username }}','{{ p.comment_count }}','{{ p.title | js_str_escape }}','{{ p.author.permalink }}','{{ p.domain | js_str_escape }}','{{ p.age_string }}')" class="d-block"><i class="fas fa-hand-lizard"></i>Yank</a></li>
+                  <li class="list-inline-item"><a data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i>Yank</a></li>
                   {% endif %}
                   {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/user/kick/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
+                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
                   {% endif %}
                   {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="post_toast('/retry_thumb/{{ p.base36id }}',callback=function(){window.location.reload(true);})"><i class="fas fa-image"></i>Retry Thumb</a></li>
+                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i>Retry Thumb</a></li>
 
                   {% endif %}
 
                   {% if p.is_guildmaster('content') %}
 
                   {% if p.is_pinned %}
-                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0', callback=function(){window.location.reload(true)})"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Unpin</a></li>
+                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" class="post-url-reload" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Unpin</a></li>
                   {% elif p.board.can_pin_another %}
-                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" href="javascript:void(0)" onclick="post('/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1', callback=function(){window.location.reload(true)})"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Pin</a></li>
+                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" class="post-url-reload" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Pin</a></li>
                   {% endif %}
 
                   {% if g.user.id == p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" onclick="post('/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.href = '{{p.permalink}}';})" class="text-warning"><i class="fas fa-crown text-warning"></i>Herald</a></li>
+                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i>Herald</a></li>
                   {% endif %}
 
-                  <li class="list-inline-item"><a class="text-danger" href="javascript:void(0)" onclick="post('/mod/kick/{{ p.board.name }}/{{ p.base36id }}', callback=function(){window.location.reload(true)})"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
+                  <li class="list-inline-item"><a class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
                   {% endif %}
 
                   {% if g.user.admin_level >=3 %}
                   {% if p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a class="text-success" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="fas fa-check text-success"></i>Approve</a></li>
+                  <li class="list-inline-item"><a class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
                   {% endif %}
                   {% if not p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="removePost('{{ p.base36id }}')"><i class="fas fa-ban"></i>Remove</a></li>
+                  <li class="list-inline-item"><a class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
                   {% endif %}
                   {% endif %}
 
@@ -553,19 +582,15 @@
                   {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
                   <li class="list-inline-item d-none d-md-inline-block">
                   	<div class="dropdown show">
-                  		<a href="#" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
+                  		<a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
                   		aria-expanded="false">
                   		  <i class="fas fa-ellipsis-h text-small mr-0"></i>
                       </a>
                       <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
-                        <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/block?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                        ><i class="fas fa-user-slash text-danger"></i>Block user</a>
-                        <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/unblock?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                        ><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
-
+                        <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+                        <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                         {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted%}
-                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger" href="javascript:void(0)" onclick="post_toast('/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}')"
-                        ><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
+                        <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                         {% endif %}
                       </div>
                     </div>
@@ -594,10 +619,10 @@
           {% else %}
 
           <div id="voting" class="voting d-none d-md-block mb-auto">
-            <div id="post-{{ p.base36id }}-up" tabindex="0" class="arrow-up mx-auto" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+            <div id="post-{{ p.base36id }}-up" tabindex="0" class="arrow-up mx-auto go-to-login">
             </div>
             <span id="post-{{ p.base36id }}-score-none" class="score text-muted"{% if not p.is_banned %} data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
-            <div id="post-{{ p.base36id }}-down" tabindex="0" class="arrow-down mx-auto" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+            <div id="post-{{ p.base36id }}-down" tabindex="0" class="arrow-down mx-auto go-to-login">
             </div>
           </div>
 
@@ -631,10 +656,10 @@
 
         <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-        <li class="list-inline-item"><a href="javascript:void(0);" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
+        <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-link"></i>Share</a></li>
         {% if g.user %}
         <li class="list-inline-item">
-          <a href="#" data-toggle="modal" data-target="#actionsModal">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal">
             <i class="fas fa-ellipsis-h"></i>
           </a>
         </li>
@@ -644,7 +669,7 @@
           <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
           </span>
           {% else %}
-          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
             <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
           </span>
           {% endif %}
@@ -655,7 +680,7 @@
           <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
           </span>
           {% else %}
-          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0" onclick="location.href='/login?redirect={{ request.path | urlencode}}';">
+          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
             <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
           </span>
           {% endif %}
@@ -676,7 +701,7 @@
       {% endif %}
       <div class="post-filter ml-auto"><span>Sort By:</span>
         <span class="dropdown">
-          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+          <a class="dropdown-toggle" href="javascript:void(0)" role="button" id="dropdownMenuLink"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
         </a>
@@ -685,7 +710,7 @@
           <a class="dropdown-item" href="?sort=old">Old</a>
           <a class="dropdown-item" href="?sort=top">Top</a>
           <a class="dropdown-item" href="?sort=disputed">Disputed</a>
-          <a class="dropdown-item d-none" href="#">Based</a>
+          <a class="dropdown-item d-none" href="javascript:void(0)">Based</a>
         </span>
       </span>
     </div>
@@ -701,21 +726,26 @@
       <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" onkeydown="textAreaOnKeyDown(event, (fullname = '{{ p.fullname }}') => post_comment(fullname))" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
       {% endif %}
       <div class="comment-format">
-        <small class="format pl-0"><i class="fas fa-bold" onclick="makeBold('reply-form-body-{{ p.fullname }}')" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Bold"></i></small>
-        <small class="format"><i class="fas fa-italic" onclick="makeItalics('reply-form-body-{{ p.fullname }}')" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Italicize"></i></small>
-        <small class="format"><i class="fas fa-quote-right" onclick="makeQuote('reply-form-body-{{ p.fullname }}')" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
+        <small class="format pl-0"><i class="fas fa-bold btn-make-bold" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Bold"></i></small>
+        <small class="format"><i class="fas fa-italic data-make-italic" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Italicize"></i></small>
+        <small class="format"><i class="fas fa-quote-right data-make-quote" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
+
+          {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
           <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ p.fullname }}">
-            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase" onclick="getGif();commentForm('reply-form-body-{{ p.fullname }}')" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
-          </label> 
-          &nbsp;
-          <label class="btn btn-secondary format d-inline-block m-0" for="emoji-reply-btn-{{p.fullname}}">
-            <div id="emoji-reply-btn-{{p.fullname}}" onclick="commentForm('reply-form-body-{{p.fullname}}');loadEmojis()" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
-          </label> 
-          <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
-                <div id="filename-show-reply-{{ p.base36id }}"><i class="far fa-image"></i></div>
-                <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" onchange="document.getElementById('filename-show-reply-{{ p.base36id }}').innerHTML=document.getElementById('file-upload-reply-{{ p.fullname }}').files[0].name;" hidden>
+            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
           </label>
-        <a id="save-reply-to-{{ p.fullname }}" href="javascript:void(0)" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-whitebtn ml-auto" onclick="post_comment('{{ p.fullname }}')">Comment</a>
+          {% endif %}
+          {% if 'FEATURE_ENABLE_EMOJI' %}
+          <label class="btn btn-secondary format d-inline-block m-0" for="emoji-reply-btn-{{p.fullname}}">
+            <div id="emoji-reply-btn-{{p.fullname}}" class="btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
+          </label> 
+          {% endif %}
+
+          <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
+                <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
+                <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
+          </label>
+        <a id="save-reply-to-{{ p.fullname }}" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-white ml-auto btn-save-new-comment" data-parent-fullname="{{ p.fullname }}">Comment</a>
       </div>
     </form>
   </div>
@@ -723,7 +753,7 @@
 
   {% if not g.user and not p.is_banned %}
   <div class="comment-write mb-3">
-    <textarea class="comment-box form-control rounded" name="body" aria-label="With textarea" placeholder="Add your comment..." rows="1" onclick="location.href='/login?redirect={{ request.path | urlencode}}';"></textarea>
+    <textarea class="comment-box form-control rounded go-to-login" name="body" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
   </div>
   {% if p.comment_count >= 2 %}
   <div class="card border-0 bg-light mt-4">
@@ -780,7 +810,7 @@
 {% endblock %}
 
 {% block GIFtoast %}
-<div class="toast" id="toast-error-gif" style="position: fixed; bottom: 1.5rem; margin: 0 auto; left: 0; right: 0; width: 275px; z-index: 1000" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+<div class="toast" id="toast-error-gif" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
   <div class="toast-body bg-danger text-center text-white">
     <i class="fas fa-exclamation-circle mr-2"></i>Unable to snag gifs :(
   </div>
@@ -789,7 +819,14 @@
 
 {% block GIFpicker %}
 {% if g.user %}
-{% include "gif_modal.html" %}
-{% include "emoji_modal.html" %}
+
+  {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
+  {% include "gif_modal.html" %}
+  {% endif %}
+
+  {% if 'FEATURE_ENABLE_EMOJI' | app_config %}
+  {% include "emoji_modal.html" %}
+  {% endif %}
+
 {% endif %}
 {% endblock %}

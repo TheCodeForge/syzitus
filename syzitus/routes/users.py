@@ -309,7 +309,7 @@ URL path parameters:
 
     # check for existing follow
     if g.db.query(Follow).filter_by(user_id=g.user.id, target_id=target.id).first():
-        abort(409)
+        return jsonify({"error": f"You're already following @{target.username}"}), 409
 
     new_follow = Follow(user_id=g.user.id,
                         target_id=target.id)
@@ -343,24 +343,17 @@ URL path parameters:
         user_id=g.user.id, target_id=target.id).first()
 
     if not follow:
-        abort(409)
+        return jsonify({"error": f"You already aren't following @{target.username}"}), 409
 
     g.db.delete(follow)
+    g.db.flush()
+    target.stored_subscriber_count=target.follower_count
+    g.db.add(target)
+    g.db.commit()
 
     cache.delete_memoized(User.idlist)
 
     return "", 204
-
-
-@app.route("/api/agree_tos", methods=["POST"])
-@auth_required
-def api_agree_tos():
-
-    g.user.tos_agreed_utc = int(time.time())
-
-    g.db.add(g.user)
-
-    return redirect("/help/terms")
 
 
 @app.get("/@<username>/pic/profile")
@@ -377,8 +370,7 @@ def user_profile_uid(uid):
 
 
 @app.route("/saved", methods=["GET"])
-@app.route("/api/v1/saved", methods=["GET"])
-#@app.get("/api/v2/me/saved")
+@app.get("/api/v2/me/saved")
 @auth_required
 @api("read")
 def saved_listing():

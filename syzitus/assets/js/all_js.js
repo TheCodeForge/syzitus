@@ -2,6 +2,9 @@ function formkey() {
       return $('#formkey_element').data('formkey');
 }
 
+//avoid console errors
+$('a[href="javascript:void(0)"]').click(function(event){event.preventDefault()})
+
 // Using mouse
 
 document.body.addEventListener('mousedown', function() {
@@ -46,11 +49,13 @@ $('#new_email').on('input', function () {
 
   var commentFormID;
 
-  function commentForm(form) {
-    commentFormID = form;
-  };
+$('.btn-open-inserters').click(function(){
+  commentFormID=$(this).data('form-id')
+})
 
-  function getEmoji(searchTerm) {
+$('.btn-emoji').click(function() {
+
+    searchTerm=$(this).data('emoji')
 
     var emoji = ' :'+searchTerm+': '
     
@@ -60,326 +65,7 @@ $('#new_email').on('input', function () {
 
     commentBox.value = old + emoji;
 
-  }
-
-  function loadEmojis() {
-
-    const emojis = [
-    {
-      type:'ruqqus',
-      folder: 'emojis',
-      emojis: [
-      '500',
-      '503',
-      'poggers',
-      'ruqqking',
-      'ruqqie',
-      'ruqqie-cowboy',
-      'ruqqie-love',
-      'ruqqie-pensive',
-      'ruqqie-sip',
-      'ruqqie-upvote',
-      'dexter',
-      ]
-    },
-    {
-      type:'animated',
-      folder: 'primojis',
-      emojis: [
-      'anime-dance',
-      'cat-vibe',
-      'crumb-dance',
-      'dance-kid',
-      'dance',
-      'falling-kermit',
-      'minecraft',
-      'pepe-saber',
-      'pop-cat',
-      'wavy-sad',
-      'who',
-      'yoshi-hammer',
-      'lmao-spin',
-      'gigachad-gif',
-      'yes-cat',
-      'no-cat',
-      'is4me',
-      'frogroll',
-      'alert',
-      'shrug',
-      ]
-    },
-    {
-      type:'reaction',
-      folder: 'emojis',
-      emojis: [
-      'finger-guns',
-      'isforme',
-      'lmao',
-      'lfg',
-      'pepe-blanket',
-      'pepe-cozy',
-      'pepe-sus',
-      'pepe-toast',
-      'pepe-flushed',
-      'weirdhd',
-      'copium',
-      'clueless',
-      'trollface',
-      'gigachad',
-      'hahayes',
-      'mikewazowski',
-      'breadstare',
-      'pain',
-      'tobey-sad',
-      'facepalm',
-      'kekw',
-      'jackie-chan-wtf',
-      'leo',
-      'pathetic',
-      'pogchamp',
-      'press-f',
-      'shrek-yep',
-      'strong-doge',
-      'stonks',
-      'not-stonks',
-      'think-mark',
-      'tom-unsettled',
-      'vue',
-      'this-tbh',
-      'king',
-      ]
-    },
-    {
-      type: 'classic',
-      folder: 'emojis',
-      emojis: [
-      '2thumbsup',
-      'aliendj',
-      'ambulance',
-      'angry',
-      'angrywhip',
-      'argue',
-      'aroused',
-      'ashamed',
-      'badass',
-      'banana',
-      'band',
-      'banghead',
-      'batman',
-      'bigeyes',
-      'bite',
-      'blind',
-      'blowkiss',
-      'blush',
-      'bong',
-      'bounce',
-      'bow',
-      'breakheart',
-      'bs',
-      'cartwheel',
-      'cat',
-      'celebrate',
-      'chad',
-      'chainsaw',
-      'cheers',
-      'clap',
-      'cold',
-      'confused',
-      'crazyeyes',
-      'cry',
-      'cthulhu',
-      'cute',
-      'D',
-      'daydream',
-      'ddr',
-      'deadpool',
-      'devilsmile',
-      'diddle',
-      'die',
-      'distress',
-      'disturbing',
-      'dizzy',
-      'domo',
-      'doughboy',
-      'drink',
-      'drool',
-      'dudeweedlmao',
-      'edward',
-      'electro',
-      'elephant',
-      'embarrassed',
-      'emo',
-      'emo2',
-      'evil',
-      'evilclown',
-      'evilgrin',
-      'facepalm',
-      'fap',
-      'flamethrower',
-      'flipbird',
-      'flirt',
-      'frown',
-      'gasp',
-      'glomp',
-      'go',
-      'gooby',
-      'grr',
-      'gtfo',
-      'guitar',
-      'haha',
-      'handshake',
-      'happydance',
-      'headbang',
-      'heart',
-      'heartbeat',
-      'hearts',
-      'highfive',
-      'hmm','hmph',
-      'holdhands',
-      'horny',
-      'hug',
-      'hugging',
-      'hugs',
-      'hump',
-      'humpbed',
-      'hysterical',
-      'ily',
-      'inlove',
-      'jason',
-      'jawdrop',
-      'jedi',
-      'jester',
-      'kaboom',
-      'kick',
-      'kiss',
-      'kitty',
-      'laughchair',
-      'lick',
-      'link',
-      'lol',
-      'lolbeat',
-      'loving',
-      'makeout',
-      'medal',
-      'megaman',
-      'megamanguitar',
-      'meow',
-      'metime',
-      'mooning',
-      'mummy',
-      'na',
-      'nauseous',
-      'nervous',
-      'ninja',
-      'nod',
-      'nono',
-      'omg',
-      'onfire',
-      'ooo',
-      'orly',
-      'p',
-      'paddle',
-      'panda',
-      'pandabutt',
-      'paranoid',
-      'party',
-      'pat',
-      'peek',
-      'pikachu',
-      'pimp',
-      'plzdie',
-      'poke',
-      'popcorn',
-      'pout',
-      'probe',
-      'puke',
-      'punch',
-      'quote',
-      'raccoon',
-      'roar',
-      'rofl',
-      'roflmao',
-      'rolleyes',
-      'sad',
-      'sadeyes',
-      'sadhug',
-      'samurai',
-      'sarcasm',
-      'scoot',
-      'scream',
-      'shmoopy',
-      'shrug',
-      'skull',
-      'slap',
-      'slapfight',
-      'sleepy',
-      'smackfish',
-      'smackhead',
-      'smh',
-      'smile',
-      'smoke',
-      'sonic',
-      'spank',
-      'sparta',
-      'sperm',
-      'spiderman',
-      'stab',
-      'star',
-      'stare',
-      'stfu',
-      'suicide',
-      'surprisehug',
-      'suspicious',
-      'sweat',
-      'swordfight',
-      'taco',
-      'talk2hand',
-      'tantrum',
-      'teehee',
-      'thinking',
-      'threesome',
-      'throw',
-      'throwaway',
-      'tickle',
-      'typing',
-      'uhuh',
-      'vampbat',
-      'viking',
-      'violin',
-      'vulgar',
-      'wah',
-      'wat',
-      'whip',
-      'whipping',
-      'wink',
-      'witch',
-      'wizard',
-      'woah',
-      'woo','work',
-      'worship',
-      'wow',
-      'XD',
-      'yay',
-      'zzz'
-      ]
-    }
-    ]
-
-    for (i=0; i < emojis.length; i++) {
-      
-      let container = document.getElementById(`EMOJIS_${emojis[i].type}`);
-      let str = '';
-      let arr = emojis[i].emojis;
-      let dir = emojis[i].folder;
-
-      for (j=0; j < arr.length; j++) { 
-        str += `<button class="btn btn-white m-1 p-0" onclick="getEmoji(\'${arr[j]}\')" style="width:45px; height:45px; overflow: hidden;"><img width=35 src="/assets/images/${dir}/${arr[j]}" alt="${arr[j]}-emoji"/></button>`;
-      }
-
-      container.innerHTML = str
-    }
-
-  }
+  })
 
   function getGif(searchTerm) {
 
@@ -400,6 +86,7 @@ $('#new_email').on('input', function () {
       var cats = document.getElementById('GIFcats');
 
       // container div
+      var default_gifs = document.getElementById('default-GIFs');
       var container = document.getElementById('GIFs');
 
       // modal body div
@@ -412,12 +99,13 @@ $('#new_email').on('input', function () {
       container.innerHTML = '';
 
       if (searchTerm == undefined) {
-        container.innerHTML = '<div class="card" onclick="getGif(\'agree\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Agree</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/wGhYz3FHaRJgk/200w_d.gif"> </div> <div class="card" onclick="getGif(\'laugh\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Laugh</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/O5NyCibf93upy/200w_d.gif"> </div> <div class="card" onclick="getGif(\'confused\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Confused</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/200w_d.gif"> </div> <div class="card" onclick="getGif(\'sad\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Sad</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/ISOckXUybVfQ4/200w_d.gif"> </div> <div class="card" onclick="getGif(\'happy\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Happy</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/XR9Dp54ZC4dji/200w_d.gif"> </div> <div class="card" onclick="getGif(\'awesome\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Awesome</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w_d.gif"> </div> <div class="card" onclick="getGif(\'yes\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Yes</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/J336VCs1JC42zGRhjH/200w_d.gif"> </div> <div class="card" onclick="getGif(\'no\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">No</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1zSz5MVw4zKg0/200w_d.gif"> </div> <div class="card" onclick="getGif(\'love\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Love</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/4N1wOi78ZGzSB6H7vK/200w_d.gif"> </div> <div class="card" onclick="getGif(\'please\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Please</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/qUIm5wu6LAAog/200w_d.gif"> </div> <div class="card" onclick="getGif(\'scared\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Scared</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/bEVKYB487Lqxy/200w_d.gif"> </div> <div class="card" onclick="getGif(\'angry\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Angry</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/12Pb87uq0Vwq2c/200w_d.gif"> </div> <div class="card" onclick="getGif(\'awkward\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Awkward</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/unFLKoAV3TkXe/200w_d.gif"> </div> <div class="card" onclick="getGif(\'cringe\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Cringe</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1jDvQyhGd3L2g/200w_d.gif"> </div> <div class="card" onclick="getGif(\'omg\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">OMG</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3o72F8t9TDi2xVnxOE/200w_d.gif"> </div> <div class="card" onclick="getGif(\'why\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Why</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1M9fmo1WAFVK0/200w_d.gif"> </div> <div class="card" onclick="getGif(\'gross\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Gross</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/pVAMI8QYM42n6/200w_d.gif"> </div> <div class="card" onclick="getGif(\'meh\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Meh</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/xT77XTpyEzJ4OJO06c/200w_d.gif"> </div>'
+        default_gifs.classList.remove('d-none')
         backBtn.innerHTML = null;
         cancelBtn.innerHTML = null;
         noGIFs.innerHTML = null;
         loadGIFs.innerHTML = null;
       } else {
+        default_gifs.classList.add('d-none')
         backBtn.innerHTML = '<button class="btn btn-link pl-0 pr-3" id="gifs-back-btn" onclick="getGif();"><i class="fas fa-long-arrow-left text-muted"></i></button>';
 
         cancelBtn.innerHTML = '<button class="btn btn-link pl-3 pr-0" id="gifs-cancel-btn" onclick="getGif();"><i class="fas fa-times text-muted"></i></button>';
@@ -446,12 +134,12 @@ $('#new_email').on('input', function () {
           // loop for fetching mutliple GIFs and creating the card divs
           if (gifs.length) {
             for (var i = 0; i < gifs.length; i++) {
-              container.innerHTML += ('<div class="card bg-white" style="overflow: hidden" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
+              container.innerHTML += ('<div class="card bg-white" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
               noGIFs.innerHTML = null;
               loadGIFs.innerHTML = '<div class="text-center py-3"><div class="mb-3"><i class="fad fa-grin-beam-sweat text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Thou&#39;ve reached the end of the list!</p></div>';
             }
           } else {
-            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
+            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
             container.innerHTML = null;
             loadGIFs.innerHTML = null;
           }
@@ -459,6 +147,9 @@ $('#new_email').on('input', function () {
         .catch(err => alert(err));
       };
     }
+
+$(".gif-cat-select").click(function(){getGif($(this).data('gif-search-term'))})
+$("#gifSearch").click(function(){getGif($(this).val())})
 
   // Insert GIF markdown into comment box function
 
@@ -522,13 +213,9 @@ $('#new_email').on('input', function () {
 
 // Toggle comment collapse
 
-function collapse_comment(comment_id) {
-
-  var comment = "comment-" + comment_id;
-
-  document.getElementById(comment).classList.toggle("collapsed");
-
-};
+$('.comment-collapse').click(function() {
+  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
+})
 
 // Text Area Input handling
 
@@ -539,7 +226,7 @@ function textAreaOnKeyDown(e, func){
   return;
 }
 
-function isCtrlEnterSubmit(e) {
+function isCtrlEnterSubmit(e){
   // If the user has pressed enter + ctrl/command
   if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey))
   {
@@ -571,65 +258,54 @@ $('.comment-box').blur(function () {
 */
 
 // Comment edit form
+$('.btn-toggle-comment-edit').click(function(){
+  id=$(this).data('comment-id')
+  $("#comment-text-"+id).toggleClass('d-none');
+  $("#comment-edit-"+id).toggleClass('d-none');
+  $('#comment-' + id +'-actions').toggleClass('d-none');
 
-toggleEdit=function(id){
-  comment=document.getElementById("comment-text-"+id);
-  form=document.getElementById("comment-edit-"+id);
   box=document.getElementById('edit-box-comment-'+id);
-  actions = document.getElementById('comment-' + id +'-actions');
-
-  comment.classList.toggle("d-none");
-  form.classList.toggle("d-none");
-  actions.classList.toggle("d-none");
   autoExpand(box);
-};
+})
 
 // Post edit form
 
-togglePostEdit=function(id){
-
-  body=document.getElementById("post-body");
-  form=document.getElementById("edit-post-body-"+id);
+$(".btn-edit-post").click(function(){
   box=document.getElementById("post-edit-box-"+id);
 
-  body.classList.toggle("d-none");
-  form.classList.toggle("d-none");
+  $('#post-body').toggleClass("d-none");
+  $('#edit-post-body-'+$(this).data('target-id')).toggleClass("d-none");
   autoExpand(box);
-};
+}
+)
 
 //comment modding
-function removeComment(post_id) {
-  url="/api/ban_comment/"+post_id
+$('.btn-mod-comment').click(function () {
 
-  callback=function(){
-    document.getElementById("comment-"+post_id+"-only").classList.add("banned");
+  var url;
 
-    button=document.getElementById("moderate-"+post_id);
-    button.onclick=function(){approveComment(post_id)};
-    button.innerHTML="approve"
+  if ($("#comment-"+$(this).data('comment-id')+"-only").hasClass("banned")) {
+    url="/api/unban_comment/"+$(this).data('comment-id');
+    callback=function(){
+      $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
+      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Approve")
+    }
+  } else {
+    url="/api/ban_comment/"+$(this).data('comment-id');
+    callback=function(){
+      $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
+      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Remove")
+    }
   }
-  post(url, callback, "Unable to remove post at this time. Please try again later.")
-};
+  post_toast(url, callback)
+})
 
-function approveComment(post_id) {
-  url="/api/unban_comment/"+post_id
 
-  callback=function(){
-    document.getElementById("comment-"+post_id+"-only").classList.remove("banned");
-
-    button=document.getElementById("moderate-"+post_id);
-    button.onclick=function(){removeComment(post_id)};
-    button.innerHTML="remove"
-  }
-
-  post(url, callback, "Unable to approve post at this time. Please try again later.")
-}
-
-admin_comment=function(cid){
+$('.btn-distinguish-comment').click(function(){
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/api/distinguish_comment/"+cid);
+  xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment-id));
 
   var form = new FormData();
 
@@ -638,19 +314,19 @@ admin_comment=function(cid){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+cid+'-only');
+      comment=document.getElementById('comment-'+$(this).data(comment-id)+'-only');
       comment.innerHTML=JSON.parse(xhr.response)["html"];
     }
     else {
       var commentError = document.getElementById("comment-error-text");
-      $('#toast-comment-success').toast('dispose');
-      $('#toast-comment-error').toast('dispose');
-      $('#toast-comment-error').toast('show');
-      commentError.textContent = JSON.parse(xhr.response)["error"];
+      $('#toast-success').toast('dispose');
+      $('#toast-error').toast('dispose');
+      $('#toast-error').toast('show');
+      $('#toast-error.toast-text').text(JSON.parse(xhr.response)["error"]);
     }
   }
   xhr.send(form)
-}
+})
 
 
 
@@ -753,80 +429,66 @@ $(".dark-switch").click(function () {
 })
 
 // Delete Post
+$('.btn-delete-post').click(function() {
+  $('.btn-delete-post-confirm').data('delete-url', '/delete_post/'+$(this).data('post-id'))
+})
 
-function delete_postModal(id) {
 
-  // Passed data for modal
+$('.btn-delete-post-confirm').click(function(){  
 
-  document.getElementById("deletePostButton-mobile").addEventListener("click", delete_post);
-
-  document.getElementById("deletePostButton").addEventListener("click", delete_post);
-
-  function delete_post(){  
-
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting post';  
-    this.disabled = true; 
-    post('/delete_post/' + id,
-      callback = function() {
-
-        location.reload();
-      }
-      )
+  this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting post';  
+  this.disabled = true; 
+  post($(this).data('delete-url'),
+    callback = function() {
+      location.reload();
+    }
+    )
   }
-
-};
+)
 
 // Delete Comment
 
-function delete_commentModal(id) {
+$('btn-delete-comment').click(function() {
 
-  // Passed data for modal
+  $("#deleteCommentButton").data('delete-url', '/delete/comment/' + $(this).data('comment-id'))
+})
 
-  document.getElementById("deleteCommentButton").onclick = function() {  
 
+$('#deleteCommentButton').click(function() {  
     this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Deleting comment';  
     this.disabled = true; 
-    post('/delete/comment/' + id,
+    post($(this).data('delete-url'),
       callback = function() {
-
         location.reload();
       }
       )
   }
-
-};
+)
 
 //Email verification text
 
-function emailVerifyText() {
-
-  document.getElementById("email-verify-text").innerHTML = "Verification email sent! Please check your inbox.";
-
-}
-
 //flagging
 // Flag Comment
+$('.btn-report-comment').click(function() {
 
-report_commentModal = function(id, author) {
-
-  document.getElementById("comment-author").textContent = author;
+  $("#comment-author").text($(this).data('target-author'));
 
   //offtopic.disabled=true;
 
-  document.getElementById("reportCommentButton").onclick = function() {
+  $("#reportCommentButton").data('report-url', '/api/flag/comment/'+$(this).data('comment-id'))
+  })
 
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting comment';
-    this.disabled = true;
-    post('/api/flag/comment/' + id,
-      callback = function() {
+$("#reportCommentButton").click(function() {
 
-        document.getElementById("reportCommentFormBefore").classList.add('d-none');
-        document.getElementById("reportCommentFormAfter").classList.remove('d-none');
-      }
-      )
-  }
-
-};
+  this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting comment';
+  this.disabled = true;
+  post($(this).data('report-url'),
+    callback = function() {
+      $("#reportCommentFormBefore").addClass('d-none');
+      $("#reportCommentFormAfter").removeClass('d-none');
+    }
+  )
+})
 
 $('#reportCommentModal').on('hidden.bs.modal', function () {
 
@@ -847,52 +509,28 @@ $('#reportCommentModal').on('hidden.bs.modal', function () {
 
 
 // Flag Submission
+$('.btn-report-post').click(function() {
 
-report_postModal = function(id, author, board) {
+  $("#post-author").text($(this).data('target-author'));
 
-  document.getElementById("post-author").textContent = author;
-
-  offtopic=document.getElementById('report-post-to-guild-dropdown-option');
-  offtopic.innerHTML= 'This post is off-topic for +' + board;
+  $('#report-post-to-guild-dropdown-option').text('This post is off-topic for +' + $(this).data('target-board'));
 
   if (board=='general') {
-    offtopic.disabled=true;
+    $('#report-post-to-guild-dropdown-option').prop('disabled', true);
   }
   else {
-    offtopic.disabled=false;
+    $('#report-post-to-guild-dropdown-option').prop('disabled', false);
   }
 
-  selectbox=document.getElementById('report-type-dropdown');
-  selectbox.value='reason_not_selected';
+  $('#report-type-dropdown').val('reason_not_selected');
 
-  submitbutton=document.getElementById("reportPostButton");
-  submitbutton.disabled=true;
+  $("#reportPostButton").prop('disabled',true)
+  $("#reportPostButton").data('report-url', $(this).data('report-url'))
+  })
 
-  submitbutton.onclick = function() {
-
-    this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting post';
-    this.disabled = true;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", '/api/flag/post/'+id, true);
-    var form = new FormData()
-    form.append("formkey", formkey());
-
-    dropdown=document.getElementById("report-type-dropdown");
-    form.append("report_type", dropdown.options[dropdown.selectedIndex].value);
-
-    xhr.withCredentials=true;
-
-    xhr.onload=function() {
-      document.getElementById("reportPostFormBefore").classList.add('d-none');
-      document.getElementById("reportPostFormAfter").classList.remove('d-none');
-    };
-
-    xhr.onerror=function(){alert(errortext)};
-    xhr.send(form);
-
-  }
-};
+$('#reportPostButton').click(function() {
+  post_toast($(this).data('report-url'))
+})
 
 $('#reportPostModal').on('hidden.bs.modal', function () {
 
@@ -1054,13 +692,13 @@ function post_response(url, callback, errortext) {
 
 // sub/unsub
 
-function toggleSub(xhr){
-  document.getElementById('button-unsub').classList.toggle('d-none');
-  document.getElementById('button-sub').classList.toggle('d-none');
-  document.getElementById('button-unsub-modal').classList.toggle('d-none');
-  document.getElementById('button-sub-modal').classList.toggle('d-none');
-  document.getElementById('button-unsub-mobile').classList.toggle('d-none');
-  document.getElementById('button-sub-mobile').classList.toggle('d-none');
+function toggleSub(thing_id){
+  $('#button-unsub-'+thing_id).toggleClass('d-none');
+  $('#button-sub-'+thing_id).toggleClass('d-none');
+  $('#button-unsub-modal-'+thing_id).toggleClass('d-none');
+  $('#button-sub-modal-'+thing_id).toggleClass('d-none');
+  $('#button-unsub-mobile-'+thing_id).toggleClass('d-none');
+  $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
 function post_toast(url, callback) {
@@ -1071,7 +709,9 @@ function post_toast(url, callback) {
   xhr.withCredentials=true;
 
   xhr.onload = function() {
-    if (xhr.status==201){return}
+    if (xhr.status==204){
+      return
+    }
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
@@ -1108,7 +748,8 @@ $('.bell-button').click(function (event) {
 
 //Admin post modding
 
-function removePost(post_id) {
+$('.admin-remove-post').click(function() {
+  post_id=$(this).data('post-id')
   url="/api/ban_post/"+post_id
 
   callback=function(){
@@ -1121,9 +762,10 @@ function removePost(post_id) {
     button.innerHTML='<i class="fas fa-clipboard-check"></i>Approve'
   }
   post(url, callback, "Unable to remove post at this time. Please try again later.")
-}
+})
 
-function approvePost(post_id) {
+$('.admin-approve-post').click(function() {
+  post_id=$(this).data('post-id')
   url="/api/unban_post/"+post_id
 
   callback=function(){
@@ -1137,7 +779,7 @@ function approvePost(post_id) {
   }
 
   post(url, callback, "Unable to approve post at this time. Please try again later.")
-}
+})
 
 //Element deleter
 
@@ -1259,23 +901,23 @@ if (document.getElementById("sidebar-left") && localStorage.sidebar_pref == 'col
 
 };
 
-function toggle_sidebar_collapse() {
+$('.toggle_sidebar_collapse').click(function() {
 
   // Store Pref
   localStorage.setItem('sidebar_pref', 'collapsed');
 
   document.getElementById('sidebar-left').classList.toggle('sidebar-collapsed');
 
-};
+})
 
-function toggle_sidebar_expand() {
+$('.toggle_sidebar_expand').click(function() {
 
   // Remove Pref
   localStorage.removeItem('sidebar_pref');
 
   document.getElementById('sidebar-left').classList.toggle('sidebar-collapsed');
 
-}
+})
 
 // Voting
 
@@ -1531,28 +1173,27 @@ function vote_comment(comment_id, direction) {
 }
 
 // Yank Post
+$('#yank-type-dropdown').change(function(){
+  $('#yankPostButton').prop('disabled',false);
+})
+$('.btn-yank-post').click(function(){
+  $("#post-author-url").text($(this).data('post-author'));
 
-function yank_postModal(id, author, comments, title, author_link, domain, timestamp) {
+  $("#post-comments").text($(this).data('comment-count'));
 
-  // Passed data for modal
+  $("#post-title").text($(this).data('title'));
 
-  document.getElementById("post-author-url").innerText = author;
+  $("#post-author-url").attr('href', $(this).data('author-link'));
 
-  document.getElementById("post-comments").textContent = comments;
+  $("#post-domain").text($(this).data('domain'));
 
-  document.getElementById("post-title").textContent = title;
-
-  document.getElementById("post-author-url").href = author_link;
-
-  document.getElementById("post-domain").textContent = domain;
-
-  document.getElementById("post-timestamp").textContent = timestamp;
+  $("#post-timestamp").text($(this).data('timestamp'));
 
 
-  document.getElementById("yank-post-form").action="/mod/take/"+id;
-  
+  $("yank-post-form").data('yank-url', "/mod/take/"+$(this).data('post-id'));
+})
 
-  document.getElementById("yankPostButton").onclick = function() {  
+  $("#yankPostButton").click(function() {  
 
 
     var yankError = document.getElementById("toast-error-message");
@@ -1560,7 +1201,7 @@ function yank_postModal(id, author, comments, title, author_link, domain, timest
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open("post", "/mod/take/"+id);
+    xhr.open("post", $(this).data('yank-url'));
     xhr.withCredentials=true;
     f=new FormData();
     f.append("formkey", formkey());
@@ -1576,8 +1217,7 @@ function yank_postModal(id, author, comments, title, author_link, domain, timest
       }
     }
     xhr.send(f);
-  }
-};
+  })
 
 //yt embed
 
@@ -1603,10 +1243,6 @@ $('#ytEmbed').html('<iframe width="100%" height="475" src="//www.youtube.com/emb
 
 function expandDesktopImage(image) {
 
-// GIPHY attribution div
-
-var attribution = document.getElementById("modal-image-attribution");
-
 // Link text
 
 var linkText = document.getElementById("desktop-expanded-image-link");
@@ -1619,7 +1255,7 @@ inlineImage.src = image;
 linkText.href = image;
 imgLink.href = image;
 
-if (image.includes("i.ruqqus.com")) {
+if (image.includes("i.syzitus.com")) {
   linkText.textContent = 'Go to website';
 }
 else {
@@ -1652,7 +1288,8 @@ $('#expandImageModal').on('hidden.bs.modal', function (e) {
 
 // Bold Text
 
-makeBold = function (form) {
+$('.btn-make-bold').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1670,11 +1307,12 @@ makeBold = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + format + text.value.substring(endIndex);
   }
-}
+})
 
 // Italicize Comment Text
 
-makeItalics = function (form) {
+$('.btn-make-italic').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1692,11 +1330,12 @@ makeItalics = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + format + text.value.substring(endIndex);
   }
-}
+})
 
 // Quote Comment Text
 
-makeQuote = function (form) {
+$('.btn-make-quote').click(function () {
+  form=$(this).data('form-id')
   var text = document.getElementById(form);
   var startIndex = text.selectionStart,
   endIndex = text.selectionEnd;
@@ -1714,33 +1353,41 @@ makeQuote = function (form) {
   else {
     text.value = text.value.substring(0, startIndex) + format + selectedText + text.value.substring(endIndex);
   }
-}
+})
 
 // Character Count
 
-function charLimit(form, text) {
+$('.textarea-form-input').on('input', function() {
 
-  var input = document.getElementById(form);
+  var input = $(this);
 
-  var text = document.getElementById(text);
+  var text = $('#'+$(this).data('text'));
 
-  var length = input.value.length;
+  var length = input.val().length;
 
-  var maxLength = input.getAttribute("maxlength");
+  var maxLength = input.attr("maxlength");
 
   if (length >= maxLength) {
-    text.style.color = "#E53E3E";
+    text.addClass('text-danger');
+    text.removeClass('text-warning');
+    text.removeClass('text-muted');
   }
   else if (length >= maxLength * .72){
-    text.style.color = "#FFC107";
+    text.addClass('text-warning');
+    text.removeClass('text-danger');
+    text.removeClass('text-muted');
   }
   else {
-    text.style.color = "#A0AEC0";
+    text.addClass('text-muted');
+    text.removeClass('text-danger');
+    text.removeClass('text-warning');
   }
 
-  text.innerText = maxLength - length;
+  text.text(maxLength - length);
 
-}
+})
+
+
 
 // Mobile bottom navigation bar
 
@@ -1832,79 +1479,77 @@ document.addEventListener('paste', function (event) {
 
 function checkForRequired() {
 
-// Divs
+  // Divs
 
-var title = document.getElementById("post-title");
+  var title = $("#post-title");
 
-var url = document.getElementById("post-URL");
+  var url = $("#post-URL");
 
-var text = document.getElementById("post-text");
+  var text = $("#post-text");
 
-var button = document.getElementById("create_button");
+  var button = $("#create_button");
 
-var image = document.getElementById("file-upload");
+  var image = $("#file-upload");
 
-// Toggle reuqired attribute
+  // Toggle reuqired attribute
 
-if (url.value.length > 0 || image.value.length > 0) {
-  text.required = false;
-  url.required=false;
-} else if (text.value.length > 0 || image.value.length > 0) {
-  url.required = false;
-} else {
-  text.required = true;
-  url.required = true;
+  if (url.val().length > 0 || image.val().length > 0) {
+    text.prop('required', false);
+    url.prop('required', false);
+  } else if (text.val().length > 0 || image.val().length > 0) {
+    url.prop('required', false);
+  } else {
+    text.prop('required',true);
+    url.prop('required', false);
+  }
+
+  // Validity check
+
+  var isValidTitle = title[0].checkValidity();
+
+  var isValidURL = url[0].checkValidity();
+
+  var isValidText = text[0].checkValidity();
+
+  // Disable submit button if invalid inputs
+
+  if (isValidTitle && (isValidURL || image.val().length>0)) {
+    button.prop('disabled',false);
+  } else if (isValidTitle && isValidText) {
+    button.prop('disabled',false);
+  } else {
+    button.prop('disabled',true);
+  }
 }
 
-// Validity check
-
-var isValidTitle = title.checkValidity();
-
-var isValidURL = url.checkValidity();
-
-var isValidText = text.checkValidity();
-
-// Disable submit button if invalid inputs
-
-if (isValidTitle && (isValidURL || image.value.length>0)) {
-  button.disabled = false;
-} else if (isValidTitle && isValidText) {
-  button.disabled = false;
-} else {
-  button.disabled = true;
-}
-
-}
+//attach the above function to Input and Change
+$('.submit-form-input').on('input', checkForRequired);
 
 // Auto-suggest title given URL
+function autoSuggestTitle() {
 
-function autoSuggestTitle()  {
-
-  var urlField = document.getElementById("post-URL");
-
-  var titleField = document.getElementById("post-title");
-
-  var isValidURL = urlField.checkValidity();
+  var urlField = $("#post-URL");
+  var titleField = $("#post-title");
+  var isValidURL = urlField[0].checkValidity();
 
   if (isValidURL && urlField.value.length > 0 && titleField.value === "") {
 
     var x = new XMLHttpRequest();
     x.withCredentials=true;
-    x.onreadystatechange = function() {
-      if (x.readyState == 4 && x.status == 200) {
-
+    x.onload = function() {
+      if (x.status == 200) {
         title=JSON.parse(x.responseText)["title"];
         titleField.value=title;
-
         checkForRequired()
       }
     }
     x.open('get','/submit/title?url=' + urlField.value);
-    x.send(null);
+    x.send();
 
   };
+}
 
-};
+$("#post-URL").on("change", autoSuggestTitle )
 
 // Run AutoSuggestTitle function on load
 
@@ -1913,8 +1558,9 @@ if (window.location.pathname=='/submit') {
 }
 
 // Exile Member
+$('#exileUserButton').click(function(){
 
-function exile_from_guild(boardname) {
+  boardname=$(this).data('board-name')
 
   var exileForm = document.getElementById("exile-form");
 
@@ -1947,7 +1593,7 @@ function exile_from_guild(boardname) {
     xhr.send(f)
   }
 
-}
+})
 
 // Approve user
 function approve_from_guild(boardid) {
@@ -2056,16 +1702,18 @@ block_user=function() {
 
 }
 
-post_comment=function(fullname){
+$('.btn-save-new-comment').click(function(){
 
 
   var form = new FormData();
 
+  var fullname=$(this).data('parent-fullname');
+
   form.append('formkey', formkey());
-  form.append('parent_fullname', fullname);
-  form.append('submission', document.getElementById('reply-form-submission-'+fullname).value);
-  form.append('body', document.getElementById('reply-form-body-'+fullname).value);
-  form.append('file', document.getElementById('file-upload-reply-'+fullname).files[0]);
+  form.append('parent_fullname', $(this).data('parent-fullname'));
+  form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-fullname')).value);
+  form.append('body', document.getElementById('reply-form-body-'+$(this).data('parent-fullname')).value);
+  form.append('file', document.getElementById('file-upload-reply-'+$(this).data('parent-fullname')).files[0]);
 
 
   var xhr = new XMLHttpRequest();
@@ -2073,14 +1721,14 @@ post_comment=function(fullname){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      commentForm=document.getElementById('comment-form-space-'+fullname);
-      commentForm.innerHTML=JSON.parse(xhr.response)["html"];
+      $('#comment-form-space-'+fullname).html(JSON.parse(xhr.response)["html"]);
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
     }
     else {
-      $('#save-reply-to-'+fullname).removeClass('disabled');
+      $('#save-reply-to-'+fullname).prop('disabled', false);
+      $('#save-reply-to-'+fullname).removeClass('disabled')
       var commentError = document.getElementById("comment-error-text");
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
@@ -2090,15 +1738,15 @@ post_comment=function(fullname){
   }
   xhr.send(form)
 
+  $('#save-reply-to-'+fullname).prop('disabled', true)
   $('#save-reply-to-'+fullname).addClass('disabled');
 
-}
-
-herald_comment=function(name,cid){
+})
 
 
+$('.btn-herald-comment').click(function(){
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/mod/distinguish_comment/"+name+'/'+cid);
+  xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
   var form = new FormData();
 
@@ -2120,13 +1768,13 @@ herald_comment=function(name,cid){
   }
   xhr.send(form)
 
-}
+})
 
-pin_comment=function(name,cid){
+$(".btn-pin-comment").click(function(){
 
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/mod/comment_pin/"+name+'/'+cid);
+  xhr.open("post", "/mod/comment_pin/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
   var form = new FormData();
 
@@ -2135,7 +1783,7 @@ pin_comment=function(name,cid){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+cid+'-only');
+      comment=document.getElementById('comment-'+$(this).data('comment-id')+'-only');
       comment.innerHTML=JSON.parse(xhr.response)["html"];
     }
     else {
@@ -2148,13 +1796,13 @@ pin_comment=function(name,cid){
   }
   xhr.send(form)
 
-}
+})
 
 
 
 //part of submit page js
 
-hide_image=function(){
+$('#post-URL').on('input', function(){
   x=document.getElementById('image-upload-block');
   url=document.getElementById('post-URL').value;
   if (url.length>=1){
@@ -2163,10 +1811,13 @@ hide_image=function(){
   else {
     x.classList.remove('d-none');
   }
-}
+})
 
 
-comment_edit=function(id){
+
+$('.btn-save-edit-comment').click(function() {
+
+  id=$(this).data('comment-id')
 
   var commentError = document.getElementById("comment-error-text");
 
@@ -2197,43 +1848,7 @@ comment_edit=function(id){
   }
   xhr.send(form)
 
-}
-
-
-filter_guild=function() {
-
-  var exileForm = document.getElementById("exile-form");
-
-  var exileError = document.getElementById("toast-error-message");
-
-  var boardField = document.getElementById("exile-username");
-
-  var isValidUsername = boardField.checkValidity();
-
-  boardname = boardField.value;
-
-  if (isValidUsername) {
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("post", "/settings/block_guild");
-    xhr.withCredentials=true;
-    f=new FormData();
-    f.append("board", boardname);
-    f.append("formkey", formkey());
-    xhr.onload=function(){
-      if (xhr.status<300) {
-        window.location.reload(true);
-      }
-      else {
-        $('#toast-exile-error').toast('dispose');
-        $('#toast-exile-error').toast('show');
-        exileError.textContent = JSON.parse(xhr.response)["error"];
-      }
-    }
-    xhr.send(f)
-  }
-
-}
+})
 
 coin_quote = function() {
 
@@ -2260,26 +1875,29 @@ coin_quote = function() {
   }
   xhr.send()
 }
+$('input#promo-code').on('input', coin_quote)
+$('select#select-coins').on('change', coin_quote)
 
 
-var tipModal2 = function(id, content, link, recipient, recipientPFP) {
+$(".btn-tip-modal-trigger").click(function() {
   console.log('opened modal, tipModal2 function triggered')
 
-  document.getElementById('tip-recipient-pfp').src = recipientPFP;
+  $('#tip-recipient-pfp').attr('src',$(this).data('target-author-profile-url'));
+  $("#tip-content-type").text($(this).data('target-type'));
 
-  document.getElementById("tip-content-type").innerText = content
-  document.getElementById("tip-recipient-username").innerText = recipient
-
-  document.getElementById("sendTipButton").onclick = function() {
-    post_toast('/gift_'+ content +'/' + id + '?coins=1',
-      callback = function() {
-        location.href = link
-      }
-      )
-  }
-
-  console.log(recipientPFP, id, content, link, recipient)
+  $("#tip-recipient-username").text($(this).data('target-author'));
+  $("#sendTipButton").data('tip-url', $(this).data('tip-url'))
 }
+)
+
+$("#sendTipButton").click(function() {
+  post_toast($(this).data('tip-url'),
+    callback = function() {
+      window.location.reload()
+    }
+  )
+}
+);
 
 var togglecat = function(sort, reload=false, delay=1000, page="/all") {
   var cbs = document.getElementsByClassName('cat-check');
@@ -2417,7 +2035,7 @@ if (("standalone" in window.navigator) &&       // Check if "standalone" propert
   if (window.innerWidth <= 737){
     try {
       $('#mobile-prompt').tooltip('show')
-      $('.tooltip')[0].addEventListener(
+      $('.tooltip').on(
         'click',
         function(event){
           $('#mobile-prompt').tooltip('hide')
@@ -2549,3 +2167,156 @@ var postformtoast = function(x){
 
 $('.toast-form-submit').click(function(){postformtoast($(this))});
 $('.toast-form-change-submit').change(function(){postformtoast($(this))});
+
+
+//Transferring onclick garbage into this file
+
+$(".btn-guild-block").click(function(){
+  post_toast('/settings/block_guild?board='+$(this).data("board-name"))
+})
+$(".btn-guild-unblock").click(function(){
+  post_toast('/settings/unblock_guild?board='+$(this).data("board-name"))
+})
+
+$(".btn-guild-sub").click(function(){
+  id=$(this).data('thing-id');
+  post('/api/subscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
+})
+$(".btn-guild-unsub").click(function(){
+  id=$(this).data('thing-id');
+  post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
+})
+
+$(".post-url-reload").click(function(){
+  post($(this).data('post-url'), callback=function(){window.location.reload()})
+})
+
+$(".post-url").click(function(){
+  post($(this).data('post-url'))
+})
+
+$(".post-toast-url-reload").click(function(){
+  post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
+})
+
+$(".post-toast-url").click(function(){
+  post_toast($(this).data('post-url'))
+})
+
+$(".go-to-login").click(function(){window.location.href="/login?redirect="+window.location.pathname})
+
+$(".btn-cancel-comment").click(function(){
+  $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
+})
+
+$('.btn-reply-comment').click(function(){
+  $('#reply-to-'+$(this).data('comment-id')).removeClass('d-none')
+})
+
+$('.btn-file-input').change(function(){
+  $('#filename-show-reply-'+$(this).data('btn-id')).text(
+    $('#file-upload-reply-'+$(this).data('parent-fullname'))[0].files[0].name
+    );
+})
+
+$('.btn-block-user').click(function() {
+  name=$(this).data('target-user');
+  id=$(this).data('post-id');
+  post_toast(
+    '/settings/block?username='+name, 
+    callback=function(){
+    $('#block-user-'+id).toggleClass('d-none');
+    $('#unblock-user-'+id).toggleClass('d-none');
+  }
+  )
+})
+
+$('.btn-unblock-user').click(function() {
+  name=$(this).data('target-user');
+  id=$(this).data('post-id');
+  post_toast(
+    '/settings/unblock?username='+name, 
+    callback=function(){
+    $('#block-user-'+id).toggleClass('d-none');
+    $('#unblock-user-'+id).toggleClass('d-none');
+  }
+  )
+})
+
+$('.btn-demod-user').click(function(){
+  $('#demod-user').toggleClass('d-none');
+})
+
+$('.btn-ban-user').click(function(){
+  $('#btn-confirm-ban-user').toggleClass('d-none');
+})
+
+$('.btn-toggle-follow').click(function(){
+  id=$(this).data('thing-id');
+  post(
+    $(this).data("post-url"),
+    callback=function(){toggleSub(id)}
+    )
+})
+
+$('.btn-cat-toggle').click(function(){
+  cattoggle($(this).data('cat-id'))
+})
+
+$('#btn-all-cats').click(function(){
+  togglecat('hot', reload=true, delay=0, page='/')
+})
+
+$('#report-type-dropdown').change(function(){
+  $('#reportPostButton').prop('disabled', false)
+})
+
+$('#submit-image-div').on('dragover', function(event){
+  event.preventDefault();
+});
+$('#submit-image-div').on('drop', function(event){
+  event.preventDefault();
+  let input=$('#file-upload');
+  input[0].files=event.dataTransfer.files;
+  input.change();
+});
+
+$('#title-selector').change(function(){
+  post_toast('/settings/profile?title_id='+$(this).val())
+})
+$('#defaultsorting').change(function(){
+  post_toast('/settings/profile?defaultsorting='+$(this).val())
+})
+$('#defaulttime').change(function(){
+  post_toast('/settings/profile?defaulttime='+$(this).val())
+})
+$("#privateswitch").change(function(){
+  post_toast('/settings/profile?private='+$(this).prop('checked'))
+})
+$("#nofollowswitch").change(function(){
+  post_toast('/settings/profile?nofollow='+$(this).prop('checked'))
+})
+
+$('.onchange-form-submit').change(function(){form.submit()})
+
+$('#2faToggle').change(function(){
+  $('#2faModal').modal('toggle')
+})
+
+$('#over18').change(function(){
+  post_toast('/settings/profile?over18='+$(this).prop('checked'));
+  $('#filter-nsfw-option').toggleClass('d-none')
+})
+
+$('#filter-nsfw').change(function(){
+  post_toast('/settings/profile?filter_nsfw='+$(this).prop('checked'))
+})
+$('#hidensfl').change(function(){
+  post_toast('/settings/profile?show_nsfl='+$(this).prop('checked'))
+})
+$('#hideoffensive').change(function(){
+  post_toast('/settings/profile?hide_offensive='+$(this).prop('checked'))
+})
+$('#hidebot').change(function(){
+  post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
+})

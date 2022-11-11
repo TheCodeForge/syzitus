@@ -8,7 +8,7 @@
 
 {% block desktopBanner %}
 
-<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top" style="overflow: visible;">
+<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top overflow-visible">
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
 
@@ -26,7 +26,7 @@
             {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
             {{ time_filter | capitalize }}
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+          <div class="dropdown-menu navbar-dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
             {% if not time_filter=="day" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day mr-2"></i>Day</a>{% endif %}
             {% if not time_filter=="week" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week mr-2"></i>Week</a>{% endif %}
             {% if not time_filter=="month" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt mr-2"></i>Month</a>{% endif %}
@@ -46,7 +46,7 @@
             {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
             {{ sort_method | capitalize }}
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+          <div class="dropdown-menu navbar-dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
             {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&t={{ time_filter }}"><i class="fas fa-fire mr-2"></i>Hot</a>{% endif %}
             {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up mr-2"></i>Top</a>{% endif %}
             {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&t={{ time_filter }}"><i class="fas fa-sparkles mr-2"></i>New</a>{% endif %}
@@ -118,7 +118,7 @@
         <button class="btn nav-link pr-3 active" id="toggle-list-view-btn" onclick="toggle_list_view()">
           <i class="fas fa-list"></i>List</button>
         </li>
-        <li class="nav-item" style="">
+        <li class="nav-item">
           <button class="btn nav-link" id="toggle-card-view-btn" onclick="toggle_card_view()">
             <i class="fas fa-th-large"></i>Card</button>
           </li>
@@ -141,7 +141,7 @@
       </div>
     </div>
 
-    <div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile" style="z-index: 100; top: 49px; transition: top 220ms cubic-bezier(0, 0, 0.2, 1);">
+    <div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile">
 
       <div class="col">
 
@@ -163,7 +163,7 @@
                   {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
                   {{ sort_method | capitalize }}
                 </button>
-                <div class="dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start"">
                   {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&t={{ time_filter }}"><i class="fas fa-fire text-primary mr-3"></i>Hot</a>{% endif %}
                   {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up text-primary mr-3"></i>Top</a>{% endif %}
                   {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&t={{ time_filter }}"><i class="fas fa-sparkles text-primary mr-3"></i>New</a>{% endif %}
@@ -182,7 +182,7 @@
                   {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
                   {{ time_filter | capitalize }}
                 </button>
-                <div class="dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+                <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
                   {% if not time_filter=="day" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day text-primary mr-3"></i>Day</a>{% endif %}
                   {% if not time_filter=="week" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week text-primary mr-3"></i>Week</a>{% endif %}
                   {% if not time_filter=="month" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt text-primary mr-3"></i>Month</a>{% endif %}
@@ -253,38 +253,44 @@
 
         <a href="https://github.com/thecodeforge/syzitus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
           <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x text-gray-300" style="font-size: 2rem!important;"></i>
+            <i class="fas fa-square fa-stack-2x text-gray-300"></i>
             <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
           </span>Contribute Code
         </a>
 
         {% if not g.user.has_premium %}
-        <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #F7931A!important">
+        <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
           <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x" style="color: #FEEBC8!important; font-size: 2rem!important;"></i>
-            <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse" style="color: #F7931A!important;"></i>
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse"></i>
           </span>Donate Cash or Crypto
         </a>
 
-        <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #805ad5!important">
+        <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
           <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x" style="color: #dabef9!important; font-size: 2rem!important;"></i>
-            <i class="fas fa-coins fa-stack-1x text-base fa-inverse" style="color: #805ad5!important;"></i>
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fas fa-coins fa-stack-1x text-base fa-inverse"></i>
           </span>{{ 'SITE_NAME' | app_config }} Premium
         </a>
         {% endif %}
 
-        <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0" style="color: #DC143C!important">
+        <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
           <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x" style="color: #FC8181!important; font-size: 2rem!important;"></i>
-            <i class="fas fa-bug fa-stack-1x text-base fa-inverse" style="color: #DC143C!important;"></i>
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fas fa-bug fa-stack-1x text-base fa-inverse"></i>
           </span>Report Bugs
         </a>
 
         <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
           <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
-          <div class="progress" style="border-radius: 3px;">
-            <div class="progress-bar bg-primary" role="progressbar" style="width: {{ g.timestamp | coin_goal }}%;" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress">
+            <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
+            </div>
+            <style nonce="{{ g.nonce }}">
+              # premium-bar-progress {
+                width: {{ g.timestamp | coin_goal }}%;
+              }
+            </style>
           </div>
         </div>
         

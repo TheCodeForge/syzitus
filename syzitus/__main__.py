@@ -38,7 +38,7 @@ from redis import BlockingConnectionPool, ConnectionPool
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 
-_version = "3.0.19"
+_version = "3.0.46"
 
 app = Flask(__name__,
             template_folder='./templates'
@@ -189,7 +189,8 @@ app.config["IMG_URL_LOGO_WHITE"] = f"/logo/white/{app.config['COLOR_PRIMARY'].lo
 app.config["IMG_URL_LOGO_MAIN"] = f"/logo/main/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}"
 app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
-app.config["IMG_URL_THUMBNAIL"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
+app.config["IMG_URL_THUMBSPLASH"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
+app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
 
 Markdown(app)
 cache = Cache(app)
@@ -327,12 +328,15 @@ def drop_connection():
 @app.before_request
 def before_request():
 
+    g.timestamp = int(time.time())
+    g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
+    g.db = db_session()
+
     if request.method.lower() != "get" and app.config["READ_ONLY"] and request.path != "/login":
         return jsonify({"error":f"{app.config['SITE_NAME']} is currently in read-only mode."}), 400
 
     if app.config["BOT_DISABLE"] and request.headers.get("X-User-Type")=="Bot":
         abort(503)
-
 
     g.timestamp = int(time.time())
 
@@ -413,25 +417,6 @@ def before_request():
         g.system="other/other"
 
 
-# def log_event(name, link):
-
-#     x = requests.get(link)
-
-#     if x.status_code != 200:
-#         return
-
-#     text = f'> **{name}**\r> {link}'
-
-#     url = os.environ.get("DISCORD_WEBHOOK")
-#     headers = {"Content-Type": "application/json"}
-#     data = {"username": "ruqqus",
-#             "content": text
-#             }
-
-#     x = requests.post(url, headers=headers, json=data)
-#     print(x.status_code)
-
-
 @app.after_request
 def after_request(response):
 
@@ -449,7 +434,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action https://{app.config['SERVER_NAME']}; frame-src *.hcaptcha.com youtube.com twitter.com; object-src none; style-src 'self' 'unsafe-inline' maxcdn.bootstrapcdn.com; script-src 'self' 'unsafe-inline' *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net; img-src https: data:;")
+            f"default-src https:; form-action {app.config['SERVER_NAME']}; frame-src *.hcaptcha.com *.youtube.com youtube.com platform.twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com unpkg.com cdn.jsdelivr.net; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net unpkg.com platform.twitter.com; img-src https: data:")
 
 
     if not request.path.startswith("/embed/"):
@@ -478,7 +463,20 @@ def www_redirect(path):
 
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
-#engines["leader"].dispose()
-#for engine in engines["followers"]:
-#    engine.dispose()
 
+
+
+#Code to run on setup - fresh recalculation of front page listings
+debug("recomputing front page...")
+db=db_session()
+for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(1000):
+    post.score_hot = post.rank_hot
+    post.score_disputed = post.rank_fiery
+    post.score_top = post.score
+    post.score_activity=post.rank_activity
+    post.score_best = post.rank_best
+    db.add(post)
+
+db.commit()
+db.close()
+debug("...done")

@@ -671,7 +671,7 @@ def settings_name_change():
 
     #verify acceptability
     if not re.match(valid_username_regex, new_name):
-        return jsonify({"error":"That isn't a valid username."}), 403
+        return jsonify({"error":"That isn't a valid username."}), 400
 
     #verify availability
     name=new_name.replace('_','\_')

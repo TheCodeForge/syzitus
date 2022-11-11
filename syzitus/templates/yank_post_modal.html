@@ -30,7 +30,7 @@
             <div class="h6">Choose where to yank this post.</div>
             <small class="form-text text-muted">Select a guild below to yank this post.</small>
             <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-            <select name="board_id" id="yank-type-dropdown" form="yank-post-form" class="custom-select mt-3" onchange="document.getElementById('yankPostButton').disabled=false;">
+            <select name="board_id" id="yank-type-dropdown" form="yank-post-form" class="custom-select mt-3">
               <option disabled selected>Pick a guild</option>
               {% for b in g.user.boards_modded %}
               <option value="{{ b.base36id }}">+{{ b.name }}</option>
@@ -44,11 +44,5 @@
         </form>
       </div>
     </div>
-  </div>
-</div>
-<div class="toast error" id="toast-invite-error" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000" data-animation="true" data-autohide="true">
-  <div class="toast-body text-center">
-    <i class="fas fa-exclamation-circle text-danger mr-2"></i>
-    <span id="toast-error-message">Error. Please try again.</span>
   </div>
 </div>
