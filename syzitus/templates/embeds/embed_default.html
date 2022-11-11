@@ -83,7 +83,9 @@
 <script nonce="{{ g.nonce }}">
 $('body a').not('[href^="javascript"]').attr("target","_blank")
 $('.go-to-login').off('click')
-$('.go-to-login').wrap('<a href="{{ p.permalink }}" target="_blank"></a>')
+$('.go-to-login').click(function(){
+  window.open('{{ p.permalink }}', '_blank')
+})
 </script>
 
 </body>
