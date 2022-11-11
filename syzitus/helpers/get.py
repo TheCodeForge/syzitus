@@ -1057,7 +1057,7 @@ def get_from_permalink(link, v=None):
     if comment_id:
         return get_comment(comment_id)
 
-    elif post:
+    elif post_id:
         return get_post(post_id)
 
     else:
