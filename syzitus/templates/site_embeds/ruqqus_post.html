@@ -1,1 +1,6 @@
-<iframe src="{{ p.embed_url }}"></iframe>
+<iframe id="embed-iframe-{{ p.base36id }}" src="{{ p.embed_url }}"></iframe>
+<script nonce="{{ g.nonce }}">
+  $('#embed-iframe-{{ p.base36id }}').load(function() {
+      this.style.height = this.contentWindow.document.body.offsetHeight + 'px';
+  });
+</script>
