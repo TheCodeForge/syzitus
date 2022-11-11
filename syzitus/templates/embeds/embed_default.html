@@ -66,14 +66,14 @@
   clipboard.on('success', function(e) {
 
     jQuery(function($) {
-      $('#toast-success').toast('show');
+      $('#toast-copy-success').toast('show');
     })
     console.log(e);
   });
   clipboard.on('error', function(e) {
 
     jQuery(function($) {
-      $('#toast-error').toast('show');
+      $('#toast-copy-error').toast('show');
     })
     console.log(e);
   });
