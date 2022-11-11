@@ -85,7 +85,7 @@
 
       <div class="d-block d-md-none zi-3">
         {% if p.thumb_url and p.is_image %}
-        <a href="{{ 'p.url' if request.path.startswith('/embed/') else 'javascript:void(0)' }}" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+        <a href="{{ 'p.permalink' if request.path.startswith('/embed/') else 'javascript:void(0)' }}" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
         {% elif p.thumb_url %}
