@@ -44,11 +44,13 @@
 
 
       </div>
+    </div>
+  </div>
 
       
 <!-- Clipboard Toast -->
 
-{% include "toast.html" %}
+{% include "toasts.html" %}
 
 {% include "bootstrap.html" %}
 
@@ -78,23 +80,9 @@
 </script>
 
 
-{% block enlargeThumbJS %}
-{% endblock %}
-
-{% block toggleView %}
-{% endblock %}
-
-{% block embedJS %}
-{% endblock %}
-
-{% block formatJS %}
-{% endblock %}
-
-
 <script src="/assets/js/all_js.js"></script>
 
 <script nonce="{{ g.nonce }}">
-//On embed pages, modify links to open in new tab
 $('body#embed a').not('[href^="javascript"]').attr("target","_blank")
 </script>
 
