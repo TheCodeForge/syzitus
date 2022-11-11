@@ -114,15 +114,11 @@ def crosspost_embed(url):
 
     b36id = matches.group(1)
 
-    p = get_post(b36id, v=g.v, graceful=True)
-
-    if not p or p.is_deleted or p.is_banned or not p.is_public:
-        return ""
+    p = get_post(b36id, graceful=True)
 
     return render_template(
-        "submission_listing.html",
-        listing=[p],
-        v=g.v
+        "embeds/submission.html",
+        p=p,
         )
 
 # @app.template_filter("general_chat_count")

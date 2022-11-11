@@ -525,13 +525,7 @@
 
           {% if p.is_crosspost %}
           <div id="crosspost-embed">
-            <div class="row no-gutters">
-              <div id="frontpage" class="col-12 pt-0">
-                <div class="posts" id="posts">
-                  {{ p.url | post_embed | safe }}
-                </div>
-              </div>
-            </div>
+            {{ p.url | post_embed | safe }}
           </div>
           {% endif %}
 
