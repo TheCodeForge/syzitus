@@ -4,3 +4,8 @@
       $(this).attr('height', $(this)[0].contentWindow.document.body.offsetHeight + 'px');
   });
 </script>
+<script nonce="{{ g.nonce }}">
+  iframe#embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }} {
+    border: 0
+  }
+</script>
