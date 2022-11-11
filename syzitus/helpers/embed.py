@@ -11,7 +11,7 @@ from .get import *
 youtube_regex = re.compile(
     "^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*")
 
-ruqqus_regex = re.compile("^https?://.*ruqqus\.com/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
+ruqqus_regex = re.compile(f"^https?://.*{app.config['SERVER_NAME'].replace('.','\.')}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
 
 twitter_regex=re.compile("/status/(\d+)")
 
@@ -40,25 +40,17 @@ def youtube_embed(url):
         return f"https://youtube.com/embed/{yt_id}"
 
 
-# def ruqqus_embed(url):
+def ruqqus_embed(url):
 
-#     print(f'embedding {url}')
+    matches = re.match(ruqqus_regex, url)
 
-#     matches = re.match(ruqqus_regex, url)
+    post_id = matches.group(1)
+    comment_id = matches.group(3)
 
-#     post_id = matches.group(1)
-#     comment_id = matches.group(3)
-
-#     print(post_id, comment_id)
-
-#     if comment_id:
-#         return f"https://{app.config['SERVER_NAME']}/embed/comment/{comment_id}"
-#     else:
-#         return render_template(
-#             "site_embeds/ruqqus_post.html", 
-#             b36id=post_id,
-#             v=g.v
-#             )
+    if comment_id:
+        return f"/embed/comment/{comment_id}"
+    else:
+        return f"/embed/post/{post_id}"
 
 
 def bitchute_embed(url):
