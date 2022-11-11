@@ -244,7 +244,7 @@
     <ul class="list-inline text-right d-flex">
       <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-      {% if p.body_html %}
+      {% if p.body_html and not request.path.startswith('/embed/') %}
           <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
       {% endif %}
       
