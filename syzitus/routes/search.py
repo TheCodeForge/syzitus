@@ -203,6 +203,11 @@ def search(search_type="posts"):
 
     query = request.args.get("q", '').lstrip().rstrip()
 
+    if f"//{app.config['SERVER_NAME']}" in query:
+        thing=get_from_permalink(query)
+        if thing:
+            return redirect(thing.permalink)
+
     page = max(1, int(request.args.get("page", 1)))
 
     if query.startswith("+"):

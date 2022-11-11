@@ -1057,8 +1057,11 @@ def get_from_permalink(link, v=None):
     if comment_id:
         return get_comment(comment_id)
 
-    else:
+    elif post:
         return get_post(post_id)
+
+    else:
+        return None
 
 
 def get_from_fullname(fullname, graceful=False):
