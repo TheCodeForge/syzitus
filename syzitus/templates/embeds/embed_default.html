@@ -30,7 +30,7 @@
 
 </head>
 
-<body id="{% block pagetype %}frontpage{% endblock %}" class="p-1">
+<body id="embed" class="p-1">
 
 
   <div class="container">
@@ -48,17 +48,7 @@
       
 <!-- Clipboard Toast -->
 
-<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-check-circle text-success mr-2"></i>Link copied to clipboard
-  </div>
-</div>
-
-<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body text-center">
-    <i class="fas fa-exclamation-circle text-danger mr-2"></i>Unable to copy link
-  </div>
-</div>
+{% include "toast.html" %}
 
 {% include "bootstrap.html" %}
 
@@ -102,6 +92,11 @@
 
 
 <script src="/assets/js/all_js.js"></script>
+
+<script nonce="{{ g.nonce }}">
+//On embed pages, modify links to open in new tab
+$('body#embed a').not('[href^="javascript"]').attr("target","_blank")
+</script>
 
 </body>
 
