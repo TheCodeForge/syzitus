@@ -2352,5 +2352,8 @@ $("iframe.internal-embed").on('load', function() {
 });
 
 $(window).resize(function(){
-  $("iframe.internal-embed").attr('height',  $("iframe.internal-embed")[0].contentWindow.document.body.offsetHeight+'px')
+  var x=$("iframe.internal-embed");
+  if (x[0] != undefined){
+    x[0].attr('height',  x[0].contentWindow.document.body.offsetHeight+'px');
+  }
 })
