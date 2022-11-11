@@ -755,11 +755,8 @@ $('.admin-remove-post').click(function() {
   callback=function(){
     document.getElementById("post-"+post_id).classList.add("banned");
 
-    var button=document.getElementById("moderate-post-"+post_id);
-    button.onclick=function(){approvePost(post_id)};
-    button.classList.remove("removeDropdownItem");
-    button.classList.add("approveDropdownItem");
-    button.innerHTML='<i class="fas fa-clipboard-check"></i>Approve'
+    $('.admin-approve-post-'+post_id).removeClass('d-none')
+    $('.admin-remove-post-'+post_id).addClass('d-none')
   }
   post(url, callback, "Unable to remove post at this time. Please try again later.")
 })
@@ -771,11 +768,8 @@ $('.admin-approve-post').click(function() {
   callback=function(){
     document.getElementById("post-"+post_id).classList.remove("banned");
 
-    var button=document.getElementById("moderate-post-"+post_id);
-    button.onclick=function(){removePost(post_id)};
-    button.classList.remove("approveDropdownItem");
-    button.classList.add("removeDropdownItem");
-    button.innerHTML='<i class="fas fa-trash-alt"></i>Remove'
+    $('.admin-approve-post-'+post_id).addClass('d-none')
+    $('.admin-remove-post-'+post_id).removeClass('d-none')
   }
 
   post(url, callback, "Unable to approve post at this time. Please try again later.")
