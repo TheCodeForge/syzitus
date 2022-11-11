@@ -4012,3 +4012,15 @@ opacity-0-1 {
     width: 42px;
     height: 42px;
 }
+
+.user-listing-profile-img {
+    position: absolute; 
+    left: 15px; 
+    bottom: 15px; 
+    box-sizing: content-box;
+}
+
+.user-card-banner {
+    height: 175px;
+    object-fit: cover;
+}
