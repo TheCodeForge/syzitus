@@ -11,7 +11,7 @@
 {% endif %}
 
 
-<div id="post-{{ p.base36id }}" class="card{% if p.is_banned %} banned{% endif %}{% if p.deleted_utc > 0 %} deleted{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}{% if p.over_18 %} nsfw{% endif %}{% if p.is_nsfl %} nsfl{% endif %}{% if '/post/' in request.path and loop.length==1 %} border rounded{% endif %}">
+<div id="post-{{ p.base36id }}" class="card{% if p.is_banned %} banned{% endif %}{% if p.deleted_utc > 0 %} deleted{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}{% if p.over_18 %} nsfw{% endif %}{% if p.is_nsfl %} nsfl{% endif %}{% if request.path.startswith('/embed/') %} border rounded{% endif %}">
 
   <div class="d-flex flex-row-reverse flex-md-row flex-nowrap justify-content-end">
 
@@ -157,52 +157,47 @@
           {% if p.body_html %}
           <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
           {% endif %}
-          
-          {% if loop.length == 1 and '/post/' in request.path %}
-            <li class="list-inline-item"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}>{{ p.comment_count }} comment{{ '' if p.comment_count==1 else 's' }} · {{ score }} point{{ '' if score==1 else 's' }}</a></li>
-          {% else %}
 
-            <li class="list-inline-item"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
+          <li class="list-inline-item"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-            <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+          <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
-            {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
-            <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#tipModal" class="btn-tip-modal-trigger" data-target-author-profile-url="{{ p.author.profile_url }}" data-target-type="post" data-target-author="{{ p.author.username }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="fas fa-star"></i>Tip</a></li>
-            {% endif %}
-            {% if g.user and not g.user.id==p.author_id %}
-            <li class="list-inline-item"><a href="javascript:void(0)" class="btn-report-post" data-toggle="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i>Flag</a></li>
-            {% endif %}
+          {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
+          <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#tipModal" class="btn-tip-modal-trigger" data-target-author-profile-url="{{ p.author.profile_url }}" data-target-type="post" data-target-author="{{ p.author.username }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="fas fa-star"></i>Tip</a></li>
+          {% endif %}
+          {% if g.user and not g.user.id==p.author_id %}
+          <li class="list-inline-item"><a href="javascript:void(0)" class="btn-report-post" data-toggle="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i>Flag</a></li>
+          {% endif %}
 
-            {% if p.url and p.has_thumb==False and g.user and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-            <li class="list-inline-item"><a href="javascript:void(0)" class="post-toast-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i>Retry Thumb</a></li>
-            {% endif %}
+          {% if p.url and p.has_thumb==False and g.user and (g.user.id==p.author_id or g.user.admin_level>=3) %}
+          <li class="list-inline-item"><a href="javascript:void(0)" class="post-toast-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i>Retry Thumb</a></li>
+          {% endif %}
 
-            {% if g.user and g.user.id==p.author_id and p.deleted_utc == 0 %}
-            <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
-            {% endif %}
+          {% if g.user and g.user.id==p.author_id and p.deleted_utc == 0 %}
+          <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
+          {% endif %}
 
-            {% if g.user %}
+          {% if g.user %}
 
-            {% if g.user.mods_anything and p.board.name == 'general' %}
-            <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}" class="d-block btn-yank-post"><i class="fas fa-hand-lizard"></i>Yank</a></li>
-            {% endif %}
+          {% if g.user.mods_anything and p.board.name == 'general' %}
+          <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}" class="d-block btn-yank-post"><i class="fas fa-hand-lizard"></i>Yank</a></li>
+          {% endif %}
 
-            {% if p.is_guildmaster('content') %}
-            <li class="list-inline-item"><a class="text-danger kick-button-listing" href="javascript:void(0)" data-boardname="{{ p.board.name }}" data-pid="{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
-            {% if not p.is_banned and p.report_count %}
-            <li class="list-inline-item"><a class="text-success" href="javascript:void(0)" class="gm-approve-post" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
-            {% endif %}
-            {% endif %}
-            {% if g.user.admin_level >=1 %}
-            <li class="list-inline-item admin-approve-post-{{ p.base36id }} {% if not p.is_banned and not p.flag_count and 'admin' not in request.path %}d-none{% endif %}"><a class="text-success admin-approve-post" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
+          {% if p.is_guildmaster('content') %}
+          <li class="list-inline-item"><a class="text-danger kick-button-listing" href="javascript:void(0)" data-boardname="{{ p.board.name }}" data-pid="{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
+          {% if not p.is_banned and p.report_count %}
+          <li class="list-inline-item"><a class="text-success" href="javascript:void(0)" class="gm-approve-post" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
+          {% endif %}
+          {% endif %}
+          {% if g.user.admin_level >=1 %}
+          <li class="list-inline-item admin-approve-post-{{ p.base36id }} {% if not p.is_banned and not p.flag_count and 'admin' not in request.path %}d-none{% endif %}"><a class="text-success admin-approve-post" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
 
-            <li class="list-inline-item admin-remove-post-{{ p.base36id }} {% if p.is_banned %}d-none{% endif %}"><a class="admin-remove-post" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
-            {% endif %}
+          <li class="list-inline-item admin-remove-post-{{ p.base36id }} {% if p.is_banned %}d-none{% endif %}"><a class="admin-remove-post" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
+          {% endif %}
 
-            {% if g.user.admin_level >= 4 and p.oauth_app %}
-            <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i>API App</a></li>
-            {% endif %}
-            {% endif %}
+          {% if g.user.admin_level >= 4 and p.oauth_app %}
+          <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i>API App</a></li>
+          {% endif %}
 
             {% if g.user %}
             <li class="list-inline-item d-none d-md-inline-block">
