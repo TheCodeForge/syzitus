@@ -1173,6 +1173,9 @@ function vote_comment(comment_id, direction) {
 }
 
 // Yank Post
+$('#yank-type-dropdown').change(function(){
+  $('#yankPostButton').prop('disabled',false);
+})
 $('.btn-yank-post').click(function(){
   $("#post-author-url").text($(this).data('post-author'));
 
@@ -2211,7 +2214,9 @@ $('.btn-reply-comment').click(function(){
 })
 
 $('.btn-file-input').change(function(){
-  $('#filename-show-reply-'+$(this).data('btn-id')).text($('#file-upload-reply-'+$(this).data('parent-fullname'))[0].files[0].name);
+  $('#filename-show-reply-'+$(this).data('btn-id')).text(
+    $('#file-upload-reply-'+$(this).data('parent-fullname'))[0].files[0].name
+    );
 })
 
 $('.btn-block-user').click(function() {
