@@ -55,8 +55,13 @@
     <div class="card-header bg-transparent border-0 d-flex flex-row flex-nowrap pl-2 pl-md-0 p-0 mr-md-2">
 
       <div class="position-relative d-none d-md-block zi-3">
-        {% if p.thumb_url and p.is_image %}
-        <a href="{{ 'p.permalink' if request.path.startswith('/embed/') else 'javascript:void(0)' }}" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+        {% if request.path.startswith('/embed/') %}
+        <a href="{{ p.permalink }}">
+          <img src="{{ p.thumb_url }}" class="post-img">
+        </a>
+
+        {% elif p.thumb_url and p.is_image %}
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
 
@@ -84,8 +89,12 @@
 
 
       <div class="d-block d-md-none zi-3">
-        {% if p.thumb_url and p.is_image %}
-        <a href="{{ 'p.permalink' if request.path.startswith('/embed/') else 'javascript:void(0)' }}" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+        {% if request.path.startswith("/embed/") %}
+        <a href="{{ p.permalink }}">
+          <img src="{{ p.thumb_url }}" class="post-img">
+        </a>
+        {% elif p.thumb_url and p.is_image %}
+        <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
         {% elif p.thumb_url %}
