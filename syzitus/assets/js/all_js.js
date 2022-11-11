@@ -1526,7 +1526,7 @@ function autoSuggestTitle() {
   var titleField = $("#post-title");
   var isValidURL = urlField[0].checkValidity();
 
-  if (isValidURL && urlField.value.length > 0 && titleField.value === "") {
+  if (isValidURL && urlField.val().length > 0 && titleField.val() === "") {
 
     var x = new XMLHttpRequest();
     x.withCredentials=true;
@@ -1537,7 +1537,7 @@ function autoSuggestTitle() {
         checkForRequired()
       }
     }
-    x.open('get','/submit/title?url=' + urlField.value);
+    x.open('get','/submit/title?url=' + urlField.val());
     x.send();
 
   };
