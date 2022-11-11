@@ -448,8 +448,7 @@ $('.btn-delete-post-confirm').click(function(){
 
 // Delete Comment
 
-$('btn-delete-comment').click(function() {
-
+$('.btn-delete-comment').click(function() {
   $("#deleteCommentButton").data('delete-url', '/delete/comment/' + $(this).data('comment-id'))
 })
 
