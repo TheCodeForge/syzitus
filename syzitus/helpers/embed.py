@@ -11,7 +11,8 @@ from .get import *
 youtube_regex = re.compile(
     "^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*")
 
-ruqqus_regex = re.compile(f"^https?://.*{app.config['SERVER_NAME'].replace('.','\.')}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
+regexified_server_name=app.config['SERVER_NAME'].replace('.','\.')
+ruqqus_regex = re.compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
 
 twitter_regex=re.compile("/status/(\d+)")
 
