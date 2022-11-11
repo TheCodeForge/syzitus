@@ -2347,7 +2347,7 @@ $('.gm-approve-post').click(function(){
     '/mod/accept/'+name+'/'+pid, 
     callback=function(){
       if (window.location.pathname.endsWith('/mod/queue')){
-        deleteElement('post-'pid)
+        deleteElement('post-'+pid)
       }
     }
     )
