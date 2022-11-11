@@ -2211,7 +2211,7 @@ $('.btn-reply-comment').click(function(){
 })
 
 $('.btn-file-input').change(function(){
-  $('#filename-show-reply-'+$(this).data('btn-id')).text(document.getElementById('file-upload-reply-{{ c.fullname }}').files[0].name);
+  $('#filename-show-reply-'+$(this).data('btn-id')).text($('#file-upload-reply-'+$(this).data('parent-fullname'))[0].files[0].name);
 })
 
 $('.btn-block-user').click(function() {
