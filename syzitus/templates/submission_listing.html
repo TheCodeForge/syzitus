@@ -154,7 +154,7 @@
       <div class="post-actions mt-2 d-none d-md-block">
         <ul class="list-inline text-right d-flex">
           
-          {% if p.body_html %}
+          {% if p.body_html and not request.path.startswith('/embed/') %}
           <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
           {% endif %}
 
