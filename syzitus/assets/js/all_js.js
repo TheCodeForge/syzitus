@@ -2350,3 +2350,7 @@ $('.gm-approve-post').click(function(){
 $("iframe.internal-embed").on('load', function() {
     $(this).attr('height', $(this)[0].contentWindow.document.body.offsetHeight + 'px');
 });
+
+$(window).resize(function(){
+  $("iframe.internal-embed").attr('height',  $("iframe.internal-embed")[0].contentWindow.document.body.offsetHeight+'px')
+})
