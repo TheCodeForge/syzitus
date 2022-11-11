@@ -2339,3 +2339,16 @@ $('.btn-unhide-guild').click(function(){
       $('#unhide-guild-'+id).toggleClass('d-none');
     })
 })
+
+$('.gm-approve-post').click(function(){
+  name=$(this).data('board-name')
+  pid =$(this).data('post-id')
+  post(
+    '/mod/accept/'+name+'/'+pid, 
+    callback=function(){
+      if (window.location.pathname.endsWith('/mod/queue')){
+        deleteElement('post-'pid)
+      }
+    }
+    )
+})
