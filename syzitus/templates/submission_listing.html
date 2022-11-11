@@ -196,15 +196,15 @@
             {% if p.is_guildmaster('content') %}
             <li class="list-inline-item"><a class="text-danger kick-button-listing" href="javascript:void(0)" data-boardname="{{ p.board.name }}" data-pid="{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
             {% if not p.is_banned and p.report_count %}
-            <li class="list-inline-item"><a class="text-success" href="javascript:void(0)" onclick="post('/mod/accept/{{ p.board.name }}/{{ p.base36id }}', callback=function(){if (window.location.pathname.endsWith('/mod/queue')){deleteElement('post-{{ p.base36id }}')}})"><i class="fas fa-check text-success"></i>Approve</a></li>
+            <li class="list-inline-item"><a class="text-success" href="javascript:void(0)" class="gm-approve-post" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
             {% endif %}
             {% endif %}
             {% if g.user.admin_level >=1 %}
             {% if p.is_banned or p.flag_count or "/admin/" in request.path %}
-            <li class="list-inline-item"><a class="text-success" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="approvePost('{{ p.base36id }}')"><i class="fas fa-check text-success"></i>Approve</a></li>
+            <li class="list-inline-item"><a class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
             {% endif %}
             {% if not p.is_banned %}
-            <li class="list-inline-item"><a id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" onclick="removePost('{{ p.base36id }}')"><i class="fas fa-ban"></i>Remove</a></li>
+            <li class="list-inline-item"><a class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
             {% endif %}
             {% endif %}
 
@@ -311,13 +311,13 @@
         </li>
         {% else %}
         <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
-          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up" onclick="location.href='/login';">
+          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
             <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
           </span>
 
           <span id="post-score-{{ p.base36id }}-mobile" class="score"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{{ score }}</span>
 
-          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0" onclick="location.href='/login';">
+          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
             <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
           </span>
         </li>
@@ -371,7 +371,7 @@
           {% endif %}
 
           {% if p.report_count >= 1 %}
-          <button class="btn btn-link btn-block btn-lg text-left text-success" onclick="post('/mod/accept/{{ p.board.name }}/{{ p.base36id }}', callback=function(){if (window.location.pathname.endsWith('/mod/queue')){deleteElement('post-{{ p.base36id }}')}})"><i class="far fa-check fa-fw text-center text-success mr-3"></i>Approve</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-success gm-approve-post" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="far fa-check fa-fw text-center text-success mr-3"></i>Approve</button>
           {% endif %}
 
 
