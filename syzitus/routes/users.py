@@ -309,7 +309,7 @@ URL path parameters:
 
     # check for existing follow
     if g.db.query(Follow).filter_by(user_id=g.user.id, target_id=target.id).first():
-        abort(409)
+        return jsonify({"error": f"You're already following @{target.username}"}), 409
 
     new_follow = Follow(user_id=g.user.id,
                         target_id=target.id)
@@ -343,7 +343,7 @@ URL path parameters:
         user_id=g.user.id, target_id=target.id).first()
 
     if not follow:
-        abort(409)
+        return jsonify({"error": f"You already aren't following @{target.username}"}), 409
 
     g.db.delete(follow)
     g.db.commit()
