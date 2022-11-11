@@ -20,7 +20,7 @@
       {% if request.path.endswith("/guilds") %}<i class="fas fa-chess-rook mr-1"></i>Guilds{% endif %}
       {% if request.path.endswith("/users") %}<i class="fas fa-user mr-1"></i>Users{% endif %}
     </button>
-    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+    <div class="dropdown-menu dropdown-menu-right navbar-dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start">
       {% if not request.path.endswith("/guilds") %}<a class="dropdown-item" href="/mine/guilds"><i class="fas fa-chess-rook mr-2"></i>Guilds</a>{% endif %}
       {% if not request.path.endswith("/users") %}<a class="dropdown-item" href="/mine/users"><i class="fas fa-user mr-2"></i>Users</a>{% endif %}
     </div>
@@ -39,7 +39,7 @@
 
 </div>
 
-<div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile" style="z-index: 100; top: 49px; transition: top 220ms cubic-bezier(0, 0, 0.2, 1);">
+<div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile">
 
   <div class="col">
 
@@ -55,7 +55,7 @@
               {% if kind=="guilds" %}<i class="fas fa-chess-rook mr-1"></i>Guilds{% endif %}
               {% if kind=="users" %}<i class="fas fa-user mr-1"></i>Users{% endif %}
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 31px, 0px);">
+            <div class="dropdown-menu navbar-dropdown-menu" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
               {% if not kind=="guilds" %}<a class="dropdown-item" href="/mine/guilds"><i class="fas fa-chess-rook mr-2"></i>Guilds</a>{% endif %}
 
               {% if not kind=="users" %}<a class="dropdown-item" href="/mine/users"><i class="fas fa-user mr-2"></i>Users</a>{% endif %}
