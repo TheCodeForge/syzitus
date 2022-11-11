@@ -105,7 +105,7 @@ def get_logo_jumbotron(color):
         "RGBA", 
         (
             unit_block.size[0]*width_units,
-            unit_block.size[1]*height_units5
+            unit_block.size[1]*height_units
             ), 
         color=(255,255,255,0)
         )
