@@ -15,7 +15,7 @@ ruqqus_regex = re.compile(f"^https?://.*{app.config['SERVER_NAME'].replace('.','
 
 twitter_regex=re.compile("/status/(\d+)")
 
-rumble_regex=re.compile("/embed/(\w+)-/")
+#rumble_regex=re.compile("/embed/(\w+)-/")
 
 FACEBOOK_TOKEN=environ.get("FACEBOOK_TOKEN","").lstrip().rstrip()
 
@@ -53,9 +53,9 @@ def ruqqus_embed(url):
         return f"/embed/post/{post_id}"
 
 
-def bitchute_embed(url):
+# def bitchute_embed(url):
 
-    return url.replace("/video/", "/embed/")
+#     return url.replace("/video/", "/embed/")
 
 def twitter_embed(url):
 
@@ -87,16 +87,16 @@ def instagram_embed(url):
     return x.json()["html"]
 
 
-def rumble_embed(url):
+# def rumble_embed(url):
     
-    #print(url)
-    headers={
-        "User-Agent":"Rumble embedder for Ruqqus"
-    }
-    r=requests.get(url, headers=headers)
+#     #print(url)
+#     headers={
+#         "User-Agent":"Rumble embedder for Ruqqus"
+#     }
+#     r=requests.get(url, headers=headers)
     
-    soup=BeautifulSoup(r.content, features="html.parser")
+#     soup=BeautifulSoup(r.content, features="html.parser")
     
-    script=soup.find("script", attrs={"type":"application/ld+json"})
+#     script=soup.find("script", attrs={"type":"application/ld+json"})
     
-    return json.loads(script.string)[0]['embedUrl']
+#     return json.loads(script.string)[0]['embedUrl']
