@@ -2347,6 +2347,6 @@ $('.gm-approve-post').click(function(){
     )
 })
 
-$("iframe.internal-embed").load(function() {
+$("iframe.internal-embed").on('load', function() {
     $(this).attr('height', $(this)[0].contentWindow.document.body.offsetHeight + 'px');
 });
