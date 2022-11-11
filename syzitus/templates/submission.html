@@ -518,19 +518,19 @@
                   {% endif %}
 
                   {% if g.user and g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i>Edit</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i>Edit</a></li>
 
-                  <li class="list-inline-item"><a class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
                   {% endif %}
 
                   {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
 
                   {% if not p.board.over_18 %}
-                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="fas fa-eye-evil"></i>Toggle NSFW</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="fas fa-eye-evil"></i>Toggle NSFW</a></li>
                   {% endif %}
 
                   {% if not p.board.is_nsfl %}
-                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="fas fa-skull"></i>Toggle NSFL</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="fas fa-skull"></i>Toggle NSFL</a></li>
                   {% endif %}
 
                   {% endif %}
@@ -538,37 +538,37 @@
                   {% if g.user %}
 
                   {% if g.user.mods_anything and p.board_id == 1 %}
-                  <li class="list-inline-item"><a data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i>Yank</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i>Yank</a></li>
                   {% endif %}
                   {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
-                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i>Remove from +{{ p.board.name }}</a></li>
                   {% endif %}
                   {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i>Retry Thumb</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i>Retry Thumb</a></li>
 
                   {% endif %}
 
                   {% if p.is_guildmaster('content') %}
 
                   {% if p.is_pinned %}
-                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" class="post-url-reload" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Unpin</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Unpin</a></li>
                   {% elif p.board.can_pin_another %}
-                  <li class="list-inline-item"><a class="d-block text-info" id="pin-post-{{ p.base36id }}" class="post-url-reload" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Pin</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i>Pin</a></li>
                   {% endif %}
 
                   {% if g.user.id == p.author_id %}
-                  <li class="list-inline-item"><a class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i>Herald</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i>Herald</a></li>
                   {% endif %}
 
-                  <li class="list-inline-item"><a class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
                   {% endif %}
 
                   {% if g.user.admin_level >=3 %}
                   {% if p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
                   {% endif %}
                   {% if not p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
                   {% endif %}
                   {% endif %}
 
