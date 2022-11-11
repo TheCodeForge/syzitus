@@ -12,7 +12,9 @@
 <div class="row border-md-0 comment-section pb-3">
   <div class="col border-top">
     {% with comments = [c] %}
+    {% with standalone=True %}
       {% include "comments.html" %}
+    {% endwith %}
     {% endwith %}
   </div>
 </div>
