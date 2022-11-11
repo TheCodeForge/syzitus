@@ -2312,3 +2312,5 @@ $('#hideoffensive').change(function(){
 $('#hidebot').change(function(){
   post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
 })
+
+$("a[href=='javascript:void(0)']").click(function(event){event.preventDefault()})
