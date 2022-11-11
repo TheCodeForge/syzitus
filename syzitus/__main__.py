@@ -463,7 +463,20 @@ def www_redirect(path):
 
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
-#engines["leader"].dispose()
-#for engine in engines["followers"]:
-#    engine.dispose()
 
+
+
+#Code to run on setup - fresh recalculation of front page listings
+debug("recomputing front page...")
+db=db_session()
+for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(1000):
+    post.score_hot = post.rank_hot
+    post.score_disputed = post.rank_fiery
+    post.score_top = post.score
+    post.score_activity=post.rank_activity
+    post.score_best = post.rank_best
+    db.add(post)
+
+db.commit()
+db.close()
+debug("...done")
