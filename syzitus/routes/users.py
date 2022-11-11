@@ -356,17 +356,6 @@ URL path parameters:
     return "", 204
 
 
-@app.route("/api/agree_tos", methods=["POST"])
-@auth_required
-def api_agree_tos():
-
-    g.user.tos_agreed_utc = int(time.time())
-
-    g.db.add(g.user)
-
-    return redirect("/help/terms")
-
-
 @app.get("/@<username>/pic/profile")
 @limiter.exempt
 def user_profile(username):
