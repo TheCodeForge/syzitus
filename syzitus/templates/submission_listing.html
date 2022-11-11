@@ -224,18 +224,15 @@
               <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
 
                 {% if g.user and not p.is_subscribed and not b %}
-                <a id="join-guild-{{ p.base36id }}" class="dropdown-item text-black" href="javascript:void(0)" onclick="post_toast('/api/subscribe/{{ p.board.name }}', callback=function(){document.getElementById('join-guild-{{ p.base36id }}').classList.toggle('d-none');})"
-                ><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
+                <a id="button-sub-{{ p.fullname }}" class="dropdown-item text-black btn-guild-sub" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.fullname }}"><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
                 {% endif %}
                 {% if not g.user.id==p.author_id and not p.author.is_deleted %}
-                <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/block?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                ><i class="fas fa-user-slash text-danger"></i>Block user</a>
-                <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/unblock?username={{ p.author.username }}', callback=function(){document.getElementById('block-user-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unblock-user-{{ p.base36id }}').classList.toggle('d-none');})"
-                ><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
+                <a id="block-user-{{ p.base36id }}" class="dropdown-item btn-block-user text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+                <a id="unblock-user-{{ p.base36id }}" class="dropdown-item btn-unblock-user text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                 {% endif %}
                 {% if request.path=="/all" %}
-                <a id="hide-guild-{{ p.base36id }}" class="dropdown-item text-danger{% if p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/block_guild?board={{ p.board.name }}', callback=function(){document.getElementById('hide-guild-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unhide-guild-{{ p.base36id }}').classList.toggle('d-none');})"><i class="fas fa-eye-slash text-danger"></i>Hide guild</a>
-                <a id="unhide-guild-{{ p.base36id }}" class="dropdown-item text-danger{% if not p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" onclick="post_toast('/settings/unblock_guild?board={{ p.board.name }}', callback=function(){document.getElementById('hide-guild-{{ p.base36id }}').classList.toggle('d-none');document.getElementById('unhide-guild-{{ p.base36id }}').classList.toggle('d-none');})"><i class="fas fa-eye-slash text-danger"></i>Unhide guild</a>
+                <a id="hide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-hide-guild {% if p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Hide guild</a>
+                <a id="unhide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-unhide-guild {% if not p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Unhide guild</a>
                 {% endif %}
               </div>
             </div>

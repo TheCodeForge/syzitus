@@ -2320,3 +2320,22 @@ $('#hideoffensive').change(function(){
 $('#hidebot').change(function(){
   post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
 })
+
+$('.btn-hide-guild').click(function(){
+  id=$(this).data("post-id")
+  post_toast(
+    '/settings/block_guild?board='+$(this).data('board-name'), 
+    callback=function(){
+      $('#hide-guild-'+id).toggleClass('d-none');
+      $('#unhide-guild-'+id).toggleClass('d-none');
+    })
+})
+$('.btn-unhide-guild').click(function(){
+  id=$(this).data("post-id")
+  post_toast(
+    '/settings/unblock_guild?board='+$(this).data('board-name'), 
+    callback=function(){
+      $('#hide-guild-'+id).toggleClass('d-none');
+      $('#unhide-guild-'+id).toggleClass('d-none');
+    })
+})
