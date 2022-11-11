@@ -757,11 +757,6 @@ def embed_comment_cid(cid, pid=None):
     if not comment.parent:
         abort(403)
 
-    if comment.is_banned or comment.deleted_utc > 0:
-        return {'html': lambda: render_template("embeds/comment_removed.html", c=comment),
-                'api': lambda: {'error': f'Comment {cid} has been removed'}
-                }
-
     if comment.board.is_banned:
         abort(410)
 
