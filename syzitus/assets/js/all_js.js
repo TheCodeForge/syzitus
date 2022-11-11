@@ -271,6 +271,7 @@ $('.btn-toggle-comment-edit').click(function(){
 // Post edit form
 
 $(".btn-edit-post").click(function(){
+  id=$(this).data("target-id")
   box=document.getElementById("post-edit-box-"+id);
 
   $('#post-body').toggleClass("d-none");
