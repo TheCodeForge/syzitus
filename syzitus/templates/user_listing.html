@@ -14,10 +14,10 @@
 
         {% if g.user %}
         {% if g.user.id!=u.id and not u.is_private and not u.is_nofollow %}
-        <div id="button-sub-{{ u.fullname }}" class="zi-3 {% if u.has_follower(v) %}d-none{% endif %}">
+        <div id="button-sub-{{ u.fullname }}" class="zi-3 {% if u.has_follower(g.user) %}d-none{% endif %}">
           <a class="btn btn-primary btn-sm btn-toggle-follow" href="javascript:void(0)" data-thing-id="{{ u.fullname }}" data-post-url="/api/follow/{{ u.username }}">Subscribe</a>
         </div>
-        <div id="button-unsub-{{ u.fullname }}" class="zi-3 {% if not u.has_follower(v) %} d-none{% endif %}">
+        <div id="button-unsub-{{ u.fullname }}" class="zi-3 {% if not u.has_follower(g.user) %} d-none{% endif %}">
           <a class="btn btn-secondary btn-sm btn-toggle-follow" href="javascript:void(0)" data-thing-id="{{ u.fullname }}" data-post-url="/api/unfollow/{{ u.username }}">Unsubscribe</a>
         </div>
         {% endif %}
