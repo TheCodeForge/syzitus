@@ -521,8 +521,22 @@ def post_reset():
     user.passhash = hash_password(password)
     g.db.add(user)
 
-    return render_template(
-        "message_success.html",
-        title="Password reset successful!",
-        message="Login normally to access your account."
+    return render_template("message_success.html",
+                           title="Password reset successful!",
+                           message="Login normally to access your account.")
+
+
+@app.get("/<path:path>.php")
+@app.get("/<path:path>.aspx")
+@app.get("/<path:path>.xml")
+@app.get("/wp-<path:path>")
+def malicious_scraper_honeypot(path):
+
+    #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
+
+    new_ipban = IP(
+        addr=request.remote_addr,
+        unban_utc=0,
+        banned_by=1,
+        reason="malicious scraper honeypot"
         )
