@@ -89,18 +89,20 @@
 
 
       <div class="d-block d-md-none zi-3">
-        {% if request.path.startswith("/embed/") %}
-        <a href="{{ p.permalink }}">
-          <img src="{{ p.thumb_url }}" class="post-img">
-        </a>
-        {% elif p.thumb_url and p.is_image %}
-        <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
-          <img src="{{ p.thumb_url }}" class="post-img">
-        </a>
-        {% elif p.thumb_url %}
-        <a href="{{ p.url }}" rel="nofollow noopener">
-          <img src="{{ p.thumb_url }}" class="post-img" alt="link post thumbnail">
-        </a>
+        {% if p.thumb_url %}
+          {% if request.path.startswith("/embed/") %}
+          <a href="{{ p.permalink }}">
+            <img src="{{ p.thumb_url }}" class="post-img">
+          </a>
+          {% elif p.is_image %}
+          <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+            <img src="{{ p.thumb_url }}" class="post-img">
+          </a>
+          {% else %}
+          <a href="{{ p.url }}" rel="nofollow noopener">
+            <img src="{{ p.thumb_url }}" class="post-img" alt="link post thumbnail">
+          </a>
+          {% endif %}
         {% endif %}
 
       </div>
