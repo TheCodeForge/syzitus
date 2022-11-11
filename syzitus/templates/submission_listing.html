@@ -11,7 +11,7 @@
 {% endif %}
 
 
-<div id="post-{{ p.base36id }}" class="card{% if p.is_banned %} banned{% endif %}{% if p.deleted_utc > 0 %} deleted{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}{% if p.over_18 %} nsfw{% endif %}{% if p.is_nsfl %} nsfl{% endif %}{% if request.path.startswith('/embed/') %} border rounded{% endif %}">
+<div id="post-{{ p.base36id }}" class="card{% if p.is_banned %} banned{% endif %}{% if p.deleted_utc > 0 %} deleted{% endif %}{% if p.stickied %} stickied{% endif %}{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}{% if p.over_18 %} nsfw{% endif %}{% if p.is_nsfl %} nsfl{% endif %}">
 
   <div class="d-flex flex-row-reverse flex-md-row flex-nowrap justify-content-end">
 
