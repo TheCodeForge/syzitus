@@ -374,12 +374,9 @@
 
           {% endif %}
           {% if g.user.admin_level >=1 %}
-          {% if p.is_banned or p.flag_count or "/admin/" in request.path %}
-          <button class="btn btn-link btn-block btn-lg text-left text-danger admin-approve-post admin-approve-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="far fa-check fa-fw text-success text-danger mr-3"></i>Approve</button>
-          {% endif %}
-          {% if not p.is_banned %}
-          <button class="btn btn-link btn-block btn-lg text-left text-danger admin-remove-post admin-remove-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="far fa-ban fa-fw text-center text-danger mr-3"></i>Remove</button>
-          {% endif %}
+          <button class="btn btn-link btn-block btn-lg text-left text-danger admin-approve-post admin-approve-post-{{ p.base36id }} {% if not p.is_banned and not p.flag_count and 'admin' not in request.path %}d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="far fa-check fa-fw text-success text-success mr-3"></i>Approve</button>
+
+          <button class="btn btn-link btn-block btn-lg text-left text-danger admin-remove-post admin-remove-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="far fa-ban fa-fw text-center text-danger mr-3{% if p.is_banned %} d-none{% endif %}"></i>Remove</button>
           {% endif %}
 
           {% if g.user.admin_level >= 4 and p.oauth_app %}
