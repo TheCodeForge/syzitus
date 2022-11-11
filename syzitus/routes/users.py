@@ -346,6 +346,9 @@ URL path parameters:
         return jsonify({"error": f"You already aren't following @{target.username}"}), 409
 
     g.db.delete(follow)
+    g.db.flush()
+    target.stored_subscriber_count=target.follower_count
+    g.db.add(target)
     g.db.commit()
 
     cache.delete_memoized(User.idlist)
