@@ -346,6 +346,7 @@ URL path parameters:
         abort(409)
 
     g.db.delete(follow)
+    g.db.commit()
 
     cache.delete_memoized(User.idlist)
 
