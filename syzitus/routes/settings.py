@@ -30,29 +30,29 @@ def settings_profile_post():
     if request.values.get("over18", g.user.over_18) != g.user.over_18:
         updated = True
         g.user.over_18 = request.values.get("over18", None) == 'true'
-        cache.delete_memoized(User.idlist, g.user)
+        #cache.delete_memoized(User.idlist, g.user)
 
     if request.values.get("hide_offensive",
                           g.user.hide_offensive) != g.user.hide_offensive:
         updated = True
         g.user.hide_offensive = request.values.get("hide_offensive", None) == 'true'
-        cache.delete_memoized(User.idlist, g.user)
+        #cache.delete_memoized(User.idlist, g.user)
 		
     if request.values.get("hide_bot",
                           g.user.hide_bot) != g.user.hide_bot:
         updated = True
         g.user.hide_bot = request.values.get("hide_bot", None) == 'true'
-        cache.delete_memoized(User.idlist, g.user)
+        #cache.delete_memoized(User.idlist, g.user)
 
     if request.values.get("show_nsfl", g.user.show_nsfl) != g.user.show_nsfl:
         updated = True
         g.user.show_nsfl = request.values.get("show_nsfl", None) == 'true'
-        cache.delete_memoized(User.idlist, g.user)
+        #cache.delete_memoized(User.idlist, g.user)
 
     if request.values.get("filter_nsfw", g.user.filter_nsfw) != g.user.filter_nsfw:
         updated = True
         g.user.filter_nsfw = not request.values.get("filter_nsfw", None) == 'true'
-        cache.delete_memoized(User.idlist, g.user)
+        #cache.delete_memoized(User.idlist, g.user)
 
     if request.values.get("private", g.user.is_private) != g.user.is_private:
         updated = True
@@ -556,9 +556,9 @@ def settings_unblock_user():
     g.db.delete(x)
     g.db.commit()
 
-    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(g.user.idlist)
     #cache.delete_memoized(Board.idlist, v=g.user)
-    cache.delete_memoized(frontlist, v=g.user)
+    #cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"@{user.username} unblocked."})
 
@@ -582,9 +582,9 @@ def settings_block_guild():
     g.db.add(new_block)
     g.db.commit()
 
-    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(g.user.idlist)
     #cache.delete_memoized(Board.idlist, v=g.user)
-    cache.delete_memoized(frontlist, v=g.user)
+    #cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"+{board.name} added to filter"})
 
@@ -602,9 +602,9 @@ def settings_unblock_guild():
     g.db.delete(x)
     g.db.commit()
 
-    cache.delete_memoized(g.user.idlist)
+    #cache.delete_memoized(g.user.idlist)
     #cache.delete_memoized(Board.idlist, v=g.user)
-    cache.delete_memoized(frontlist, v=g.user)
+    #cache.delete_memoized(frontlist, v=g.user)
 
     return jsonify({"message": f"+{board.name} removed from filter"})
 
