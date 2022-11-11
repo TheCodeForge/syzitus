@@ -199,30 +199,30 @@
           <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i>API App</a></li>
           {% endif %}
 
-            {% if g.user %}
-            <li class="list-inline-item d-none d-md-inline-block">
-              <div class="dropdown show">
-                <a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-                <i class="fas fa-ellipsis-h text-small mr-0"></i>
-              </a>
+          {% if g.user %}
+          <li class="list-inline-item d-none d-md-inline-block">
+            <div class="dropdown show">
+              <a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              <i class="fas fa-ellipsis-h text-small mr-0"></i>
+            </a>
 
-              <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
+            <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
 
-                {% if g.user and not p.is_subscribed and not b %}
-                <a id="button-sub-{{ p.fullname }}" class="dropdown-item text-black btn-guild-sub" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.fullname }}"><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
-                {% endif %}
-                {% if not g.user.id==p.author_id and not p.author.is_deleted %}
-                <a id="block-user-{{ p.base36id }}" class="dropdown-item btn-block-user text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
-                <a id="unblock-user-{{ p.base36id }}" class="dropdown-item btn-unblock-user text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
-                {% endif %}
-                {% if request.path=="/all" %}
-                <a id="hide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-hide-guild {% if p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Hide guild</a>
-                <a id="unhide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-unhide-guild {% if not p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Unhide guild</a>
-                {% endif %}
-              </div>
+              {% if g.user and not p.is_subscribed and not b %}
+              <a id="button-sub-{{ p.fullname }}" class="dropdown-item text-black btn-guild-sub" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.fullname }}"><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
+              {% endif %}
+              {% if not g.user.id==p.author_id and not p.author.is_deleted %}
+              <a id="block-user-{{ p.base36id }}" class="dropdown-item btn-block-user text-danger{% if p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+              <a id="unblock-user-{{ p.base36id }}" class="dropdown-item btn-unblock-user text-danger{% if not p.is_blocking %} d-none{% endif %}" href="javascript:void(0)" data-target-user="{{ p.author.username }}" data-post-id="{{ p.base36id }}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
+              {% endif %}
+              {% if request.path=="/all" %}
+              <a id="hide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-hide-guild {% if p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Hide guild</a>
+              <a id="unhide-guild-{{ p.base36id }}" class="dropdown-item text-danger btn-unhide-guild {% if not p.is_blocking_guild %} d-none{% endif %}" href="javascript:void(0)" data-post-id="{{ p.base36id }}" data-board-name="{{ p.board.name }}"><i class="fas fa-eye-slash text-danger"></i>Unhide guild</a>
+              {% endif %}
             </div>
-          </li>
+          </div>
+        </li>
           {% endif %}
         {% endif %}
 
@@ -230,7 +230,7 @@
     </div>
 
 {% if p.body_html %}
-      <div class="d-none card rounded border pb-0 pt-3 my-2" id="post-text-{{ p.base36id }}">
+      <div class="{% if not request.path.startswith('/embed/') %}d-none{% endif %} card rounded border pb-0 pt-3 my-2" id="post-text-{{ p.base36id }}">
         {{ p.body_html | safe }}
       </div>
 {% endif %}
@@ -242,74 +242,67 @@
 <div class="card-footer d-block d-md-none mt-2">
   <div class="post-actions">
     <ul class="list-inline text-right d-flex">
-      {% if loop.length == 1 and '/post/' in request.path %}
-        {% if p.body_html %}
-            <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
-        {% endif %}
-        <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}>{{ p.comment_count }} comment{{ '' if p.comment_count==1 else 's' }} · {{ score }} point{{ '' if score==1 else 's' }}</a></li>
+      <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-      {% else %}
-        <li class="list-inline-item mr-auto"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
-
-        {% if p.body_html %}
-            <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
-        {% endif %}
-        
-
-        <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
-        {% if g.user %}
-        <li class="list-inline-item">
-          <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
-            <i class="fas fa-ellipsis-h"></i>
-          </a>
-        </li>
-        {% endif %}
-
-
-        {% if g.user and request.path.startswith(('/@',)) %}
-        <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
-
-          {% if voted==1 %}
-          <span class="mr-2 arrow-up post-{{ p.base36id }}-up active">
-          </span>
-          {% endif %}
-
-          <span id="post-score-{{ p.base36id }}-mobile" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
-
-          {% if voted==-1 %}
-          <span class="ml-2 my-0 arrow-down post-{{ p.base36id }}-down active">
-          </span>
-          {% endif %}
-
-
-        </li>
-        {% elif g.user %}
-        <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
-
-          <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
-          </span>
-
-          <span id="post-score-{{ p.base36id }}-mobile" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
-
-          <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
-          </span>
-
-        </li>
-        {% else %}
-        <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
-          <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
-            <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
-          </span>
-
-          <span id="post-score-{{ p.base36id }}-mobile" class="score"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{{ score }}</span>
-
-          <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
-            <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
-          </span>
-        </li>
-        {% endif %}
-
+      {% if p.body_html %}
+          <li class="list-inline-item"><a href="javascript:void(0)" class="text-expand" data-id="{{ p.base36id }}"><i class="fas fa-expand-alt mr-0 text-expand-icon-{{ p.base36id }}"></i></a></li>
       {% endif %}
+      
+
+      <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
+      {% if g.user %}
+      <li class="list-inline-item">
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
+          <i class="fas fa-ellipsis-h"></i>
+        </a>
+      </li>
+      {% endif %}
+
+
+      {% if g.user and request.path.startswith(('/@',)) %}
+      <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
+
+        {% if voted==1 %}
+        <span class="mr-2 arrow-up post-{{ p.base36id }}-up active">
+        </span>
+        {% endif %}
+
+        <span id="post-score-{{ p.base36id }}-mobile" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
+
+        {% if voted==-1 %}
+        <span class="ml-2 my-0 arrow-down post-{{ p.base36id }}-down active">
+        </span>
+        {% endif %}
+
+
+      </li>
+      {% elif g.user %}
+      <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
+
+        <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
+        </span>
+
+        <span id="post-score-{{ p.base36id }}-mobile" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
+
+        <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
+        </span>
+
+      </li>
+      {% else %}
+      <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
+        <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
+          <i class="fas fa-arrow-alt-up mx-0" aria-hidden="true"></i>
+        </span>
+
+        <span id="post-score-{{ p.base36id }}-mobile" class="score"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{{ score }}</span>
+
+        <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
+          <i class="fas fa-arrow-alt-down mx-0" aria-hidden="true"></i>
+        </span>
+      </li>
+      {% endif %}
+
+
 
     </ul>
     
