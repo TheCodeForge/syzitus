@@ -1,11 +1,1 @@
-<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}" src="{{ p.embed_url }}" width="100%"></iframe>
-<script nonce="{{ g.nonce }}">
-  $("iframe#embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}").load(function() {
-      $(this).attr('height', $(this)[0].contentWindow.document.body.offsetHeight + 'px');
-  });
-</script>
-<style nonce="{{ g.nonce }}">
-  iframe#embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }} {
-    border: 0
-  }
-</style>
+<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}" class="internal-embed w-100 border-rounded" src="{{ p.embed_url }}"></iframe>
