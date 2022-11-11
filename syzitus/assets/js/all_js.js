@@ -2354,6 +2354,6 @@ $("iframe.internal-embed").on('load', function() {
 $(window).resize(function(){
   var x=$("iframe.internal-embed");
   if (x[0] != undefined){
-    x[0].attr('height',  x[0].contentWindow.document.body.offsetHeight+'px');
+    x.attr('height',  x[0].contentWindow.document.body.offsetHeight+'px');
   }
 })
