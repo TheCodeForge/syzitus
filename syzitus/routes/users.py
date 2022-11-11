@@ -370,8 +370,7 @@ def user_profile_uid(uid):
 
 
 @app.route("/saved", methods=["GET"])
-@app.route("/api/v1/saved", methods=["GET"])
-#@app.get("/api/v2/me/saved")
+@app.get("/api/v2/me/saved")
 @auth_required
 @api("read")
 def saved_listing():
