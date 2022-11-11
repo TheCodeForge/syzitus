@@ -204,7 +204,7 @@
             <li class="list-inline-item"><a class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
             {% endif %}
             {% if not p.is_banned %}
-            <li class="list-inline-item"><a class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
+            <li class="list-inline-item"><a class="admin-remove-post" id="moderate-post-{{ p.base36id }}" href="javascript:void(0)" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a></li>
             {% endif %}
             {% endif %}
 
