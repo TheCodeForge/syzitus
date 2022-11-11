@@ -1,6 +1,6 @@
-<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}" src="{{ p.embed_url }}" class="w-100 border-0"></iframe>
+<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}" src="{{ p.embed_url }}" width="100%"></iframe>
 <script nonce="{{ g.nonce }}">
   $("iframe#embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}").load(function() {
-      $(this)[0].style.height = $(this)[0].contentWindow.document.body.offsetHeight + 'px';
+      $(this).attr('height', $(this)[0].contentWindow.document.body.offsetHeight + 'px');
   });
 </script>
