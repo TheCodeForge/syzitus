@@ -89,11 +89,7 @@
 
 
       <div class="d-block d-md-none zi-3">
-        {% if p.thumb_url %}
-          {% if request.path.startswith("/embed/") %}
-          <a href="{{ p.permalink }}">
-            <img src="{{ p.thumb_url }}" class="post-img">
-          </a>
+        {% if p.thumb_url and not request.path.startswith('/embed/' %}
           {% elif p.is_image %}
           <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
             <img src="{{ p.thumb_url }}" class="post-img">
