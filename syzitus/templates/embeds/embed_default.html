@@ -30,9 +30,7 @@
 
 </head>
 
-<body id="embed" class="p-1 bg-white">
-
-
+<body id="frontpage" class="p-1 bg-white">
   <div class="container">
     <div class="row justify-content-around" id="main-content-row">
 
@@ -83,7 +81,7 @@
 <script src="/assets/js/all_js.js"></script>
 
 <script nonce="{{ g.nonce }}">
-$('body#embed a').not('[href^="javascript"]').attr("target","_blank")
+$('body a').not('[href^="javascript"]').attr("target","_blank")
 </script>
 
 </body>
