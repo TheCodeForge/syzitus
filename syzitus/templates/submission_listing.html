@@ -170,7 +170,7 @@
 
             <li class="list-inline-item"><a href="{{ p.permalink }}"{% if p.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-            <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
+            <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i>Copy link</a></li>
 
             {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
             <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#tipModal" onclick="tipModal2('{{ p.base36id }}','post','{{ p.permalink }}','{{ p.author.username }}','{{ p.author.profile_url }}')"><i class="fas fa-star"></i>Tip</a></li>
@@ -273,7 +273,7 @@
         {% endif %}
         
 
-        <li class="list-inline-item"><a href="#;" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
+        <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
         {% if g.user %}
         <li class="list-inline-item">
           <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
