@@ -343,7 +343,7 @@
         <ul class="list-group post-actions">
           <li class="list-group-item d-none"><a href="javascript:void(0)" class="d-block"><i class="fas fa-save"></i>Save</a></li>
           {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
-          <button class="btn btn-link btn-block btn-lg text-left text-warning" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" class="btn-tip-modal-trigger" data-target-author-profile-url="{{ p.author.profile_url }}" data-target-type="post" data-target-author="{{ p.author.username }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="far fa-star fa-fw text-center text-warning mr-3"></i>Tip</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-warning btn-tip-modal-trigger" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" data-target-author-profile-url="{{ p.author.profile_url }}" data-target-type="post" data-target-author="{{ p.author.username }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="far fa-star fa-fw text-center text-warning mr-3"></i>Tip</button>
           {% endif %}
           {% if g.user and not g.user.id==p.author_id %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}" class="d-block btn-report-post"><i class="far fa-flag fa-fw text-center text-muted mr-3"></i>Flag</button>
