@@ -760,7 +760,7 @@ def embed_comment_cid(cid, pid=None):
     if comment.board.is_banned:
         abort(410)
 
-    return render_template("embeds/comment.html", c=comment)
+    return render_template("embeds/comment.html", thing=comment)
 
 @app.route("/mod/comment_pin/<guildname>/<cid>", methods=["POST"])
 @app.patch("/api/v2/guilds/<guildname>/comments/<cid>/pin")

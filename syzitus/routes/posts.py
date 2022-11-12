@@ -914,7 +914,7 @@ def embed_post_pid(pid):
     if post.is_banned or post.board.is_banned:
         abort(410)
 
-    return render_template("embeds/submission.html", p=post)
+    return render_template("embeds/submission.html", thing=post)
 
 
 @app.route("/api/toggle_post_nsfw/<pid>", methods=["POST"])

@@ -1,8 +1,8 @@
 {% extends "embeds/embed_default.html" %}
 
 {% block title %}
-<title>{{ p.title | safe}}</title>
-<meta name="description" content="posted {{ p.age_string }} by @{{ p.author.username }} in +{{ p.board.name }}">
+<title>{{ thing.title | safe}}</title>
+<meta name="description" content="posted {{ thing.age_string }} by @{{ thing.author.username }} in +{{ thing.board.name }}">
 {% endblock %}
 
 {% block pagetype %}thread{% endblock %}
@@ -12,7 +12,7 @@
 <div class="row no-gutters mt-md-3">
   <div class="col-12">
     <div class="posts" id="posts">
-      {% with listing = [p] %}
+      {% with listing = [thing] %}
         {% include "submission_listing.html" %}
       {% endwith %}
     </div>
