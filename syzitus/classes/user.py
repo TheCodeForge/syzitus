@@ -276,7 +276,7 @@ class User(Base, Stndrd, Age_times):
         return TITLES.get(self.title_id)
     
 
-    #@cache.memoize(timeout=300)
+    @cache.memoize(timeout=300)
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
@@ -581,7 +581,7 @@ class User(Base, Stndrd, Age_times):
         return self.comment_energy - self.comment_count
 
     @property
-    #@cache.memoize(timeout=3600)
+    @cache.memoize(timeout=3600)
     def true_score(self):
 
         #self.stored_karma=max((self.karma + self.comment_karma), -5)
@@ -603,7 +603,7 @@ class User(Base, Stndrd, Age_times):
         return f"t1_{self.base36id}"
 
     @property
-    #@cache.memoize(timeout=60)
+    @cache.memoize(timeout=60)
     @lazy
     def has_report_queue(self):
         board_ids = select(ModRelationship.board_id).options(lazyload('*')).filter(
