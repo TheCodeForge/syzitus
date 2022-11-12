@@ -644,7 +644,7 @@
 
 
                     {% if g.user.admin_level >= 4 and p.oauth_app %}
-                    <a id="embed-content-{{ p.fullname }}" href="{{ p.oauth_app.permalink }}" class="dropdown-item"><i class="fas fa-code"></i>API Client</a>
+                    <a id="embed-content-{{ p.fullname }}" href="{{ p.oauth_app.permalink }}" target="_blank" class="dropdown-item"><i class="fas fa-code"></i>API Client</a>
                     {% endif %}
 
                     <a id="embed-content-{{ p.fullname }}" href="javascript:void(0)" class="dropdown-item"><i class="fas fa-code"></i>Embed this</a>
