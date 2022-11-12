@@ -1533,7 +1533,7 @@ function autoSuggestTitle() {
     x.onload = function() {
       if (x.status == 200) {
         title=JSON.parse(x.responseText)["title"];
-        titleField.value=title;
+        titleField.val(title);
         checkForRequired()
       }
     }
