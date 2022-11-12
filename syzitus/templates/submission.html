@@ -627,23 +627,24 @@
 
               {% if g.user and not g.user.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i><span class="d-none d-lg-inline">Resubmit</span></a></li>{% endif %}
 
-              {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
               <li class="list-inline-item d-none d-md-inline-block">
                 <div class="dropdown show">
-                  <a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+                  <a href="javascript:void(0)" role="button" id="dropdownMoreLink-{{ p.base36id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-ellipsis-h text-small mr-0"></i>
                   </a>
                   <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
+
+                    {% if g.user and g.user.id!=p.author_id and not p.author.is_deleted %}
                     <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                     <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
-                    {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted%}
+                    {% endif %}
+                    {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted and g.user.id != p.author_id%}
                     <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                     {% endif %}
+                    <a id="embed-content-{{ p.fullname }}" class="dropdown-item"><i class="fas fa-code"></i>Embed this post</a>
                   </div>
                 </div>
               </li>
-              {% endif %}
 
             </ul>
           </div>

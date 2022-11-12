@@ -2371,7 +2371,7 @@ $('.copy-outside-embed').click(function(){
     if (xhr.status==200){
       navigator.clipboard.writeText(JSON.parse(xhr.response)['html']);
       $('#toast-copy-success').toast('show');
-      $('#toast-copy-success.toast-text').text(JSON.parse(xhr.response)["html"]);
+      $('#toast-copy-success.toast-text').text('Embed HTML copied to clipboard.');
     } else {
       $('#toast-copy-error').toast('show');
       $('#toast-copy-error.toast-text').text(JSON.parse(xhr.response)["error"]);
