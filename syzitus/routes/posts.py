@@ -1080,7 +1080,7 @@ def embed_thing_fullname(fullname):
 
     return jsonify(
         {"html":render_template(
-            "outside_embed.html",
+            "embeds/outside_embed.html",
             thing=thing
             )
         })
