@@ -2357,3 +2357,27 @@ $(window).resize(function(){
     x.attr('height',  x[0].contentWindow.document.body.offsetHeight+'px');
   }
 })
+
+
+$('.copy-outside-embed').click(function(){
+  var xhr = new XMLHttpRequest();
+  xhr.withCredentials=true;
+  xhr.open(
+    "GET", 
+    '/embed_thing/'+$(this).data('thing-fullname'), 
+    true
+    );
+  xhr.onload=function(){
+    if (xhr.status==200){
+      navigator.clipboard.writeText(JSON.parse(xhr.response)['html']);
+      $('#toast-copy-success').toast('show');
+      $('#toast-copy-success.toast-text').text(JSON.parse(xhr.response)["html"]);
+    } else {
+      $('#toast-copy-error').toast('show');
+      $('#toast-copy-error.toast-text').text(JSON.parse(xhr.response)["error"]);
+    }
+
+    }
+  xhr.send();
+  }
+)
