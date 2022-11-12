@@ -437,7 +437,7 @@ def after_request(response):
             f"default-src https:; form-action {app.config['SERVER_NAME']}; frame-src {app.config['SERVER_NAME']}  *.hcaptcha.com *.youtube.com youtube.com platform.twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com unpkg.com cdn.jsdelivr.net; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net unpkg.com platform.twitter.com; img-src https: data:")
 
 
-    if not request.path.startswith("/embed/"):
+    if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
         response.headers.add("X-Frame-Options", "deny")
 
 
