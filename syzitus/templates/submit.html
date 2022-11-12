@@ -225,23 +225,25 @@
 
         f = document.getElementById('file-upload');
         files = event.clipboardData.files;
-        filename = files[0].name.toLowerCase();
+        if (files.length){
+            filename = files[0].name.toLowerCase();
 
-        if (filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png") || filename.endsWith(".gif"))
-        {
-            f.files = files;
-            $('#filename-show').text(filename);
-            $('#urlblock').addClass('d-none');
+            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png") || filename.endsWith(".gif"))
+            {
+                f.files = files;
+                $('#filename-show').text(filename);
+                $('#urlblock').addClass('d-none');
 
-            var fileReader = new FileReader();
-            fileReader.readAsDataURL(f.files[0]);
-            fileReader.addEventListener("load", function () {
-                $('#image-preview').attr('src', this.result);
-            });
+                var fileReader = new FileReader();
+                fileReader.readAsDataURL(f.files[0]);
+                fileReader.addEventListener("load", function () {
+                    $('#image-preview').attr('src', this.result);
+                });
 
-            $('#file-upload').attr('required', false);
+                $('#file-upload').attr('required', false);
 
-            checkForRequired();
+                checkForRequired();
+            }
         }
     }
 
