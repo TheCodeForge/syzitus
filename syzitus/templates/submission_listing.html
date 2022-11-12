@@ -94,7 +94,7 @@
           <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
             <img src="{{ p.thumb_url }}" class="post-img">
           </a>
-          {% elif not request.path.startswith('/embed/') %}
+          {% elif p.url and not request.path.startswith('/embed/') %}
           <a href="{{ p.url }}" rel="nofollow noopener">
             <img src="{{ p.thumb_url }}" class="post-img" alt="link post thumbnail">
           </a>
