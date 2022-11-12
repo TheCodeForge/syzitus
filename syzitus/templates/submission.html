@@ -133,8 +133,8 @@
     <meta property="og:image" content="{{ p.thumb_url }}" />
     <meta name="twitter:image" content="{{ p.thumb_url }}" />
   {% else %}
-    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
-    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
+    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}" />
+    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}" />
   {% endif %}
 
   {% if linked_comment.author.is_private %}
