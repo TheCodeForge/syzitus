@@ -11,8 +11,6 @@
 
   <title>{% block pagetitle %}Guild management - {{ "SITE_NAME" | app_config }}{% endblock %}</title>
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
-
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -76,7 +74,7 @@
           <div class="row box-shadow-bottom bg-white">
             <div class="col">
               <div class="d-flex flex-row-reverse justify-content-end">
-                <ul class="nav settings-nav" style="margin-left: -15px;">
+                <ul class="nav settings-nav mx-auto">
 
                   {% if mod and mod.perm_config %}
                   <li class="nav-item">
