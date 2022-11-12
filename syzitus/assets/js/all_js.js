@@ -2381,3 +2381,11 @@ $('.copy-outside-embed').click(function(){
   xhr.send();
   }
 )
+
+$('#btn-toggle-sidebar-collapse').click(function(){
+  post(
+    '/settings/toggle_collapse',
+    callback=function(){
+      $('#sidebar-left').toggleClass('sidebar-collapsed')
+    })
+})
