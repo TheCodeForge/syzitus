@@ -1067,3 +1067,23 @@ def unsave_post(base36id):
     g.db.commit()
 
     return "", 204
+
+@app.get("/embed_thing/<fullname>")
+def embed_thing_fullname(fullname):
+
+    if not fullname.startswith(("t2_", "t3_")):
+        return jsonify({"error":"You can only embed posts and comments"}), 400
+
+    thing = get_from_fullname(fullname, graceful=True)
+    if not thing:
+        return jsonify({"error":"Content not found"}), 404
+
+    return jsonify(
+        {"html":render_template(
+            "outside_embed.html",
+            thing=thing
+            )
+        })
+
+
+

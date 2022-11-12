@@ -1,2 +1,2 @@
-<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}-post-{{ p.base36id }}" class="{{ 'SITE_NAME' | app_config | lower }}-embed"  src="{{ p.embed_url }}"></iframe>
-<script src="{{ '/assets/js/create_embed' | full_link }}"></script>
+<iframe id="embed-iframe-syzitus-{{ thing.fullname }}" class="syzitus-embed"  src="{{ thing.embed_url | full_link }}"></iframe>
+<script src="{{ '/assets/js/outside_embed' | full_link }}"></script>
