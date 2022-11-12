@@ -93,6 +93,7 @@ $('.go-to-login').click(function(){
 $(window).on('resize', function(){
   window.parent.postMessage(
     {
+      'frame': 'embed-iframe-syzitus-{{ thing.fullname }}',
       'height': window.document.body.scrollHeight
     },
     '*'
