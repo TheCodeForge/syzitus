@@ -2370,11 +2370,11 @@ $('.copy-outside-embed').click(function(){
   xhr.onload=function(){
     if (xhr.status==200){
       navigator.clipboard.writeText(JSON.parse(xhr.response)['html']);
-      $('#toast-copy-success').toast('show');
-      $('#toast-copy-success.toast-text').text('Embed HTML copied to clipboard.');
+      $('#toast-success').toast('show');
+      $('#toast-success .toast-text').text('Embed HTML copied to clipboard.');
     } else {
-      $('#toast-copy-error').toast('show');
-      $('#toast-copy-error.toast-text').text(JSON.parse(xhr.response)["error"]);
+      $('#toast-error').toast('show');
+      $('#toast-error .toast-text').text(JSON.parse(xhr.response)["error"]);
     }
 
     }
