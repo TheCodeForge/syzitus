@@ -151,7 +151,7 @@ def get_logo_main():
     #tilted letter layer
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-        size=min(base_layer.size)//1.3
+        size=int(min(base_layer.size)//1.3)
     )
 
     letter = app.config["SITE_NAME"][0:1].lower()
