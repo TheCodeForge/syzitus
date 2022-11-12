@@ -81,11 +81,23 @@
 <script src="/assets/js/all_js.js?v=3.1.13"></script>
 
 <script nonce="{{ g.nonce }}">
+  //Convert all links to open in new tab
 $('body a').not('[href^="javascript"]').attr("target","_blank")
 $('.go-to-login').off('click')
 $('.go-to-login').click(function(){
   window.open('{{ p.permalink }}', '_blank')
 })
+
+//get the frame height and post it on resize
+
+$(window).on('resize', function(){
+  window.postMessage(
+    {
+      'height': window.document.body.scrollHeight
+    }
+  );
+})
+
 </script>
 
 </body>
