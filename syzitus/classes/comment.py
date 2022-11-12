@@ -502,6 +502,10 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     @property
     def board_id(self):
         return self.post.board_id
+
+    @property
+    def outside_embed_url(self):
+        return f"/embed/comment/{self.base36id}"
     
 
 class Notification(Base):

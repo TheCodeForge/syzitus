@@ -640,6 +640,10 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
             return f"{protocol}://{app.config['SHORT_DOMAIN']}/{self.base36id}"
         else:
             return f"{protocol}://{app.config['SERVER_NAME']}/post/{self.base36id}"
+
+    @property
+    def outside_embed_url(self):
+        return f"/embed/post/{self.base36id}"
     
 class SaveRelationship(Base, Stndrd):
 
