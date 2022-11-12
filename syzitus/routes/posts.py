@@ -1078,6 +1078,9 @@ def embed_thing_fullname(fullname):
     if not thing:
         return jsonify({"error":"Content not found"}), 404
 
+    if thing.board.is_banned:
+        return jsonify({"error":"Can't embed content from banned Guilds"}), 404
+
     return jsonify(
         {"html":render_template(
             "embeds/outside_embed.html",
