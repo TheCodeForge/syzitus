@@ -420,21 +420,21 @@
           <li class="list-group-item d-none"><a href="javascript:void(0)" class="d-block"><i class="fas fa-save"></i>Save</a></li>
 
           {% if g.user and not g.user.id==c.author_id %}
-          <li class="list-group-item"><a data-toggle="modal" data-dismiss="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}" class="d-block btn-report-comment"><i class="fas fa-flag"></i>Flag</a></li>
+          <li class="list-group-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}" class="d-block btn-report-comment"><i class="fas fa-flag"></i>Flag</a></li>
           {% endif %}
 
           {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 %}
-          <li class="list-group-item"><a data-dismiss="modal" data-comment-id="{{ c.base36id }}" class="d-block btn-toggle-comment-edit"><i class="fas fa-edit"></i>Edit</a></li>
+          <li class="list-group-item"><a href="javascript:void(0)" data-dismiss="modal" data-comment-id="{{ c.base36id }}" class="d-block btn-toggle-comment-edit"><i class="fas fa-edit"></i>Edit</a></li>
 
-          <li class="list-group-item"><a class="d-block btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
+          <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a></li>
           {% endif %}
 
           {% if g.user %}
               {% if g.user.admin_level>=1 and g.user.id==c.author_id %}
-                      <li class="list-group-item"><a class="d-block" id="distinguish-{{ c.base36id }}" class="btn-distinguish-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-id-badge"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
+                      <li class="list-group-item"><a href="javascript:void(0)" class="d-block" id="distinguish-{{ c.base36id }}" class="btn-distinguish-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-id-badge"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
               {% endif %}
               {% if g.user.admin_level>=3 %}
-                <li class="list-group-item"><a class="d-block btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
+                <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
               {% endif %}
               {% if g.user.admin_level >=4 and c.oauth_app %}
                 <li class="list-group-item"><a class="d-block" href="{{ c.oauth_app.permalink }}/comments"><i class="fas fa-code"></i>API App</a></li>
@@ -442,24 +442,24 @@
 
               {% if not g.user.id==c.author_id %}
                   <li class="list-group-item">
-                    <a class="d-block post-toast-url" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
+                    <a href="javascript:void(0)" class="d-block post-toast-url" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                   </li>
               {% endif %}
           {% endif %}
 
           {% if g.user and g.user.id==c.author_id and c.post and c.is_guildmaster('content') %}
-          <li class="list-group-item"><a class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span>Herald</span></a></li>
+          <li class="list-group-item"><a href="javascript:void(0)" class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span>Herald</span></a></li>
           {% endif %}
             
           {% if g.user and c.post and c.is_guildmaster('content') %}
             {% if c.is_top_level %}
-              <li class="list-group-item"><a class="d-block text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}"data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 text-info"></i>{{ 'Unpin' if c.is_pinned else 'Pin' }}</a>
+              <li class="list-group-item"><a href="javascript:void(0)" class="d-block text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}"data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 text-info"></i>{{ 'Unpin' if c.is_pinned else 'Pin' }}</a>
               </li>
             {% endif %}
           {% endif %}
           {% if g.user and c.post and c.is_guildmaster('access') %}
             {% if c.author_id != g.user.id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
-              <li class="list-group-item"><a class="d-block text-danger post-toast-url" id="exile-comment2-{{ c.base36id }}" href="javascript:void(0)" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a></li>
+              <li class="list-group-item"><a href="javascript:void(0)" class="d-block text-danger post-toast-url" id="exile-comment2-{{ c.base36id }}" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a></li>
             {% endif %}
           {% endif %}  
 
