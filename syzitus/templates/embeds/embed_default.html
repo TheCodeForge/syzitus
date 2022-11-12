@@ -94,7 +94,8 @@ $(window).on('resize', function(){
   window.parent.postMessage(
     {
       'height': window.document.body.scrollHeight
-    }
+    },
+    '*'
   );
 })
 
