@@ -91,7 +91,7 @@ $('.go-to-login').click(function(){
 //get the frame height and post it on resize
 
 $(window).on('resize', function(){
-  window.postMessage(
+  window.parent.postMessage(
     {
       'height': window.document.body.scrollHeight
     }
