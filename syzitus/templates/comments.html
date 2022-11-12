@@ -237,11 +237,9 @@
 
             <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink">
               <a class="dropdown-item" target="_blank" href="{{ c.permalink }}?context=3"><i class="fas fa-book-open fa-fw"></i>Context</a>
-              <a class="dropdown-item d-none" href="javascript:void(0)"><i class="fas fa-save fa-fw"></i>Save</a>
-
 
               {% if g.user and c.parent_submission and not c.author_id==g.user.id and is_allowed_to_comment %}
-              <a class="dropdown-item btn-report-comment" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}"><i class="fas fa-flag fa-fw"></i>Flag</a>
+              <a class="dropdown-item btn-report-comment text-muted" data-toggle="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}"><i class="fas fa-flag fa-fw"></i>Flag</a>
 
               {% endif %}
 
