@@ -529,28 +529,28 @@
 
                   <li class="list-inline-item"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i><span class="d-none d-lg-block">Copy link</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i><span class="d-none d-lg-inline">Copy link</span></a></li>
 
                   {% if g.user and not g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i><span class="d-none d-lg-block">Tip</span></a></li>
+                  <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i><span class="d-none d-lg-inline">Tip</span></a></li>
 
-                  <li class="list-inline-item"><a class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i><span class="d-none d-lg-block">Flag</span></a></li>
+                  <li class="list-inline-item"><a class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i><span class="d-none d-lg-inline">Flag</span></a></li>
                   {% endif %}
 
                   {% if g.user and g.user.id==p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i><span class="d-none d-lg-block">Edit</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i><span class="d-none d-lg-inline">Edit</span></a></li>
 
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i><span class="d-none d-lg-block">Delete</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i><span class="d-none d-lg-inline">Delete</span></a></li>
                   {% endif %}
 
                   {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
 
                   {% if not p.board.over_18 %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="fas fa-eye-evil"></i><span class="d-none d-lg-block">Toggle NSFW</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="fas fa-eye-evil"></i><span class="d-none d-lg-inline">Toggle NSFW</span></a></li>
                   {% endif %}
 
                   {% if not p.board.is_nsfl %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="fas fa-skull"></i><span class="d-none d-lg-block">Toggle NSFL</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="fas fa-skull"></i><span class="d-none d-lg-inline">Toggle NSFL</span></a></li>
                   {% endif %}
 
                   {% endif %}
@@ -558,46 +558,46 @@
                   {% if g.user %}
 
                   {% if g.user.mods_anything and p.board_id == 1 %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i><span class="d-none d-lg-block">Yank</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="fas fa-hand-lizard"></i><span class="d-none d-lg-inline">Yank</span></a></li>
                   {% endif %}
                   {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i><span class="d-none d-lg-block">Remove from +{{ p.board.name }}</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/user/kick/{{ p.base36id }}"><i class="fas fa-chess-rook"></i><span class="d-none d-lg-inline">Remove from +{{ p.board.name }}</span></a></li>
                   {% endif %}
                   {% if p.url and p.has_thumb==False and (g.user.id==p.author_id or g.user.admin_level>=3) %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i><span class="d-none d-lg-block">Retry Thumb</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="fas fa-image"></i><span class="d-none d-lg-inline">Retry Thumb</span></a></li>
 
                   {% endif %}
 
                   {% if p.is_guildmaster('content') %}
 
                   {% if p.is_pinned %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-block">Unpin</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Unpin</span></a></li>
                   {% elif p.board.can_pin_another %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-block">Pin</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Pin</span></a></li>
                   {% endif %}
 
                   {% if g.user.id == p.author_id %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i><span class="d-none d-lg-block">Herald</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i><span class="d-none d-lg-inline">Herald</span></a></li>
                   {% endif %}
 
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span class="d-none d-lg-block">Kick</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span class="d-none d-lg-inline">Kick</span></a></li>
                   {% endif %}
 
                   {% if g.user.admin_level >=3 %}
                   {% if p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i><span class="d-none d-lg-block">Approve</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-success admin-approve-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i><span class="d-none d-lg-inline">Approve</span></a></li>
                   {% endif %}
                   {% if not p.is_banned or p.active_flags %}
-                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i><span class="d-none d-lg-block">Remove</span></a></li>
+                  <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger admin-remove-post" id="moderate-post-{{ p.base36id }}" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i><span class="d-none d-lg-inline">Remove</span></a></li>
                   {% endif %}
                   {% endif %}
 
                   {% if g.user.admin_level >= 4 and p.oauth_app %}
-                  <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i><span class="d-none d-lg-block">API App</span></a></li>
+                  <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i><span class="d-none d-lg-inline">API App</span></a></li>
                   {% endif %}
                   {% endif %}
 
-                  {% if g.user and not g.user.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i><span class="d-none d-lg-block">Resubmit</span></a></li>{% endif %}
+                  {% if g.user and not g.user.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i><span class="d-none d-lg-inline">Resubmit</span></a></li>{% endif %}
 
                   {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
                   <li class="list-inline-item d-none d-md-inline-block">
