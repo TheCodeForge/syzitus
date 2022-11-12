@@ -85,7 +85,7 @@
 $('body a').not('[href^="javascript"]').attr("target","_blank")
 $('.go-to-login').off('click')
 $('.go-to-login').click(function(){
-  window.open('{{ p.permalink }}', '_blank')
+  window.open('{{ thing.permalink }}', '_blank')
 })
 
 //get the frame height and post it on resize
