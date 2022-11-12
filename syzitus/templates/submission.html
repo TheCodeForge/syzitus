@@ -638,12 +638,12 @@
                     <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
                     <a id="unblock-user-{{ p.base36id }}" class="dropdown-item text-danger btn-unblock-user{% if not p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Unblock user</a>
                     {% endif %}
+
                     {% if p.is_guildmaster('access') and p.deleted_utc == 0 and not p.author.is_deleted and g.user.id != p.author_id%}
                     <a id="exile2-user-{{ p.base36id }}" class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/mod/exile/{{ p.board.name }}?username={{ p.author.username }}&toast=1&thing={{ p.fullname }}"><i class="fas fa-user-slash text-danger"></i>Exile @{{ p.author.username }}</a>
                     {% endif %}
 
-
-                    {% if g.user.admin_level >= 4 and p.oauth_app %}
+                    {% if g.user and g.user.admin_level >= 4 and p.oauth_app %}
                     <a id="embed-content-{{ p.fullname }}" href="{{ p.oauth_app.permalink }}" target="_blank" class="dropdown-item"><i class="fas fa-code"></i>API Client</a>
                     {% endif %}
 
