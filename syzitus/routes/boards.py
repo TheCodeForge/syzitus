@@ -1726,7 +1726,7 @@ def mod_board_images_profile(bid, board):
 
     g.db.commit()
 
-    return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
+    return jsonify({"redirect":f"/+{board.name}/mod/appearance?msg=Success"}), 302
 
 
 @app.route("/mod/<bid>/images/banner", methods=["POST"])
@@ -1758,7 +1758,7 @@ def mod_board_images_banner(bid, board):
 
     g.db.commit()
 
-    return redirect(f"/+{board.name}/mod/appearance?msg=Success#images")
+    return jsonify({"redirect":f"/+{board.name}/mod/appearance?msg=Success"}), 302
 
 
 @app.route("/mod/<bid>/delete/profile", methods=["POST"])
