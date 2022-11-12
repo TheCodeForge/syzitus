@@ -106,7 +106,7 @@ app.jinja_env.cache = {}
 app.config["UserAgent"] = f"Content Aquisition for Porpl message board v{_version}."
 
 if "localhost" in app.config["SERVER_NAME"]:
-    app.config["CACHE_TYPE"] = "null"
+    app.config["CACHE_TYPE"] = "NullCache"
 else:
     app.config["CACHE_TYPE"] = environ.get("CACHE_TYPE", 'filesystem').lstrip().rstrip()
 
