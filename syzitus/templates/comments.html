@@ -68,7 +68,7 @@
 {% endif %}
 
 {% if standalone and level==1 %}
-<div class="post-info mt-5 mb-1">
+<div class="post-info mb-1 {% if not request.path.startswith('/embed/') %}mt-5{% endif %}">
   <span class="align-top">
   {% if c.parent_submission %}
     {% if c.author_id==g.user.id and c.replies and is_notification_page%}
@@ -83,7 +83,7 @@
   {% else %}
   <span class="font-weight-bold">{{ 'SITE_NAME' | app_config }} Notification</span>
   {% endif %}
-</span>
+  </span>
 </div>
 {% endif %}
 
