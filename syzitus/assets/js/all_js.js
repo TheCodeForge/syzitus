@@ -1185,10 +1185,10 @@ $('.btn-yank-post').click(function(){
   $("#post-timestamp").text($(this).data('timestamp'));
 
 
-  $("yank-post-form").data('yank-url', "/mod/take/"+$(this).data('post-id'));
+  $("#yankPostButton").data('yank-url', "/mod/take/"+$(this).data('post-id'));
 })
 
-  $("#yankPostButton").click(function() {  
+$("#yankPostButton").click(function() {  
 
 
     var yankError = document.getElementById("toast-error-message");
