@@ -29,10 +29,10 @@
 
                 {% if g.user.can_upload_avatar %}
 
-                <form action="/settings/images/profile" method="post" enctype="multipart/form-data">
+                <form id="user-avatar-update-form" action="/settings/images/profile" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="profile" class="onchange-form-submit">
+                    Update<input type="file" hidden name="profile" class="toast-change-form-submit" data-form="user-avatar-update-form">
                   </label>
                 </form>
 
@@ -84,10 +84,10 @@
 
                 {% if g.user.can_upload_banner %}
 
-                <form action="/settings/images/banner" method="post" enctype="multipart/form-data">
+                <form id="user-banner-update-form" action="/settings/images/banner" method="post" enctype="multipart/form-data">
                   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                   <label class="btn btn-secondary text-capitalize mr-2 mb-0">
-                    Update<input type="file" hidden name="banner" class="onchange-form-submit">
+                    Update<input type="file" hidden name="banner" class="toast-change-form-submit" data-form="user-banner-update-form">
                   </label>
                 </form>
 
