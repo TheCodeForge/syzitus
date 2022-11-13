@@ -304,9 +304,10 @@ $('.btn-mod-comment').click(function () {
 
 $('.btn-distinguish-comment').click(function(){
 
+  var comment_id=$(this).data('comment-id')
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment-id));
+  xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment_id));
 
   var form = new FormData();
 
@@ -315,7 +316,7 @@ $('.btn-distinguish-comment').click(function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+$(this).data(comment-id)+'-only');
+      comment=document.getElementById('comment-'+$(this).data(comment_id)+'-only');
       comment.innerHTML=JSON.parse(xhr.response)["html"];
     }
     else {
