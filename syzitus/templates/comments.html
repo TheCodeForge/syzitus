@@ -362,14 +362,14 @@
             &nbsp;
             {% endif %}
 
-            {% if g.user.can_upload_comment_image %}
-            <label class="format btn btn-secondary m-0 ml-1 d-inline-block" for="file-upload-reply-{{ c.fullname }}">
+            
+            <label class="format btn btn-secondary m-0 ml-1 {% if g.user.can_upload_comment_image %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ c.fullname }}">
               <div>
                 <i class="far fa-image"></i><span id="filename-show-reply-{{ c.base36id }}"></span>
               </div>
               <input id="file-upload-reply-{{ c.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" data-parent-fullname="{{ c.fullname }}" data-btn-id="filename-show-reply-{{ c.base36id }}" hidden>
             </label>
-            {% endif %}
+            
 
             <a href="javascript:void(0)" data-comment-id="{{ c.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-cancel-comment">Cancel</a> 
             <a href="javascript:void(0)" id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-parent-fullname="{{ c.fullname }}">Comment</a> 
