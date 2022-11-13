@@ -199,11 +199,11 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
                     tag["class"] = "in-comment-image rounded-sm my-2"
 
                     link = soup.new_tag("a")
-                    link["href"] = tag["src"]
+                    link["href"] = "javascript:void(0)"
                     link["rel"] = "nofollow noopener"
                     link["target"] = "_blank"
-
-                    link["onclick"] = f"expandDesktopImage('{tag['src']}');"
+                    link["class"]="expandable-image"
+                    link["data-url"] = tag['src']
                     link["data-toggle"] = "modal"
                     link["data-target"] = "#expandImageModal"
 
