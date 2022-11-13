@@ -1082,6 +1082,9 @@ def mod_bid_settings_nsfw(bid, board):
 @is_guildmaster("config")
 def mod_bid_settings_optout(bid, board):
 
+    if board.is_locked_category:
+        return jsonfiy({"error": "This setting has been locked."}), 403
+
     # nsfw
     board.all_opt_out = bool(request.form.get("opt_out", False) == 'true')
 
@@ -1115,27 +1118,6 @@ def mod_bid_settings_disallowbots(bid, board):
         board_id=board.id,
         note=f"disallow_bots={board.disallowbots}"
     )
-    g.db.add(ma)
-    g.db.commit()
-
-    return "", 204
-
-@app.route("/mod/<bid>/settings/public_chat", methods=["POST"])
-@auth_required
-@is_guildmaster("config", "chat")
-def mod_bid_settings_public_chat(bid, board):
-
-    # nsfw
-    board.public_chat = bool(request.form.get("public_chat", False) == 'true')
-
-    g.db.add(board)
-
-    ma=ModAction(
-        kind="update_settings",
-        user_id=g.user.id,
-        board_id=board.id,
-        note=f"public_chat={board.public_chat}"
-        )
     g.db.add(ma)
     g.db.commit()
 
@@ -2057,8 +2039,8 @@ def change_guild_category(board, bid, category):
     if category not in CATEGORY_DATA:
         return jsonify({"error": f"Invalid category id"}), 400
 
-    if board.is_locked_category:
-        return jsonify({"error": "You can't do that right now."}), 403
+    if board.is_locked_category and not g.user.admin_level:
+        return jsonify({"error": "This setting has been locked."}), 403
 
     board.subcat_id=category
     g.db.add(board)
