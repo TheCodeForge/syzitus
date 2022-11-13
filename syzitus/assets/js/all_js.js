@@ -304,7 +304,7 @@ $('.btn-mod-comment').click(function () {
 
 $('.btn-distinguish-comment').click(function(){
 
-  var comment_id=$(this).data('comment-id')
+  var comment_id=$(this).data('comment-id');
 
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment_id));

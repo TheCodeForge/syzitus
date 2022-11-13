@@ -369,7 +369,7 @@
             {% endif %}
 
             {% if g.user and not g.user.is_suspended %}
-            <button class="btn btn-link btn-block btn-lg text-left"><a class="text-muted font-weight-bold" href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="far fa-retweet text-center text-muted mr-3"></i>Resubmit</a></button>
+            <button class="btn btn-link btn-block btn-lg text-left"><a class="text-muted" href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="far fa-retweet text-center text-muted mr-3"></i>Resubmit</a></button>
               {% endif %}
 
             {% if p.is_guildmaster('content') %}
