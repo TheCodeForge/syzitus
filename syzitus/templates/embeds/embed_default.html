@@ -98,6 +98,16 @@ $(window).on('resize', function(){
   );
 })
 
+$(window).on('load', function(){
+  window.parent.postMessage(
+    {
+      'frame': 'embed-iframe-syzitus-{{ thing.fullname }}',
+      'height': window.document.body.scrollHeight
+    },
+    '*'
+  );
+})
+
 </script>
 
 </body>
