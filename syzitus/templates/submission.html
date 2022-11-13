@@ -166,10 +166,22 @@
   <meta name="twitter:url" content="{{ p.permalink | full_link}}" />
 
   {% if not p.is_banned and not p.is_deleted %}
-  <meta name="twitter:card" content="summary_large_image"/>
-  <meta property="og:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb%}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}{% endif %}" />
-  <meta name="twitter:image" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb %}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}{% endif %}" />
-  <meta name="thumbnail" content="{% if p.is_image %}{{ p.url }}{% elif p.has_thumb %}{{ p.thumb_url }}{% else %}{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}{% endif %}" />
+  {% if p.is_image %}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta property="og:image" content="{{ p.url }}" />
+    <meta name="twitter:image" content="{{ p.url }}" />
+    <meta name="thumbnail" content="{{ p.url }}" />
+  {% elif p.has_thumb %}
+    <meta name="twitter:card" content="summary"/>
+    <meta property="og:image" content="{{ p.thumb_url }}" />
+    <meta name="twitter:image" content="{{ p.thumb_url }}" />
+    <meta name="thumbnail" content="{{ p.thumb_url }}" />
+  {% else}
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}" />
+    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}" />
+    <meta name="thumbnail" content="{{ 'IMG_URL_THUMBSPLASH' | app_config | full_link }}" />
+  {% endif %}
   {% endif %}
 
   {% if p.author.is_private %}
