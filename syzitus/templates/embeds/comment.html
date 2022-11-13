@@ -7,13 +7,15 @@
 
 
 {% block content %}
-<div class="row border-md-0 comment-section pb-3">
-  <div class="col border-top">
-    {% with comments = [thing] %}
-    {% with standalone=True %}
-      {% include "comments.html" %}
-    {% endwith %}
-    {% endwith %}
+<div class="row no-gutters mt-md-3">
+  <div class="col-12">
+    <div class="comments">
+      {% with comments = [thing] %}
+      {% with standalone=True %}
+        {% include "comments.html" %}
+      {% endwith %}
+      {% endwith %}
+    </div>
   </div>
 </div>
 {% endblock %}
