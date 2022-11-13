@@ -432,7 +432,7 @@
 
             {% if g.user %}
             {% if g.user.admin_level>=1 and g.user.id==c.author_id %}
-              <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-distinguish-comment" id="distinguish-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fad fa-shield-quartered  fa-fw text-danger"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
+              <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-distinguish-comment" id="distinguish-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-shield-quartered  fa-fw text-danger"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
             {% endif %}
             {% if g.user.admin_level>=3 %}
               <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-times"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
