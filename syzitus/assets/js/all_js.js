@@ -264,7 +264,7 @@ $('.btn-toggle-comment-edit').click(function(){
   $("#comment-edit-"+id).toggleClass('d-none');
   $('#comment-' + id +'-actions').toggleClass('d-none');
 
-  box=document.getElementById('edit-box-comment-'+id);
+  box=document.getElementById('comment-edit-body-'+id);
   autoExpand(box);
 })
 
@@ -1829,7 +1829,7 @@ $('.btn-save-edit-comment').click(function() {
     if (xhr.status==200) {
       commentForm=document.getElementById('comment-text-'+id);
       commentForm.innerHTML=JSON.parse(xhr.response)["html"];
-      document.getElementById('cancel-edit-'+id).click()
+      //document.getElementById('cancel-edit-'+id).click()
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
