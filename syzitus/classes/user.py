@@ -1167,7 +1167,7 @@ class User(Base, Stndrd, Age_times):
             return True
     
 
-    def ban(self, admin=None, reason=None, message=None days=0):
+    def ban(self, admin=None, reason=None, message=None, days=0):
 
         self.is_banned = admin.id if admin else 1
 
