@@ -13,45 +13,46 @@
 
 <div id="comment-{{ c.base36id }}" class="comment rounded">
 
+  <span class="comment-collapse" data-comment-id="{{ c.base36id }}"></span>
 
-    <span class="comment-collapse" data-comment-id="{{ c.base36id }}"></span>
+  <div class="comment-body">
 
-    <div class="comment-body">
+    <div id="comment-{{ c.base36id }}-only">
 
-        <div id="comment-{{ c.base36id }}-only">
+      <div class="user-info py-0">
+        {% if standalone and c.over_18 %}
+        <span class="badge badge-danger">NSFW</span>
+        {% endif %}
+        <span>[{% if c.is_banned %}Removed by administrators{% elif c.deleted_utc > 0 %}Deleted by author{% elif c.is_blocking %}You are blocking @{{ c.author.username }}{% elif c.is_blocked %}This user has blocked you{% elif g.is_archive and c.author.is_private %}Comment not archived due to its author's privacy settings{% endif %}]</span>
+      </div>
 
-            <div class="user-info py-0">{% if standalone and c.over_18 %}<span class="badge badge-danger">NSFW<span> {% endif %}
-              <span>
-                [{% if c.is_banned %}Removed by administrators{% elif c.deleted_utc > 0 %}Deleted by author{% elif c.is_blocking %}You are blocking @{{ c.author.username }}{% elif c.is_blocked %}This user has blocked you{% elif g.is_archive and c.author.is_private %}Comment not archived due to its author's privacy settings{% endif %}]
-              </span>
-            </div>
-
-            {% if c.is_banned and c.ban_reason %}
-            <div id="comment-banned-warning pt-1" class="comment-text text-danger text-small">
-                Reason: {{ c.ban_reason }}
-            </div>
-            {% endif %}
-         </div>
+      {% if c.is_banned and c.ban_reason %}
+      <div id="comment-banned-warning pt-1" class="comment-text text-danger text-small">
+        Reason: {{ c.ban_reason }}
+      </div>
+      {% endif %}
+    </div>
 
 
 
     {% if render_replies %} 
     {% if level<5 %}
-      <div id="replies-of-{{ c.base36id }}" class="">
-        {% set standalone=False %}
-        {% for reply in c.replies %}
-          {{ single_comment(reply, level=level+1) }}
-        {% endfor %}
-      </div>
+    <div id="replies-of-{{ c.base36id }}" class="">
+      {% with standalone=False %}
+      {% for reply in c.replies %}
+        {{ single_comment(reply, level=level+1) }}
+      {% endfor %}
+      {% endwith %}
+    </div>
     {% else %}
-      {% if c.replies %}
-        <div id="morecomment-{{ c.base36id }}" class="mt-2 more-comments text-small">
-          <a href="{{ c.permalink }}"{% if c.author.is_private %} rel="nofollow"{% endif %}>More comments <i class="fas fa-long-arrow-right ml-1"></i></a>
-        </div>
-      {% endif %}
+    {% if c.replies %}
+    <div id="morecomment-{{ c.base36id }}" class="mt-2 more-comments text-small">
+      <a href="{{ c.permalink }}"{% if c.author.is_private %} rel="nofollow"{% endif %}>More comments <i class="fas fa-long-arrow-right ml-1"></i></a>
+    </div>
     {% endif %}
-  {% endif %}
-</div>
+    {% endif %}
+    {% endif %}
+  </div>
 </div>
 
 
