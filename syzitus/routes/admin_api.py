@@ -26,37 +26,21 @@ from syzitus.__main__ import app, cache
 def ban_user(user_id):
 
     user = g.db.query(User).filter_by(id=user_id).first()
+    if not user:
+        abort(404)
 
     # check for number of days for suspension
     days = int(request.form.get("days")) if request.form.get('days') else 0
     reason = request.form.get("reason", "")
     message = request.form.get("message", "")
 
-    if not user:
-        abort(400)
 
-    if days > 0:
-        if message:
-            text = f"Your Ruqqus account has been suspended for {days} days for the following reason:\n\n> {message}"
-        else:
-            text = f"Your Ruqqus account has been suspended for {days} days due to a Terms of Service violation."
-        user.ban(admin=g.user, reason=reason, days=days)
-
-    else:
-        if message:
-            text = f"Your Ruqqus account has been permanently suspended for the following reason:\n\n> {message}"
-        else:
-            text = "Your Ruqqus account has been permanently suspended due to a Terms of Service violation."
-
-        user.ban(admin=g.user, reason=reason)
+    user.ban(admin=g.user, reason=reason, message=message)
 
 
     for x in user.alts:
         if not x.is_deleted:
             x.ban(admin=g.user, reason=reason)
-
-
-
 
     send_notification(user, text)
 
@@ -70,7 +54,7 @@ def unban_user(user_id):
     user = g.db.query(User).filter_by(id=user_id).first()
 
     if not user:
-        abort(400)
+        abort(404)
 
     user.unban()
 

@@ -376,8 +376,8 @@ def admin_level_required(x):
             if not g.user:
                 abort(401)
 
-            if g.user.is_banned:
-                abort(403)
+            # if g.user.is_banned:
+            #     abort(403)
 
             if g.user.admin_level < x:
                 abort(403)

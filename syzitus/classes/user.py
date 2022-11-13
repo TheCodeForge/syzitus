@@ -1167,7 +1167,7 @@ class User(Base, Stndrd, Age_times):
             return True
     
 
-    def ban(self, admin=None, reason=None,  days=0):
+    def ban(self, admin=None, reason=None, message=None days=0):
 
         self.is_banned = admin.id if admin else 1
 
@@ -1185,7 +1185,7 @@ class User(Base, Stndrd, Age_times):
             action="terminated"
 
         if reason:
-            action += f"for the following reason:\n\n> {reason}"
+            action += f" for the following reason:\n\n> {reason}"
         else:
             action += "."
 
@@ -1193,6 +1193,10 @@ class User(Base, Stndrd, Age_times):
             action=f"automatically {action}"
 
         text = f'Your {app.config["SITE_NAME"]} account has been {action}'
+
+        if message:
+            text += f"\n\nAdditional private message from the admins:\n\n{message}"
+
         send_notif(self, text)
 
         if days > 0:
