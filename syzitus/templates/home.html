@@ -283,11 +283,11 @@
 
         <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
           <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
-          <div class="progress">
+          <div class="progress rounded">
             <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
             </div>
             <style nonce="{{ g.nonce }}">
-              # premium-bar-progress {
+              #premium-bar-progress {
                 width: {{ g.timestamp | coin_goal }}%;
               }
             </style>
