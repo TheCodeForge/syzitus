@@ -1829,7 +1829,7 @@ $('.btn-save-edit-comment').click(function() {
     if (xhr.status==200) {
       commentForm=document.getElementById('comment-text-'+id);
       commentForm.innerHTML=JSON.parse(xhr.response)["html"];
-      //document.getElementById('cancel-edit-'+id).click()
+      document.getElementById('cancel-edit-'+id).click()
       $('#toast-comment-success').toast('dispose');
       $('#toast-comment-error').toast('dispose');
       $('#toast-comment-success').toast('show');
