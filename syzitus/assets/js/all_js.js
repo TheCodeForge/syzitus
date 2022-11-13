@@ -317,7 +317,7 @@ $('.btn-distinguish-comment').click(function(){
   xhr.onload=function(){
     if (xhr.status==200) {
       comment=document.getElementById('comment-'+$(this).data(comment_id)+'-only');
-      comment.innerHTML=JSON.parse(xhr.response)["html"];
+      comment.html(JSON.parse(xhr.response)["html"]);
     }
     else {
       var commentError = document.getElementById("comment-error-text");
