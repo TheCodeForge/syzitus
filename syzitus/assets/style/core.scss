@@ -335,11 +335,6 @@ ol > li::before {
     border-left: 1px solid $border-color;
 }
 
-.btn-integration .fab, .btn-integration .fas, .btn-integration .far {
-    font-size: $lead-font-size;
-    vertical-align: middle;
-}
-
 // Tooltips
 
 .tooltip {
@@ -1892,11 +1887,6 @@ a.bg-dark:hover, a.bg-dark:focus, button.bg-dark:hover, button.bg-dark:focus {
 
 .modal .post-actions a {
     color: $black;
-    font-size: $font-size-base;
-}
-
-.modal .post-actions .fa, .modal .post-actions .fas, .modal .post-actions .far {
-    width: 1.25rem;
     font-size: $font-size-base;
 }
 
