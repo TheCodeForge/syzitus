@@ -628,7 +628,7 @@
               <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i><span class="d-none d-lg-inline">Herald</span></a></li>
               {% endif %}
 
-              <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger" class="post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span class="d-none d-lg-inline">Kick</span></a></li>
+              <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span class="d-none d-lg-inline">Kick</span></a></li>
               {% endif %}
 
               {% if g.user.admin_level >=3 %}
