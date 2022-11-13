@@ -497,10 +497,6 @@
 
             {{ p.body_html | safe }}
 
-            {% if p.embed_url and p.domain_obj and p.domain_obj.embed_template %}
-              {% include p.embed_template %}
-            {% endif %}
-
           </div>
 
 
@@ -570,6 +566,10 @@
           {% endif %}
 
         </div>
+
+        {% if p.embed_url and p.domain_obj and p.domain_obj.embed_template %}
+          {% include p.embed_template %}
+        {% endif %}
 
         <div class="d-none d-md-flex justify-content-between align-items-center mt-2">
           <div class="post-actions mt-2">
