@@ -479,4 +479,4 @@ for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submis
 
 db.commit()
 db.close()
-debug("...done")
+debug("...done.")
