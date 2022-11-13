@@ -619,13 +619,13 @@
               {% if p.is_guildmaster('content') %}
 
               {% if p.is_pinned %}
-              <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Unpin</span></a></li>
+              <li class="list-inline-item"><a href="javascript:void(0)" class="text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/0"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Unpin</span></a></li>
               {% elif p.board.can_pin_another %}
-              <li class="list-inline-item"><a href="javascript:void(0)" class="d-block text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Pin</span></a></li>
+              <li class="list-inline-item"><a href="javascript:void(0)" class="text-info post-url-reload" id="pin-post-{{ p.base36id }}" data-post-url="/mod/post_pin/{{ p.board.name }}/{{ p.base36id }}/1"><i class="fas fa-thumbtack fa-fw text-info fa-rotate--45"></i><span class="d-none d-lg-inline">Pin</span></a></li>
               {% endif %}
 
               {% if g.user.id == p.author_id %}
-              <li class="list-inline-item"><a href="javascript:void(0)" class="post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}" class="text-warning"><i class="fas fa-crown text-warning"></i><span class="d-none d-lg-inline">Herald</span></a></li>
+              <li class="list-inline-item"><a href="javascript:void(0)" class="text-warning post-url-reload" data-post-url="/mod/distinguish_post/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-lg-inline">Herald</span></a></li>
               {% endif %}
 
               <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span class="d-none d-lg-inline">Kick</span></a></li>
