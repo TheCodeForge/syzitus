@@ -323,7 +323,7 @@
 
                   <form id="guild-nobots-form" action="/mod/{{ b.base36id }}/settings/disallowbots">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="disallowbots" name="disallowbots" data-form="guild-nobots-form" {% if b.over_18 %} checked{% endif %}>
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="disallowbots" name="disallowbots" data-form="guild-nobots-form" {% if b.disallowbots %} checked{% endif %}>
                     <label class="custom-control-label" for="disallowbots"></label>
                   </form>
                 </div>
