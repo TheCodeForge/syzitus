@@ -217,7 +217,7 @@ def allow_nsfw_logged_out(bid):
     if not session.get("over_18", None):
         session["over_18"] = {}
 
-    cutoff = int(time.time()) + 3600
+    cutoff = g.timestamp + 3600
     session["over_18"][bid] = cutoff
 
     return redirect(request.form.get("redir"))
@@ -249,7 +249,7 @@ def allow_nsfl_logged_out(bid):
     if not session.get("show_nsfl", None):
         session["show_nsfl"] = {}
 
-    cutoff = int(time.time()) + 3600
+    cutoff = g.timestamp + 3600
     session["show_nsfl"][bid] = cutoff
 
     return redirect(request.form.get("redir"))
