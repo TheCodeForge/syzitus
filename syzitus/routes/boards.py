@@ -889,7 +889,7 @@ def mod_invite_username(bid, board):
 
     g.db.commit()
 
-    return redirect(f"{board.permalink}/mod/mods")
+    return jsonify({"redirect": f"{board.permalink}/mod/mods"}), 302
 
 
 @app.route("/mod/<bid>/rescind/<username>", methods=["POST"])
@@ -959,7 +959,7 @@ def mod_accept_board(bid):
     
     g.db.commit()
 
-    return "", 204
+    return jsonify({"redirect": f"{board.permalink}/mod/mods"}), 302
 
 @app.route("/mod/<bid>/step_down", methods=["POST"])
 @auth_required
@@ -992,7 +992,7 @@ def mod_step_down(bid, board):
 
     g.db.commit()
 
-    return "", 204
+    return jsonify({"redirect": f"{board.permalink}/mod/mods"}), 302
 
 
 
