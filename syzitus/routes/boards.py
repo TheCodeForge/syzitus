@@ -1107,7 +1107,7 @@ def mod_bid_settings_optout(bid, board):
 def mod_bid_settings_disallowbots(bid, board):
 
     # toggle disallowing bots setting
-    board.disallowbots = bool(request.form.get("disallowbots"))
+    board.disallowbots = bool(request.form.get("disallowbots", False))
 
     g.db.add(board)
     ma=ModAction(
