@@ -1074,7 +1074,7 @@ def mod_bid_settings_nsfw(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 
 @app.route("/mod/<bid>/settings/opt_out", methods=["POST"])
@@ -1099,7 +1099,7 @@ def mod_bid_settings_optout(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 @app.route("/mod/<bid>/settings/disallowbots", methods=["POST"])
 @auth_required
@@ -1121,7 +1121,7 @@ def mod_bid_settings_disallowbots(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 @app.route("/mod/<bid>/settings/restricted", methods=["POST"])
 @auth_required
@@ -1145,7 +1145,7 @@ def mod_bid_settings_restricted(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 
 @app.route("/mod/<bid>/settings/private", methods=["POST"])
@@ -1171,7 +1171,7 @@ def mod_bid_settings_private(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 
 @app.route("/mod/<bid>/settings/name", methods=["POST"])
@@ -1198,7 +1198,7 @@ def mod_bid_settings_name(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 @app.route("/mod/<bid>/settings/description", methods=["POST"])
 @auth_required
@@ -1224,7 +1224,7 @@ def mod_bid_settings_description(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 
 @app.route("/mod/<bid>/settings/banner", methods=["POST"])
