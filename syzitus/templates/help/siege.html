@@ -46,7 +46,8 @@ In order to successfully siege a guild you must meet the following requirements:
 * Have a 30 day old account, and
 * Wait 7 days since your last siege attempt, and
 * Not be exiled from the guild you are attempting to siege, and
-* Have Rep in the guild you are attempting to siege (exact requirement depends on guild size and age)
+* Have Rep in the guild you are attempting to siege (exact requirement depends on guild size and age), and
+* If the guild is Private, be a moderator or approved contributor in the guild
 
 Additionally, no current Guildmaster (or no Guildmaster above you, if you are a Guildmaster already) may have done any of the following in the past 60 days:
 
@@ -56,9 +57,9 @@ Additionally, no current Guildmaster (or no Guildmaster above you, if you are a 
 
 Guildmasters who are permanently banned, or who have deactivated their {{ 'SITE_NAME' | app_config }} account, will always count as inactive, regardless of actual activity.
 
-Sieges against [+general](/+general), or admin-controlled Guilds will always fail.
+Sieges against [+general](/+general) or certain other administrative Guilds will always fail.
 
-Finally, you may not Siege a guild with the intention of vandalizing it or subverting its purpose. Such sieges will be reverted by {{ 'SITE_NAME' | app_config }} admins.
+Finally, you may not Siege a guild with the intention of vandalizing it or subverting its purpose. Such sieges may be reverted at the discretion of {{ 'SITE_NAME' | app_config }} administrators.
 
 ## Siege a Guild
 
@@ -73,8 +74,6 @@ Finally, you may not Siege a guild with the intention of vandalizing it or subve
     <p>You already lead the maximum number of guilds. You cannot siege a new guild unless you lead {{ ('MAX_GUILD_COUNT' | app_config) -1 }} or fewer guilds, but you can try to overthrow a top guildmaster in a guild you already lead.</p>
   {% endif %}
   {% if g.user.can_siege %}
-
-    <p>If automated siege does not work, you can make a post in +SiegeGuild to request manual intervention.</p>
 
     <label>Your name:</label>
     <input class="form-control" type="text" name="username" value="{{ g.user.username }}" readonly="readonly">
