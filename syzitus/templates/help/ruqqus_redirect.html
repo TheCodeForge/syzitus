@@ -1,0 +1,23 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>{{ 'SITE_NAME' | app_config }} - Ruqqus Redirect</title>
+<meta name="description" content="{{ 'SITE_NAME' | app_config }} Redirect">
+{% endblock %}
+
+{% block content %}
+{% if ('SERVER_NAME'|app_config)=="syzitus.com" %}
+{% filter markdown %}
+# Welcome to Syzitus
+
+Ruqqus is gone, but the free speech dreams live on. Syzitus, loosly named after the Greek word for "discuss" ("συζητώ"), is a spiritual successor to the Ruqqus platform. It shares much of the same code and operating principles as Ruqqus, but also takes the development in a new direction.
+
+Although the Syzitus project has has the blessing of the former Ruqqus administrators, it is not affiliated with them. Syzitus has none of the original Ruqqus data either - it is a fresh start.
+
+Returning users should also check the [terms of service](/help/terms) and [site rules](/help/rules) to familiarize themselves with the differences from the original platform.
+{% endfilter %}
+
+<a class="btn btn-primary" href="/">Continue to Syzitus</a>
+
+{% endif %}
+{% endblock %}
