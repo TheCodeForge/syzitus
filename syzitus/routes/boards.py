@@ -1175,7 +1175,7 @@ def mod_bid_settings_private(bid, board):
 def mod_bid_settings_adminlock(bid, board):
 
     # toggle privacy setting
-    board.is_locked_category = bool(request.form.get("settingslock", False) == 'true')
+    board.is_locked_category = bool(request.form.get("settingslock", False))
 
     g.db.add(board)
     g.db.commit()
