@@ -18,24 +18,54 @@ The First Amendment protects the publication of these statements, and it also pr
 
 The name comes from canaries used in coal mines. When the canary died, miners would know oxygen was low and that they needed to evacuate. Similarly, when a canary statement "dies", users can infer that the statement is no longer true.
 
-This page was last updated on 09 October 2020.
+{% if ('SERVER_NAME'|app_config)=="syzitus.com"}
+This page was last updated on 14 November 2022.
 
 ## Our Canaries
 
-Page content pending.
+### Political Canaries
+
+1. Syzitus has never removed or modified content or terminated an account due to political pressure.
+2. Syzitus has never removed or modified content or terminated an account at the request of law enforcement or another third party, except in response to valid DMCA requests logged in [+DMCA](/+DMCA).
+
+### Legal Canaries
+
+1. Syzitus has never received a legal demand of any kind, from any government or law enforcement agency, foreign or domestic, including secret warrants, which compelled the disclosure of personal information.
+2. Syzitus has never received an emergency information request from any government or law enforcement agency.
+3. Syzitus has never received legal service of any kind, including service which might compel the discovery of personal information.
+4. Syzitus has never provided user information to foreign law enforcement.
+
+### Technological Canaries
+
+1. Syzitus has never turned over its master secret to law enforcement or any other third party (other than its hosting provider).
+2. Syzitus has never turned over cryptographic user information (including password hashes and two factor secrets) to law enforcement or another third party (other than its hosting and database providers)
+3. Syzitus has never weakened, compromised, or subverted its cryptographic security at the request of law enforcement or another third party.
+4. Syzitus has never retained a plaintext password.
+5. Syzitus has never falsified authentication tokens or other cryptographic information.
+6. Syzitus has never deployed a version of syzitus.com which was not fully open source.
 
 ## Changelog
 
 {% endfilter %}
 
 <table class="table table-striped mb-5">
-	<thead class="bg-primary text-white">
-		<tr>
-			<td>Date</td>
-			<td>Change</td>
-		</tr>
-	</thead>
+  <thead class="bg-primary text-white">
+    <tr>
+      <td>Date</td>
+      <td>Change</td>
+    </tr>
+  </thead>
+  <tr>
+    <td>14 Nov 2022</td>
+    <td>All canaries published</td>
+  </tr>
 </table>
+
+{% else %}
+
+The default contents of this page are specific to Syzitus; please update this page to reflect {{ 'SITE_NAME' | app_config }}
+
+{% endif %}
 
 
 {% endblock %}
