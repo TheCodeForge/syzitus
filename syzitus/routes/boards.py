@@ -1174,6 +1174,29 @@ def mod_bid_settings_private(bid, board):
     return jsonify({"message": f"Settings updated for +{board.name}"})
 
 
+@app.route("/mod/<bid>/settings/lock_settings", methods=["POST"])
+@admin_level_required(4)
+@is_guildmaster("config")
+def mod_bid_settings_private(bid, board):
+
+    # toggle privacy setting
+    board.is_locked_category = bool(request.form.get("settingslock", False) == 'true')
+
+    g.db.add(board)
+    g.db.commit()
+
+    ma=ModAction(
+        kind="update_settings",
+        user_id=g.user.id,
+        board_id=board.id,
+        note=f"settings_locked={board.is_locked_category}"
+        )
+    g.db.add(ma)
+    g.db.commit()
+
+    return jsonify({"message": f"Settings updated for +{board.name}"})
+
+
 @app.route("/mod/<bid>/settings/name", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
