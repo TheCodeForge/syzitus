@@ -1061,7 +1061,7 @@ def mod_is_banned_board_username(bid, username, board):
 def mod_bid_settings_nsfw(bid, board):
 
     # nsfw
-    board.over_18 = bool(request.form.get("over_18", False) == 'true')
+    board.over_18 = bool(request.form.get("over_18", False))
 
     g.db.add(board)
 
@@ -1086,7 +1086,7 @@ def mod_bid_settings_optout(bid, board):
         return jsonfiy({"error": "This setting has been locked."}), 403
 
     # nsfw
-    board.all_opt_out = bool(request.form.get("opt_out", False) == 'true')
+    board.all_opt_out = bool(request.form.get("opt_out", False))
 
     g.db.add(board)
 
@@ -1107,10 +1107,8 @@ def mod_bid_settings_optout(bid, board):
 def mod_bid_settings_disallowbots(bid, board):
 
     # toggle disallowing bots setting
-    board.disallowbots = bool(
-        request.form.get(
-            "disallowbots",
-            False) == 'true')
+    board.disallowbots = bool(request.form.get("disallowbots"))
+
     g.db.add(board)
     ma=ModAction(
         kind="update_settings",
@@ -1129,10 +1127,7 @@ def mod_bid_settings_disallowbots(bid, board):
 def mod_bid_settings_restricted(bid, board):
 
     # toggle restricted setting
-    board.restricted_posting = bool(
-        request.form.get(
-            "restrictswitch",
-            False) == 'true')
+    board.restricted_posting = bool(request.form.get("restrictswitch",False))
 
     g.db.add(board)
 
@@ -1154,7 +1149,7 @@ def mod_bid_settings_restricted(bid, board):
 def mod_bid_settings_private(bid, board):
 
     # toggle privacy setting
-    board.is_private = bool(request.form.get("guildprivacy", False) == 'true')
+    board.is_private = bool(request.form.get("guildprivacy", False))
 
     g.db.add(board)
     g.db.flush()
