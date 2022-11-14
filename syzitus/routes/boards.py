@@ -917,7 +917,7 @@ def mod_rescind_bid_username(bid, username, board):
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"redirect": f"{board.permalink}/mod/mods"}), 302
 
 
 @app.route("/mod/accept/<bid>", methods=["POST"])
@@ -1032,7 +1032,7 @@ def mod_remove_username(bid, username, board):
 
     g.db.commit()
 
-    return "", 204
+    return jsonify({"redirect": f"{board.permalink}/mod/mods"}), 302
 
 
 @app.route("/mod/is_banned/<bid>/<username>", methods=["GET"])
