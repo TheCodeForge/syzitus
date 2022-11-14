@@ -75,10 +75,10 @@
 
 						<td>
 							<div class="dropdown float-right dropdown-actions">
-								<a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+								<a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fas fa-ellipsis-h text-muted"></i>
 								</a>
-								<div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+								<div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
 									<a class="dropdown-item post-toast-url-reload" href="javascript:void(0)" data-post-url="/mod/unexile/{{ b.name }}/{{ ban.user.username }}?formkey={{ g.user.formkey }}"><i class="fas fa-check"></i>Pardon</a>
 								</div>
 							</div>
@@ -110,7 +110,7 @@
 		</nav>
 		{% else %}
 		<div class="text-center border-md rounded py-7">
-			<i class="fad fa-ghost text-gray-500 mb-3" style="font-size: 3.5rem;"></i>
+			<i class="fad fa-ghost text-gray-500 mb-3 fa-3x"></i>
 			<p class="font-weight-bold text-gray-500 mb-0">No users exiled from +{{ b.name }}</p>
 		</div>
 		{% endif %}
