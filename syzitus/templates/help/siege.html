@@ -70,7 +70,7 @@ Finally, you may not Siege a guild with the intention of vandalizing it or subve
 
   {% if not g.user.can_join_gms %}
 
-    <p>You already lead the maximum number of guilds. You cannot siege a new guild unless you lead 9 or fewer guilds, but you can try to overthrow a top guildmaster in a guild you already lead.</p>
+    <p>You already lead the maximum number of guilds. You cannot siege a new guild unless you lead {{ ('MAX_GUILD_COUNT' | app_config) -1 }} or fewer guilds, but you can try to overthrow a top guildmaster in a guild you already lead.</p>
   {% endif %}
   {% if g.user.can_siege %}
 
