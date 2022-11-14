@@ -3,23 +3,10 @@
 {% block pagetitle %}+{{ b.name }} Guildmasters - {{ 'SITE_NAME' | app_config }} Guildmaster Tools{% endblock %}
 
 {% block scripts %}
-    <script>
-      // Guildmaster Step Down Function
-      step_downModal = function(mod) {
-        document.getElementById("stepDownButton").onclick = function() {
-          this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Stepping down';
-          this.disabled = true;
-          post('/mod/{{ b.base36id }}/remove/' + mod,
-            callback = function() {
-              location.reload();
-            }
-            )
-        }
-      };
-    </script>
+
 
     {% if b.has_invite(g.user) %}
-    <script>
+    <script nonce="{{ g.nonce }}">
     // Guildmaster Invitation Modal
     $(window).on('load', function(){
       $('#gmInvitationModal').modal('show');
@@ -31,7 +18,7 @@
 
    <!-- tabs container -->
 
-   {% block content %}
+{% block content %}
    
    <div class="row justify-content-around">
 
@@ -236,7 +223,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-danger" onclick="post('/mod/{{ b.base36id }}/step_down', callback=function(){window.location.reload(true)})">Step down</button>
+        <button class="btn btn-danger post-toast-url-reload" data-post-url="/mod/{{ b.base36id }}/step_down">Step down</button>
       </div>
 
     </div>
