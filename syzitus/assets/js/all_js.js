@@ -2391,6 +2391,6 @@ $('#btn-toggle-sidebar-collapse').click(function(){
     })
 })
 
-$('#guild-ban-reason').input(function(){
+$('#guild-ban-reason').on('input', function(){
   $('#guild-ban-submit').prop('disabled',False);
 })
