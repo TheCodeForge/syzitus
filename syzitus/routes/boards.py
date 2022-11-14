@@ -2064,6 +2064,9 @@ def change_guild_category(board, bid):
     g.db.add(board)
     g.db.flush()
 
+    subcat = SUBCAT_DATA[category]['name']
+    cat = CATEGORIES[SUBCAT_DATA[category]['cat_id']]
+
     ma=ModAction(
         kind="update_settings",
         user_id=g.user.id,
