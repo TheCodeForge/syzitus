@@ -1060,6 +1060,9 @@ def mod_is_banned_board_username(bid, username, board):
 @is_guildmaster("config")
 def mod_bid_settings_nsfw(bid, board):
 
+    if board.is_locked_category:
+        return jsonfiy({"error": "This setting has been locked."}), 403
+
     # nsfw
     board.over_18 = bool(request.form.get("over_18", False))
 
