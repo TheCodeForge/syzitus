@@ -2071,13 +2071,13 @@ def change_guild_category(board, bid):
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"category={sc.category.name} / {sc.name}"
+        note=f"category={cat} / {subcat}"
     )
     g.db.add(ma)
 
     g.db.commit()
 
-    return jsonify({"message": f"Category changed to {sc.category.name} / {sc.name}"})
+    return jsonify({"message": f"Category changed to {cat} / {subcat}"})
 
 
 
