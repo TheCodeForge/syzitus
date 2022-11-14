@@ -100,7 +100,7 @@
 
                   <form id="guild-description-form" action="/mod/{{ b.base36id }}/settings/description">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <textarea class="form-control rounded" id="bio" aria-label="With textarea" placeholder="What's this guild all about?" rows="3" name="description" form="profile-settings" maxlength="1000">{{ b.description }}</textarea>
+                    <textarea class="form-control rounded" id="bio" aria-label="With textarea" placeholder="What's this guild all about?" rows="3" name="description" form="guild-description-form" maxlength="1000">{{ b.description }}</textarea>
                   </form>
                 </div>
 
