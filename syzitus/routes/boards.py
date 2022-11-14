@@ -2047,12 +2047,12 @@ Optional query parameters:
             "api": lambda: jsonify({"data": [x.json for x in comments]})}
 
 
-@app.route("/mod/<bid>/category/<category>", methods=["POST"])
+@app.route("/mod/<bid>/category", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-def change_guild_category(board, bid, category):
+def change_guild_category(board, bid):
 
-    category = int(category)
+    category=int(request.form.get("category",-1))
 
     if category not in CATEGORY_DATA:
         return jsonify({"error": f"Invalid category id"}), 400
