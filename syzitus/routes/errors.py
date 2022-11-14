@@ -49,7 +49,6 @@ def error_402(e):
 
 @app.errorhandler(403)
 @error_wrapper
-@auth_desired
 @api()
 def error_403(e):
     return{"html": lambda: (render_template('errors/403.html'), 403),
