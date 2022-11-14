@@ -214,11 +214,6 @@ def allow_nsfw_logged_out(bid):
 
     t = int(request.form.get('time'))
 
-    if not validate_logged_out_formkey(t,
-                                       request.form.get("formkey")
-                                       ):
-        abort(403)
-
     if not session.get("over_18", None):
         session["over_18"] = {}
 
@@ -250,11 +245,6 @@ def allow_nsfl_logged_out(bid):
         return redirect('/')
 
     t = int(request.form.get('time'))
-
-    if not validate_logged_out_formkey(t,
-                                       request.form.get("formkey")
-                                       ):
-        abort(403)
 
     if not session.get("show_nsfl", None):
         session["show_nsfl"] = {}
