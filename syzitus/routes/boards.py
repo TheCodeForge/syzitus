@@ -2054,7 +2054,7 @@ def change_guild_category(board, bid):
 
     category=int(request.form.get("category",-1))
 
-    if category not in CATEGORY_DATA:
+    if category not in SUBCAT_DATA:
         return jsonify({"error": f"Invalid category id"}), 400
 
     if board.is_locked_category and not g.user.admin_level:
