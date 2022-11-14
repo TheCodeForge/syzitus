@@ -2391,8 +2391,6 @@ $('#btn-toggle-sidebar-collapse').click(function(){
     })
 })
 
-
-
-$('#hidebot').change(function(){
-  post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
+$('#guild-ban-reason').input(function(){
+  $('#guild-ban-submit').prop('disabled',False);
 })
