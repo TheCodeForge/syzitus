@@ -62,7 +62,7 @@
 
        <div class="mt-auto">
         {% if me %}
-        <a href="javascript:void(0)" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#stepDownModal" onclick="step_downModal('{{ g.user.username }}')">Resign</a>
+        <a href="javascript:void(0)" class="btn btn-outline-primary mr-2" data-toggle="modal" data-target="#stepDownModal">Resign</a>
         {% endif %}
         {% if me and me.perm_full %}
         <a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" data-target="#guildmasterInviteModal"><i class="fas fa-plus mr-2"></i>Add guildmaster</a>
