@@ -99,6 +99,7 @@
                 <div class="input-group mb-2">
 
                   <form id="guild-description-form" action="/mod/{{ b.base36id }}/settings/description">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <textarea class="form-control rounded" id="bio" aria-label="With textarea" placeholder="What's this guild all about?" rows="3" name="description" form="profile-settings" maxlength="1000">{{ b.description }}</textarea>
                   </form>
                 </div>
@@ -142,6 +143,7 @@
               <div class="w-lg-100">
                 <div class="input-group mb-2">
                   <form id="guild-category-form" action="/mod/{{ b.base36id }}/category/">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <select id="category-selector" name="category" class="form-control toast-form-change-submit" data-form="guild-category-form" {% if b.is_locked_category %}disabled{% endif %}>
                       {% if not b.subcat %}
                         <option value="0" selected disabled>Select a Category</option>
@@ -183,6 +185,7 @@
 
                 <div class="custom-control custom-switch">
                   <form id="guild-over18-form" action="/mod/{{ b.base36id }}/settings/over_18">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guild-over18" name="over_18" data-form="guild-over18-form" {% if b.over_18 %} checked{% endif %}>
                     <label class="custom-control-label" for="guild-over18"></label>
                   </form>
@@ -216,6 +219,7 @@
 
                 <div class="custom-control custom-switch">
                   <form id="guild-restrict-form" action="/mod/{{ b.base36id }}/settings/restricted">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="restrictswitch" name="restrictswitch" data-form="guild-restrict-form" {% if b.restricted_posting %} checked{% endif %}>
                     <label class="custom-control-label" for="restrictswitch"></label>
                   </form>
@@ -249,6 +253,7 @@
 
                 <div class="custom-control custom-switch">
                   <form id="guild-private-form" action="/mod/{{ b.base36id }}/settings/private">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildprivacy" name="guildprivacy" data-form="guild-private-form" {% if b.is_private %} checked{% endif %}>
                     <label class="custom-control-label" for="guildprivacy"></label>
                   </form>
@@ -282,6 +287,7 @@
 
                 <div class="custom-control custom-switch">
                   <form id="guild-optout-form" action="/mod/{{ b.base36id }}/settings/opt_out">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildoptout" name="opt_out" data-form="guild-optout-form" {% if b.all_opt_out %} checked{% endif %}>
                     <label class="custom-control-label" for="guildoptout"></label>
                   </form>
@@ -316,6 +322,7 @@
                 <div class="custom-control custom-switch">
 
                   <form id="guild-nobots-form" action="/mod/{{ b.base36id }}/settings/disallowbots">
+                    <input type="hidden" name="formkey" value="{{ g.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="disallowbots" name="disallowbots" data-form="guild-nobots-form" {% if b.over_18 %} checked{% endif %}>
                     <label class="custom-control-label" for="disallowbots"></label>
                   </form>
