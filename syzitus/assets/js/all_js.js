@@ -657,7 +657,7 @@ $('.kick-button-listing').click(function(event) {
 
 //POST
 
-function post(url, callback, errortext) {
+function post(url, callback=function(){console.log('.')}, errortext="") {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -674,7 +674,7 @@ function post(url, callback, errortext) {
   xhr.send(form);
 };
 
-function post_response(url, callback, errortext) {
+function post_response(url, callback=function(){console.log('.')}, errortext) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -702,7 +702,7 @@ function toggleSub(thing_id){
   $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
-function post_toast(url, callback) {
+function post_toast(url, callback=function(){console.log('.')}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -2086,47 +2086,47 @@ $('.text-expand').click(function(event){
 
 
 function mod_post(url, type, id) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        var form = new FormData()
-        form.append("formkey", formkey());
-        item=document.getElementById(type);
-        button=document.getElementById(id);
-        if (item.type=="checkbox") {
-          form.append(item.name, item.checked)
-          if (item.checked) {
-            form.append(item.name, true);
-          } else {
-            form.append(item.name, false);
-          }
-        }
-        else {
-          form.append(item.name, item.value);
-        }
-        xhr.withCredentials=true;
-        xhr.onprogress=function(){
-          button.classList.add("btn-primary");
-          button.disabled = true;
-          button.innerHTML = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Saving';
-        }
-        xhr.onload=function(){
-          if (xhr.status >= 400)
-          {
-            button.classList.add("btn-primary");
-            button.disabled=false;
-            button.innerHTML="Save"
-            data=JSON.parse(xhr.response);
-            $('#toast-post-error').toast('dispose');
-            $('#toast-post-error').toast('show');
-            document.getElementById('toast-post-error-text').innerText = data["error"];
-            return;
-          }
-          button.classList.remove("btn-danger");
-          button.classList.add("btn-success");
-          button.innerHTML = `<i class="fas fa-check mr-2"></i>Saved`;
-        }
-      xhr.send(form);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", url, true);
+  var form = new FormData()
+  form.append("formkey", formkey());
+  item=document.getElementById(type);
+  button=document.getElementById(id);
+  if (item.type=="checkbox") {
+    form.append(item.name, item.checked)
+    if (item.checked) {
+      form.append(item.name, true);
+    } else {
+      form.append(item.name, false);
     }
+  }
+  else {
+    form.append(item.name, item.value);
+  }
+  xhr.withCredentials=true;
+  xhr.onprogress=function(){
+    button.classList.add("btn-primary");
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Saving';
+  }
+  xhr.onload=function(){
+    if (xhr.status >= 400)
+    {
+      button.classList.add("btn-primary");
+      button.disabled=false;
+      button.innerHTML="Save"
+      data=JSON.parse(xhr.response);
+      $('#toast-post-error').toast('dispose');
+      $('#toast-post-error').toast('show');
+      document.getElementById('toast-post-error-text').innerText = data["error"];
+      return;
+    }
+    button.classList.remove("btn-danger");
+    button.classList.add("btn-success");
+    button.innerHTML = `<i class="fas fa-check mr-2"></i>Saved`;
+  }
+  xhr.send(form);
+}
 
 
 //post form toast utility function
@@ -2389,4 +2389,10 @@ $('#btn-toggle-sidebar-collapse').click(function(){
     callback=function(){
       $('#sidebar-left').toggleClass('sidebar-collapsed')
     })
+})
+
+
+
+$('#hidebot').change(function(){
+  post_toast('/settings/profile?hide_bot='+$(this).prop('checked'))
 })
