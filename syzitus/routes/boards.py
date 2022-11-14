@@ -2065,7 +2065,7 @@ def change_guild_category(board, bid):
     g.db.flush()
 
     subcat = SUBCAT_DATA[category]['name']
-    cat = CATEGORIES[SUBCAT_DATA[category]['cat_id']]
+    cat = CATEGORIES[SUBCAT_DATA[category]['cat_id']].name
 
     ma=ModAction(
         kind="update_settings",
