@@ -889,7 +889,7 @@ def mod_invite_username(bid, board):
 
     g.db.commit()
 
-    return "", 204
+    return redirect(f"{board.permalink}/mod/mods")
 
 
 @app.route("/mod/<bid>/rescind/<username>", methods=["POST"])
