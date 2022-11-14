@@ -306,7 +306,7 @@ def gift_post_pid(pid):
     
     g.db.commit()
 
-    return jsonify({"message":"Tip Successful!"})
+    return jsonify({"redirect":post.permalink}), 301
 
 @app.route("/gift_comment/<cid>", methods=["POST"])
 @no_sanctions
@@ -389,7 +389,7 @@ def gift_comment_pid(cid):
     
     g.db.commit()
 
-    return jsonify({"message":"Tip Successful!"})
+    return jsonify({"redirect":comment.permalink}), 301
 
 
 @app.route("/paypaltxn/<txid>")
