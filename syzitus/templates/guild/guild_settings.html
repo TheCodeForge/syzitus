@@ -233,7 +233,7 @@
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 <!-- Instantiate clipboard by passing a string selector -->
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{ g.nonce }}">
   var clipboard = new ClipboardJS('.copy-link');
   clipboard.on('success', function(e) {
 
