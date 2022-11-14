@@ -1177,7 +1177,7 @@ def mod_bid_settings_private(bid, board):
 @app.route("/mod/<bid>/settings/lock_settings", methods=["POST"])
 @admin_level_required(4)
 @is_guildmaster("config")
-def mod_bid_settings_private(bid, board):
+def mod_bid_settings_adminlock(bid, board):
 
     # toggle privacy setting
     board.is_locked_category = bool(request.form.get("settingslock", False) == 'true')
