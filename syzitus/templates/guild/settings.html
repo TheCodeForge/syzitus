@@ -338,9 +338,10 @@
 
         </div>
 
+        {% if g.user.admin_level>=4 %}
         <div id="settings-lock">
 
-          <h2 class="h5">Lock certain guild settings</h2>
+          <h2 class="h5">Lock  settings</h2>
 
           <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
 
@@ -372,6 +373,7 @@
           </div>
 
         </div>
+        {% endif %}
 
   </div>
 
