@@ -66,21 +66,21 @@ Finally, you may not Siege a guild with the intention of vandalizing it or subve
 
 
 
-{% if v %}
+{% if g.user %}
 
-  {% if not v.can_join_gms %}
+  {% if not g.user.can_join_gms %}
 
     <p>You already lead the maximum number of guilds. You cannot siege a new guild unless you lead 9 or fewer guilds, but you can try to overthrow a top guildmaster in a guild you already lead.</p>
   {% endif %}
-  {% if v.can_siege %}
+  {% if g.user.can_siege %}
 
     <p>If automated siege does not work, you can make a post in +SiegeGuild to request manual intervention.</p>
 
     <label>Your name:</label>
-    <input class="form-control" type="text" name="username" value="{{ v.username }}" readonly="readonly">
+    <input class="form-control" type="text" name="username" value="{{ g.user.username }}" readonly="readonly">
 
     <form action="/siege_guild" method="post">
-      <input type="hidden" name="formkey" value="{{ v.formkey }}">
+      <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
       <label for="text-guild">Guild to siege:</label>
       <input class="form-control" id="text-guild" type="text" name="guild">
@@ -88,7 +88,7 @@ Finally, you may not Siege a guild with the intention of vandalizing it or subve
       <input class="btn btn-primary" type="submit" value="Siege Guild">
     </form>
 
-  {% elif v.is_suspended %}
+  {% elif g.user.is_suspended %}
 
     <p>You are currently suspended from {{ 'SITE_NAME' | app_config }}. You cannot siege any guilds at this time.</p>
 
