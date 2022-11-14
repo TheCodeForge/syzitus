@@ -182,8 +182,10 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="guild-over18" name="over_18"{% if b.over_18 %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/over_18','over18')">
-                  <label class="custom-control-label" for="over18"></label>
+                  <form id="guild-over18-form" action="/mod/{{ b.base36id }}/settings/over_18">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guild-over18" name="over_18" data-form="guild-over18-form" {% if b.over_18 %} checked{% endif %}>
+                    <label class="custom-control-label" for="over18"></label>
+                  </form>
                 </div>
 
                 <span class="text-small-extra text-muted">Enable if your guild contains NSFW content suitable only for 18+ users.</span>
@@ -213,8 +215,10 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="restrictswitch" name="restrictswitch"{% if b.restricted_posting %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/restricted','restrictswitch')">
-                  <label class="custom-control-label" for="restrictswitch"></label>
+                  <form id="guild-restrict-form" action="/mod/{{ b.base36id }}/settings/restricted">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="restrictswitch" name="restrictswitch" data-form="guild-restrict-form" {% if b.restricted_posting %} checked{% endif %}>
+                    <label class="custom-control-label" for="restrictswitch"></label>
+                  </form>
                 </div>
 
                 <span class="text-small-extra text-muted">Restrict posting in +{{ b.name }} to approved users only. (Anyone will still be able to comment).</span>
@@ -244,8 +248,10 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="guildprivacy" name="guildprivacy"{% if b.is_private %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/private','guildprivacy')">
-                  <label class="custom-control-label" for="guildprivacy"></label>
+                  <form id="guild-private-form" action="/mod/{{ b.base36id }}/settings/private">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildprivacy" name="guildprivacy" data-form="guild-private-form" {% if b.is_private %} checked{% endif %}>
+                    <label class="custom-control-label" for="guildprivacy"></label>
+                  </form>
                 </div>
 
                 <span class="text-small-extra text-muted">Restrict viewing, posting, and commenting in +{{ b.name }} to approved members only. (You will also be unable to yank posts from +general into +{{ b.name }}, unless the post was originally made in +{{ b.name }}) </span>
@@ -275,8 +281,10 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="guildoptout" name="opt_out"{% if b.all_opt_out %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/opt_out','guildoptout')">
-                  <label class="custom-control-label" for="guildoptout"></label>
+                  <form id="guild-optout-form" action="/mod/{{ b.base36id }}/settings/opt_out">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildoptout" name="opt_out" data-form="guild-optout-form" {% if b.all_opt_out %} checked{% endif %}>
+                    <label class="custom-control-label" for="guildoptout"></label>
+                  </form>
                 </div>
 
                 <span class="text-small-extra text-muted">Don't show +{{ b.name }} content in All or Trending for users that aren't members of the guild. (You will also be unable to yank posts from +general into +{{ b.name }}, unless the post was originally made in +{{ b.name }}) </span>
@@ -306,8 +314,11 @@
               <div class="body w-lg-100">
 
                 <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="disallowbots" name="disallowbots"{% if b.disallowbots %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/disallowbots','disallowbots')">
-                  <label class="custom-control-label" for="disallowbots"></label>
+
+                  <form id="guild-nobots-form" action="/mod/{{ b.base36id }}/settings/disallowbots">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="disallowbots" name="disallowbots" data-form="guild-nobots-form" {% if b.over_18 %} checked{% endif %}>
+                    <label class="custom-control-label" for="disallowbots"></label>
+                  </form>
                 </div>
 
                 <span class="text-small-extra text-muted">Disallow bots from posting and commenting in +{{ b.name }}.</span>
@@ -319,39 +330,6 @@
           </div>
 
         </div>
-
-<!--
-        <div id="chatsetting">
-
-          <h2 class="h5">Chat Availability</h2>
-
-          <p class="text-small text-muted">Enable Chat for this guild.</p>
-
-          <div class="settings-section rounded">
-
-            <div class="d-lg-flex">
-
-              <div class="title w-lg-25">
-                <label for="public_chat">Turn on Public Chat</label>
-              </div>
-
-              <div class="body w-lg-100">
-
-                <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="public_chat" name="public_chat"{% if b.public_chat %} checked{% endif %} onchange="mod_post('/mod/{{ b.base36id }}/settings/public_chat','public_chat')">
-                  <label class="custom-control-label" for="public_chat"></label>
-                </div>
-
-                <span class="text-small-extra text-muted">If off, <a href="{{ b.permalink }}/chat" target="_blank">#{{ b.name }}</a> will only be accessible to moderators and approved contributors.</span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      -->
 
   </div>
 
