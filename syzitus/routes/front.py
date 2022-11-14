@@ -188,9 +188,11 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     else:
         posts = posts.filter(Submission.post_public==True)
 
-    # board opt out of all
+    # board ban and opt out of all
+    posts = posts.join(Submission.board).filter(Board.is_banned==False)
+
     if g.user:
-        posts = posts.join(Submission.board).filter(
+        posts = posts.filter(
             or_(
                 Board.all_opt_out == False,
                 Submission.board_id.in_(
@@ -202,10 +204,9 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
             )
         )
     else:
+        posts = posts.filter_by(all_opt_out=False)
 
-        posts = posts.join(
-            Submission.board).filter_by(
-            all_opt_out=False)
+
 
     
     if categories:
