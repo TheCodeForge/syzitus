@@ -19,7 +19,7 @@
 {% else %}
 <form action="/api/ban_guild/{{ b.base36id }}", method="post">
   <input type="hidden" name="formkey", value="{{ g.user.formkey }}">
-  <input id="guild-ban-reason" type="text" class="form-control bg-white" name="reason" placeholder="Ban Reason" onchange="document.getElementById('guild-ban-submit').disabled=false;">
+  <input id="guild-ban-reason" type="text" class="form-control bg-white" name="reason" placeholder="Ban Reason">
   <input id="guild-ban-submit" type="submit" class="btn btn-warning mt-3" value="Ban guild" disabled>
 </form>
 {% if not b.has_mod(g.user) %}
