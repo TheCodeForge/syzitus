@@ -298,8 +298,6 @@ Optional query parameters:
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfw.html",
                                                 t=t,
-                                                lo_formkey=make_logged_out_formkey(
-                                                    t),
                                                 board=board
                                                 ),
                 'api': lambda: jsonify({'error': f'+{board.name} is NSFW.'})

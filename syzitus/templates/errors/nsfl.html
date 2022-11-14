@@ -20,7 +20,7 @@
     </form>
   {% else %}
     <form action="/allow_nsfl_logged_out/{{ board.base36id }}" method="post">
-      <input type="hidden" name="formkey" value="{{ lo_formkey }}">
+      <input type="hidden" name="formkey" value="{{ g.timestamp | lo_formkey }}">
       <input type="hidden" name="redir" value="{{ request.path }}">
       <input type="hidden" name="time" value="{{ t }}">
       <input type="submit" class="btn btn-black mr-2" value="Yes">

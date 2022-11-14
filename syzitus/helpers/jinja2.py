@@ -149,3 +149,8 @@ def qrcode_filter(x):
     
     data=base64.b64encode(mem.read()).decode('ascii')
     return f"data:image/png;base64,{data}"
+
+
+@app.template_filter("formkey")
+def logged_out_formkey(t):
+    return generate_hash(f"{t}+{session['session_id']}")
