@@ -1959,18 +1959,20 @@ var triggercat=function(sort, cats, reload, page) {
 }
 
 
-var permsEdit = function(username, permstring) {
+$('.btn-edit-mod-perms').click(function(){
 
-  document.getElementById('permedit-user').innerText = username
-  document.getElementById('edit-perm-username').value = username
+  $('#permedit-user').text($(this).data('username'))
+  $('#edit-perm-username').val($(this).data('username'))
 
-  cbs = document.getElementsByClassName('perm-box')
+  cbs=$('.perm-box')
 
-  for (i=0; i< cbs.length; i++) {
-    cbs[i].checked = permstring.includes(cbs[i].dataset.perm) || permstring.includes('full')
-  }
+  btn=$(this)
 
-}
+  cbs.prop('checked', function(index, currentvalue){
+    return btn.data('permlist').includes($(this).data('perm')) || btn.data('permlist').includes('full')
+  })
+  
+})
 
 var permfull=function() {
 

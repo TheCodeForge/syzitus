@@ -98,9 +98,9 @@
                   <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
                     <i class="fas fa-ellipsis-h text-muted"></i>
                   </a>
-                  <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
-                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#editPermsModal" onclick="permsEdit('{{ mod.user.username }}','{{ mod.permlist }}')"><i class="fas fa-user-cog fa-fw"></i>Edit permissions</a>
-                    <a class="dropdown-item" href="javascript:void(0)" onclick="post('/mod/{{ b.base36id }}/remove/{{ mod.user.username }}', callback=function(){window.location.reload(true)})"><i class="fas fa-trash-alt"></i>Remove guildmaster</a>
+                  <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink">
+                    <a class="dropdown-item btn-edit-mod-perms" href="javascript:void(0)" data-toggle="modal" data-target="#editPermsModal"><i class="fas fa-user-cog fa-fw" data-username="{{ mod.user.username }}" data-permlist="{{ mod.permlist }}"></i>Edit permissions</a>
+                    <a class="dropdown-item post-toast-url-reload" href="javascript:void(0)" data-post-url="/mod/{{ b.base36id }}/remove/{{ mod.user.username }}"><i class="fas fa-trash-alt"></i>Remove guildmaster</a>
                   </div>
                 </div>
                 {% endif %}
@@ -149,8 +149,8 @@
                       <i class="fas fa-ellipsis-h text-muted"></i>
                     </a>
                     <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
-                      <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#editPermsModal" onclick="permsEdit('{{ m.user.username }}','{{ m.permlist }}')"><i class="fas fa-user-cog fa-fw"></i>Edit permissions</a>
-                      <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="post('/mod/{{ b.base36id }}/rescind/{{ m.user.username }}', callback=function(){window.location.reload(true)})"><i class="fas fa-times text-danger fa-fw"></i>Cancel invite</a>
+                      <a class="dropdown-item btn-edit-mod-perms" href="javascript:void(0)" data-toggle="modal" data-target="#editPermsModal" data-username="{{ m.user.username }}" data-permlist="{{ m.permlist }}"><i class="fas fa-user-cog fa-fw"></i>Edit permissions</a>
+                      <a class="dropdown-item text-danger post-toast-url-reload" href="javascript:void(0)" data-post-url="/mod/{{ b.base36id }}/rescind/{{ m.user.username }}"><i class="fas fa-times text-danger fa-fw"></i>Cancel invite</a>
                     </div>
                   </div>
                     {% endif %}
