@@ -181,25 +181,6 @@
   </div>
   {% endif %}
 
-<script>
-
-    function detect_change(id, button) {
-
-      var new_val = id.value;
-
-      var original_val = id.defaultValue;
-
-      var save_button = document.getElementById(button);
-
-      if (original_val !== new_val) {
-        save_button.disabled = false;
-      }
-      else {
-        save_button.disabled = true;
-      }
-
-    }
-</script>
 {% endblock %}
 
   <!-- Settings content -->
