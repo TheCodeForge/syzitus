@@ -163,7 +163,7 @@ def event_faction_score(x):
 
     post_karma = g.db.query(func.sum(Submission.score_top)).filter(
         Submission.board_id==guild.id
-        )
+        ).first()
 
     comment_karma=g.db.query(func.sum(Comment.score_top)).filter(
         Comment.parent_submission.in_(
@@ -171,6 +171,6 @@ def event_faction_score(x):
                 Submission.board_id==guild.id
                 )
             )
-        )
+        ).first()
 
     return post_karma+comment_karma
