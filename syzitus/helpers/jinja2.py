@@ -161,25 +161,36 @@ def event_faction_score(x):
 
     guild=get_guild(x)
 
+    if guild.name=="Team_Christmas":
+        modulo=1
+    elif guild.name=="Team_Halloween":
+        modulo=0
+
     post_karma = (g.db.query(func.sum(Submission.score_top)).filter(
-        Submission.board_id==guild.id
+        Submission.board_id==guild.id,
+        Submission.author_id.op('%')(2)==modulo
         ).scalar() or 0) -(
-        g.db.query(Submission).filter(Submission.board_id==guild.id).count()
+        g.db.query(Submission).filter(
+            Submission.board_id==guild.id,
+            Submission.author_id.op('%')(2)==modulo
+            ).count()
         )
 
     comment_karma=(g.db.query(func.sum(Comment.score_top)).filter(
         Comment.parent_submission.in_(
             select(Submission.id).filter(
-                Submission.board_id==guild.id
+                Submission.board_id==guild.id,
                 )
-            )
+            ),
+        Comment.author_id.op('%')(2)==modulo
         ).scalar() or 0) - (
         g.db.query(Comment).filter(
         Comment.parent_submission.in_(
             select(Submission.id).filter(
                 Submission.board_id==guild.id
                 )
-            )
+            ),
+        Comment.author_id.op('%')(2)==modulo
         ).count()
         )
 
