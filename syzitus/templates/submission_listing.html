@@ -114,7 +114,7 @@ f{% for p in listing %}
           {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
           {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
           {% if p.is_nsfl %} · {% include "tags/nsfl.html" %}{% endif %}
-          {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html"} · {% endif %}
+          {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
           {% if p.is_repost %}{% include "tags/repost.html" %} · {% endif %} <span data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="{{ p.created_date }}">{{ p.age_string }}</span> by {% if p.author.is_deleted %}[deleted account]{% elif g.is_archive and p.author.is_private %}[username not archived due to privacy settings]{% else %}<a href="/@{{ p.author.username }}" class="user-name"><img src="{{ p.author.profile_url }}" class="profile-pic-20 mr-1"/><span class="user-name-inner">{{ p.author.username }}</span></a>{% if p.author.title %}{{ p.author.title.rendered | safe }}{% endif %}
           {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
           {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
@@ -135,7 +135,7 @@ f{% for p in listing %}
         {% if p.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
         {% endif %}
         {% if p.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
-        {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html"}{% endif %}
+        {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %}{% endif %}
         {% if p.award_count %} · <span><img src="/assets/images/icons/ruqqus-coin.png" class="coin-ruqqus"/><span class="pl-1 text-warning font-weight-bold">{{ p.award_count }}</span></span>{% endif %} · ({% if p.url %}<a href="/search?q=domain%3A{{ p.domain }}&sort=new&t=all" target="_blank">{{ p.domain }}</a>{% else %}text post{% endif %})
         {% if not p.is_public %} · <i class="fas fa-eye-slash text-warning" data-toggle="tooltip" data-placement="bottom" title="Private post, visible because {{ p.visibility_reason(g.user) }}"></i>{% endif %}
         {% if p.over_18 %} · {% include "tags/nsfw.html" %}{% endif %}

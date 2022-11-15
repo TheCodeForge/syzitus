@@ -105,7 +105,7 @@
         {% if c.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
         {% if c.is_op %}{% include "tags/op.html" %}{% endif %}
         {% if c.is_bot %}{% include "tags/bot.html" %}{% endif %}
-        {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html"}{% endif %}
+        {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %}{% endif %}
         {% if c.is_blocking %}
         <i class="fas fa-user-minus text-warning" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="You're blocking this user, but you can see this comment because {{ 'it\'s in your guild' if c.is_guildmaster('content') else 'it\'s an admin comment' if c.distinguish_level else 'you\'re an admin' }}."></i>
         {% endif %}

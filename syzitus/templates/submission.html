@@ -447,7 +447,7 @@
         <div class="card-block w-100 my-md-auto">
 
           <div class="post-meta text-left d-none d-md-block mb-md-2">
-            {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html"} · {% endif %}
+            {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
             {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}
@@ -471,7 +471,7 @@
           {% endif %}
 
           <div class="post-meta text-left d-block d-md-none mb-3">
-            {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html"} · {% endif %}
+            {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
             {% if p.is_archived %}{% include "tags/archive.html" %} · {% endif %}
