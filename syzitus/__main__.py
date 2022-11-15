@@ -192,6 +192,9 @@ app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.
 app.config["IMG_URL_THUMBSPLASH"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
 app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
 
+#Event configs
+app.config["EVENT_SNOWBALL_FIGHT"]=bool(int(eviron.get("EVENT_SNOWBALL_FIGHT", 0)))
+
 Markdown(app)
 cache = Cache(app)
 Compress(app)
