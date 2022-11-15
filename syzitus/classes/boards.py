@@ -157,7 +157,7 @@ class Board(Base, Stndrd, Age_times):
         if self.is_private:
             if g.user and (self.can_view(g.user) or g.user.admin_level >= 4):
                 pass
-            elif v:
+            elif g.user:
                 posts = posts.filter(or_(Submission.post_public == True,
                                          Submission.author_id == g.user.id
                                          )
@@ -204,7 +204,7 @@ class Board(Base, Stndrd, Age_times):
             posts = posts.filter(Submission.created_utc < lt)
 
         if sort == None:
-            if v: sort = g.user.defaultsorting
+            if g.user: sort = g.user.defaultsorting
             else: sort = "hot"
 
         if sort != "new" and sort != "old": posts.filter_by(is_pinned=False)
@@ -558,7 +558,7 @@ class Board(Base, Stndrd, Age_times):
         if self.is_private:
             if g.user and (self.can_view(g.user) or g.user.admin_level >= 4):
                 pass
-            elif v:
+            elif g.user:
                 posts = posts.filter(or_(Submission.post_public == True,
                                          Submission.author_id == g.user.id
                                          )
