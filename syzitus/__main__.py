@@ -229,18 +229,6 @@ app.config["RATELIMIT_HEADERS_ENABLED"]=True
 def limiter_key_func():
     return request.remote_addr
 
-def ban_ip():
-    ip_ban=g.db.query(IP).filter_by(addr=request.remote_addr).first()
-    if not ip_ban:
-        ip_ban = IP(
-            addr=request.remote_addr,
-            unban_utc=int(time.time())+60*60
-            )
-
-    g.db.add(ip_ban)
-    g.db.commit()
-    return jsonify({"error":"You have been banned for 1 hour. Slow down."}), 429
-
 limiter = Limiter(
     app,
     key_func=limiter_key_func,
@@ -313,6 +301,18 @@ def debug(text):
 import syzitus.classes
 from syzitus.routes import *
 import syzitus.helpers.jinja2
+
+def ban_ip():
+    ip_ban=g.db.query(syzitus.classes.IP).filter_by(addr=request.remote_addr).first()
+    if not ip_ban:
+        ip_ban = syzitus.classes.IP(
+            addr=request.remote_addr,
+            unban_utc=int(time.time())+60*60
+            )
+
+    g.db.add(ip_ban)
+    g.db.commit()
+    return jsonify({"error":"You have been banned for 1 hour. Slow down."}), 429
 
 #purge css from cache
 cache.delete_memoized(syzitus.routes.main_css)
