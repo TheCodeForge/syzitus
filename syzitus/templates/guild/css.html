@@ -30,25 +30,6 @@
     </div>
     {% endif %}
 
-    <script>
-    function detect_change(id, button) {
-
-      var new_val = id.value;
-
-      var original_val = id.defaultValue;
-
-      var save_button = document.getElementById(button);
-
-      if (original_val !== new_val) {
-        save_button.disabled = false;
-      }
-      else {
-        save_button.disabled = true;
-      }
-
-    }
-  </script>
-
   <div class="row">
 
     <div class="col col-md-8">
@@ -72,7 +53,10 @@
 
               <div class="w-lg-100">
                 <div class="input-group mb-2">
-                  <textarea class="form-control rounded" id="css" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="css" form="profile-settings" maxlength="50000" style="font-family:monospace">{{ b.css }}</textarea>
+                  <form id="guild-css-form">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+                    <textarea class="form-control rounded" id="css" form="guild-css-form" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="css" form="profile-settings" maxlength="50000" style="font-family:monospace">{{ b.css }}</textarea>
+                  </form>
                 </div>
 
                 <small>Limit of 50000 characters</small>
@@ -91,7 +75,7 @@
                 </p>
                 {% endif %}
 
-                <button class="btn btn-primary ml-auto" id="save-css" onclick="mod_post('/mod/{{ b.base36id }}/settings/css', 'css', 'save-css');">Save</button>
+                <button class="btn btn-primary ml-auto toast-form-submit" id="save-css" data-form="guild-css-form">Save</button>
 
               </div>
 
