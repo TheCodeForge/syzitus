@@ -167,12 +167,12 @@ class Board(Base, Stndrd, Age_times):
 
         if g.user and not self.has_mod(g.user) and g.user.admin_level <= 3:
             # blocks
-            blocking = g.db.query(
+            blocking = select(
                 UserBlock.target_id).filter_by(
-                user_id=g.user.id).subquery()
-            # blocked = g.db.query(
-            #     UserBlock.user_id).filter_by(
-            #     target_id=g.user.id).subquery()
+                user_id=g.user.id)
+            blocked = select(
+                UserBlock.user_id).filter_by(
+                target_id=g.user.id)
 
             posts = posts.filter(
                 Submission.author_id.notin_(blocking) #,
