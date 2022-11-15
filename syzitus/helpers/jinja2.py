@@ -161,16 +161,26 @@ def event_faction_score(x):
 
     guild=get_guild(x)
 
-    post_karma = g.db.query(func.sum(Submission.score_top)).filter(
+    post_karma = (g.db.query(func.sum(Submission.score_top)).filter(
         Submission.board_id==guild.id
-        ).scalar() or 0
+        ).scalar() or 0) -(
+        g.db.query(Submission).filter(Submission.board_id==guild.id).count()
+        )
 
-    comment_karma=g.db.query(func.sum(Comment.score_top)).filter(
+    comment_karma=(g.db.query(func.sum(Comment.score_top)).filter(
         Comment.parent_submission.in_(
             select(Submission.id).filter(
                 Submission.board_id==guild.id
                 )
             )
-        ).scalar() or 0
+        ).scalar() or 0) - (
+        g.db.query(Comment).filter(
+        Comment.parent_submission.in_(
+            select(Submission.id).filter(
+                Submission.board_id==guild.id
+                )
+            )
+        ).count()
+        )
 
-    return post_karma+comment_karma
+    return int(post_karma+comment_karma)
