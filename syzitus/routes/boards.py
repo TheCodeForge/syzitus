@@ -1403,7 +1403,7 @@ def board_edit_css(bid, board):
     g.db.add(ma)
     g.db.commit()
 
-    return jsonify({"redirect", f"{board.permalink}/mod/css"}), 302
+    return jsonify({"message", f"+{board.name} CSS updated"})
 
 @app.get("/+<guildname>/css")
 def board_get_css(guildname):
