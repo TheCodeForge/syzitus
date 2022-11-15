@@ -53,9 +53,9 @@
 
               <div class="w-lg-100">
                 <div class="input-group mb-2">
-                  <form id="guild-css-form">
+                  <form id="guild-css-form" action="/mod/{{ b.base36id }}/settings/css">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <textarea class="form-control rounded" id="css" form="guild-css-form" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="css" form="profile-settings" maxlength="50000" style="font-family:monospace">{{ b.css }}</textarea>
+                    <textarea class="form-control rounded" id="css" form="guild-css-form" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="css" form="profile-settings" maxlength="50000">{{ b.css }}</textarea>
                   </form>
                 </div>
 
