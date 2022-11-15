@@ -154,3 +154,23 @@ def qrcode_filter(x):
 @app.template_filter("formkey")
 def logged_out_formkey(t):
     return generate_hash(f"{t}+{session['session_id']}")
+
+@app.template_filter("event_score")
+@cache.memoize(3600)
+def event_faction_score(x):
+
+    guild=get_guild(x)
+
+    post_karma = g.db.query(Submission.score_top).filter(
+        Submission.board_id==guild.id
+        ).sum()
+
+    comment_karma=g.db.query(Comment.score_top).filter(
+        Comment.post_id.in_(
+            select(Submission.id).filter(
+                Submission.board_id==guild.id
+                )
+            )
+        ).sum()
+
+    return post_karma+comment_karma
