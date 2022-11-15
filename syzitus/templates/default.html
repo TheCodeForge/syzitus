@@ -96,7 +96,7 @@
 
 </head>
 
-<body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %} {% if g.user and g.user.id % 2 %}team-elf{% elif g.user %}team-penguin{% endif %}">
+<body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %} {% if g.user and g.user.id % 2 %}team-xmas{% elif g.user %}team-hween{% endif %}">
 
   {% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
   <div class="row fixed-top" id="mobile-prompt-row">
