@@ -262,13 +262,13 @@
     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
     <input type="hidden" name="domain" value="{{ domain }}">
     <label for="reason_select">Select Ban reason</label>
-    <select id="reason_select" class="form-control mt-2" name="reason" onchange="$('#ban-submit').prop('disabled', false)">
+    <select id="reason_select" class="form-control mt-2 domain-ban-selector" name="reason">
         <option value="0">---Select Ban Reason---</option>
         {% for i in reasons %}
             <option value="{{ i }}"{% if i==domain.reason %} selected{% endif %}>{{ reasons[i] }}</option>
         {% endfor %}
     </select>
-    <input id="ban-submit" type="submit" class="btn btn-primary mt-2" value="Ban {{ domain_name }}" disabled>
+    <input id="domain-ban-submit" type="submit" class="btn btn-primary mt-2" value="Ban {{ domain_name }}" disabled>
 </form>
 
 {% endif %}
