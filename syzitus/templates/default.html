@@ -100,7 +100,7 @@
 
   {% if ('EVENT_SNOWBALL_FIGHT'|app_config) and g.user %}
   <div id="snowball-banner" class="bg-danger w-100">
-    <span class="text-white">Halloween is invading Christmas! Join the war of the holidays - you are on Team {{ 'Christmas' if g.user.id%2 else "Halloween" }}!</span>
+    <span class="text-white mx-auto">Halloween is invading Christmas! Join the war of the holidays - you are on Team {{ 'Christmas' if g.user.id%2 else "Halloween" }}!</span>
   </div>
   {% endif %}
 
