@@ -38,7 +38,7 @@ def req_wrap(f):
 @req_wrap
 def discord_log_event(action, target_user, admin_user, reason=None):
     
-    channel_id=CHANNELS['log']
+    channel_id=app.config["DISCORD_CHANNEL_IDS"]["log"]
     url=f"{DISCORD_ENDPOINT}/channels/{channel_id}/messages"
     headers={
         "Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"
