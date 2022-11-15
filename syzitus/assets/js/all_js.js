@@ -2397,5 +2397,5 @@ $('#guild-ban-reason').on('input', function(){
   $('#guild-ban-submit').prop('disabled',false);
 })
 $('domain-ban-selector').change(function(){
-  $('#ban-submit').prop('disabled', false)
+  $('#domain-ban-submit').prop('disabled', false)
 })
