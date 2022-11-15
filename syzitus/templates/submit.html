@@ -55,7 +55,7 @@
 
                 <div class="body">
 
-                    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data">
+                    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data" class="mb-5">
 
 
                         <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
@@ -131,7 +131,7 @@
                         {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
                         <!--admin growth hack-->
                         <label for="ident">Post As</label>
-                        <input class="form-control mb-5" id="ident" type="text" name="ident">
+                        <input class="form-control" id="ident" type="text" name="ident">
                         {% endif %}
                     </form>
                 </div>
