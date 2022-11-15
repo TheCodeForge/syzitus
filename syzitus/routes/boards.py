@@ -1388,7 +1388,7 @@ def board_edit_css(bid, board):
         if x:
             return x
 
-    css=css.cssText.decode('utf-8')
+    css=css.cssText.decode('utf-16')
 
     board.css = css
     board.css_nonce += 1
