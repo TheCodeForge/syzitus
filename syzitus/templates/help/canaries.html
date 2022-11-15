@@ -7,6 +7,7 @@
 
 
 {% block content %}
+{% if ('SERVER_NAME'|app_config)=="syzitus.com" %}
 
 {% filter markdown %}
 
@@ -18,7 +19,6 @@ The First Amendment protects the publication of these statements, and it also pr
 
 The name comes from canaries used in coal mines. When the canary died, miners would know oxygen was low and that they needed to evacuate. Similarly, when a canary statement "dies", users can infer that the statement is no longer true.
 
-{% if ('SERVER_NAME'|app_config)=="syzitus.com"}
 This page was last updated on 14 November 2022.
 
 ## Our Canaries
