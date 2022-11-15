@@ -209,7 +209,7 @@ Required form data:
     if p.board.has_ban(g.user):
         abort(403)
 
-    body = request.form.get("body", "")
+    body = request.form.get("body", "").lstrip().rstrip()
     body=preprocess(body)
     with CustomRenderer() as renderer:
         body_md = renderer.render(mistletoe.Document(body))
@@ -383,7 +383,8 @@ Optional file data:
     else:
         url = ""
 
-    body = request.form.get("body", "")
+    body = request.form.get("body", "").lstrip().rstrip()
+
     # check for duplicate
     dup = g.db.query(Submission).join(Submission.submission_aux).filter(
 
