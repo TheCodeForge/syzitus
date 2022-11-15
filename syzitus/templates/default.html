@@ -96,7 +96,7 @@
 
 </head>
 
-<body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
+<body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %} {% if g.user and g.user.id % 2 %}team-xmas{% elif g.user %}team-hween{% endif %}">
 
   {% if ('EVENT_SNOWBALL_FIGHT'|app_config) and g.user %}
   <div id="snowball-banner" class="bg-danger w-100">
