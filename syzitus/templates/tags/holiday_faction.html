@@ -1,0 +1,15 @@
+{% if c %}
+    {% set u=c.author %}
+{% elif p %}
+    {% set u=p.author %}
+{% endif %}
+
+{% if p.author.id%2 %}
+<span>
+	<i class="fas fa-tree-christmas" data-toggle="tooltip" data-placement="bottom" title="Nobly defending Christmas from the Halloween invasion"></i>
+</span>
+{% else %}
+<span>
+    <i class="fas fa-jack-o-lantern fa-fw text-muted" data-toggle="tooltip" data-placement="bottom" title="Fighting on the side of Halloween against Christmas tyranny"></i>
+</span>
+{% endif %}
