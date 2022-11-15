@@ -151,7 +151,7 @@ def get_logo_main():
     #tilted letter layer
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-        size=int(min(base_layer.size)//1.3)
+        size=int(min(base_layer.size)//2)
     )
 
     letter = app.config["SITE_NAME"][0:1].lower()
@@ -201,7 +201,7 @@ def get_logo_white():
     #tilted letter layer
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
-        size=base_layer.size[1]//2
+        size=int(min(base_layer.size)//2)
     )
 
     letter = app.config["SITE_NAME"][0:1].lower()
@@ -262,7 +262,7 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     text_layer = PIL.Image.new("RGBA", (width, height), color=(255,255,255,0))
 
-    size=min(height//2, width//2)
+    size=int(min(height, width)//1.2)
 
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fonts/Arial-bold.ttf", 
