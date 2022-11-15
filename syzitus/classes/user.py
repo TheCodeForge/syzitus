@@ -1238,7 +1238,7 @@ class User(Base, Stndrd, Age_times):
 
         g.db.add(self)
         
-        discord_log_event("Unban", self, g.v, reason=self.ban_reason)
+        discord_log_event("Unban", self, g.user, reason=self.ban_reason)
 
         text = f'Your {app.config["SITE_NAME"]} account has been reinstated. Please review the [Terms of Service](/help/terms) and [Rules](/help/rules), and avoid breaking them in the future.'
         send_notif(self, text)
