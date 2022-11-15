@@ -366,9 +366,9 @@ def gift_comment_pid(cid):
     if not g.db.query(AwardRelationship).filter_by(user_id=g.user.id, comment_id=comment.id).first():
         text=f"Someone liked [your comment]({comment.permalink}) and has given you a Coin!\n\n"
         if u.premium_expires_utc < int(time.time()):
-            text+="Your Coin has been automatically redeemed for one week of [{{ 'SITE_NAME' | app_config }} Premium](/settings/premium)."
+            text+=f"Your Coin has been automatically redeemed for one week of [{app_config['SITE_NAME']} Premium](/settings/premium)."
         else:
-            text+="Since you already have {{ 'SITE_NAME' | app_config }} Premium, the Coin has been added to your balance. You can keep it for yourself, or give it to someone else."
+            text+=f"Since you already have {app_config['SITE_NAME']} Premium, the Coin has been added to your balance. You can keep it for yourself, or give it to someone else."
 
         send_notification(u, text)
 
