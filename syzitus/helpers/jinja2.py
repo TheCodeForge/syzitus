@@ -171,6 +171,6 @@ def event_faction_score(x):
                 Submission.board_id==guild.id
                 )
             )
-        ).sum()
+        )
 
     return post_karma+comment_karma
