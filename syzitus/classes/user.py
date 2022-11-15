@@ -14,6 +14,7 @@ from syzitus.helpers.security import *
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
+from syzitus.helpers.sanitize import sanitize
 from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
