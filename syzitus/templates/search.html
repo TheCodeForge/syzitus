@@ -261,8 +261,8 @@
   <form action="/admin/ban_domain" method="post">
     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
     <input type="hidden" name="domain" value="{{ domain }}">
-    <label for="reason_select">Select Ban reason</label>
-    <select id="reason_select" class="form-control mt-2 domain-ban-selector" name="reason">
+    <label for="domain-ban-selector">Select Ban reason</label>
+    <select id="domain-ban-selector" class="form-control mt-2" name="reason">
         <option value="0">---Select Ban Reason---</option>
         {% for i in reasons %}
             <option value="{{ i }}"{% if i==domain.reason %} selected{% endif %}>{{ reasons[i] }}</option>
