@@ -42,8 +42,6 @@ def ban_user(user_id):
         if not x.is_deleted:
             x.ban(admin=g.user, reason=reason)
 
-    send_notification(user, text)
-
     return (redirect(user.url), user)
 
 
