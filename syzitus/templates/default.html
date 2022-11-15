@@ -98,6 +98,12 @@
 
 <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %}">
 
+  {% if ('EVENT_SNOWBALL_FIGHT'|app_config) and g.user %}
+  <div id="snowball-banner" class="bg-danger w-100">
+    <span class="text-white">Halloween is invading Christmas! Join the war of the holidays - you are on Team {{ 'Christmas' if g.user.id%2 else "Halloween" }}!</span>
+  </div>
+  {% endif %}
+
   {% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
   <div class="row fixed-top" id="mobile-prompt-row">
     <div id="mobile-prompt-container" class="ml-auto mr-5">
