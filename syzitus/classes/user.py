@@ -14,7 +14,6 @@ from syzitus.helpers.security import *
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
-from syzitus.helpers.sanitize import sanitize
 from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
@@ -36,7 +35,7 @@ from syzitus.__main__ import Base, cache, app
 def send_notif(user, text):
     text_html = mistletoe.markdown(text)
 
-    text_html = sanitize(text_html, linkgen=True)#, noimages=True)
+    #text_html = sanitize(text_html, linkgen=True)#, noimages=True)
 
     new_comment = Comment(author_id=1,
                           # body=text,
