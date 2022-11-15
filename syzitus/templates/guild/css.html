@@ -71,7 +71,7 @@
 
                 {% if error %}
                 <p class="mb-0">
-                  <span class="text-danger text-small" style="vertical-align: sub;">{{ error }}</span>
+                  <span class="text-danger text-small">{{ error }}</span>
                 </p>
                 {% endif %}
 
@@ -93,7 +93,7 @@
 
               <div class="w-lg-100">
                 <div class="input-group mb-2">
-                  <textarea class="form-control rounded" id="css" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="description" form="profile-settings" maxlength="1000" style="font-family:monospace;"readonly>{{ b.css }}</textarea>
+                  <textarea class="form-control rounded" id="css" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="description" form="profile-settings" maxlength="1000" readonly>{{ b.css }}</textarea>
                 </div>
 
               </div>
