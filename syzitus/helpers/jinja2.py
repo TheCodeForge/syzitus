@@ -156,7 +156,7 @@ def logged_out_formkey(t):
     return generate_hash(f"{t}+{session['session_id']}")
 
 @app.template_filter("event_score")
-@cache.memoize(3600)
+@cache.memoize(600)
 def event_faction_score(x):
 
     guild=get_guild(x)
