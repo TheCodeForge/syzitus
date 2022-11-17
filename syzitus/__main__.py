@@ -108,7 +108,7 @@ app.config["UserAgent"] = f"Content Aquisition for Porpl message board v{_versio
 if "localhost" in app.config["SERVER_NAME"]:
     app.config["CACHE_TYPE"] = "NullCache"
 else:
-    app.config["CACHE_TYPE"] = environ.get("CACHE_TYPE", 'filesystem').lstrip().rstrip()
+    app.config["CACHE_TYPE"] = environ.get("CACHE_TYPE", 'NullCache').lstrip().rstrip()
 
 app.config["CACHE_DIR"] = environ.get("CACHE_DIR", "ruqquscache")
 
