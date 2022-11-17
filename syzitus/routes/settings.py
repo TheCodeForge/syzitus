@@ -361,17 +361,6 @@ def settings_delete_profile():
     return jsonify({"message":"Profile picture successfully removed."})
 
 
-@app.route("/settings/new_feedkey", methods=["POST"])
-@auth_required
-def settings_new_feedkey():
-
-    g.user.feed_nonce += 1
-    g.db.add(g.user)
-    g.db.commit()
-
-    return jsonify({"message":"RSS feed token cycled."})
-
-
 @app.route("/settings/delete/banner", methods=["POST"])
 @auth_required
 def settings_delete_banner():
@@ -687,7 +676,7 @@ def settings_name_change():
     #do name change and deduct coins
 
     g.user.username=new_name
-    g.user.coin_balance-=20
+    g.user.coin_balance-=self.coin_balance>=app.config['COINS_REQUIRED_CHANGE_USERNAME']
     g.user.name_changed_utc=int(time.time())
 
     set_nick(g.user, new_name)
