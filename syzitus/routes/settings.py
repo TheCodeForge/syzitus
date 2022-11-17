@@ -676,7 +676,7 @@ def settings_name_change():
     #do name change and deduct coins
 
     g.user.username=new_name
-    g.user.coin_balance-=self.coin_balance>=app.config['COINS_REQUIRED_CHANGE_USERNAME']
+    g.user.coin_balance-=app.config['COINS_REQUIRED_CHANGE_USERNAME']
     g.user.name_changed_utc=int(time.time())
 
     set_nick(g.user, new_name)
