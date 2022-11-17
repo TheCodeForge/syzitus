@@ -216,7 +216,7 @@ def paypal_webhook_handler():
     g.db.add(txn)
     g.db.add(txn.user)
 
-    g.db.flush()
+    g.db.commit()
 
 
 
