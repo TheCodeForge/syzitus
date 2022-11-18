@@ -179,7 +179,7 @@ def logout():
 
     session.modified=True
 
-    return jsonify({"redirect": "/"}), 302
+    return "", 204
 
 # signing up
 
