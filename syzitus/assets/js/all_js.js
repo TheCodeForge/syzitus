@@ -2206,7 +2206,7 @@ $(".btn-cancel-comment").click(function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
 })
 
-$('.btn-reply-comment').click(function(){
+$(document).on('click', '.btn-reply-comment', function(){
   $('#reply-to-'+$(this).data('comment-id')).removeClass('d-none')
 })
 
