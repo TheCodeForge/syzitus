@@ -702,7 +702,7 @@ function toggleSub(thing_id){
   $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
-function post_toast(url, callback=function(){console.log('.')}) {
+function post_toast(url, callback=function(){}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -976,7 +976,7 @@ $('.upvote-button , .downvote-button').click(function(){
 
   url='/api/vote/' + type + "/" + id + "/" + direction;
 
-  post(url);
+  post_toast(url);
 
 })
 
