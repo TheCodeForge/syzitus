@@ -1697,7 +1697,7 @@ block_user=function() {
 
 }
 
-$(document).on('click', '.btn-save-new-comment', function(){
+$('.btn-save-new-comment').click(function(){
 
 
   var form = new FormData();
@@ -1765,7 +1765,7 @@ $(document).on('click', 'btn-herald-comment', function(){
 
 })
 
-$(docuemnt).on('click', ".btn-pin-comment", function(){
+$(".btn-pin-comment").click(function(){
 
 
   var xhr = new XMLHttpRequest();
@@ -1810,7 +1810,7 @@ $('#post-URL').on('input', function(){
 
 
 
-$(document).on('click', '.btn-save-edit-comment', function() {
+$('.btn-save-edit-comment'.click(function() {
 
   id=$(this).data('comment-id')
 
@@ -2188,7 +2188,7 @@ $(".post-url-reload").click(function(){
   post($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(document).on('click', ".post-url", function(){
+$(".post-url").click(function(){
   post($(this).data('post-url'))
 })
 
@@ -2206,7 +2206,7 @@ $(".btn-cancel-comment").click(function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
 })
 
-$(document).on('click', '.btn-reply-comment', function(){
+$('.btn-reply-comment'.click(function(){
   $('#reply-to-'+$(this).data('comment-id')).removeClass('d-none')
 })
 
