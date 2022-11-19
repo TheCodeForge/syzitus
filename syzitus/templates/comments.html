@@ -226,7 +226,7 @@
           
 
           {% if g.user and g.user.id==c.author_id and c.post and c.is_guildmaster('content') %}
-          <li class="list-inline-item d-none d-md-inline-block"><a class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
+          <li class="list-inline-item d-none d-md-inline-block"><a href="javascript:void(0)" class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
