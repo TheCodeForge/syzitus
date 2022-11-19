@@ -1739,7 +1739,7 @@ $('.btn-save-new-comment').click(function(){
 })
 
 
-$('.btn-herald-comment'.click(function(){
+$('.btn-herald-comment').click(function(){
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
