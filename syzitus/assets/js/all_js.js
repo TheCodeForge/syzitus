@@ -953,23 +953,23 @@ $('.upvote-button , .downvote-button').click(function(){
 
     if (direction==1){
 
-      $('.'+type+'-'+id+'up').addClass('active')
-      $('.'+type+'-'+id+'down').removeClass('active')
+      $('.'+type+'-'+id+'-up').addClass('active')
+      $('.'+type+'-'+id+'-down').removeClass('active')
       $('.'+type+'-score-'+id).addClass('score-up')
       $('.'+type+'-score-'+id).removeClass('score-down')
 
     } else if (direction==0) {
 
-      $('.'+type+'-'+id+'up').removeClass('active')
-      $('.'+type+'-'+id+'down').removeClass('active')
+      $('.'+type+'-'+id+'-up').removeClass('active')
+      $('.'+type+'-'+id+'-down').removeClass('active')
       $('.'+type+'-score-'+id).removeClass('score-up')
       $('.'+type+'-score-'+id).removeClass('score-down')
 
 
     } else if (direction==-1) {
 
-      $('.'+type+'-'+id+'up').removeClass('active')
-      $('.'+type+'-'+id+'down').addClass('active')
+      $('.'+type+'-'+id+'-up').removeClass('active')
+      $('.'+type+'-'+id+'-down').addClass('active')
       $('.'+type+'-score-'+id).removeClass('score-up')
       $('.'+type+'-score-'+id).addClass('score-down')
 
