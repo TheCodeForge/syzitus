@@ -947,39 +947,37 @@ $('.upvote-button , .downvote-button').click(function(){
     new_score++
   }
 
+  $('.'+type+'-score-'+id).text(new_score)
 
-  url='/api/vote/' + type + "/" + id + "/" + direction
+  if (direction==1){
 
-  post(url, callback=function(){
+    $('.'+type+'-'+id+'-up').addClass('active')
+    $('.'+type+'-'+id+'-down').removeClass('active')
+    $('.'+type+'-score-'+id).addClass('score-up')
+    $('.'+type+'-score-'+id).removeClass('score-down')
 
-    $('.'+type+'-score-'+id).text(new_score)
+  } 
+  else if (direction==0) {
 
-    if (direction==1){
+    $('.'+type+'-'+id+'-up').removeClass('active')
+    $('.'+type+'-'+id+'-down').removeClass('active')
+    $('.'+type+'-score-'+id).removeClass('score-up')
+    $('.'+type+'-score-'+id).removeClass('score-down')
 
-      $('.'+type+'-'+id+'-up').addClass('active')
-      $('.'+type+'-'+id+'-down').removeClass('active')
-      $('.'+type+'-score-'+id).addClass('score-up')
-      $('.'+type+'-score-'+id).removeClass('score-down')
+  } 
+  else if (direction==-1) {
 
-    } 
-    else if (direction==0) {
+    $('.'+type+'-'+id+'-up').removeClass('active')
+    $('.'+type+'-'+id+'-down').addClass('active')
+    $('.'+type+'-score-'+id).removeClass('score-up')
+    $('.'+type+'-score-'+id).addClass('score-down')
 
-      $('.'+type+'-'+id+'-up').removeClass('active')
-      $('.'+type+'-'+id+'-down').removeClass('active')
-      $('.'+type+'-score-'+id).removeClass('score-up')
-      $('.'+type+'-score-'+id).removeClass('score-down')
+  }
 
-    } 
-    else if (direction==-1) {
+  url='/api/vote/' + type + "/" + id + "/" + direction;
 
-      $('.'+type+'-'+id+'-up').removeClass('active')
-      $('.'+type+'-'+id+'-down').addClass('active')
-      $('.'+type+'-score-'+id).removeClass('score-up')
-      $('.'+type+'-score-'+id).addClass('score-down')
+  post(url);
 
-    }
-
-  })
 })
 
 
