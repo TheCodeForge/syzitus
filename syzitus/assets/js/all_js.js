@@ -1697,7 +1697,7 @@ block_user=function() {
 
 }
 
-$('.btn-save-new-comment').click(function(){
+$(document).on('click', '.btn-save-new-comment', function(){
 
 
   var form = new FormData();
@@ -1739,7 +1739,7 @@ $('.btn-save-new-comment').click(function(){
 })
 
 
-$('.btn-herald-comment').click(function(){
+$(document).on('click', 'btn-herald-comment', function(){
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
@@ -1765,7 +1765,7 @@ $('.btn-herald-comment').click(function(){
 
 })
 
-$(".btn-pin-comment").click(function(){
+$(docuemnt).on('click', ".btn-pin-comment", function(){
 
 
   var xhr = new XMLHttpRequest();
@@ -1810,7 +1810,7 @@ $('#post-URL').on('input', function(){
 
 
 
-$('.btn-save-edit-comment').click(function() {
+$(document).on('click', '.btn-save-edit-comment', function() {
 
   id=$(this).data('comment-id')
 
@@ -2060,7 +2060,7 @@ $('.mention-user').click(function (event) {
 
 });
 
-$('.expandable-image').click( function(event) {
+$(document).on('click', '.expandable-image', function(event) {
 
   if (event.which != 1) {
     return
@@ -2188,7 +2188,7 @@ $(".post-url-reload").click(function(){
   post($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(".post-url").click(function(){
+$(document).on('click', ".post-url", function(){
   post($(this).data('post-url'))
 })
 
