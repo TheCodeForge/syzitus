@@ -270,7 +270,7 @@ $('.btn-toggle-comment-edit').click(function(){
 
 // Post edit form
 
-$(".btn-edit-post").click(function(){
+$(document).on('click', ".btn-edit-post", function(){
   id=$(this).data("target-id")
   box=document.getElementById("post-edit-box-"+id);
 
@@ -1697,7 +1697,7 @@ block_user=function() {
 
 }
 
-$('.btn-save-new-comment').click(function(){
+$(document).on('click', '.btn-save-new-comment', function(){
 
 
   var form = new FormData();
@@ -1739,7 +1739,7 @@ $('.btn-save-new-comment').click(function(){
 })
 
 
-$('.btn-herald-comment').click(function(){
+$(document).on('click', '.btn-herald-comment', function(){
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
@@ -2184,25 +2184,25 @@ $(".btn-guild-unsub").click(function(){
   post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 
-$(".post-url-reload").click(function(){
+$(document).on('click', ".post-url-reload", function(){
   post($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(".post-url").click(function(){
+$(document).on('click', ".post-url", function(){
   post($(this).data('post-url'))
 })
 
-$(".post-toast-url-reload").click(function(){
+$(document).on('click', ".post-toast-url-reload", function(){
   post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(".post-toast-url").click(function(){
+$(document).on('click', ".post-toast-url", function(){
   post_toast($(this).data('post-url'))
 })
 
 $(".go-to-login").click(function(){window.location.href="/login?redirect="+window.location.pathname})
 
-$(".btn-cancel-comment").click(function(){
+$(document). on('click', ".btn-cancel-comment", function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
 })
 
