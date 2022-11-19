@@ -230,7 +230,7 @@
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
           {% endif %}
           <li class="list-inline-item d-none d-md-inline-block">
             <div class="dropdown show">
