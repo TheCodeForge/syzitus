@@ -2060,7 +2060,7 @@ $('.mention-user').click(function (event) {
 
 });
 
-$('.expandable-image').click( function(event) {
+$('.expandable-image').click(function(event) {
 
   if (event.which != 1) {
     return
