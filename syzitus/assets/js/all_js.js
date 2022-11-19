@@ -302,7 +302,7 @@ $('.btn-mod-comment').click(function () {
 })
 
 
-$('.btn-distinguish-comment').click(function(){
+$(document).on('click', '.btn-distinguish-comment', function(){
 
   var comment_id=$(this).data('comment-id');
 
@@ -1624,7 +1624,7 @@ $('#post-URL').on('input', function(){
 
 
 
-$('.btn-save-edit-comment').click(function() {
+$(document).on('click', '.btn-save-edit-comment', function() {
 
   id=$(this).data('comment-id')
 
