@@ -100,7 +100,7 @@ def notifications_posts():
             'api': lambda: jsonify({"data": [x.json for x in listing]})
             }
 
-@cache.memoize(timeout=60)
+@cache.memoize()
 def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
               t=None, categories=[], filter_words='', **kwargs):
 
@@ -543,7 +543,7 @@ def subcat(name):
                                     "next_exists": next_exists})}
 
 
-@cache.memoize(600)
+@cache.memoize()
 def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
     # cutoff=int(time.time())-(60*60*24*30)
 
@@ -809,7 +809,7 @@ def random_user():
     return redirect(user.permalink)
 
 
-@cache.memoize(600)
+@cache.memoize()
 def comment_idlist(page=1, nsfw=False, **kwargs):
 
     posts = select(Submission).options(

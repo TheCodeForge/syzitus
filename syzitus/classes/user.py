@@ -276,7 +276,7 @@ class User(Base, Stndrd, Age_times):
         return TITLES.get(self.title_id)
     
 
-    @cache.memoize(timeout=300)
+    @cache.memoize()
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
@@ -394,7 +394,7 @@ class User(Base, Stndrd, Age_times):
 
         return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
-    @cache.memoize(300)
+    @cache.memoize()
     def userpagelisting(self, page=1, sort="new", t="all"):
 
         submissions = g.db.query(Submission.id).options(
@@ -464,7 +464,7 @@ class User(Base, Stndrd, Age_times):
         listing = [x[0] for x in submissions.offset(25 * (page - 1)).limit(26)]
         return listing
 
-    @cache.memoize(300)
+    @cache.memoize()
     def commentlisting(self, page=1, sort="new", t="all"):
         comments = self.comments.options(
             lazyload('*')).filter(Comment.parent_submission is not None).join(Comment.post)
@@ -564,7 +564,7 @@ class User(Base, Stndrd, Age_times):
         return z
 
     @property
-    @cache.memoize(timeout=3600)  # 1hr cache time for user rep
+    @cache.memoize()  # 1hr cache time for user rep
     def karma(self):
         if self.id==1:
             return 503
@@ -572,7 +572,7 @@ class User(Base, Stndrd, Age_times):
         return self.energy - self.post_count
 
     @property
-    @cache.memoize(timeout=3600)
+    @cache.memoize()
     def comment_karma(self):
 
         if self.id==1:
@@ -581,7 +581,7 @@ class User(Base, Stndrd, Age_times):
         return self.comment_energy - self.comment_count
 
     @property
-    @cache.memoize(timeout=3600)
+    @cache.memoize()
     def true_score(self):
 
         #self.stored_karma=max((self.karma + self.comment_karma), -5)
@@ -603,7 +603,7 @@ class User(Base, Stndrd, Age_times):
         return f"t1_{self.base36id}"
 
     @property
-    @cache.memoize(timeout=60)
+    @cache.memoize()
     @lazy
     def has_report_queue(self):
         board_ids = select(ModRelationship.board_id).options(lazyload('*')).filter(

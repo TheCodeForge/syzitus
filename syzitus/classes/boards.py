@@ -128,7 +128,7 @@ class Board(Base, Stndrd, Age_times):
             return False
         return not self.postrels.filter_by(post_id=post.id).first()
 
-    @cache.memoize(timeout=60)
+    @cache.memoize()
     def idlist(self, sort=None, page=1, t=None,
                hide_offensive=True, hide_bot=False, nsfw=False, **kwargs):
 
@@ -543,7 +543,7 @@ class Board(Base, Stndrd, Age_times):
     def show_settings_icons(self):
         return self.is_private or self.restricted_posting or self.over_18 or self.all_opt_out
 
-    @cache.memoize(600)
+    @cache.memoize()
     def comment_idlist(self, page=1, v=None, nsfw=False, **kwargs):
 
         posts = g.db.query(Submission).options(
