@@ -446,7 +446,7 @@
 
         <div class="card-block w-100 my-md-auto">
 
-          <div class="post-meta text-left d-none d-md-block mb-md-2">
+          <div class="post-meta text-left d-none d-md-block mb-md-2 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
             {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
@@ -470,7 +470,7 @@
           <h1 class="card-title post-title text-left mb-md-2 pb-md-1">{{ p.title | safe }}</h1>
           {% endif %}
 
-          <div class="post-meta text-left d-block d-md-none mb-3">
+          <div class="post-meta text-left d-block d-md-none mb-3 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
             {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}

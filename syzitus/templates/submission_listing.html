@@ -109,7 +109,7 @@
 
       <div class="d-block d-md-none mb-1">
 
-        <div class="post-meta text-left x-scroll">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
+        <div class="post-meta text-left x-scroll {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
           {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
           {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
           {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
@@ -127,7 +127,7 @@
         </div>
       </div>
 
-      <div class="post-meta text-left d-none d-md-block mb-md-2">
+      <div class="post-meta text-left d-none d-md-block mb-md-2 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
         {% if not b %}<span class="font-weight-bold"><a href="{{ p.board.permalink }}" class="text-black"><img src="{{ p.board.profile_url }}" class="profile-pic-20 align-top mr-1">+{{ p.board.name }}</a></span> · {% endif %}
         {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
         {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
