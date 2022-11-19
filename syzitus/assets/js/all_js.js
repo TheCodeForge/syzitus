@@ -1554,6 +1554,9 @@ $(document).on('click', '.btn-save-new-comment', function(){
 
 
 $(document).on('click', '.btn-herald-comment', function(){
+
+  var cid = $(this).data('comment-id')
+
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
