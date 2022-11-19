@@ -916,256 +916,68 @@ $('.toggle_sidebar_expand').click(function() {
 
 // Voting
 
-var upvote = function(event) {
+$('.upvote-button , .downvote-button').click(function(){
 
-  var type = event.target.dataset.contentType;
-  var id = event.target.dataset.idUp;
+  type=$(this).data('type');
+  id=$(this).data('id');
+  var direction=0;
 
-  var downvoteButton = document.getElementsByClassName(type + '-' + id + '-down');
-  var upvoteButton = document.getElementsByClassName(type + '-' + id + '-up');
-  var scoreText = document.getElementsByClassName(type + '-score-' + id);
-
-  for (var j = 0; j < upvoteButton.length && j < downvoteButton.length && j < scoreText.length; j++) {
-
-    var thisUpvoteButton = upvoteButton[j];
-    var thisDownvoteButton = downvoteButton[j];
-    var thisScoreText = scoreText[j];
-    var thisScore = Number(thisScoreText.textContent);
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisUpvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore - 1
-      voteDirection = "0"
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisUpvoteButton.classList.add('active')
-      thisDownvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore + 2
-      voteDirection = "1"
-    } else {
-      thisUpvoteButton.classList.add('active')
-      thisScoreText.textContent = thisScore + 1
-      voteDirection = "1"
-    }
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-up')
-      thisScoreText.classList.remove('score-down')
-      thisScoreText.classList.remove('score')
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-down')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score')
-    } else {
-      thisScoreText.classList.add('score')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score-down')
-    }
+  if ($(this).hasClass('active')){
+    direction=0;
+  } else if ($(this).hasClass('upvote-button')) {
+    direction=1;
+  } else if ($(this).hasClass('downvote-button')) {
+    direction=-1;
   }
 
-  post_toast("/api/vote/" + type + "/" + id + "/" + voteDirection);
-  
-}
-
-var downvote = function(event) {
-
-  var type = event.target.dataset.contentType;
-  var id = event.target.dataset.idDown;
-
-  var downvoteButton = document.getElementsByClassName(type + '-' + id + '-down');
-  var upvoteButton = document.getElementsByClassName(type + '-' + id + '-up');
-  var scoreText = document.getElementsByClassName(type + '-score-' + id);
-
-  for (var j = 0; j < upvoteButton.length && j < downvoteButton.length && j < scoreText.length; j++) {
-
-    var thisUpvoteButton = upvoteButton[j];
-    var thisDownvoteButton = downvoteButton[j];
-    var thisScoreText = scoreText[j];
-    var thisScore = Number(thisScoreText.textContent);
-
-    if (thisDownvoteButton.classList.contains('active')) {
-      thisDownvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore + 1
-      voteDirection = "0"
-    } else if (thisUpvoteButton.classList.contains('active')) {
-      thisDownvoteButton.classList.add('active')
-      thisUpvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore - 2
-      voteDirection = "-1"
-    } else {
-      thisDownvoteButton.classList.add('active')
-      thisScoreText.textContent = thisScore - 1
-      voteDirection = "-1"
-    }
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-up')
-      thisScoreText.classList.remove('score-down')
-      thisScoreText.classList.remove('score')
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-down')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score')
-    } else {
-      thisScoreText.classList.add('score')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score-down')
-    }
+  var new_score = Number($('.'+type+'-score-'+id)[0].innerText)
+  if ($(this).hasClass('downvote-button') && $(this).has_class('active')){
+    new_score++
+  }
+  else if ($(this).hasClass('upvote-button') && $(this).has_class('active')){
+    new_score--
+  }
+  else if ($(this).hasClass('downvote-button')){
+    new_score--
+  }
+  else if ($(this).hasClass('upvote-button')){
+    new_score++
   }
 
-  post_toast("/api/vote/" + type + "/" + id + "/" + voteDirection);
-  
-}
 
-var register_votes = function() {
-  var upvoteButtons = document.getElementsByClassName('upvote-button')
+  url='/api/vote/' + type + "/" + id + "/" + direction
 
-  var downvoteButtons = document.getElementsByClassName('downvote-button')
+  post(url, callback=function(){
 
-  var voteDirection = 0
+    $('.'+type+'-score-'+id).text(new_score)
 
-  for (var i = 0; i < upvoteButtons.length; i++) {
-    upvoteButtons[i].addEventListener('click', upvote, false);
-    upvoteButtons[i].addEventListener('keydown', function(event) {
-      if (event.keyCode === 13) {
-        upvote(event)
-      }
-    }, false)
-  };
+    if (direction==1){
 
-  for (var i = 0; i < downvoteButtons.length; i++) {
-    downvoteButtons[i].addEventListener('click', downvote, false);
-    downvoteButtons[i].addEventListener('keydown', function(event) {
-      if (event.keyCode === 13) {
-        downvote(event)
-      }
-    }, false)
-  };
-}
+      $('.'+type+'-'+id+'up').addClass('active')
+      $('.'+type+'-'+id+'down').removeClass('active')
+      $('.'+type+'-score-'+id).addClass('score-up')
+      $('.'+type+'-score-'+id).removeClass('score-down')
 
-register_votes()
+    } else if (direction==0) {
 
-/*
+      $('.'+type+'-'+id+'up').removeClass('active')
+      $('.'+type+'-'+id+'down').removeClass('active')
+      $('.'+type+'-score-'+id).removeClass('score-up')
+      $('.'+type+'-score-'+id).removeClass('score-down')
 
-function vote(post_id, direction) {
-  url="/api/vote/post/"+post_id+"/"+direction;
 
-  callback=function(){
-    thing = document.getElementById("post-"+post_id);
-    uparrow1=document.getElementById("post-"+post_id+"-up");
-    downarrow1=document.getElementById("post-"+post_id+"-down");
-    scoreup1=document.getElementById("post-"+post_id+"-score-up");
-    scorenone1=document.getElementById("post-"+post_id+"-score-none");
-    scoredown1=document.getElementById("post-"+post_id+"-score-down");
+    } else if (direction==-1) {
 
-    thing2=document.getElementById("voting-"+post_id+"-mobile")
-    uparrow2=document.getElementById("arrow-"+post_id+"-mobile-up");
-    downarrow2=document.getElementById("arrow-"+post_id+"-mobile-down");
-    scoreup2=document.getElementById("post-"+post_id+"-score-mobile-up");
-    scorenone2=document.getElementById("post-"+post_id+"-score-mobile-none");
-    scoredown2=document.getElementById("post-"+post_id+"-score-mobile-down");
-
-    if (direction=="1") {
-      thing.classList.add("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 0)};
-      downarrow1.onclick=function(){vote(post_id, -1)};
-      scoreup1.classList.remove("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.add("d-none");
-
-      thing2.classList.add("upvoted");
-      thing2.classList.remove("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 0)};
-      downarrow2.onclick=function(){vote(post_id, -1)};
-      scoreup2.classList.remove("d-none");
-      scorenone2.classList.add("d-none");
-      scoredown2.classList.add("d-none");
-    }
-    else if (direction=="-1"){
-      thing.classList.remove("upvoted");
-      thing.classList.add("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 1)};
-      downarrow1.onclick=function(){vote(post_id, 0)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.remove("d-none");
-
-      thing2.classList.remove("upvoted");
-      thing2.classList.add("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 1)};
-      downarrow2.onclick=function(){vote(post_id, 0)};
-      scoreup2.classList.add("d-none");
-      scorenone2.classList.add("d-none");
-      scoredown2.classList.remove("d-none");
+      $('.'+type+'-'+id+'up').removeClass('active')
+      $('.'+type+'-'+id+'down').addClass('active')
+      $('.'+type+'-score-'+id).removeClass('score-up')
+      $('.'+type+'-score-'+id).addClass('score-down')
 
     }
-    else if (direction=="0"){
-      thing.classList.remove("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 1)};
-      downarrow1.onclick=function(){vote(post_id, -1)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.remove("d-none");
-      scoredown1.classList.add("d-none");
 
-      thing2.classList.remove("upvoted");
-      thing2.classList.remove("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 1)};
-      downarrow2.onclick=function(){vote(post_id, -1)};
-      scoreup2.classList.add("d-none");
-      scorenone2.classList.remove("d-none");
-      scoredown2.classList.add("d-none");
+  })
+})
 
-    }
-  }
-
-  post(url, callback, "Unable to vote at this time. Please try again later.");
-};
-
-*/
-
-function vote_comment(comment_id, direction) {
-  url="/api/vote/comment/"+ comment_id +"/"+direction;
-
-  callback=function(){
-    thing = document.getElementById("comment-"+ comment_id+"-actions");
-    uparrow1=document.getElementById("comment-"+ comment_id +"-up");
-    downarrow1=document.getElementById("comment-"+ comment_id +"-down");
-    scoreup1=document.getElementById("comment-"+ comment_id +"-score-up");
-    scorenone1=document.getElementById("comment-"+ comment_id +"-score-none");
-    scoredown1=document.getElementById("comment-"+ comment_id +"-score-down");
-
-    if (direction=="1") {
-      thing.classList.add("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 0)};
-      downarrow1.onclick=function(){vote_comment(comment_id, -1)};
-      scoreup1.classList.remove("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.add("d-none");
-    }
-    else if (direction=="-1"){
-      thing.classList.remove("upvoted");
-      thing.classList.add("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 1)};
-      downarrow1.onclick=function(){vote_comment(comment_id, 0)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.remove("d-none");
-    }
-    else if (direction=="0"){
-      thing.classList.remove("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 1)};
-      downarrow1.onclick=function(){vote_comment(comment_id, -1)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.remove("d-none");
-      scoredown1.classList.add("d-none");
-    }
-  }
-
-  post(url, callback, "Unable to vote at this time. Please try again later.");
-}
 
 // Yank Post
 $('#yank-type-dropdown').change(function(){
