@@ -916,7 +916,7 @@ $('.toggle_sidebar_expand').click(function() {
 
 // Voting
 
-$('.upvote-button , .downvote-button').click(function(){
+$(document).on('click', '.upvote-button , .downvote-button', function(){
 
   type=$(this).data('type');
   id=$(this).data('id');
