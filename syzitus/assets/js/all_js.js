@@ -931,16 +931,19 @@ $('.upvote-button , .downvote-button').click(function(){
   }
 
   var new_score = Number($('.'+type+'-score-'+id)[0].innerText)
-  if ($(this).hasClass('downvote-button') && $(this).hasClass('active')){
+
+  if ($('.'+type+'-score-'+id).hasClass('score-up')){
+    new_score--
+  }
+  else if ($('.'+type+'-score-'+id).hasClass('score-down')){
     new_score++
   }
-  else if ($(this).hasClass('upvote-button') && $(this).hasClass('active')){
+
+
+  if ($(this).hasClass('downvote-button') && !$(this).hasClass('active')){
     new_score--
   }
-  else if ($(this).hasClass('downvote-button')){
-    new_score--
-  }
-  else if ($(this).hasClass('upvote-button')){
+  else if ($(this).hasClass('upvote-button') && !$(this).hasClass('active')){
     new_score++
   }
 
@@ -958,7 +961,8 @@ $('.upvote-button , .downvote-button').click(function(){
       $('.'+type+'-score-'+id).addClass('score-up')
       $('.'+type+'-score-'+id).removeClass('score-down')
 
-    } else if (direction==0) {
+    } 
+    else if (direction==0) {
 
       $('.'+type+'-'+id+'-up').removeClass('active')
       $('.'+type+'-'+id+'-down').removeClass('active')
@@ -966,7 +970,8 @@ $('.upvote-button , .downvote-button').click(function(){
       $('.'+type+'-score-'+id).removeClass('score-down')
 
 
-    } else if (direction==-1) {
+    } 
+    else if (direction==-1) {
 
       $('.'+type+'-'+id+'-up').removeClass('active')
       $('.'+type+'-'+id+'-down').addClass('active')
