@@ -969,7 +969,6 @@ $('.upvote-button , .downvote-button').click(function(){
       $('.'+type+'-score-'+id).removeClass('score-up')
       $('.'+type+'-score-'+id).removeClass('score-down')
 
-
     } 
     else if (direction==-1) {
 
