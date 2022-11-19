@@ -1810,7 +1810,7 @@ $('#post-URL').on('input', function(){
 
 
 
-$('.btn-save-edit-comment'.click(function() {
+$('.btn-save-edit-comment').click(function() {
 
   id=$(this).data('comment-id')
 
