@@ -450,7 +450,7 @@ $('.btn-delete-post-confirm').click(function(){
 
 // Delete Comment
 
-$('.btn-delete-comment').click(function() {
+$(document).on('click', '.btn-delete-comment', function() {
   $("#deleteCommentButton").data('delete-url', '/delete/comment/' + $(this).data('comment-id'))
 })
 
@@ -1765,7 +1765,7 @@ $(document).on('click', '.btn-herald-comment', function(){
 
 })
 
-$(".btn-pin-comment").click(function(){
+$(document).on('click', ".btn-pin-comment", function(){
 
 
   var xhr = new XMLHttpRequest();
@@ -2060,7 +2060,7 @@ $('.mention-user').click(function (event) {
 
 });
 
-$('.expandable-image').click(function(event) {
+$(document).on('click', '.expandable-image', function(event) {
 
   if (event.which != 1) {
     return
