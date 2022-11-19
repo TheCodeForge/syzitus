@@ -3,7 +3,7 @@ function formkey() {
 }
 
 //avoid console errors
-$('a[href="javascript:void(0)"]').click(function(event){event.preventDefault()})
+$(document).on('click', 'a[href="javascript:void(0)"]', function(event){event.preventDefault()})
 
 // Using mouse
 
