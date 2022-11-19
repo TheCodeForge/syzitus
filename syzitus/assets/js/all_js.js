@@ -931,10 +931,10 @@ $('.upvote-button , .downvote-button').click(function(){
   }
 
   var new_score = Number($('.'+type+'-score-'+id)[0].innerText)
-  if ($(this).hasClass('downvote-button') && $(this).has_class('active')){
+  if ($(this).hasClass('downvote-button') && $(this).hasClass('active')){
     new_score++
   }
-  else if ($(this).hasClass('upvote-button') && $(this).has_class('active')){
+  else if ($(this).hasClass('upvote-button') && $(this).hasClass('active')){
     new_score--
   }
   else if ($(this).hasClass('downvote-button')){
