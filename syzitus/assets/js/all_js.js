@@ -1739,7 +1739,7 @@ $('.btn-save-new-comment').click(function(){
 })
 
 
-$(document).on('click', 'btn-herald-comment', function(){
+$('.btn-herald-comment'.click(function(){
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
@@ -2060,7 +2060,7 @@ $('.mention-user').click(function (event) {
 
 });
 
-$(document).on('click', '.expandable-image', function(event) {
+$('.expandable-image').click(function(event) {
 
   if (event.which != 1) {
     return
