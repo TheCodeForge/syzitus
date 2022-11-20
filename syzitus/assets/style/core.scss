@@ -3585,7 +3585,8 @@ body, #settings, #notifications, #submit{
     -ms-overflow-style: none;  /* IE 10+ */
 }
 
-.x-scroll::-webkit-scrollbar {
+.x-scroll::-webkit-scrollbar,
+.scroll-y::-webkit-scrollbar {
     display: none; /* Chrome/Safari/Webkit */
 }
 
@@ -4022,4 +4023,12 @@ i.faction-halloween {
 
 i.faction-christmas {
     color: #228b22
+}
+
+body.light .d-light-none {
+    display: none;
+}
+
+body.dark .d-dark-none {
+    display: none;
 }
