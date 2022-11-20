@@ -18,8 +18,8 @@ def giphy():
     url="https://api.giphy.com/v1/gifs/search"
 
     params={
-        "q": request.args.get("searchTerm"),
-        "limit": request.args.get("limit", 48),
+        "q": request.form.get("searchTerm"),
+        "limit": request.form.get("limit", 48),
         'api_key': app.config['GIPHY_KEY']
     }
 
