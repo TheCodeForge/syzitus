@@ -97,6 +97,12 @@ $('#gifs-back-btn').click(function(){
   $('#gifSearch').change()
 })
 
+$('#gifModal .searchcard').click(function(){
+  $('#gifSearch').val($(this).data('gif-search-term'));
+  $('#gifSearch').change()
+
+})
+
 $(document).on('click', '.gif-insert-btn', function(){
   $($(this).data('comment-form-id')).val($($(this).data('comment-form-id')).val()+"![]("+$(this).data('gif-url')+")")
 })
