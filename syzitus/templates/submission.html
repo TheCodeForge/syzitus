@@ -774,17 +774,17 @@
       <input type="hidden" name="parent_fullname" value="t2_{{ p.base36id }}">
       <input id="reply-form-submission-{{ p.fullname }}" type="hidden" name="submission" value="{{ p.base36id }}">
       {% if g.user %}
-      <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" onkeydown="textAreaOnKeyDown(event, (fullname = '{{ p.fullname }}') => post_comment(fullname))" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
+      <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
       {% endif %}
       <div class="comment-format">
         <small class="format pl-0"><i class="fas fa-bold btn-make-bold" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Bold"></i></small>
         <small class="format"><i class="fas fa-italic data-make-italic" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Italicize"></i></small>
         <small class="format"><i class="fas fa-quote-right data-make-quote" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
 
-          {% if ( 'FEATURE_ENABLE_GIFS' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
-          <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="gif-reply-btn-{{ p.fullname }}">
-            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters btn-open-gifs" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
-          </label>
+          {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+          <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ p.fullname }}">
+            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" data-form-id="reply-form-body-{{ p.fullname }}" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
+          </label> 
           {% endif %}
           {% if 'FEATURE_ENABLE_EMOJI' %}
           <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="emoji-reply-btn-{{p.fullname}}">
