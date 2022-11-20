@@ -4,7 +4,7 @@ import requests
 
 from syzitus.helpers.wrappers import *
 
-from syzitus.__main__ import app
+from syzitus.__main__ import app, debug
 
 
 @app.post("/giphy")
@@ -22,5 +22,7 @@ def giphy():
         "limit": request.args.get("limit", 48),
         'api_key': app.config['GIPHY_KEY']
     }
+
+    debug(url, params)
 
     return jsonify(requests.get(url, params=params).json())
