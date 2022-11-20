@@ -50,6 +50,8 @@ $('#new_email').on('input', function () {
   var commentFormID;
 
 $('.btn-open-inserters').click(function(){
+  //this is actually a <textarea> ID, not a comment or a <form> idea
+  //blame the ruqqus devs not me
   commentFormID=$(this).data('form-id')
 })
 
