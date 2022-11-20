@@ -74,7 +74,7 @@ $('#gifModal #gifSearch').change(function(){
     data=data['data']
 
     if (data.length==0) {
-      $('#default-GIFs').addeClass('d-none');
+      $('#default-GIFs').addClass('d-none');
       $('#no-GIFs').removeClass('d-none');
       $('#GIFs').addClass('d-none');
       return;
