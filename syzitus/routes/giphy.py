@@ -7,7 +7,7 @@ from syzitus.helpers.wrappers import *
 from syzitus.__main__ import app
 
 
-@app.get("/giphy")
+@app.post("/giphy")
 @is_not_banned
 def giphy():
 

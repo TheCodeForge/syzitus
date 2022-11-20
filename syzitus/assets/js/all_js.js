@@ -1842,10 +1842,8 @@ function postformtoast(x, callback=function(data){}){
   var xhr = new XMLHttpRequest();
   var url=$('#'+form_id).prop('action');
   var method=$('#'+form_id).prop('method')
-  if (method==undefined){
-    method="POST";
-  }
-  xhr.open(method.toUpperCase(), url, true);
+  
+  xhr.open("POST", url, true);
   var form = new FormData($('#'+form_id)[0]);
   xhr.withCredentials=true;
   xhr.onerror=function() { 
@@ -1868,6 +1866,7 @@ function postformtoast(x, callback=function(data){}){
       $('#toast-error').toast('show')
     }
   };
+
   xhr.send(form);
 }
 
