@@ -69,8 +69,9 @@ $('#gifModal #gifSearch').change(function(){
     return;
   }
 
-  postformtoast($('#gif-search-form'), callback=function(data){
-    data=data['data'];
+  postformtoast($('#gif-search-form'), callback=function(xhr){
+    data=JSON.parse(xhr.response);
+    data=data['data']
 
     if (data.length==0) {
       $('#default-GIFs').addeClass('d-none');
@@ -1855,7 +1856,7 @@ function postformtoast(x, callback=function(data){}){
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
       $('#toast-success').toast('show');
-      callback(xhr.data);
+      callback(xhr);
     } else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
     } else if (xhr.status >=400 && xhr.status < 500) {
