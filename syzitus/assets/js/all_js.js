@@ -107,6 +107,13 @@ $('#gifModal .searchcard').click(function(){
 
 })
 
+$('#gifSearch').on('keypress', function(event){
+  if (event.key==="Enter"){
+    event.preventDefault();
+    $('#gifSearch').change();
+  }
+})
+
 $(document).on('click', '.gif-insert-btn', function(){
   var textbox= $('#'+$(this).data('comment-form-id'))
   textbox.val(textbox.val()+"![]("+$(this).data('gif-url')+")")
