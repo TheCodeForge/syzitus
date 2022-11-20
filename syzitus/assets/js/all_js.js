@@ -1856,8 +1856,8 @@ function postformtoast(x, callback=function(data){}){
       if (data['message']!=undefined) {
         $('#toast-success .toast-text').text(data['message']);
         $('#toast-success').toast('show');
-        callback(xhr);
       }
+      callback(xhr);
     } 
     else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
