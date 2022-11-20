@@ -95,7 +95,7 @@ $('#gifModal #gifSearch').change(function(){
 
 })
 
-$('#gifs-back-btn').click(function(){
+$('.clear-gif-form').click(function(){
   $('#gifSearch').val('');
   $('#gifSearch').change()
 })

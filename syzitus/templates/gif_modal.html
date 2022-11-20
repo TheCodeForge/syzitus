@@ -5,13 +5,15 @@
       <div class="modal-header border-bottom-0 shadow-md d-block p-3">
         <div class="form-group d-flex align-items-center w-100 mb-0">
           <div id="gifs-back-btn">
-            <button class="btn btn-link pl-0 pr-3"><i class="fas fa-long-arrow-left text-muted"></i></button>
+            <button class="btn btn-link pl-0 pr-3 clear-gif-form"><i class="fas fa-long-arrow-left text-muted"></i></button>
           </div>
-          <form id="gif-search-form" action="/giphy" method="get">
-            <input type="text" class="form-control" id="gifSearch" placeholder="Search Tenor and press enter">
-          </form>
-          <div id="gifs-cancel-btn">
-            <button class="btn btn-link pl-3 pr-0" data-dismiss="modal"><i class="fas fa-times text-muted"></i></button>
+          <div>
+            <form id="gif-search-form" action="/giphy" method="get">
+              <input type="text" class="form-control" id="gifSearch" placeholder="Search Tenor and press enter">
+            </form>
+          </div>
+          <div>
+            <button class="btn btn-link pl-3 pr-0 clear-gif-form" data-dismiss="modal"><i class="fas fa-times text-muted"></i></button>
           </div>
         </div>
       </div>
