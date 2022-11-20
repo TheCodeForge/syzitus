@@ -1753,7 +1753,7 @@ $(document).on('click', '.expandable-image', function(event) {
   $('#desktop-expanded-image-wrap-link').attr('href', url)
 
 
-  if (url.contains('giphy.com')) {
+  if (url.includes('giphy.com')) {
     $('#modal-image-attribution').removeClass('d-none');
   }
   else {
