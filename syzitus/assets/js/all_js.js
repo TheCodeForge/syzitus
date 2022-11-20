@@ -108,7 +108,8 @@ $('#gifModal .searchcard').click(function(){
 })
 
 $(document).on('click', '.gif-insert-btn', function(){
-  $($(this).data('comment-form-id')).val($($(this).data('comment-form-id')).val()+"![]("+$(this).data('gif-url')+")")
+  var textbox= $('#'+$(this).data('comment-form-id'))
+  textbox.val(textbox.val()+"![]("+$(this).data('gif-url')+")")
 })
 
 
