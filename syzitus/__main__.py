@@ -225,7 +225,7 @@ app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL").lstrip().rstrip()
 app.config["RATELIMIT_KEY_PREFIX"] = "flask_limiting_"
 app.config["RATELIMIT_ENABLED"] = True
 app.config["RATELIMIT_DEFAULTS_DEDUCT_WHEN"]=lambda x:True
-app.config["RATELIMIT_DEFAULTS_EXEMPT_WHEN"]=lambda:False
+app.config["RATELIMIT_DEFAULTS_EXEMPT_WHEN"]=lambda x:False
 app.config["RATELIMIT_HEADERS_ENABLED"]=True
 
 
