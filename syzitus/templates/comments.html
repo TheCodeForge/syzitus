@@ -352,15 +352,13 @@
 
             {% if 'FEATURE_ENABLE_GIFS' | app_config %}
             <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ c.fullname }}">
-              <span id="gif-reply-btn-{{ c.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters btn-open-gifs" data-form-id="reply-form-body-{{ c.fullname }}" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
+              <span id="gif-reply-btn-{{ c.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" data-form-id="reply-form-body-{{ c.fullname }}" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
             </label> 
             {% endif %}
             {% if 'FEATURE_ENABLE_EMOJI' | app_config %}
-            &nbsp;
             <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{c.fullname}}">
                <i id="emoji-reply-btn-{{c.fullname}}" class="fas fa-smile-beam btn-open-inserters" data-form-id="reply-form-body-{{c.fullname}}" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"></i>
             </label>
-            &nbsp;
             {% endif %}
 
             
