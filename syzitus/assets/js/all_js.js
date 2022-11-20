@@ -99,7 +99,7 @@ $('#gifs-back-btn').click(function(){
 
 $('#gifModal .searchcard').click(function(){
   $('#gifSearch').val($(this).data('gif-search-term'));
-  $('#gifSearch').change()
+  $('#gifSearch').change();
 
 })
 
@@ -1827,7 +1827,16 @@ function mod_post(url, type, id) {
 //post form toast utility function
 function postformtoast(x, callback=function(data){}){
 
-  var form_id=x.data('form')
+
+
+  var form_id
+  if (x.prop('tagName')=='FORM') {
+    form_id=x.prop('id')
+  }
+  else {
+    form_id=x.data('form')
+  }
+
   var xhr = new XMLHttpRequest();
   var url=$('#'+form_id).prop('action');
   var method=$('#'+form_id).prop('method')
