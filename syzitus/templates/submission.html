@@ -782,17 +782,17 @@
         <small class="format"><i class="fas fa-quote-right data-make-quote" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
 
           {% if ( 'FEATURE_ENABLE_GIFS' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
-          <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ p.fullname }}">
+          <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="gif-reply-btn-{{ p.fullname }}">
             <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters btn-open-gifs" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
           </label>
           {% endif %}
           {% if 'FEATURE_ENABLE_EMOJI' %}
-          <label class="btn btn-secondary format d-inline-block m-0" for="emoji-reply-btn-{{p.fullname}}">
+          <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="emoji-reply-btn-{{p.fullname}}">
             <div id="emoji-reply-btn-{{p.fullname}}" class="btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
           </label> 
           {% endif %}
 
-          <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
+          <label class="format btn btn-secondary m-0 mr-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
                 <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
           </label>
