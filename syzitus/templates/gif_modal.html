@@ -4,9 +4,15 @@
     <div class="modal-content">
       <div class="modal-header border-bottom-0 shadow-md d-block p-3">
         <div class="form-group d-flex align-items-center w-100 mb-0">
-          <div id="gifs-back-btn"></div>
-          <input type="text" class="form-control" id="gifSearch" placeholder="Search Tenor and press enter">
-          <div id="gifs-cancel-btn"></div>
+          <div id="gifs-back-btn">
+            <button class="btn btn-link pl-0 pr-3"><i class="fas fa-long-arrow-left text-muted"></i></button>
+          </div>
+          <form id="gif-search-form" action="/giphy" method="get">
+            <input type="text" class="form-control" id="gifSearch" placeholder="Search Tenor and press enter">
+          </form>
+          <div id="gifs-cancel-btn">
+            <button class="btn btn-link pl-3 pr-0" data-dismiss="modal"><i class="fas fa-times text-muted"></i></button>
+          </div>
         </div>
       </div>
       <div class="scroll-y">
@@ -14,6 +20,14 @@
 
           <div id="no-gifs-found">
           </div>
+
+          <div id="no-GIFs" class="text-center py-3 mt-3 d-none">
+            <div class="mb-3">
+              <i class="fad fa-frown text-gray-500"></i>
+            </div>
+            <p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p>
+          </div>
+
           <div class="card-columns gif-categories pt-3 px-3 pb-0" id="GIFs"></div>
 
           <div class="card-columns gif-categories pt-3 px-3 pb-0" id="default-GIFs">

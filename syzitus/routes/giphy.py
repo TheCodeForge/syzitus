@@ -5,8 +5,8 @@ import requests
 from syzitus.__main__ import app
 
 
-@app.route("/giphy", methods=["GET"])
-@app.route("/giphy<path>", methods=["GET"])
+@app.get("/giphy")
+@is_not_banned
 def giphy():
 
     if not app.config["GIPHY_KEY"]:

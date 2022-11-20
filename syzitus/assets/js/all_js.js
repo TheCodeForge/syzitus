@@ -53,124 +53,58 @@ $('.btn-open-inserters').click(function(){
   commentFormID=$(this).data('form-id')
 })
 
-$('.btn-emoji').click(function() {
 
-    searchTerm=$(this).data('emoji')
 
-    var emoji = ' :'+searchTerm+': '
-    
-    var commentBox = document.getElementById(commentFormID);
+$('#gifModal #gifSearch').change(function(){
 
-    var old = commentBox.value;
+  var searchTerm = $(this).val();
 
-    commentBox.value = old + emoji;
+  //handle blank search
+  if (searchTerm=="" || searchTerm==undefined) {
+    $('#default-GIFs').removeClass('d-none');
+    $('#GIFs').addClass('d-none');
+    $('#no-GIFs').addClass('d-none');
+    return;
+  }
+
+  postformtoast($('#gif-search-form'), callback=function(data){
+    data=data['data'];
+
+    if (data.length==0) {
+      $('#default-GIFs').addeClass('d-none');
+      $('#no-GIFs').removeClass('d-none');
+      $('#GIFs').addClass('d-none');
+      return;
+    }
+
+    output=""
+
+    for (i=0; i<data.length; i++){
+      output += '<div class="card bg-white gif-insert-btn" data-dismiss="modal" aria-label="Close" data-gif-url="' + data[i]['embed_url'] + '" data-comment-form-id="' + commentFormID + '"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + data[i]['embed_url'] + '/100.gif"></div>'
+    }
+
+    $('#default-GIFs').addClass('d-none');
+    $('#no-GIFs').addClass('d-none');
+    $('#GIFs').removeClass('d-none');
+    $('#GIFs').html(output)
 
   })
 
-  function getGif(searchTerm) {
-
-    if (searchTerm !== undefined) {
-      document.getElementById('gifSearch').value = searchTerm;
-    }
-    else {
-      document.getElementById('gifSearch').value = null;
-    }
-
-      // load more gifs div
-      var loadGIFs = document.getElementById('gifs-load-more');
-
-      // error message div
-      var noGIFs = document.getElementById('no-gifs-found');
-
-      // categories div
-      var cats = document.getElementById('GIFcats');
-
-      // container div
-      var default_gifs = document.getElementById('default-GIFs');
-      var container = document.getElementById('GIFs');
-
-      // modal body div
-      var modalBody = document.getElementById('gif-modal-body')
-
-      // UI buttons
-      var backBtn = document.getElementById('gifs-back-btn');
-      var cancelBtn = document.getElementById('gifs-cancel-btn');
-
-      container.innerHTML = '';
-
-      if (searchTerm == undefined) {
-        default_gifs.classList.remove('d-none')
-        backBtn.innerHTML = null;
-        cancelBtn.innerHTML = null;
-        noGIFs.innerHTML = null;
-        loadGIFs.innerHTML = null;
-      } else {
-        default_gifs.classList.add('d-none')
-        backBtn.innerHTML = '<button class="btn btn-link pl-0 pr-3" id="gifs-back-btn" onclick="getGif();"><i class="fas fa-long-arrow-left text-muted"></i></button>';
-
-        cancelBtn.innerHTML = '<button class="btn btn-link pl-3 pr-0" id="gifs-cancel-btn" onclick="getGif();"><i class="fas fa-times text-muted"></i></button>';
-
-        let gifs = [];
-        let apiKey = tenor_api_key();
-        let lmt = 30;
-        let url = "https://g.tenor.com/v1/search?q=" + searchTerm + "&key=" + apiKey + "&limit=" + lmt;
-        fetch(url)
-        .then(response => {
-          return response.json();
-        })
-        .then(json => {
-          let results = json.results.map(function(obj) {
-            return {
-              id: obj.id,
-              preview: obj.media[0].tinygif.url,
-              url: obj.media[0].gif.url,
-              source: obj.url,
-              bgColor: obj.bg_color
-            }
-          });
-          
-          gifs = results
-
-          // loop for fetching mutliple GIFs and creating the card divs
-          if (gifs.length) {
-            for (var i = 0; i < gifs.length; i++) {
-              container.innerHTML += ('<div class="card bg-white" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
-              noGIFs.innerHTML = null;
-              loadGIFs.innerHTML = '<div class="text-center py-3"><div class="mb-3"><i class="fad fa-grin-beam-sweat text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Thou&#39;ve reached the end of the list!</p></div>';
-            }
-          } else {
-            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
-            container.innerHTML = null;
-            loadGIFs.innerHTML = null;
-          }
-        })
-        .catch(err => alert(err));
-      };
-    }
-
-
-$('.comment-collapse').click(function() {
-  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
 })
 
-// Text Area Input handling
+$('#gifs-back-btn').click(function(){
+  $('#gifSearch').val('');
+  $('#gifSearch').change()
+})
 
-function textAreaOnKeyDown(e, func){
-  if (isCtrlEnterSubmit(e))
-    func();
+$(document).on('click', '.gif-insert-btn', function(){
+  $($(this).data('comment-form-id')).val($($(this).data('comment-form-id')).val()+"![]("+$(this).data('gif-url')+")")
+})
 
-  return;
-}
 
-function isCtrlEnterSubmit(e){
-  // If the user has pressed enter + ctrl/command
-  if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey))
-  {
-     return true;
-  }
-  
-  return false;
-}
+$(document).on('click', '.comment-collapse', function() {
+  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
+})
 
 // Commenting form
 
@@ -1885,12 +1819,16 @@ function mod_post(url, type, id) {
 
 
 //post form toast utility function
-var postformtoast = function(x){
+function postformtoast(x, callback=function(data){}){
 
   var form_id=x.data('form')
   var xhr = new XMLHttpRequest();
-  url=$('#'+form_id).prop('action');
-  xhr.open("POST", url, true);
+  var url=$('#'+form_id).prop('action');
+  var method=$('#'+form_id).prop('method')
+  if (method==undefined){
+    method="POST";
+  }
+  xhr.open(method.toUpperCase(), url, true);
   var form = new FormData($('#'+form_id)[0]);
   xhr.withCredentials=true;
   xhr.onerror=function() { 
@@ -1901,7 +1839,8 @@ var postformtoast = function(x){
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
-      $('#toast-success').toast('show')
+      $('#toast-success').toast('show');
+      callback(xhr.data);
     } else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
     } else if (xhr.status >=400 && xhr.status < 500) {
