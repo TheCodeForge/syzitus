@@ -71,7 +71,7 @@ $('#gifModal #gifSearch').change(function(){
 
   postformtoast($('#gif-search-form'), callback=function(xhr){
     data=JSON.parse(xhr.response);
-    data=data['data']
+    console.log(data)
 
     if (data.length==0) {
       $('#default-GIFs').addClass('d-none');
