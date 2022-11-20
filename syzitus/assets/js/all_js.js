@@ -931,28 +931,7 @@ $('#ytEmbed').html('<iframe width="100%" height="475" src="//www.youtube.com/emb
 
 // Expand Images on Desktop
 
-function expandDesktopImage(image) {
 
-// Link text
-
-var linkText = document.getElementById("desktop-expanded-image-link");
-var imgLink = document.getElementById("desktop-expanded-image-wrap-link");
-
-var inlineImage = document.getElementById("desktop-expanded-image");
-
-inlineImage.src = image;
-
-linkText.href = image;
-imgLink.href = image;
-
-if (image.includes("i.syzitus.com")) {
-  linkText.textContent = 'Go to website';
-}
-else {
-  linkText.textContent = 'View original';
-}
-
-};
 
 // When image modal is closed
 
@@ -1758,6 +1737,7 @@ $('.mention-user').click(function (event) {
 
 });
 
+
 $(document).on('click', '.expandable-image', function(event) {
 
   if (event.which != 1) {
@@ -1767,8 +1747,20 @@ $(document).on('click', '.expandable-image', function(event) {
 
   var url= $(this).data('url');
 
-  expandDesktopImage(url);
+  $('#desktop-expanded-image').attr('src', url)
+
+  $('#desktop-expanded-image-link').attr('href', url);
+  $('#desktop-expanded-image-wrap-link').attr('href', url)
+
+
+  if (url.contains('giphy.com')) {
+    $('#modal-image-attribution').removeClass('d-none');
+  }
+  else {
+    $('#modal-image-attribution').addClass('d-none');
+  }
 })
+
 
 $('.text-expand').click(function(event){
   if (event.which != 1) {
