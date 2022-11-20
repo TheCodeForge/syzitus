@@ -1,4 +1,5 @@
 <!-- GIF Selection Modal - Powered by GIPHY -->
+{% if g.user %}
 <div class="modal fade" id="gifModal" tabindex="-1" role="dialog" aria-labelledby="gifModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered p-5" role="document">
     <div class="modal-content">
@@ -9,6 +10,7 @@
           </div>
           <div>
             <form id="gif-search-form" action="/giphy" method="post">
+              <input type="hidden" name="formkey" value="{{ g.user.formkey }}"
               <input type="text" name="searchTerm" class="form-control" id="gifSearch" placeholder="Search Tenor and press enter">
             </form>
           </div>
@@ -152,3 +154,4 @@
   </div>
 
 </div>
+{% endif %}
