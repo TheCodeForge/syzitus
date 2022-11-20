@@ -1853,15 +1853,20 @@ function postformtoast(x, callback=function(data){}){
   xhr.onload = function() {
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
-      $('#toast-success .toast-text').text(data['message']);
-      $('#toast-success').toast('show');
-      callback(xhr);
-    } else if (xhr.status >= 300 && xhr.status < 400 ) {
+      if (data['message']!=undefined) {
+        $('#toast-success .toast-text').text(data['message']);
+        $('#toast-success').toast('show');
+        callback(xhr);
+      }
+    } 
+    else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
-    } else if (xhr.status >=400 && xhr.status < 500) {
+    } 
+    else if (xhr.status >=400 && xhr.status < 500) {
       $('#toast-error .toast-text').text(data['error']);
       $('#toast-error').toast('show')
-    } else {
+    } 
+    else {
       $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
       $('#toast-error').toast('show')
     }
