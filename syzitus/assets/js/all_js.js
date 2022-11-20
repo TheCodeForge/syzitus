@@ -1827,8 +1827,6 @@ function mod_post(url, type, id) {
 //post form toast utility function
 function postformtoast(x, callback=function(data){}){
 
-
-
   var form_id
   if (x.prop('tagName')=='FORM') {
     form_id=x.prop('id')
