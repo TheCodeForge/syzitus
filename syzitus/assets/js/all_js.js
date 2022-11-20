@@ -84,7 +84,7 @@ $('#gifModal #gifSearch').change(function(){
     output=""
 
     for (i=0; i<data.length; i++){
-      output += '<div class="card bg-white gif-insert-btn" data-dismiss="modal" aria-label="Close" data-gif-url="' + data[i]['embed_url'] + '" data-comment-form-id="' + commentFormID + '"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + data[i]['images']['fixed_width_downsampled']['url'] + '/100.gif"></div>'
+      output += '<div class="card bg-white gif-insert-btn" data-dismiss="modal" aria-label="Close" data-gif-url="' + data[i]['images']['original']['url'] + '" data-comment-form-id="' + commentFormID + '"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + data[i]['images']['fixed_width_downsampled']['url'] + '/100.gif"></div>'
     }
 
     $('#default-GIFs').addClass('d-none');
