@@ -23,6 +23,6 @@ def giphy():
         'api_key': app.config['GIPHY_KEY']
     }
 
-    debug(url, params)
+    debug([url, params])
 
     return jsonify(requests.get(url, params=params).json())
