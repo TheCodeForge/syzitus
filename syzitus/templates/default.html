@@ -250,10 +250,13 @@
 {% if g.user %}
 {% include "flag_post_modal.html" %}
 {% include "flag_comment_modal.html" %}
-{% include "gif_modal.html" %}
 {% include "delete_comment_modal.html" %}
 {% include "delete_post_modal.html" %}
 {% include "tip_modal.html" %}
+{% endif %}
+
+{% if g.user and p and ('FEATURE_ENABLE_GIFS'|app_config) %}
+{% include "gif_modal.html" %}
 {% endif %}
 
 {% if g.user and g.user.mods_anything %}
