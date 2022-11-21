@@ -100,6 +100,17 @@
 
 {% include "header.html" %}
 
+{% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
+<div class="row fixed-top" id="mobile-prompt-row">
+  <div id="mobile-prompt-container" class="ml-auto mr-5">
+    <div id="mobile-prompt" href="javascript:void(0)" data-toggle="tooltip" data-container="#mobile-prompt-row" data-placement="top" data-trigger="click" title="" data-original-title="Install the {{ 'SITE_NAME' | app_config }} webapp by saving this page to your home screen!">
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
 {% if request.args.get("from_ruqqus") %}
 <div id="redirect-banner" class="bg-warning w-100">
   <div class="mx-auto text-center">
@@ -110,15 +121,6 @@
 <div id="snowball-banner" class="bg-danger w-100">
   <div class="mx-auto text-center">
     <span class="text-white">Join the war of the holidays! {% if g.user.id%2 %}You are on Team Christmas - Help them hold out against the Halloween invaders!{% else %}You are on Team Halloween - Help them revolt against Christmas tyranny!{% endif %} | Christmas: {{ 'Team_Christmas' | event_score }} | Halloween: {{ 'Team_Halloween' | event_score }}</span>
-  </div>
-</div>
-{% endif %}
-
-{% if request.path=='/' and g.system and g.timestamp>session.get('tooltip_last_dismissed',0)+60*60*24 and (g.system.endswith('/chrome') or g.system.endswith('/other')) %}
-<div class="row fixed-top" id="mobile-prompt-row">
-  <div id="mobile-prompt-container" class="ml-auto mr-5">
-    <div id="mobile-prompt" href="javascript:void(0)" data-toggle="tooltip" data-container="#mobile-prompt-row" data-placement="top" data-trigger="click" title="" data-original-title="Install the {{ 'SITE_NAME' | app_config }} webapp by saving this page to your home screen!">
-    </div>
   </div>
 </div>
 {% endif %}
