@@ -98,7 +98,7 @@
 
 <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %} {% if g.user and g.user.id % 2 %}team-xmas{% elif g.user %}team-hween{% endif %}">
 
-  {% if "ruqqus.com" in request.headers.get("Referer","") %}
+  {% if request.args.get("from_ruqqus") %}
   <div id="redirect-banner" class="bg-danger w-100">
     <div class="mx-auto text-center">
       <span class="text-white">Welcome to Syzitus, a spiritual successor to the defunct Ruqqus platform. The rules have changed; please familiarize yourself with the updated <a href="/help/terms" target="_blank">terms</a> and <a href="help/rules" target="_blank">content policy</a>. Note that data has not carried over; whatever content you were looking for is not here.</span>
