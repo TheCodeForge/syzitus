@@ -6,16 +6,17 @@ Disallow: /settings
 Disallow: /me
 Disallow: /discord
 
+User-Agent: AhrefsBot
+User-Agent: AwarioSmartBot
+User-Agent: CCBot
 User-Agent: DotBot
-User-Agent: TurnitinBot
 User-Agent: Huaweisymantecspider
-User-Agent: SiteSnagger
-User-Agent: TeleportPro
-User-Agent: Xaldon_WebSpider
 User-Agent: MJ12bot
 User-Agent: SEMrushBot
-User-Agent: AhrefsBot
-User-Agent: CCBot
 User-Agent: SBSearch
+User-Agent: SiteSnagger
+User-Agent: TeleportPro
+User-Agent: TurnitinBot
+User-Agent: Xaldon_WebSpider
 User-Agent: ZoominfoBot
 Disallow: /
