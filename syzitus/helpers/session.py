@@ -19,7 +19,7 @@ def session_isnsfl(board):
 
 def make_logged_out_formkey():
 
-    debug("use {{ g.timestamp | formkey }} moving forward")
+    #debug("use {{ g.timestamp | formkey }} moving forward")
 
     s = f"{g.timestamp}+{session['session_id']}"
 

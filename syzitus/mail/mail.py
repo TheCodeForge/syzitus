@@ -55,8 +55,7 @@ def send_verification_email(user, email=None):
 
     send_mail(to_address=email,
               html=render_template("email/email_verify.html",
-                                   action_url=link,
-                                   v=user),
+                                   action_url=link),
               subject=f"Validate your {app.config['SITE_NAME']} account email."
               )
 
