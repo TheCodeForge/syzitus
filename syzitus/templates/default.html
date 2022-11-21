@@ -101,7 +101,7 @@
   {% if "ruqqus.com" in request.headers.get("Referer","") %}
   <div id="redirect-banner" class="bg-danger w-100">
     <div class="mx-auto text-center">
-      <span class="text-white">Welcome to Syzitus, a spiritual successor to the defunct Ruqqus platform. The rules have changed; please familiarize yourself with the updated <a href="/help/terms" target="_blank">terms</a> and <a href="help/rules" target="_blank">content policy</a>.</span>
+      <span class="text-white">Welcome to Syzitus, a spiritual successor to the defunct Ruqqus platform. The rules have changed; please familiarize yourself with the updated <a href="/help/terms" target="_blank">terms</a> and <a href="help/rules" target="_blank">content policy</a>. Note that data has not carried over; whatever content you were looking for is not here.</span>
     </div>
   </div>
   {% elif ('EVENT_SNOWBALL_FIGHT'|app_config) and g.user %}
