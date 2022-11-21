@@ -24,10 +24,7 @@ FACEBOOK_TOKEN=environ.get("FACEBOOK_TOKEN","").lstrip().rstrip()
 
 def youtube_embed(url):
 
-    try:
-        yt_id = re.match(youtube_regex, url).group(3)
-    except AttributeError:
-        return "error"
+    yt_id = re.match(youtube_regex, url).group(3)
 
     if not yt_id or len(yt_id) != 11:
         return "error"
