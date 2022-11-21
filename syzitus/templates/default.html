@@ -98,6 +98,8 @@
 
 <body id="{% block pagetype %}frontpage{% endblock %}" class="{% if session.get('dark_mode_enabled') %}dark{% else %}light{% endif %} {% if g.user and g.user.id % 2 %}team-xmas{% elif g.user %}team-hween{% endif %}">
 
+{% include "header.html" %}
+
   {% if request.args.get("from_ruqqus") %}
   <div id="redirect-banner" class="bg-warning w-100">
     <div class="mx-auto text-center">
@@ -120,8 +122,6 @@
     </div>
   </div>
   {% endif %}
-
-{% include "header.html" %}
 
 <!-- Page Content -->
 
