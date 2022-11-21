@@ -9,7 +9,7 @@ from syzitus.__main__ import app
 from .get import *
 
 youtube_regex = re.compile(
-    "^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*")
+    "^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)([^#\&\?]*)")
 
 regexified_server_name=app.config['SERVER_NAME'].replace('.','\.')
 ruqqus_regex = re.compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
@@ -25,7 +25,7 @@ FACEBOOK_TOKEN=environ.get("FACEBOOK_TOKEN","").lstrip().rstrip()
 def youtube_embed(url):
 
     try:
-        yt_id = re.match(youtube_regex, url).group(2)
+        yt_id = re.match(youtube_regex, url).group(3)
     except AttributeError:
         return "error"
 

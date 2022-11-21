@@ -446,7 +446,7 @@
 
         <div class="card-block w-100 my-md-auto">
 
-          <div class="post-meta text-left d-none d-md-block mb-md-2">
+          <div class="post-meta text-left d-none d-md-block mb-md-2 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
             {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
@@ -470,7 +470,7 @@
           <h1 class="card-title post-title text-left mb-md-2 pb-md-1">{{ p.title | safe }}</h1>
           {% endif %}
 
-          <div class="post-meta text-left d-block d-md-none mb-3">
+          <div class="post-meta text-left d-block d-md-none mb-3 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
             {% if ('EVENT_SNOWBALL_FIGHT'|app_config) %}{% include "tags/holiday_faction.html" %} · {% endif %}
             {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
             {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
@@ -524,7 +524,7 @@
                   <i class="fas fa-quote-right btn-make-quote" aria-hidden="true" data-form-id="post-edit-box-{{ p.base36id }}" data-toggle="tooltip" data-placement="bottom" title="Quote"></i>
                 </small>
 
-                {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
+                {% if ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
                 <small class="format">
                   <span class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Add GIF">GIF</span>
                 </small> 
@@ -552,7 +552,7 @@
           {% if g.user %}
 
           <div id="voting" class="voting d-none d-md-block mb-auto">
-            <div id="post-{{ p.base36id }}-up" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}"></div>
+            <div id="post-{{ p.base36id }}-up" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}"></div>
 
             <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
@@ -717,7 +717,7 @@
         {% endif %}
         <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none{% if voted==1 %} upvoted{% elif voted==-1 %} downvoted{% endif %}">
           {% if g.user %}
-          <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
+          <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
           </span>
           {% else %}
           <span id="arrow-{{ p.base36id }}-mobile-up" tabindex="0" class="mr-2 arrow-mobile-up go-to-login">
@@ -774,25 +774,25 @@
       <input type="hidden" name="parent_fullname" value="t2_{{ p.base36id }}">
       <input id="reply-form-submission-{{ p.fullname }}" type="hidden" name="submission" value="{{ p.base36id }}">
       {% if g.user %}
-      <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" onkeydown="textAreaOnKeyDown(event, (fullname = '{{ p.fullname }}') => post_comment(fullname))" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
+      <textarea id="reply-form-body-{{ p.fullname }}" class="comment-box form-control rounded" id="comment-form" name="body" form="reply-to-{{ p.fullname }}" aria-label="With textarea" placeholder="Add your comment..." rows="1"></textarea>
       {% endif %}
       <div class="comment-format">
         <small class="format pl-0"><i class="fas fa-bold btn-make-bold" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Bold"></i></small>
         <small class="format"><i class="fas fa-italic data-make-italic" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Italicize"></i></small>
         <small class="format"><i class="fas fa-quote-right data-make-quote" data-form-id="reply-form-body-{{ p.fullname }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"300"}' title="Quote"></i></small>
 
-          {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
-          <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ p.fullname }}">
-            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
-          </label>
+          {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+          <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="gif-reply-btn-{{ p.fullname }}">
+            <span id="gif-reply-btn-{{ p.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" data-form-id="reply-form-body-{{ p.fullname }}" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
+          </label> 
           {% endif %}
           {% if 'FEATURE_ENABLE_EMOJI' %}
-          <label class="btn btn-secondary format d-inline-block m-0" for="emoji-reply-btn-{{p.fullname}}">
+          <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="emoji-reply-btn-{{p.fullname}}">
             <div id="emoji-reply-btn-{{p.fullname}}" class="btn-open-inserters" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"><i class="fas fa-smile-beam"></i></div>
           </label> 
           {% endif %}
 
-          <label class="format btn btn-secondary m-0 ml-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
+          <label class="format btn btn-secondary m-0 mr-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
                 <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
           </label>

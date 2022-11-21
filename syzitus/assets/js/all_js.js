@@ -3,7 +3,7 @@ function formkey() {
 }
 
 //avoid console errors
-$('a[href="javascript:void(0)"]').click(function(event){event.preventDefault()})
+$(document).on('click', 'a[href="javascript:void(0)"]', function(event){event.preventDefault()})
 
 // Using mouse
 
@@ -50,191 +50,79 @@ $('#new_email').on('input', function () {
   var commentFormID;
 
 $('.btn-open-inserters').click(function(){
+  //this is actually a <textarea> ID, not a comment or a <form> idea
+  //blame the ruqqus devs not me
   commentFormID=$(this).data('form-id')
 })
 
-$('.btn-emoji').click(function() {
 
-    searchTerm=$(this).data('emoji')
 
-    var emoji = ' :'+searchTerm+': '
-    
-    var commentBox = document.getElementById(commentFormID);
+$('#gifModal #gifSearch').change(function(){
 
-    var old = commentBox.value;
+  var searchTerm = $(this).val();
 
-    commentBox.value = old + emoji;
+  //handle blank search
+  if (searchTerm=="" || searchTerm==undefined) {
+    $('#default-GIFs').removeClass('d-none');
+    $('#GIFs').addClass('d-none');
+    $('#no-GIFs').addClass('d-none');
+    return;
+  }
+
+  postformtoast($('#gif-search-form'), callback=function(xhr){
+    var resp=JSON.parse(xhr.response);
+    //console.log(data)
+    var data = resp['data']
+
+    if (data.length==0) {
+      $('#default-GIFs').addClass('d-none');
+      $('#no-GIFs').removeClass('d-none');
+      $('#GIFs').addClass('d-none');
+      return;
+    }
+
+    output=""
+
+    for (i=0; i<data.length; i++){
+      output += '<div class="card bg-white gif-insert-btn" data-dismiss="modal" aria-label="Close" data-gif-url="' + data[i]['images']['original']['url'] + '" data-comment-form-id="' + commentFormID + '"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + data[i]['images']['fixed_width_downsampled']['url'] + '/100.gif"></div>'
+    }
+
+    $('#default-GIFs').addClass('d-none');
+    $('#no-GIFs').addClass('d-none');
+    $('#GIFs').removeClass('d-none');
+    $('#GIFs').html(output)
 
   })
 
-  function getGif(searchTerm) {
-
-    if (searchTerm !== undefined) {
-      document.getElementById('gifSearch').value = searchTerm;
-    }
-    else {
-      document.getElementById('gifSearch').value = null;
-    }
-
-      // load more gifs div
-      var loadGIFs = document.getElementById('gifs-load-more');
-
-      // error message div
-      var noGIFs = document.getElementById('no-gifs-found');
-
-      // categories div
-      var cats = document.getElementById('GIFcats');
-
-      // container div
-      var default_gifs = document.getElementById('default-GIFs');
-      var container = document.getElementById('GIFs');
-
-      // modal body div
-      var modalBody = document.getElementById('gif-modal-body')
-
-      // UI buttons
-      var backBtn = document.getElementById('gifs-back-btn');
-      var cancelBtn = document.getElementById('gifs-cancel-btn');
-
-      container.innerHTML = '';
-
-      if (searchTerm == undefined) {
-        default_gifs.classList.remove('d-none')
-        backBtn.innerHTML = null;
-        cancelBtn.innerHTML = null;
-        noGIFs.innerHTML = null;
-        loadGIFs.innerHTML = null;
-      } else {
-        default_gifs.classList.add('d-none')
-        backBtn.innerHTML = '<button class="btn btn-link pl-0 pr-3" id="gifs-back-btn" onclick="getGif();"><i class="fas fa-long-arrow-left text-muted"></i></button>';
-
-        cancelBtn.innerHTML = '<button class="btn btn-link pl-3 pr-0" id="gifs-cancel-btn" onclick="getGif();"><i class="fas fa-times text-muted"></i></button>';
-
-        let gifs = [];
-        let apiKey = tenor_api_key();
-        let lmt = 30;
-        let url = "https://g.tenor.com/v1/search?q=" + searchTerm + "&key=" + apiKey + "&limit=" + lmt;
-        fetch(url)
-        .then(response => {
-          return response.json();
-        })
-        .then(json => {
-          let results = json.results.map(function(obj) {
-            return {
-              id: obj.id,
-              preview: obj.media[0].tinygif.url,
-              url: obj.media[0].gif.url,
-              source: obj.url,
-              bgColor: obj.bg_color
-            }
-          });
-          
-          gifs = results
-
-          // loop for fetching mutliple GIFs and creating the card divs
-          if (gifs.length) {
-            for (var i = 0; i < gifs.length; i++) {
-              container.innerHTML += ('<div class="card bg-white" data-dismiss="modal" aria-label="Close" onclick="insertGIF(\'' + gifs[i].url + '\',\'' + commentFormID + '\')"><div class="gif-cat-overlay"></div><img class="img-fluid" src="' + gifs[i].preview + '"></div>');
-              noGIFs.innerHTML = null;
-              loadGIFs.innerHTML = '<div class="text-center py-3"><div class="mb-3"><i class="fad fa-grin-beam-sweat text-gray-500" style="font-size: 3.5rem;"></i></div><p class="font-weight-bold text-gray-500 mb-0">Thou&#39;ve reached the end of the list!</p></div>';
-            }
-          } else {
-            noGIFs.innerHTML = '<div class="text-center py-3 mt-3"><div class="mb-3"><i class="fad fa-frown text-gray-500"></i></div><p class="font-weight-bold text-gray-500 mb-0">Aw shucks. No GIFs found...</p></div>';
-            container.innerHTML = null;
-            loadGIFs.innerHTML = null;
-          }
-        })
-        .catch(err => alert(err));
-      };
-    }
-
-$(".gif-cat-select").click(function(){getGif($(this).data('gif-search-term'))})
-$("#gifSearch").click(function(){getGif($(this).val())})
-
-  // Insert GIF markdown into comment box function
-
-  function insertGIF(url,form) {
-
-    var gif = "![](" + url +")";
-
-    var commentBox = document.getElementById(form);
-
-    var old  = commentBox.value;
-
-    commentBox.value = old + gif;
-
-  }
-
-  // When GIF keyboard is hidden, hide all GIFs
-
-  $('#gifModal').on('hidden.bs.modal', function (e) {
-
-    document.getElementById('gifSearch').value = null;
-
-    // load more gifs div
-
-    var loadGIFs = document.getElementById('gifs-load-more');
-
-    // no GIFs div
-
-    var noGIFs = document.getElementById('no-gifs-found');
-
-    // container div
-
-    var container = document.getElementById('GIFs');
-
-    // UI buttons
-
-    var backBtn = document.getElementById('gifs-back-btn');
-
-    var cancelBtn = document.getElementById('gifs-cancel-btn');
-
-    // Remove inner HTML from container var
-
-    container.innerHTML = '<div class="card" onclick="getGif(\'agree\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Agree</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/wGhYz3FHaRJgk/200w_d.gif"> </div> <div class="card" onclick="getGif(\'laugh\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Laugh</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/O5NyCibf93upy/200w_d.gif"> </div> <div class="card" onclick="getGif(\'confused\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Confused</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/200w_d.gif"> </div> <div class="card" onclick="getGif(\'sad\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Sad</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/ISOckXUybVfQ4/200w_d.gif"> </div> <div class="card" onclick="getGif(\'happy\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Happy</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/XR9Dp54ZC4dji/200w_d.gif"> </div> <div class="card" onclick="getGif(\'awesome\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Awesome</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/200w_d.gif"> </div> <div class="card" onclick="getGif(\'yes\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Yes</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/J336VCs1JC42zGRhjH/200w_d.gif"> </div> <div class="card" onclick="getGif(\'no\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">No</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1zSz5MVw4zKg0/200w_d.gif"> </div> <div class="card" onclick="getGif(\'love\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Love</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/4N1wOi78ZGzSB6H7vK/200w_d.gif"> </div> <div class="card" onclick="getGif(\'please\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Please</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/qUIm5wu6LAAog/200w_d.gif"> </div> <div class="card" onclick="getGif(\'scared\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Scared</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/bEVKYB487Lqxy/200w_d.gif"> </div> <div class="card" onclick="getGif(\'angry\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Angry</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/12Pb87uq0Vwq2c/200w_d.gif"> </div> <div class="card" onclick="getGif(\'awkward\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Awkward</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/unFLKoAV3TkXe/200w_d.gif"> </div> <div class="card" onclick="getGif(\'cringe\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Cringe</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1jDvQyhGd3L2g/200w_d.gif"> </div> <div class="card" onclick="getGif(\'omg\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">OMG</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/3o72F8t9TDi2xVnxOE/200w_d.gif"> </div> <div class="card" onclick="getGif(\'why\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Why</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/1M9fmo1WAFVK0/200w_d.gif"> </div> <div class="card" onclick="getGif(\'gross\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Gross</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/pVAMI8QYM42n6/200w_d.gif"> </div> <div class="card" onclick="getGif(\'meh\');" style="overflow: hidden;"> <div class="gif-cat-overlay"> <div style="position: relative;top: 50%;transform: translateY(-50%);color: #ffffff;font-weight: bold;">Meh</div> </div> <img class="img-fluid" src="https://media.giphy.com/media/xT77XTpyEzJ4OJO06c/200w_d.gif"> </div>'
-
-    // Hide UI buttons
-
-    backBtn.innerHTML = null;
-
-    cancelBtn.innerHTML = null;
-
-    // Remove inner HTML from no gifs div
-
-    noGIFs.innerHTML = null;
-
-    // Hide no more gifs div
-
-    loadGIFs.innerHTML = null;
-
-  });
-
-// comment collapse
-
-// Toggle comment collapse
-
-$('.comment-collapse').click(function() {
-  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
 })
 
-// Text Area Input handling
+$('.clear-gif-form').click(function(){
+  $('#gifSearch').val('');
+  $('#gifSearch').change()
+})
 
-function textAreaOnKeyDown(e, func){
-  if (isCtrlEnterSubmit(e))
-    func();
+$('#gifModal .searchcard').click(function(){
+  $('#gifSearch').val($(this).data('gif-search-term'));
+  $('#gifSearch').change();
 
-  return;
-}
+})
 
-function isCtrlEnterSubmit(e){
-  // If the user has pressed enter + ctrl/command
-  if ((e.keyCode == 10 || e.keyCode == 13) && (e.ctrlKey || e.metaKey))
-  {
-     return true;
+$('#gifSearch').on('keypress', function(event){
+  if (event.key==="Enter"){
+    event.preventDefault();
+    $('#gifSearch').change();
   }
-  
-  return false;
-}
+})
+
+$(document).on('click', '.gif-insert-btn', function(){
+  var textbox= $('#'+$(this).data('comment-form-id'))
+  textbox.val(textbox.val()+"![]("+$(this).data('gif-url')+")")
+})
+
+
+$(document).on('click', '.comment-collapse', function() {
+  $("#comment-"+$(this).data('comment-id')).toggleClass("collapsed");
+})
 
 // Commenting form
 
@@ -270,7 +158,7 @@ $('.btn-toggle-comment-edit').click(function(){
 
 // Post edit form
 
-$(".btn-edit-post").click(function(){
+$(document).on('click', ".btn-edit-post", function(){
   id=$(this).data("target-id")
   box=document.getElementById("post-edit-box-"+id);
 
@@ -302,7 +190,7 @@ $('.btn-mod-comment').click(function () {
 })
 
 
-$('.btn-distinguish-comment').click(function(){
+$(document).on('click', '.btn-distinguish-comment', function(){
 
   var comment_id=$(this).data('comment-id');
 
@@ -450,7 +338,7 @@ $('.btn-delete-post-confirm').click(function(){
 
 // Delete Comment
 
-$('.btn-delete-comment').click(function() {
+$(document).on('click', '.btn-delete-comment', function() {
   $("#deleteCommentButton").data('delete-url', '/delete/comment/' + $(this).data('comment-id'))
 })
 
@@ -702,7 +590,7 @@ function toggleSub(thing_id){
   $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
-function post_toast(url, callback=function(){console.log('.')}) {
+function post_toast(url, callback=function(){}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -916,256 +804,70 @@ $('.toggle_sidebar_expand').click(function() {
 
 // Voting
 
-var upvote = function(event) {
+$(document).on('click', '.upvote-button , .downvote-button', function(){
 
-  var type = event.target.dataset.contentType;
-  var id = event.target.dataset.idUp;
+  type=$(this).data('type');
+  id=$(this).data('id');
+  var direction=0;
 
-  var downvoteButton = document.getElementsByClassName(type + '-' + id + '-down');
-  var upvoteButton = document.getElementsByClassName(type + '-' + id + '-up');
-  var scoreText = document.getElementsByClassName(type + '-score-' + id);
-
-  for (var j = 0; j < upvoteButton.length && j < downvoteButton.length && j < scoreText.length; j++) {
-
-    var thisUpvoteButton = upvoteButton[j];
-    var thisDownvoteButton = downvoteButton[j];
-    var thisScoreText = scoreText[j];
-    var thisScore = Number(thisScoreText.textContent);
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisUpvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore - 1
-      voteDirection = "0"
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisUpvoteButton.classList.add('active')
-      thisDownvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore + 2
-      voteDirection = "1"
-    } else {
-      thisUpvoteButton.classList.add('active')
-      thisScoreText.textContent = thisScore + 1
-      voteDirection = "1"
-    }
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-up')
-      thisScoreText.classList.remove('score-down')
-      thisScoreText.classList.remove('score')
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-down')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score')
-    } else {
-      thisScoreText.classList.add('score')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score-down')
-    }
+  if ($(this).hasClass('active')){
+    direction=0;
+  } else if ($(this).hasClass('upvote-button')) {
+    direction=1;
+  } else if ($(this).hasClass('downvote-button')) {
+    direction=-1;
   }
 
-  post_toast("/api/vote/" + type + "/" + id + "/" + voteDirection);
-  
-}
+  var new_score = Number($('.'+type+'-score-'+id)[0].innerText)
 
-var downvote = function(event) {
-
-  var type = event.target.dataset.contentType;
-  var id = event.target.dataset.idDown;
-
-  var downvoteButton = document.getElementsByClassName(type + '-' + id + '-down');
-  var upvoteButton = document.getElementsByClassName(type + '-' + id + '-up');
-  var scoreText = document.getElementsByClassName(type + '-score-' + id);
-
-  for (var j = 0; j < upvoteButton.length && j < downvoteButton.length && j < scoreText.length; j++) {
-
-    var thisUpvoteButton = upvoteButton[j];
-    var thisDownvoteButton = downvoteButton[j];
-    var thisScoreText = scoreText[j];
-    var thisScore = Number(thisScoreText.textContent);
-
-    if (thisDownvoteButton.classList.contains('active')) {
-      thisDownvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore + 1
-      voteDirection = "0"
-    } else if (thisUpvoteButton.classList.contains('active')) {
-      thisDownvoteButton.classList.add('active')
-      thisUpvoteButton.classList.remove('active')
-      thisScoreText.textContent = thisScore - 2
-      voteDirection = "-1"
-    } else {
-      thisDownvoteButton.classList.add('active')
-      thisScoreText.textContent = thisScore - 1
-      voteDirection = "-1"
-    }
-
-    if (thisUpvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-up')
-      thisScoreText.classList.remove('score-down')
-      thisScoreText.classList.remove('score')
-    } else if (thisDownvoteButton.classList.contains('active')) {
-      thisScoreText.classList.add('score-down')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score')
-    } else {
-      thisScoreText.classList.add('score')
-      thisScoreText.classList.remove('score-up')
-      thisScoreText.classList.remove('score-down')
-    }
+  if ($('.'+type+'-score-'+id).hasClass('score-up')){
+    new_score--
+  }
+  else if ($('.'+type+'-score-'+id).hasClass('score-down')){
+    new_score++
   }
 
-  post_toast("/api/vote/" + type + "/" + id + "/" + voteDirection);
-  
-}
 
-var register_votes = function() {
-  var upvoteButtons = document.getElementsByClassName('upvote-button')
-
-  var downvoteButtons = document.getElementsByClassName('downvote-button')
-
-  var voteDirection = 0
-
-  for (var i = 0; i < upvoteButtons.length; i++) {
-    upvoteButtons[i].addEventListener('click', upvote, false);
-    upvoteButtons[i].addEventListener('keydown', function(event) {
-      if (event.keyCode === 13) {
-        upvote(event)
-      }
-    }, false)
-  };
-
-  for (var i = 0; i < downvoteButtons.length; i++) {
-    downvoteButtons[i].addEventListener('click', downvote, false);
-    downvoteButtons[i].addEventListener('keydown', function(event) {
-      if (event.keyCode === 13) {
-        downvote(event)
-      }
-    }, false)
-  };
-}
-
-register_votes()
-
-/*
-
-function vote(post_id, direction) {
-  url="/api/vote/post/"+post_id+"/"+direction;
-
-  callback=function(){
-    thing = document.getElementById("post-"+post_id);
-    uparrow1=document.getElementById("post-"+post_id+"-up");
-    downarrow1=document.getElementById("post-"+post_id+"-down");
-    scoreup1=document.getElementById("post-"+post_id+"-score-up");
-    scorenone1=document.getElementById("post-"+post_id+"-score-none");
-    scoredown1=document.getElementById("post-"+post_id+"-score-down");
-
-    thing2=document.getElementById("voting-"+post_id+"-mobile")
-    uparrow2=document.getElementById("arrow-"+post_id+"-mobile-up");
-    downarrow2=document.getElementById("arrow-"+post_id+"-mobile-down");
-    scoreup2=document.getElementById("post-"+post_id+"-score-mobile-up");
-    scorenone2=document.getElementById("post-"+post_id+"-score-mobile-none");
-    scoredown2=document.getElementById("post-"+post_id+"-score-mobile-down");
-
-    if (direction=="1") {
-      thing.classList.add("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 0)};
-      downarrow1.onclick=function(){vote(post_id, -1)};
-      scoreup1.classList.remove("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.add("d-none");
-
-      thing2.classList.add("upvoted");
-      thing2.classList.remove("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 0)};
-      downarrow2.onclick=function(){vote(post_id, -1)};
-      scoreup2.classList.remove("d-none");
-      scorenone2.classList.add("d-none");
-      scoredown2.classList.add("d-none");
-    }
-    else if (direction=="-1"){
-      thing.classList.remove("upvoted");
-      thing.classList.add("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 1)};
-      downarrow1.onclick=function(){vote(post_id, 0)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.remove("d-none");
-
-      thing2.classList.remove("upvoted");
-      thing2.classList.add("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 1)};
-      downarrow2.onclick=function(){vote(post_id, 0)};
-      scoreup2.classList.add("d-none");
-      scorenone2.classList.add("d-none");
-      scoredown2.classList.remove("d-none");
-
-    }
-    else if (direction=="0"){
-      thing.classList.remove("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote(post_id, 1)};
-      downarrow1.onclick=function(){vote(post_id, -1)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.remove("d-none");
-      scoredown1.classList.add("d-none");
-
-      thing2.classList.remove("upvoted");
-      thing2.classList.remove("downvoted");
-      uparrow2.onclick=function(){vote(post_id, 1)};
-      downarrow2.onclick=function(){vote(post_id, -1)};
-      scoreup2.classList.add("d-none");
-      scorenone2.classList.remove("d-none");
-      scoredown2.classList.add("d-none");
-
-    }
+  if ($(this).hasClass('downvote-button') && !$(this).hasClass('active')){
+    new_score--
+  }
+  else if ($(this).hasClass('upvote-button') && !$(this).hasClass('active')){
+    new_score++
   }
 
-  post(url, callback, "Unable to vote at this time. Please try again later.");
-};
+  $('.'+type+'-score-'+id).text(new_score)
 
-*/
+  if (direction==1){
 
-function vote_comment(comment_id, direction) {
-  url="/api/vote/comment/"+ comment_id +"/"+direction;
+    $('.'+type+'-'+id+'-up').addClass('active')
+    $('.'+type+'-'+id+'-down').removeClass('active')
+    $('.'+type+'-score-'+id).addClass('score-up')
+    $('.'+type+'-score-'+id).removeClass('score-down')
 
-  callback=function(){
-    thing = document.getElementById("comment-"+ comment_id+"-actions");
-    uparrow1=document.getElementById("comment-"+ comment_id +"-up");
-    downarrow1=document.getElementById("comment-"+ comment_id +"-down");
-    scoreup1=document.getElementById("comment-"+ comment_id +"-score-up");
-    scorenone1=document.getElementById("comment-"+ comment_id +"-score-none");
-    scoredown1=document.getElementById("comment-"+ comment_id +"-score-down");
+  } 
+  else if (direction==0) {
 
-    if (direction=="1") {
-      thing.classList.add("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 0)};
-      downarrow1.onclick=function(){vote_comment(comment_id, -1)};
-      scoreup1.classList.remove("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.add("d-none");
-    }
-    else if (direction=="-1"){
-      thing.classList.remove("upvoted");
-      thing.classList.add("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 1)};
-      downarrow1.onclick=function(){vote_comment(comment_id, 0)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.add("d-none");
-      scoredown1.classList.remove("d-none");
-    }
-    else if (direction=="0"){
-      thing.classList.remove("upvoted");
-      thing.classList.remove("downvoted");
-      uparrow1.onclick=function(){vote_comment(comment_id, 1)};
-      downarrow1.onclick=function(){vote_comment(comment_id, -1)};
-      scoreup1.classList.add("d-none");
-      scorenone1.classList.remove("d-none");
-      scoredown1.classList.add("d-none");
-    }
+    $('.'+type+'-'+id+'-up').removeClass('active')
+    $('.'+type+'-'+id+'-down').removeClass('active')
+    $('.'+type+'-score-'+id).removeClass('score-up')
+    $('.'+type+'-score-'+id).removeClass('score-down')
+
+  } 
+  else if (direction==-1) {
+
+    $('.'+type+'-'+id+'-up').removeClass('active')
+    $('.'+type+'-'+id+'-down').addClass('active')
+    $('.'+type+'-score-'+id).removeClass('score-up')
+    $('.'+type+'-score-'+id).addClass('score-down')
+
   }
 
-  post(url, callback, "Unable to vote at this time. Please try again later.");
-}
+  url='/api/vote/' + type + "/" + id + "/" + direction;
+
+  post_toast(url);
+
+})
+
 
 // Yank Post
 $('#yank-type-dropdown').change(function(){
@@ -1236,28 +938,7 @@ $('#ytEmbed').html('<iframe width="100%" height="475" src="//www.youtube.com/emb
 
 // Expand Images on Desktop
 
-function expandDesktopImage(image) {
 
-// Link text
-
-var linkText = document.getElementById("desktop-expanded-image-link");
-var imgLink = document.getElementById("desktop-expanded-image-wrap-link");
-
-var inlineImage = document.getElementById("desktop-expanded-image");
-
-inlineImage.src = image;
-
-linkText.href = image;
-imgLink.href = image;
-
-if (image.includes("i.syzitus.com")) {
-  linkText.textContent = 'Go to website';
-}
-else {
-  linkText.textContent = 'View original';
-}
-
-};
 
 // When image modal is closed
 
@@ -1697,7 +1378,7 @@ block_user=function() {
 
 }
 
-$('.btn-save-new-comment').click(function(){
+$(document).on('click', '.btn-save-new-comment', function(){
 
 
   var form = new FormData();
@@ -1739,7 +1420,10 @@ $('.btn-save-new-comment').click(function(){
 })
 
 
-$('.btn-herald-comment').click(function(){
+$(document).on('click', '.btn-herald-comment', function(){
+
+  var cid = $(this).data('comment-id')
+
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/mod/distinguish_comment/"+$(this).data('board-name')+'/'+$(this).data('comment-id'));
 
@@ -1765,7 +1449,7 @@ $('.btn-herald-comment').click(function(){
 
 })
 
-$(".btn-pin-comment").click(function(){
+$(document).on('click', ".btn-pin-comment", function(){
 
 
   var xhr = new XMLHttpRequest();
@@ -1810,7 +1494,7 @@ $('#post-URL').on('input', function(){
 
 
 
-$('.btn-save-edit-comment').click(function() {
+$(document).on('click', '.btn-save-edit-comment', function() {
 
   id=$(this).data('comment-id')
 
@@ -2060,7 +1744,8 @@ $('.mention-user').click(function (event) {
 
 });
 
-$('.expandable-image').click( function(event) {
+
+$(document).on('click', '.expandable-image', function(event) {
 
   if (event.which != 1) {
     return
@@ -2069,8 +1754,20 @@ $('.expandable-image').click( function(event) {
 
   var url= $(this).data('url');
 
-  expandDesktopImage(url);
+  $('#desktop-expanded-image').attr('src', url)
+
+  $('#desktop-expanded-image-link').attr('href', url);
+  $('#desktop-expanded-image-wrap-link').attr('href', url)
+
+
+  if (url.includes('giphy.com')) {
+    $('#modal-image-attribution').removeClass('d-none');
+  }
+  else {
+    $('#modal-image-attribution').addClass('d-none');
+  }
 })
+
 
 $('.text-expand').click(function(event){
   if (event.which != 1) {
@@ -2132,11 +1829,20 @@ function mod_post(url, type, id) {
 
 
 //post form toast utility function
-var postformtoast = function(x){
+function postformtoast(x, callback=function(data){}){
 
-  var form_id=x.data('form')
+  var form_id
+  if (x.prop('tagName')=='FORM') {
+    form_id=x.prop('id')
+  }
+  else {
+    form_id=x.data('form')
+  }
+
   var xhr = new XMLHttpRequest();
-  url=$('#'+form_id).prop('action');
+  var url=$('#'+form_id).prop('action');
+  var method=$('#'+form_id).prop('method')
+
   xhr.open("POST", url, true);
   var form = new FormData($('#'+form_id)[0]);
   xhr.withCredentials=true;
@@ -2147,18 +1853,25 @@ var postformtoast = function(x){
   xhr.onload = function() {
     data=JSON.parse(xhr.response);
     if (xhr.status >= 200 && xhr.status < 300) {
-      $('#toast-success .toast-text').text(data['message']);
-      $('#toast-success').toast('show')
-    } else if (xhr.status >= 300 && xhr.status < 400 ) {
+      if (data['message']!=undefined) {
+        $('#toast-success .toast-text').text(data['message']);
+        $('#toast-success').toast('show');
+      }
+      callback(xhr);
+    } 
+    else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
-    } else if (xhr.status >=400 && xhr.status < 500) {
+    } 
+    else if (xhr.status >=400 && xhr.status < 500) {
       $('#toast-error .toast-text').text(data['error']);
       $('#toast-error').toast('show')
-    } else {
+    } 
+    else {
       $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
       $('#toast-error').toast('show')
     }
   };
+
   xhr.send(form);
 }
 
@@ -2184,29 +1897,29 @@ $(".btn-guild-unsub").click(function(){
   post('/api/unsubscribe/'+$(this).data('board-name'), callback=function(){toggleSub(id)})
 })
 
-$(".post-url-reload").click(function(){
+$(document).on('click', ".post-url-reload", function(){
   post($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(".post-url").click(function(){
+$(document).on('click', ".post-url", function(){
   post($(this).data('post-url'))
 })
 
-$(".post-toast-url-reload").click(function(){
+$(document).on('click', ".post-toast-url-reload", function(){
   post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
 })
 
-$(".post-toast-url").click(function(){
+$(document).on('click', ".post-toast-url", function(){
   post_toast($(this).data('post-url'))
 })
 
 $(".go-to-login").click(function(){window.location.href="/login?redirect="+window.location.pathname})
 
-$(".btn-cancel-comment").click(function(){
+$(document). on('click', ".btn-cancel-comment", function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
 })
 
-$('.btn-reply-comment').click(function(){
+$(document).on('click', '.btn-reply-comment', function(){
   $('#reply-to-'+$(this).data('comment-id')).removeClass('d-none')
 })
 

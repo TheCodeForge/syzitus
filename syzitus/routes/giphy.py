@@ -2,21 +2,27 @@ from flask import *
 from os import environ
 import requests
 
-from syzitus.__main__ import app
+from syzitus.helpers.wrappers import *
 
-GIPHY_KEY = environ.get('GIPHY_KEY','').rstrip()
+from syzitus.__main__ import app, debug
 
 
-@app.route("/giphy", methods=["GET"])
-@app.route("/giphy<path>", methods=["GET"])
+@app.post("/giphy")
+@is_not_banned
 def giphy():
 
-    searchTerm = request.args.get("searchTerm", "")
-    limit = int(request.args.get("limit", ""))
-    if searchTerm and limit:
-        url = f"https://api.giphy.com/v1/gifs/search?q={searchTerm}&api_key={GIPHY_KEY}&limit={limit}"
-    elif searchTerm and not limit:
-        url = f"https://api.giphy.com/v1/gifs/search?q={searchTerm}&api_key={GIPHY_KEY}&limit=48"
-    else:
-        url = f"https://api.giphy.com/v1/gifs?api_key={GIPHY_KEY}&limit=48"
-    return jsonify(requests.get(url).json())
+    if not app.config["GIPHY_KEY"]:
+
+        return jsonify({"error":"GIPHY not currently configured"}), 501
+
+    url="https://api.giphy.com/v1/gifs/search"
+
+    params={
+        "q": request.form.get("searchTerm"),
+        "limit": request.form.get("limit", 48),
+        'api_key': app.config['GIPHY_KEY']
+    }
+
+    debug([url, params])
+
+    return jsonify(requests.get(url, params=params).json())

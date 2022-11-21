@@ -33,11 +33,11 @@
       
       {% elif g.user %}
 
-      <div id="post-{{ p.base36id }}-up" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}"></div>
+      <div id="post-{{ p.base36id }}-up" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="mx-auto arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}"></div>
 
       <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
-      <div id="post-{{ p.base36id }}-down" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}"></div>
+      <div id="post-{{ p.base36id }}-down" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}"></div>
 
       {% else %}
 
@@ -109,7 +109,7 @@
 
       <div class="d-block d-md-none mb-1">
 
-        <div class="post-meta text-left x-scroll">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
+        <div class="post-meta text-left x-scroll {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">{% if not b %}<a href="{{ p.board.permalink }}">+{{ p.board.name }}</a> · {% endif %}
           {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
           {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
           {% if p.over_18 %}{% include "tags/nsfw.html" %} · {% endif %}
@@ -127,7 +127,7 @@
         </div>
       </div>
 
-      <div class="post-meta text-left d-none d-md-block mb-md-2">
+      <div class="post-meta text-left d-none d-md-block mb-md-2 {% if p.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">
         {% if not b %}<span class="font-weight-bold"><a href="{{ p.board.permalink }}" class="text-black"><img src="{{ p.board.profile_url }}" class="profile-pic-20 align-top mr-1">+{{ p.board.name }}</a></span> · {% endif %}
         {% if p.stickied %}{% include "tags/sticky.html" %} · {% endif %}
         {% if p.is_pinned %}{% include "tags/pin.html" %} · {% endif %}
@@ -287,12 +287,12 @@
       {% elif g.user %}
       <li id="voting-{{ p.base36id }}-mobile" class="voting list-inline-item d-md-none">
 
-        <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id-up="{{ p.base36id }}" data-content-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
+        <span id="post-{{ p.base36id }}-up-mobile" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="mr-2 arrow-up upvote-button post-{{ p.base36id }}-up {% if voted==1 %}active{% endif %}">
         </span>
 
         <span id="post-score-{{ p.base36id }}-mobile" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}"{% if not p.is_banned %} data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}"{% endif %}>{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
-        <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id-down="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
+        <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
         </span>
 
       </li>

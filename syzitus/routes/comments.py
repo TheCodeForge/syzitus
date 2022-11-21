@@ -732,10 +732,10 @@ URL path parameters:
     c = g.db.query(Comment).filter_by(id=base36decode(cid)).first()
 
     if not c:
-        abort(404)
+        return jsonify({"error": f"Comment ID `{cid}` not found"}), 404
 
     if not c.author_id == g.user.id:
-        abort(403)
+        return jsonify({"error": f"That's not your comment to delete!"}), 403
 
     c.deleted_utc = int(time.time())
 

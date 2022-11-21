@@ -99,7 +99,7 @@
 
     <div id="comment-{{ c.base36id }}-only" class="{{ 'banned ' if c.is_banned else '' }}{{ 'deleted ' if c.deleted_utc else '' }}{{ 'heralded' if c.gm_distinguish else '' }}{{ 'distinguished ' if c.distinguish_level>1 else 'distinguished_emeritus ' if c.distinguish_level==1 else '' }}">
 
-      <div class="user-info">{% if standalone and c.over_18 %}<span class="badge badge-danger text-small-extra mr-1">nsfw</span> {% endif %} {% if c.is_pinned %}<i class="text-info fas fa-thumbtack fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Pinned comment"></i> · {% endif %} {% if c.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ c.author.username }}" class="user-name {% if c.is_op %}text-info{% endif %}"><img src="{{ c.author.profile_url }}" class="d-md-inline d-none profile-pic-25 mr-2"/><span class="user-name-inner">{{ c.author.username }}</span></a>{% if c.title %}{{ c.title.rendered | safe }}{% endif %}{% endif %}
+      <div class="user-info {% if c.author.id%2 %}author-id-odd{% else %}author-id-even{% endif %}">{% if standalone and c.over_18 %}<span class="badge badge-danger text-small-extra mr-1">nsfw</span> {% endif %} {% if c.is_pinned %}<i class="text-info fas fa-thumbtack fa-rotate--45" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Pinned comment"></i> · {% endif %} {% if c.author.is_deleted %}[deleted account]{% else %}<a href="/@{{ c.author.username }}" class="user-name {% if c.is_op %}text-info{% endif %}"><img src="{{ c.author.profile_url }}" class="d-md-inline d-none profile-pic-25 mr-2"/><span class="user-name-inner">{{ c.author.username }}</span></a>{% if c.title %}{{ c.title.rendered | safe }}{% endif %}{% endif %}
 
         {% if c.distinguish_level %}{% include "tags/admin.html" %}{% endif %}
         {% if c.gm_distinguish %}{% include "tags/herald.html" %}{% endif %}
@@ -176,7 +176,7 @@
           
           {% elif g.user %}
 
-          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id="{{ c.base36id }}" data-type="comment">
           </li>
 
           {% else %}
@@ -196,7 +196,7 @@
           {% endif %}
           
           {% elif g.user %}
-          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-none d-md-inline-block mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id="{{ c.base36id }}" data-type="comment">
           </li>
 
           {% else %}
@@ -226,11 +226,11 @@
           
 
           {% if g.user and g.user.id==c.author_id and c.post and c.is_guildmaster('content') %}
-          <li class="list-inline-item d-none d-md-inline-block"><a class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
+          <li class="list-inline-item d-none d-md-inline-block"><a href="javascript:void(0)" class="text-warning btn-herald-comment" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-board-name="{{ c.board.name }}"><i class="fas fa-crown text-warning"></i><span class="d-none d-md-inline-block">Herald</span></a></li>
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
           {% endif %}
           <li class="list-inline-item d-none d-md-inline-block">
             <div class="dropdown show">
@@ -303,7 +303,7 @@
           </li>
           {% endif %}
           {% elif g.user %}
-          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id-up="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up upvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-up {% if voted==1 %}active{% endif %}" data-id="{{ c.base36id }}" data-type="comment">
           </li>
           {% else %}
           <li id="comment-{{ c.base36id }}-up" tabindex="0" class="list-inline-item arrow-up d-inline-block d-md-none mr-2 go-to-login">
@@ -318,7 +318,7 @@
           </li>{% endif %}
 
           {% elif g.user %}
-          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id-down="{{ c.base36id }}" data-content-type="comment">
+          <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down downvote-button d-inline-block d-md-none mr-2 comment-{{ c.base36id }}-down {% if voted==-1 %}active{% endif %}" data-id="{{ c.base36id }}" data-type="comment">
           </li>
           {% else %}
           <li id="comment-{{ c.base36id }}-down" tabindex="0" class="list-inline-item arrow-down d-inline-block d-md-none go-to-login">
@@ -350,21 +350,19 @@
               <i class="fas fa-quote-right btn-make-quote" aria-hidden="true" data-form-id="reply-form-body-{{ c.fullname }}" data-toggle="tooltip" data-placement="bottom" title="Quote"></i>
             </small> 
 
-            {% if 'TENOR_KEY' | app_config %}
-            <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{ c.fullname }}">
+            {% if 'FEATURE_ENABLE_GIFS' | app_config %}
+            <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="gif-reply-btn-{{ c.fullname }}">
               <span id="gif-reply-btn-{{ c.fullname }}" class="font-weight-bolder text-uppercase btn-open-inserters" data-form-id="reply-form-body-{{ c.fullname }}" aria-hidden="true" data-toggle="modal" data-target="#gifModal" data-toggle="tooltip" data-placement="bottom" title="Add GIF">GIF</span>
             </label> 
             {% endif %}
             {% if 'FEATURE_ENABLE_EMOJI' | app_config %}
-            &nbsp;
-            <label class="btn btn-secondary format d-inline-block m-0" for="gif-reply-btn-{{c.fullname}}">
+            <label class="btn btn-secondary format d-inline-block m-0 mr-1" for="gif-reply-btn-{{c.fullname}}">
                <i id="emoji-reply-btn-{{c.fullname}}" class="fas fa-smile-beam btn-open-inserters" data-form-id="reply-form-body-{{c.fullname}}" aria-hidden="true" data-toggle="modal" data-target="#emojiModal" data-toggle="tooltip" data-placement="bottom" title="Add EMOJI"></i>
             </label>
-            &nbsp;
             {% endif %}
 
             
-            <label class="format btn btn-secondary m-0 ml-1 {% if g.user.can_upload_comment_image %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ c.fullname }}">
+            <label class="format btn btn-secondary m-0 mr-1 {% if g.user.can_upload_comment_image %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ c.fullname }}">
               <div>
                 <i class="far fa-image"></i><span id="filename-show-reply-{{ c.base36id }}"></span>
               </div>
