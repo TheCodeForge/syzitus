@@ -277,7 +277,7 @@ Required form data:
 @app.route("/submit/title", methods=['GET'])
 @limiter.limit("6/minute")
 @is_not_banned
-@no_negative_balance("html")
+@no_negative_balance("toast")
 def get_post_title():
 
     url = request.args.get("url", None)
