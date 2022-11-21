@@ -108,243 +108,239 @@
 
 <!-- View toggle visible only on large devices or larger -->
 
-  <div class="flex-row justify-content-end d-none">
-
+<div class="flex-row justify-content-end d-none">
 
   {% block listcardBlock %}
   <div class="p-3">
     <ul class="nav toggle-view">
       <li class="nav-item">
-        <button class="btn nav-link pr-3 active" id="toggle-list-view-btn" onclick="toggle_list_view()">
-          <i class="fas fa-list"></i>List</button>
-        </li>
-        <li class="nav-item">
-          <button class="btn nav-link" id="toggle-card-view-btn" onclick="toggle_card_view()">
-            <i class="fas fa-th-large"></i>Card</button>
-          </li>
-        </ul>
+        <button class="btn nav-link pr-3 active" id="toggle-list-view-btn" onclick="toggle_list_view()"><i class="fas fa-list"></i>List</button>
+      </li>
+      <li class="nav-item">
+        <button class="btn nav-link" id="toggle-card-view-btn" onclick="toggle_card_view()"><i class="fas fa-th-large"></i>Card</button>
+      </li>
+    </ul>
+  </div>
+    {% endblock %}
+</div>
+
+
+<div class="row no-gutters {% if listing %}mt-md-3{% elif not listing %}my-md-3{% endif %}">
+
+  <div class="col-12">
+
+    <div class="posts" id="posts">
+
+      {% include "submission_listing.html" %}
+
+    </div>
+  </div>
+</div>
+
+<div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile">
+
+  <div class="col">
+
+    <div class="d-flex flex-row flex-nowrap justify-content-between">
+
+      {% block sortnav %}
+
+      <div class="post-filter">
+
+        <div class="d-flex align-items-center">
+
+          <div class="dropdown dropdown-actions">
+            <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% if sort_method=="hot" %}<i class="fas fa-fire mr-1"></i>{% endif %}
+              {% if sort_method=="top" %}<i class="fas fa-arrow-alt-circle-up mr-1"></i>{% endif %}
+              {% if sort_method=="new" %}<i class="fas fa-sparkles mr-1"></i>{% endif %}
+              {% if sort_method=="old" %}<i class="fas fa-book mr-1"></i>{% endif %}
+              {% if sort_method=="disputed" %}<i class="fas fa-bullhorn mr-1"></i>{% endif %}
+              {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
+              {{ sort_method | capitalize }}
+            </button>
+            <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start"">
+              {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&t={{ time_filter }}"><i class="fas fa-fire text-primary mr-3"></i>Hot</a>{% endif %}
+              {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up text-primary mr-3"></i>Top</a>{% endif %}
+              {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&t={{ time_filter }}"><i class="fas fa-sparkles text-primary mr-3"></i>New</a>{% endif %}
+              {% if not sort_method=="old" %}<a class="dropdown-item" href="?sort=old&t={{ time_filter }}"><i class="fas fa-book text-primary mr-3"></i>Old</a>{% endif %}
+              {% if not sort_method=="disputed" %}<a class="dropdown-item" href="?sort=disputed&t={{ time_filter }}"><i class="fas fa-bullhorn text-primary mr-3"></i>Disputed</a>{% endif %}
+              {% if not sort_method=="activity" %}<a class="dropdown-item" href="?sort=activity&t={{ time_filter }}"><i class="fas fa-comments text-primary mr-3"></i>Activity</a>{% endif %}
+            </div>
+          </div>
+
+          <div class="dropdown dropdown-actions ml-2">
+            <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
+              {% if time_filter=="week" %}<i class="fas fa-calendar-week mr-1"></i>{% endif %}
+              {% if time_filter=="month" %}<i class="fas fa-fa-calendar-alt mr-1"></i>{% endif %}
+              {% if time_filter=="year" %}<i class="fas fa-calendar mr-1"></i>{% endif %}
+              {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
+              {{ time_filter | capitalize }}
+            </button>
+            <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
+              {% if not time_filter=="day" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day text-primary mr-3"></i>Day</a>{% endif %}
+              {% if not time_filter=="week" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week text-primary mr-3"></i>Week</a>{% endif %}
+              {% if not time_filter=="month" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt text-primary mr-3"></i>Month</a>{% endif %}
+              {% if not time_filter=="year" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=year"><i class="fas fa-calendar text-primary mr-3"></i>Year</a>{% endif %}
+              {% if not time_filter=="all" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=all"><i class="fas fa-infinity text-primary mr-3"></i>All</a>{% endif %}
+            </div>
+          </div>
+
+        </div>
+
       </div>
+
+      <div class="post-filter d-none">
+        <span>From:</span>
+        <span class="dropdown">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownFrom" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Time</a>
+
+          <span class="dropdown-menu border-0 shadow" id="dropdownMenuFrom" aria-labelledby="dropdownFrom">
+            <a class="dropdown-item" href="#">Past Day</a>
+            <a class="dropdown-item" href="#">Past Month</a>
+            <a class="dropdown-item" href="#">Past Year</a>
+            <a class="dropdown-item" href="#">All Time</a>
+          </span>
+        </span>
+
+      </div>
+
       {% endblock %}
 
     </div>
 
+  </div>
 
-    <div class="row no-gutters {% if listing %}mt-md-3{% elif not listing %}my-md-3{% endif %}">
+</div>
 
-      <div class="col-12">
+{% endblock %}
 
-        <div class="posts" id="posts">
+{% block prev_link %}?sort={{ sort_method }}&page={{ page-1 }}&t={{ time_filter }}{% if only %}&only={{ only }}{% endif %}{% endblock %}
+{% block next_link %}?sort={{ sort_method }}&page={{ page+1 }}&t={{ time_filter }}{% if only %}&only={{ only }}{% endif %}{% endblock %}
 
-          {% include "submission_listing.html" %}
+{% block sidebarblock %}
+{% if g.user and g.user.can_make_guild %}
+<div class="sidebar-section sidebar-guildmake">
+  <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
+  <div class="body">
+    <p>Create a community for something you love.</p>
+    <a href="/create_guild" class="btn btn-primary btn-block">Create Guild</a>
+  </div>
+</div>
+{% elif g.user and not g.user.can_make_guild %}
+<div class="sidebar-section sidebar-guildmake">
+  <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
+  <div class="body">
+    <p class="text-muted">{% if not g.user.can_join_gms %}You already lead the maximum of {{ 'MAX_GUILD_COUNT' | app_config }} guilds.{% else %}You need {{ 'GUILD_CREATION_REQ' | app_config }} rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
+    <a href="#" class="btn btn-primary btn-block disabled">Create Guild</a>
+  </div>
+</div>
+{% endif %}
 
+
+<div class="sidebar-section">
+  <div class="title">
+    <i class="fas fa-heart mr-2"></i>Support {{ 'SITE_NAME' | app_config }}
+  </div>
+  <div class="body">
+    <p>Support {{ 'SITE_NAME' | app_config }} today!</p>
+
+    <a href="https://github.com/thecodeforge/syzitus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x text-gray-300"></i>
+        <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
+      </span>Contribute Code
+    </a>
+
+    {% if not g.user.has_premium %}
+    <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse"></i>
+      </span>Donate Cash or Crypto
+    </a>
+
+    <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fas fa-coins fa-stack-1x text-base fa-inverse"></i>
+      </span>{{ 'SITE_NAME' | app_config }} Premium
+    </a>
+    {% endif %}
+
+    <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fas fa-bug fa-stack-1x text-base fa-inverse"></i>
+      </span>Report Bugs
+    </a>
+
+    <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
+      <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
+      <div class="progress rounded">
+        <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
         </div>
+        <style nonce="{{ g.nonce }}">
+          #premium-bar-progress {
+            width: {{ g.timestamp | coin_goal }}%;
+          }
+        </style>
       </div>
     </div>
-
-    <div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile">
-
-      <div class="col">
-
-        <div class="d-flex flex-row flex-nowrap justify-content-between">
-
-          {% block sortnav %}
-
-          <div class="post-filter">
-
-            <div class="d-flex align-items-center">
-
-              <div class="dropdown dropdown-actions">
-                <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {% if sort_method=="hot" %}<i class="fas fa-fire mr-1"></i>{% endif %}
-                  {% if sort_method=="top" %}<i class="fas fa-arrow-alt-circle-up mr-1"></i>{% endif %}
-                  {% if sort_method=="new" %}<i class="fas fa-sparkles mr-1"></i>{% endif %}
-                  {% if sort_method=="old" %}<i class="fas fa-book mr-1"></i>{% endif %}
-                  {% if sort_method=="disputed" %}<i class="fas fa-bullhorn mr-1"></i>{% endif %}
-                  {% if sort_method=="activity" %}<i class="fas fa-comments mr-1"></i>{% endif %}
-                  {{ sort_method | capitalize }}
-                </button>
-                <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start"">
-                  {% if not sort_method=="hot" %}<a class="dropdown-item" href="?sort=hot&t={{ time_filter }}"><i class="fas fa-fire text-primary mr-3"></i>Hot</a>{% endif %}
-                  {% if not sort_method=="top" %}<a class="dropdown-item" href="?sort=top&t={{ time_filter }}"><i class="fas fa-arrow-alt-circle-up text-primary mr-3"></i>Top</a>{% endif %}
-                  {% if not sort_method=="new" %}<a class="dropdown-item" href="?sort=new&t={{ time_filter }}"><i class="fas fa-sparkles text-primary mr-3"></i>New</a>{% endif %}
-                  {% if not sort_method=="old" %}<a class="dropdown-item" href="?sort=old&t={{ time_filter }}"><i class="fas fa-book text-primary mr-3"></i>Old</a>{% endif %}
-                  {% if not sort_method=="disputed" %}<a class="dropdown-item" href="?sort=disputed&t={{ time_filter }}"><i class="fas fa-bullhorn text-primary mr-3"></i>Disputed</a>{% endif %}
-                  {% if not sort_method=="activity" %}<a class="dropdown-item" href="?sort=activity&t={{ time_filter }}"><i class="fas fa-comments text-primary mr-3"></i>Activity</a>{% endif %}
-                </div>
-              </div>
-
-              <div class="dropdown dropdown-actions ml-2">
-                <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
-                  {% if time_filter=="week" %}<i class="fas fa-calendar-week mr-1"></i>{% endif %}
-                  {% if time_filter=="month" %}<i class="fas fa-fa-calendar-alt mr-1"></i>{% endif %}
-                  {% if time_filter=="year" %}<i class="fas fa-calendar mr-1"></i>{% endif %}
-                  {% if time_filter=="all" %}<i class="fas fa-infinity mr-1"></i>{% endif %}
-                  {{ time_filter | capitalize }}
-                </button>
-                <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
-                  {% if not time_filter=="day" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=day"><i class="fas fa-calendar-day text-primary mr-3"></i>Day</a>{% endif %}
-                  {% if not time_filter=="week" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=week"><i class="fas fa-calendar-week text-primary mr-3"></i>Week</a>{% endif %}
-                  {% if not time_filter=="month" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=month"><i class="fas fa-calendar-alt text-primary mr-3"></i>Month</a>{% endif %}
-                  {% if not time_filter=="year" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=year"><i class="fas fa-calendar text-primary mr-3"></i>Year</a>{% endif %}
-                  {% if not time_filter=="all" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=all"><i class="fas fa-infinity text-primary mr-3"></i>All</a>{% endif %}
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="post-filter d-none">
-            <span>From:</span>
-            <span class="dropdown">
-              <a class="dropdown-toggle" href="#" role="button" id="dropdownFrom" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">Time</a>
-
-              <span class="dropdown-menu border-0 shadow" id="dropdownMenuFrom" aria-labelledby="dropdownFrom">
-                <a class="dropdown-item" href="#">Past Day</a>
-                <a class="dropdown-item" href="#">Past Month</a>
-                <a class="dropdown-item" href="#">Past Year</a>
-                <a class="dropdown-item" href="#">All Time</a>
-              </span>
-            </span>
-
-          </div>
-
-          {% endblock %}
-
-        </div>
-
-      </div>
-
-    </div>
-
-    {% endblock %}
     
-    {% block prev_link %}?sort={{ sort_method }}&page={{ page-1 }}&t={{ time_filter }}{% if only %}&only={{ only }}{% endif %}{% endblock %}
-    {% block next_link %}?sort={{ sort_method }}&page={{ page+1 }}&t={{ time_filter }}{% if only %}&only={{ only }}{% endif %}{% endblock %}
+  </div>
 
-    {% block sidebarblock %}
-    {% if g.user and g.user.can_make_guild %}
-    <div class="sidebar-section sidebar-guildmake">
-      <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
-      <div class="body">
-        <p>Create a community for something you love.</p>
-        <a href="/create_guild" class="btn btn-primary btn-block">Create Guild</a>
-      </div>
-    </div>
-    {% elif g.user and not g.user.can_make_guild %}
-    <div class="sidebar-section sidebar-guildmake">
-      <div class="title"><i class="fas fa-chess-rook mr-2"></i>Guilds</div>
-      <div class="body">
-        <p class="text-muted">{% if not g.user.can_join_gms %}You already lead the maximum of {{ 'MAX_GUILD_COUNT' | app_config }} guilds.{% else %}You need {{ 'GUILD_CREATION_REQ' | app_config }} rep to create a guild. Rep can be earned by commenting and posting.{% endif %}</p>
-        <a href="#" class="btn btn-primary btn-block disabled">Create Guild</a>
-      </div>
-    </div>
-    {% endif %}
+</div>
 
+{% if request.path=="/all" or (request.path=="/" and not g.user) %}
+<div class="sidebar-section">
+  <div class="title">
+    <i class="fas fa-shapes mr-2"></i>Categories
+  </div>
+  <div class="body">
+    <div class="accordion" id="accordionCats">
 
-    <div class="sidebar-section">
-      <div class="title">
-        <i class="fas fa-heart mr-2"></i>Support {{ 'SITE_NAME' | app_config }}
-      </div>
-      <div class="body">
-        <p>Support {{ 'SITE_NAME' | app_config }} today!</p>
-
-        <a href="https://github.com/thecodeforge/syzitus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
-          <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x text-gray-300"></i>
-            <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
-          </span>Contribute Code
-        </a>
-
-        {% if not g.user.has_premium %}
-        <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
-          <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x"></i>
-            <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse"></i>
-          </span>Donate Cash or Crypto
-        </a>
-
-        <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
-          <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x"></i>
-            <i class="fas fa-coins fa-stack-1x text-base fa-inverse"></i>
-          </span>{{ 'SITE_NAME' | app_config }} Premium
-        </a>
-        {% endif %}
-
-        <a href="https://github.com/thecodeforge/syzitus/issues" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
-          <span class="fa-stack fa-1x ml-n1 mr-2">
-            <i class="fas fa-square fa-stack-2x"></i>
-            <i class="fas fa-bug fa-stack-1x text-base fa-inverse"></i>
-          </span>Report Bugs
-        </a>
-
-        <div data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the last 7 days">
-          <div class="text-center text-small">{{ g.timestamp | coin_goal }}% of goal</div>
-          <div class="progress rounded">
-            <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
+      {% for x in CATEGORIES %}
+      {% set c=CATEGORIES[x] %}
+      <div class="card">
+        <div class="card-header" id="heading-{{ loop.index }}">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left text-muted collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ loop.index }}" aria-expanded="true" aria-controls="collapse-{{ loop.index }}"><i class="fas {{ c.icon }} fa-fw ml-n1 mr-2"></i>{{ c.name }}</button>
+          </h2>
+        </div>
+        <div id="collapse-{{ loop.index }}" class="collapse" aria-labelledby="header-{{ loop.index }}" data-parent="#accordionCats">
+          <div class="card-body">
+            {% for y in c.subcats %}
+            {% set subcat=c.subcats[y] %}
+            <div class="custom-control custom-checkbox mb-2">
+              <input type="checkbox" class="custom-control-input cat-check" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}" onchange="togglecat('{{ sort_method }}')"{% if subcat.id in session.get('catids',[]) %} checked{% endif %}>
+              <label class="custom-control-label" for="cat-{{ subcat.base36id }}">{{ subcat.name }}</label>
             </div>
-            <style nonce="{{ g.nonce }}">
-              #premium-bar-progress {
-                width: {{ g.timestamp | coin_goal }}%;
-              }
-            </style>
+            {% endfor %}
           </div>
         </div>
-        
       </div>
-
-    </div>
-
-    {% if request.path=="/all" or (request.path=="/" and not g.user) %}
-    <div class="sidebar-section">
-      <div class="title">
-        <i class="fas fa-shapes mr-2"></i>Categories
-      </div>
-      <div class="body">
-        <div class="accordion" id="accordionCats">
-
-          {% for x in CATEGORIES %}
-          {% set c=CATEGORIES[x] %}
-          <div class="card">
-            <div class="card-header" id="heading-{{ loop.index }}">
-              <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left text-muted collapsed" type="button" data-toggle="collapse" data-target="#collapse-{{ loop.index }}" aria-expanded="true" aria-controls="collapse-{{ loop.index }}"><i class="fas {{ c.icon }} fa-fw ml-n1 mr-2"></i>{{ c.name }}</button>
-              </h2>
-            </div>
-            <div id="collapse-{{ loop.index }}" class="collapse" aria-labelledby="header-{{ loop.index }}" data-parent="#accordionCats">
-              <div class="card-body">
-                {% for y in c.subcats %}
-                {% set subcat=c.subcats[y] %}
-                <div class="custom-control custom-checkbox mb-2">
-                  <input type="checkbox" class="custom-control-input cat-check" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}" onchange="togglecat('{{ sort_method }}')"{% if subcat.id in session.get('catids',[]) %} checked{% endif %}>
-                  <label class="custom-control-label" for="cat-{{ subcat.base36id }}">{{ subcat.name }}</label>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-          <div class="card">
-            <div class="card-header" id="heading-0">
-              <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left text-muted collapsed" type="button" data-toggle="collapse" data-target="#collapse-0" aria-expanded="true" aria-controls="collapse-0"><i class="fas fa-question-circle fa-fw ml-n1 mr-2"></i>Uncategorized</button>
-              </h2>
-            </div>
-            <div id="collapse-0" class="collapse" aria-labelledby="header-0" data-parent="#accordionCats">
-              <div class="card-body">
-                <div class="custom-control custom-checkbox mb-2">
-                  <input type="checkbox" class="custom-control-input cat-check" id="cat-0" data-cat="0" onchange="togglecat('{{ sort_method }}')"{% if 0 in session.get('catids',[]) %} checked{% endif %}>
-                  <label class="custom-control-label" for="cat-0">Uncategorized</label>
-                </div>
-              </div>
+      {% endfor %}
+      <div class="card">
+        <div class="card-header" id="heading-0">
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left text-muted collapsed" type="button" data-toggle="collapse" data-target="#collapse-0" aria-expanded="true" aria-controls="collapse-0"><i class="fas fa-question-circle fa-fw ml-n1 mr-2"></i>Uncategorized</button>
+          </h2>
+        </div>
+        <div id="collapse-0" class="collapse" aria-labelledby="header-0" data-parent="#accordionCats">
+          <div class="card-body">
+            <div class="custom-control custom-checkbox mb-2">
+              <input type="checkbox" class="custom-control-input cat-check" id="cat-0" data-cat="0" onchange="togglecat('{{ sort_method }}')"{% if 0 in session.get('catids',[]) %} checked{% endif %}>
+              <label class="custom-control-label" for="cat-0">Uncategorized</label>
             </div>
           </div>
         </div>
       </div>
     </div>
-    {% endif %}
+  </div>
+</div>
+{% endif %}
 
-    {% endblock %}
+{% endblock %}
