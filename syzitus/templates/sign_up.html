@@ -97,7 +97,7 @@
 
                             {% if error %}<span class="text-danger">{{ error }}</span><br>{% endif %}
 
-                            <input type="hidden" name="formkey" value="{{ formkey }}">
+                            <input type="hidden" name="formkey" value="{{ g.timestamp | formkey }}">
                             <input type="hidden" name="time" value="{{ g.timestamp }}">
 
                             {% if redirect %}<input type="hidden" name="redirect" value="{{ redirect }}">{% endif %}

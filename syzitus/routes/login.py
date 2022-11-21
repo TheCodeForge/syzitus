@@ -223,7 +223,6 @@ def sign_up_get():
     error = request.args.get("error", None)
 
     return render_template("sign_up.html",
-                           formkey=make_logged_out_formkey(),
                            now=now,
                            i=random_image(),
                            redirect=redir,
