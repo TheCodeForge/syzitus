@@ -8,7 +8,7 @@ import json
 from syzitus.__main__ import app
 from .get import *
 
-youtube_regex = re.compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)([^#\&\?]*)")
+youtube_regex = re.compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)?([\w-]*)")
 
 regexified_server_name=app.config['SERVER_NAME'].replace('.','\.')
 ruqqus_regex = re.compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
