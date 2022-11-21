@@ -8,8 +8,7 @@ import json
 from syzitus.__main__ import app
 from .get import *
 
-youtube_regex = re.compile(
-    "^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)([^#\&\?]*)")
+youtube_regex = re.compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)([^#\&\?]*)")
 
 regexified_server_name=app.config['SERVER_NAME'].replace('.','\.')
 ruqqus_regex = re.compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
@@ -26,8 +25,8 @@ def youtube_embed(url):
 
     yt_id = re.match(youtube_regex, url).group(3)
 
-    if not yt_id or len(yt_id) != 11:
-        return "error"
+    # if not yt_id or len(yt_id) != 11:
+    #     return "error"
 
     x = urlparse(url)
     params = parse_qs(x.query)
