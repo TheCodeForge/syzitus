@@ -539,3 +539,7 @@ def malicious_scraper_honeypot(path):
         banned_by=1,
         reason="malicious scraper honeypot"
         )
+
+    g.db.add(new_ip)
+    g.db.commit()
+    return "Fuck off, heretic",404
