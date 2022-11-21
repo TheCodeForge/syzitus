@@ -12,6 +12,7 @@ User-Agent: CCBot
 User-Agent: DotBot
 User-Agent: Huaweisymantecspider
 User-Agent: MJ12bot
+User-Agent: PetalBot
 User-Agent: SEMrushBot
 User-Agent: SBSearch
 User-Agent: SiteSnagger
