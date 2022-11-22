@@ -92,6 +92,16 @@ def error_409(e):
            }
 
 
+@app.errorhandler(410)
+@error_wrapper
+@auth_desired
+@api()
+def error_410(e):
+    return{"html": lambda: (render_template('errors/410.html'), 410),
+           "api": lambda: (jsonify({"error": "410 Gone"}), 410)
+           }
+
+
 @app.errorhandler(413)
 @error_wrapper
 @auth_desired
