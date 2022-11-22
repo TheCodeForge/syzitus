@@ -17,7 +17,7 @@
 {% for badge in badges if badge.kind==1 %}
 	<tr>
 		<td>{{ badge.name }}</td>
-		<td><img src="{{ badge.path }}" style="width:50px;height:50px">
+		<td><img src="{{ badge.path }}" class="img-userbadge">
 		<td>{{ badge.description }}</td>
 	</tr>
 {% endfor %}
@@ -37,7 +37,7 @@
 {% for badge in badges if badge.kind==2 %}
 	<tr>
 		<td>{{ badge.name }}</td>
-		<td><img src="{{ badge.path }}" style="width:50px;height:50px">
+		<td><img src="{{ badge.path }}" class="img-userbadge">
 		<td>{{ badge.description }}</td>
 	</tr>
 {% endfor %}
@@ -56,13 +56,13 @@
 {% for badge in badges if badge.kind==3 %}
 	<tr>
 		<td>{{ badge.name }}</td>
-		<td><img src="{{ badge.path }}" style="width:50px;height:50px">
+		<td><img src="{{ badge.path }}" class="img-userbadge">
 		<td>{{ badge.description }}</td>
 	</tr>
 {% endfor %}
 </table>
 
-<!--
+
 <h2 class="mt-3">Event Badges</h2>
 <div>These badges were awarded during special events. They are not available, but similar badges may be introduced in the future.</div>
 <table class="table table-striped mb-5">
@@ -76,11 +76,10 @@
 {% for badge in badges if badge.kind==5 %}
 	<tr>
 		<td>{{ badge.name }}</td>
-		<td><img src="{{ badge.path }}" style="width:50px;height:50px">
+		<td><img src="{{ badge.path }}" class="img-userbadge">
 		<td>{{ badge.description }}</td>
 	</tr>
 {% endfor %}
 </table>
--->
 
 {% endblock %}
