@@ -5,8 +5,8 @@ import time
 db = db_session()
 
 #guild IDs
-xmas_id = g.db.query(Board).filter_by(name="Team_Christmas").first().id
-hwen_id = g.db.query(Board).filter_by(name="Team_Halloween").first().id
+xmas_id = db.query(Board).filter_by(name="Team_Christmas").first().id
+hwen_id = db.query(Board).filter_by(name="Team_Halloween").first().id
 
 #assemble list of Christmas users
 xmas_users = db.query(User).filter(
