@@ -134,7 +134,7 @@
             <select class="form-control" name="ident">
               <option value="" selected>Select Alt (optional)</option>
               {% for user in g.user.alts %}
-              <option value="{{ user.name }}">@{{ user.name }}</option>
+              <option value="{{ user.username }}">@{{ user.username }}</option>
               {% endfor %}
             </select>
             {% endif %}
