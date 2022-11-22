@@ -3,265 +3,270 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    {% block title %}
-    <title>Create a post - {{ 'SITE_NAME' | app_config }}</title>
-    {% endblock %}
+  {% block title %}
+  <title>Create a post - {{ 'SITE_NAME' | app_config }}</title>
+  {% endblock %}
   
-    <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
+  <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- Ruqqus Board CSS -->
-    {% if b %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?v=3.1.37">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?v=3.1.37">
-    {% else %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.1.37">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.37">
-    {% endif %}
+  <!-- Ruqqus Board CSS -->
+  {% if b %}
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?v=3.1.37">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?v=3.1.37">
+  {% else %}
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.1.37">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.37">
+  {% endif %}
 
-    <!-- Font Awesome -->
-    <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
-    
-    <link id="formkey_element" data-formkey="{{ g.user.formkey }}">
+  <!-- Font Awesome -->
+  <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+  
+  <link id="formkey_element" data-formkey="{{ g.user.formkey }}">
 
 </head>
 
 <body id="submit">
 
-    <!-- Navigation -->
-    {% include "header.html" %}
+  <!-- Navigation -->
+  {% include "header.html" %}
 
-    <!-- Page Content -->
+  <!-- Page Content -->
 
-    <div class="container">
+  <div class="container">
 
-        <div class="row justify-content-center mb-4 pb-7">
+    <div class="row justify-content-center mb-4 pb-7">
 
-            <div class="col col-md-6 p-3 py-md-0">
+      <div class="col col-md-6 p-3 py-md-0">
 
-                {% block form %}
+        {% block form %}
 
-                <h1 class="d-none d-md-block">Create a post</h1>
+        <h1 class="d-none d-md-block">Create a post</h1>
 
-                <h2 class="h3 d-md-none">Create a post</h2>
+        <h2 class="h3 d-md-none">Create a post</h2>
 
-                <div class="body">
+        <div class="body">
 
-                    <form id="submitform" action="/submit" method="post" enctype="multipart/form-data" class="mb-5">
-
-
-                        <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-
-                        <label for="title">Post Title</label>
-                        <input class="form-control submit-form-input" id="post-title" aria-describedby="titleHelpRegister" type="text" name="title" placeholder="Required" value="{{ title }}" minlength="1" maxlength="250" required>
-
-                        <div id="urlblock">
-                            <label for="URL" class="mt-3">URL</label>
-                            <input class="form-control submit-form-input" id="post-URL" aria-describedby="URLHelp" type="url" name="url" placeholder="Optional if you have text." value="{{ request.args.get('url','') }}" required>
-                            <small class="form-text text-muted">To post an image, use a direct image link such as i.imgur.com</small>
-                        </div>
-
-                        <div id="submit-image-div" {% if not g.user.can_submit_image %} class="d-none"{% endif %}>
-
-                            {% if g.user.can_submit_image %}
-                            <div id="image-upload-block">
-                                <div><label class="mt-3">Image Upload</label></div>
-
-                                <img id="image-preview" class="w-100 d-block">
-
-                                <label class="btn btn-secondary m-0" for="file-upload">
-                                    <div id="filename-show">Select Image</div>
-                                    <input id="file-upload" type="file" name="file" accept="image/*" hidden>
-                                </label>
-
-                                <small class="form-text text-muted">Images uploaded will be public. Optional if you have text.</small>
-                            </div>
-                            {% else %}
-                            <div id="image-upload-block">
-                                <div><label class="mt-3">Image Upload</label></div>
-
-                                <label class="btn btn-secondary m-0 disabled" for="file-upload">
-                                    <div id="filename-show">Select Image</div>
-                                    <input id="file-upload" type="file" accept="image/*" hidden disabled>
-                                </label>
-
-                                <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
-                            </div>
-                            {% endif %}
-                        </div>
-
-                        <label for="body" class="mt-3">Text<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Uses markdown. Limited to 10000 characters."></i></label>
-
-                        <div class="input-group">
-
-                            <textarea form="submitform" id="post-text" class="form-control rounded submit-form-input textarea-form-input" aria-label="With textarea" placeholder="Optional if you have a link or an image." rows="5" name="body" data-text="character-count-submit-text-form" maxlength="10000" required>{{ text }}</textarea>
-
-                            <span class="position-absolute text-small font-weight-bold" id="character-count-submit-text-form"></span>
-
-                            <div class="bg-light text-format d-none">
-                                <small class="format"><i class="fas fa-bold"></i></small>
-                                <small class="format"><i class="fas fa-italic"></i></small>
-                                <small class="format"><i class="fas fa-quote-right"></i></small>
-                                <small class="format"><i class="fas fa-link"></i></small>
-                            </div>
-                        </div>
-
-                        <div class="form-text text-small"><a href="/help/formatting" target="_blank">Formatting help</a></div>
-
-                        <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are {{ 'SITE_NAME' | app_config }} communities. Enter a Guild you would like your post to belong to."></i></label>
-                        <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
-
-                        {% if g.user.over_18 %}
-                        <label for="over_18" class="text-danger mt-3">NSFW?</label>
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
-                            <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
-                        </div>
-                        {% endif %}
+          <form id="submitform" action="/submit" method="post" enctype="multipart/form-data" class="mb-5">
 
 
-                        {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
-                        <!--admin growth hack-->
-                        <label for="ident">Post As</label>
-                        <input class="form-control" id="ident" type="text" name="ident">
-                        {% endif %}
-                    </form>
-                </div>
-                {% endblock %}
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
+            <label for="title">Post Title</label>
+            <input class="form-control submit-form-input" id="post-title" aria-describedby="titleHelpRegister" type="text" name="title" placeholder="Required" value="{{ title }}" minlength="1" maxlength="250" required>
+
+            <div id="urlblock">
+              <label for="URL" class="mt-3">URL</label>
+              <input class="form-control submit-form-input" id="post-URL" aria-describedby="URLHelp" type="url" name="url" placeholder="Optional if you have text." value="{{ request.args.get('url','') }}" required>
+              <small class="form-text text-muted">To post an image, use a direct image link such as i.imgur.com</small>
             </div>
 
-            <!-- Right Sidebar (hidden on devices smaller than "large") -->
+            <div id="submit-image-div" {% if not g.user.can_submit_image %} class="d-none"{% endif %}>
 
-            {% set rules={
-                "Intellectual Property": "Do not upload content that you are not authorized to distribute.",
-                "Digital Safety": "Do not upload or link anything that is digitally malicious or illegal.",
-                "User Safety": "You may not harm or threaten other users or impersonate site staff.",
-                "Adult Content": "Adult content must be marked as such.",
-                "Safety": "You may not use this site to incite, plan, or execute illegal or violent activity.",
-                "Evil": "You may not use the site to advance ontologically evil causes."
-            } %}
+              {% if g.user.can_submit_image %}
+              <div id="image-upload-block">
+                <div><label class="mt-3">Image Upload</label></div>
 
-            <div class="col sidebar text-left d-none d-lg-block pt-3">
+                <img id="image-preview" class="w-100 d-block">
 
-                <div class="sidebar-section sidebar-rules">
-                    <div class="title bg-purple"><a href="/help/rules" target="_blank" class="text-white"><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</a></div>
-                    <div class="body">
-                        <ol class="pl-0 mb-0">
-                            {% for rule in rules %}
-                            <li>
-                                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="ruleCollapse1">{{ rule}}<span class="float-right"><i class="fa"></i></span>
-                                </a>
-                            </li>
-                            <div id="ruleCollapse-{{ loop.index }}" class="collapse">
-                                <p class="pl-4">{{ rules[rule] }}</p>
-                            </div>
-                            {% endfor %}
-                        </ol>
-                    </div>
-                </div>
+                <label class="btn btn-secondary m-0" for="file-upload">
+                  <div id="filename-show">Select Image</div>
+                  <input id="file-upload" type="file" name="file" accept="image/*" hidden>
+                </label>
 
-                {% include "footer.html" %}
+                <small class="form-text text-muted">Images uploaded will be public. Optional if you have text.</small>
+              </div>
+              {% else %}
+              <div id="image-upload-block">
+                <div><label class="mt-3">Image Upload</label></div>
 
+                <label class="btn btn-secondary m-0 disabled" for="file-upload">
+                  <div id="filename-show">Select Image</div>
+                  <input id="file-upload" type="file" accept="image/*" hidden disabled>
+                </label>
+
+                <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
+              </div>
+              {% endif %}
             </div>
 
+            <label for="body" class="mt-3">Text<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Uses markdown. Limited to 10000 characters."></i></label>
+
+            <div class="input-group">
+
+              <textarea form="submitform" id="post-text" class="form-control rounded submit-form-input textarea-form-input" aria-label="With textarea" placeholder="Optional if you have a link or an image." rows="5" name="body" data-text="character-count-submit-text-form" maxlength="10000" required>{{ text }}</textarea>
+
+              <span class="position-absolute text-small font-weight-bold" id="character-count-submit-text-form"></span>
+
+              <div class="bg-light text-format d-none">
+                <small class="format"><i class="fas fa-bold"></i></small>
+                <small class="format"><i class="fas fa-italic"></i></small>
+                <small class="format"><i class="fas fa-quote-right"></i></small>
+                <small class="format"><i class="fas fa-link"></i></small>
+              </div>
+            </div>
+
+            <div class="form-text text-small"><a href="/help/formatting" target="_blank">Formatting help</a></div>
+
+            <label for="board" class="mt-3">Post in guild<i class="fas fa-info-circle text-gray-400 ml-1" data-toggle="tooltip" data-placement="top" title="Guilds are {{ 'SITE_NAME' | app_config }} communities. Enter a Guild you would like your post to belong to."></i></label>
+            <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
+
+            {% if g.user.over_18 %}
+            <label for="over_18" class="text-danger mt-3">NSFW?</label>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
+              <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
+            </div>
+            {% endif %}
+
+
+            {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
+            <!--admin growth hack-->
+            <label for="ident">Post As</label>
+            <select class="form-control" name="ident">
+              <option value="" selected>Select Alt (optional)</option>
+              {% for user in g.user.alts %}
+              <option value="{{ user.name }}">@{{ user.name }}</option>
+              {% endfor %}
+            </select>
+            {% endif %}
+          </form>
         </div>
+        {% endblock %}
+
+      </div>
+
+      <!-- Right Sidebar (hidden on devices smaller than "large") -->
+
+      {% set rules={
+        "Intellectual Property": "Do not upload content that you are not authorized to distribute.",
+        "Digital Safety": "Do not upload or link anything that is digitally malicious or illegal.",
+        "User Safety": "You may not harm or threaten other users or impersonate site staff.",
+        "Adult Content": "Adult content must be marked as such.",
+        "Safety": "You may not use this site to incite, plan, or execute illegal or violent activity.",
+        "Evil": "You may not use the site to advance ontologically evil causes."
+      } %}
+
+      <div class="col sidebar text-left d-none d-lg-block pt-3">
+
+        <div class="sidebar-section sidebar-rules">
+          <div class="title bg-purple"><a href="/help/rules" target="_blank" class="text-white"><i class="fas fa-scroll-old mr-2"></i>Rules and guidelines</a></div>
+          <div class="body">
+            <ol class="pl-0 mb-0">
+              {% for rule in rules %}
+              <li>
+                <a class="text-black font-weight-bold collapsed" data-toggle="collapse" href="#ruleCollapse-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="ruleCollapse1">{{ rule}}<span class="float-right"><i class="fa"></i></span>
+                </a>
+              </li>
+              <div id="ruleCollapse-{{ loop.index }}" class="collapse">
+                <p class="pl-4">{{ rules[rule] }}</p>
+              </div>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
+
+        {% include "footer.html" %}
+
+      </div>
 
     </div>
 
-    <div id="submit-page-footer" class="container">
-        <div class="row fixed-bottom bg-white border-top p-3">
-            <div class="col">
-                <a href="/" class="btn btn-secondary">Cancel</a>
-            </div>
-            <div class="col text-right">
-                {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
-                <button class="btn btn-purple toast-form-submit" data-form="submitform">{% block submit_button %}Post{% endblock %}</button>
-            </div>
-        </div>
+  </div>
+
+  <div id="submit-page-footer" class="container">
+    <div class="row fixed-bottom bg-white border-top p-3">
+      <div class="col">
+        <a href="/" class="btn btn-secondary">Cancel</a>
+      </div>
+      <div class="col text-right">
+        {% if error %}<span class="text-danger mr-2">{{ error }}</span>{% endif %}
+        <button class="btn btn-purple toast-form-submit" data-form="submitform">{% block submit_button %}Post{% endblock %}</button>
+      </div>
     </div>
+  </div>
 
-    {% include "toasts.html" %}
+  {% include "toasts.html" %}
 
-    {% include "bootstrap.html" %}
+  {% include "bootstrap.html" %}
 
-    <!-- Syzitus JS -->
-    <script src="/assets/js/all_js.js?v=3.1.37"></script>
+  <!-- Syzitus JS -->
+  <script src="/assets/js/all_js.js?v=3.1.37"></script>
 
-    <!-- ClipboardJS -->
+  <!-- ClipboardJS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
-    <!-- Instantiate clipboard by passing a string selector -->
-    <script type="text/javascript" nonce="{{ g.nonce }}">
-        var clipboard = new ClipboardJS('.copy-link');
-        clipboard.on('success', function(e) {
+  <!-- Instantiate clipboard by passing a string selector -->
+  <script type="text/javascript" nonce="{{ g.nonce }}">
+    var clipboard = new ClipboardJS('.copy-link');
+    clipboard.on('success', function(e) {
 
-            jQuery(function($) {
-                $('#toast-success').toast('show');
-            })
-            console.log(e);
-        });
-        clipboard.on('error', function(e) {
+      jQuery(function($) {
+        $('#toast-success').toast('show');
+      })
+      console.log(e);
+    });
+    clipboard.on('error', function(e) {
 
-            jQuery(function($) {
-                $('#toast-error').toast('show');
-            })
-            console.log(e);
-        });
-    </script>
+      jQuery(function($) {
+        $('#toast-error').toast('show');
+      })
+      console.log(e);
+    });
+  </script>
 
-    {% if g.user.can_submit_image %}
-    <script nonce="{{ g.nonce }}">
-    document.onpaste = function(event) {
+  {% if g.user.can_submit_image %}
+  <script nonce="{{ g.nonce }}">
+  document.onpaste = function(event) {
 
-        f = document.getElementById('file-upload');
-        files = event.clipboardData.files;
-        if (files.length){
-            filename = files[0].name.toLowerCase();
+    f = document.getElementById('file-upload');
+    files = event.clipboardData.files;
+    if (files.length){
+      filename = files[0].name.toLowerCase();
 
-            if (filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png") || filename.endsWith(".gif"))
-            {
-                f.files = files;
-                $('#filename-show').text(filename);
-                $('#urlblock').addClass('d-none');
-
-                var fileReader = new FileReader();
-                fileReader.readAsDataURL(f.files[0]);
-                fileReader.addEventListener("load", function () {
-                    $('#image-preview').attr('src', this.result);
-                });
-
-                $('#file-upload').attr('required', false);
-
-                checkForRequired();
-            }
-        }
-    }
-
-    $('#file-upload').on('change', function(e){
-        f=document.getElementById('file-upload');
+      if (filename.endsWith(".jpg") || filename.endsWith(".jpeg") || filename.endsWith(".png") || filename.endsWith(".gif"))
+      {
+        f.files = files;
+        $('#filename-show').text(filename);
         $('#urlblock').addClass('d-none');
-        $('#filename-show').text($('#file-upload')[0].files[0].name);
 
         var fileReader = new FileReader();
         fileReader.readAsDataURL(f.files[0]);
         fileReader.addEventListener("load", function () {
-            $('#image-preview').attr('src', this.result);
-    });  
+          $('#image-preview').attr('src', this.result);
+        });
+
+        $('#file-upload').attr('required', false);
 
         checkForRequired();
-    })
-    </script>
-    {% endif %}
+      }
+    }
+  }
+
+  $('#file-upload').on('change', function(e){
+    f=document.getElementById('file-upload');
+    $('#urlblock').addClass('d-none');
+    $('#filename-show').text($('#file-upload')[0].files[0].name);
+
+    var fileReader = new FileReader();
+    fileReader.readAsDataURL(f.files[0]);
+    fileReader.addEventListener("load", function () {
+      $('#image-preview').attr('src', this.result);
+  });  
+
+    checkForRequired();
+  })
+  </script>
+  {% endif %}
 
 </body>
 
