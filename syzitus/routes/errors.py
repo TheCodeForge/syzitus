@@ -62,7 +62,7 @@ def error_403(e):
 @api()
 def error_404(e):
 
-    if request.args.get("ruqqus_redirect"):
+    if request.args.get("from_ruqqus"):
         return{"html": lambda: (render_template('errors/410.html'), 410),
                "api": lambda: (jsonify({"error": "410 Gone"}), 410)
                }
