@@ -226,6 +226,20 @@ BADGE_DATA={
         "kind": 3,
         "rank": 3,
         "icon": "beta.png"
+    },
+    17: {
+        "name":"Halloween Runners-Up 2022",
+        "description":f"Fought in vain to free Halloween from Christmas tyranny in the 2022 Holiday War",
+        "kind": 5,
+        "rank": 3,
+        "icon": "holiday-2022-hween.png"
+    },
+    18: {
+        "name":"Christmas Victors 2022",
+        "description":f"Successfully defended Christmas from the Halloween invasion in the 2022 Holiday War",
+        "kind": 5,
+        "rank": 2,
+        "icon": "holiday-2022-xmas.png"
     }
 }
 
