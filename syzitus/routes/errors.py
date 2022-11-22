@@ -61,6 +61,12 @@ def error_403(e):
 @auth_desired
 @api()
 def error_404(e):
+
+    if request.args.get("ruqqus_redirect"):
+        return{"html": lambda: (render_template('errors/410.html'), 410),
+               "api": lambda: (jsonify({"error": "410 Gone"}), 410)
+               }
+
     return{"html": lambda: (render_template('errors/404.html'), 404),
            "api": lambda: (jsonify({"error": "404 Not Found"}), 404)
            }
