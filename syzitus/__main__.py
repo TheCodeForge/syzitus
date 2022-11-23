@@ -202,6 +202,9 @@ Markdown(app)
 cache = Cache(app)
 Compress(app)
 
+if bool(int(environ.get("MINIFY",0))):
+    Minify(app)
+
 class CorsMatch(str):
 
     def __eq__(self, other):
