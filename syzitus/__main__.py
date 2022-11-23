@@ -144,11 +144,11 @@ app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 10))
 app.config["S3_BUCKET"]=environ.get("S3_BUCKET_NAME","i.syzitus.com").lstrip().rstrip()
 
 
-redispool=ConnectionPool(
-    max_connections=app.config["REDIS_POOL_SIZE"],
-    host=app.config["CACHE_REDIS_URL"][8:]
-    ) if app.config["CACHE_TYPE"]=="redis" else None
-app.config["CACHE_OPTIONS"]={'connection_pool':redispool} if app.config["CACHE_TYPE"]=="redis" else {}
+# redispool=ConnectionPool(
+#     max_connections=app.config["REDIS_POOL_SIZE"],
+#     host=app.config["CACHE_REDIS_URL"][8:]
+#     ) if app.config["CACHE_TYPE"]=="redis" else None
+# app.config["CACHE_OPTIONS"]={'connection_pool':redispool} if app.config["CACHE_TYPE"]=="redis" else {}
 
 app.config["READ_ONLY"]=bool(int(environ.get("READ_ONLY", False)))
 app.config["BOT_DISABLE"]=bool(int(environ.get("BOT_DISABLE", False)))
