@@ -792,6 +792,17 @@
           </label> 
           {% endif %}
 
+        
+          {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
+          <!--admin growth hack-->
+          <select class="form-control" name="ident">
+            <option value="" selected>Select Alt (optional)</option>
+            {% for user in g.user.alts %}
+            <option value="{{ user.username }}">@{{ user.username }}</option>
+            {% endfor %}
+          </select>
+          {% endif %}
+
           <label class="format btn btn-secondary m-0 mr-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
                 <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
