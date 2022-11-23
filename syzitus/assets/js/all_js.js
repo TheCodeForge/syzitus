@@ -1404,8 +1404,8 @@ $(document).on('click', '.btn-save-new-comment', function(){
   }
   xhr.send(form)
 
-  $('#save-reply-to-'+fullname).prop('disabled', true)
-  $('#save-reply-to-'+fullname).addClass('disabled');
+  $(this).prop('disabled', true)
+  $(this).addClass('disabled');
 
 })
 
