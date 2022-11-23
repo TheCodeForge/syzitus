@@ -645,12 +645,11 @@
                   <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
 
                     {% if g.user and g.user.id==p.author_id %}
-                    <a href="javascript:void(0)" id="block-user-{{ p.base36id }}" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a>
+                    <a href="javascript:void(0)" id="block-user-{{ p.base36id }}" class="dropdown-item btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a>
                     {% endif %}
 
 
                     {% if g.user and not g.user.is_suspended %}
-                    <li class="list-inline-item"><a href=""><i class="fas fa-retweet"></i><span>Resubmit</span></a></li>
                     <a href="/submit?url={{ p.permalink | full_link | urlencode }}" class="dropdown-item"><i class="fas fa-retweet"></i>Resubmit</a>
                     {% endif %}
 
