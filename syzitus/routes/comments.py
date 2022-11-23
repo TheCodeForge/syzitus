@@ -460,8 +460,20 @@ Optional file data:
         if badlink:
             return jsonify({"error": f"Remove the following link and try again: `{check_url}`. Reason: {badlink.reason_text}"}), 403
 
+    #admin growth hack
+    if g.user.admin_level and app.config["GROWTH_HACK"] and request.form.get("ident"):
+        author=get_user(request.form.get("ident"), graceful=True)
+        if not author:
+            return jsonify({"error": "That account doesn't exist."}), 404
+        if author not in g.user.alts:
+            return jsonify({"error": "You can only altpost to accounts that you own."}), 403
+        author_id = author.id
+    else:
+        author_id=g.user.id
+
+
     # create comment
-    c = Comment(author_id=g.user.id,
+    c = Comment(author_id=author_id,
                 parent_submission=parent_submission,
                 #parent_fullname=parent.fullname,
                 parent_comment_id=parent_comment_id,
