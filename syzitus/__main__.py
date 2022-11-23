@@ -134,7 +134,7 @@ app.config["COMMENT_SPAM_COUNT_THRESHOLD"] = int(
 app.config["CACHE_REDIS_URL"] = environ.get("REDIS_URL","").rstrip().lstrip()
 app.config["CACHE_DEFAULT_TIMEOUT"] = 60
 app.config["CACHE_KEY_PREFIX"] = "flask_caching_"
-app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 10))
+app.config["REDIS_POOL_SIZE"]=int(environ.get("REDIS_POOL_SIZE", 3))
 
 # AWS configs
 app.config["S3_BUCKET"]=environ.get("S3_BUCKET_NAME","i.syzitus.com").lstrip().rstrip()
@@ -286,6 +286,7 @@ Base = declarative_base()
 r=redis.Redis(
     host=app.config["CACHE_REDIS_URL"][8:], 
     decode_responses=True,
+    ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
     ssl_cert_reqs=None,
     connection_pool = redispool
     ) if app.config["CACHE_REDIS_URL"] else None
