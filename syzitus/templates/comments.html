@@ -257,7 +257,7 @@
                 <a class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger fa-fw"></i>Block user</a>
                 {% endif %}
 
-                <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed this</a>
+                <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed</a>
 
                 {% if g.user %}
                 {% if g.user.admin_level and g.user.id==c.author_id %}

@@ -635,12 +635,7 @@
               <li class="list-inline-item"><a href="javascript:void(0)" class="text-danger post-url-reload" data-post-url="/mod/kick/{{ p.board.name }}/{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i><span>Kick</span></a></li>
               {% endif %}
 
-              {% if g.user.admin_level >= 4 and p.oauth_app %}
-              <li class="list-inline-item"><a href="{{ p.oauth_app.permalink }}" ><i class="fas fa-code"></i><span>API App</span></a></li>
               {% endif %}
-              {% endif %}
-
-              {% if g.user and not g.user.is_suspended %}<li class="list-inline-item"><a href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="fas fa-retweet"></i><span>Resubmit</span></a></li>{% endif %}
 
               <li class="list-inline-item d-none d-md-inline-block">
                 <div class="dropdown show">
@@ -651,6 +646,12 @@
 
                     {% if g.user and g.user.id==p.author_id %}
                     <a href="javascript:void(0)" id="block-user-{{ p.base36id }}" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a>
+                    {% endif %}
+
+
+                    {% if g.user and not g.user.is_suspended %}
+                    <li class="list-inline-item"><a href=""><i class="fas fa-retweet"></i><span>Resubmit</span></a></li>
+                    <a href="/submit?url={{ p.permalink | full_link | urlencode }}" class="dropdown-item"><i class="fas fa-retweet"></i>Resubmit</a>
                     {% endif %}
 
                     {% if g.user and g.user.id!=p.author_id and not p.author.is_deleted %}
@@ -668,14 +669,14 @@
 
                     {% if g.user and g.user.admin_level >=3 %}
                     {% if p.is_banned or p.active_flags %}
-                    <a href="javascript:void(0)" id="moderate-post-{{ p.base36id }}" class="text-success admin-approve-post" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a>
+                    <a href="javascript:void(0)" id="moderate-post-{{ p.base36id }}" class="dropdown-item text-success admin-approve-post" data-post-id="{{ p.base36id }}"><i class="fas fa-check"></i>Approve</a>
                     {% endif %}
                     {% if not p.is_banned or p.active_flags %}
-                    <a href="javascript:void(0)" id="moderate-post-{{ p.base36id }}" class="text-success admin-remove-post" data-post-id="{{ p.base36id }}"><i class="fas fa-ban text-danger"></i>Remove</a>
+                    <a href="javascript:void(0)" id="moderate-post-{{ p.base36id }}" class="dropdown-item text-remove admin-remove-post" data-post-id="{{ p.base36id }}"><i class="fas fa-ban"></i>Remove</a>
                     {% endif %}
                     {% endif %}
 
-                    <a id="embed-content-{{ p.fullname }}" href="javascript:void(0)" class="dropdown-item copy-outside-embed" data-thing-fullname="{{ p.fullname }}"><i class="fas fa-code"></i>Embed this</a>
+                    <a id="embed-content-{{ p.fullname }}" href="javascript:void(0)" class="dropdown-item copy-outside-embed" data-thing-fullname="{{ p.fullname }}"><i class="fas fa-code"></i>Embed</a>
                   </div>
                 </div>
               </li>
