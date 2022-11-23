@@ -1507,15 +1507,16 @@ $(document).on('click', '.btn-save-edit-comment', function() {
       commentForm=document.getElementById('comment-text-'+id);
       commentForm.innerHTML=JSON.parse(xhr.response)["html"];
       document.getElementById('cancel-edit-'+id).click()
-      $('#toast-comment-success').toast('dispose');
-      $('#toast-comment-error').toast('dispose');
-      $('#toast-comment-success').toast('show');
+      $('#toast-success').toast('dispose');
+      $('#toast-error').toast('dispose');
+      $('#toast-success').toast('show');
+      $('#toast-success .toast-text').text("Comment edit saved")
     }
     else {
-      $('#toast-comment-success').toast('dispose');
-      $('#toast-comment-error').toast('dispose');
-      $('#toast-comment-error').toast('show');
-      commentError.textContent = JSON.parse(xhr.response)["error"];
+      $('#toast-success').toast('dispose');
+      $('#toast-error').toast('dispose');
+      $('#toast-error').toast('show');
+      $('#toast-error .toast-text').text(JSON.parse(xhr.response)["error"]);
     }
   }
   xhr.send(form)
