@@ -1405,7 +1405,7 @@ def board_edit_css(bid, board):
 
     return jsonify({"message": f"+{board.name} CSS updated"})
 
-@app.get("/+<guildname>/css")
+@app.get("/assets/+<guildname>/css")
 def board_get_css(guildname):
 
     board=get_guild(guildname)

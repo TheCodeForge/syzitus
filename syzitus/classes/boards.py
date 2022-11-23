@@ -630,7 +630,7 @@ class Board(Base, Stndrd, Age_times):
 
     @property
     def custom_css_url(self):
-        return f"{self.permalink}/css?v={self.css_nonce}"
+        return f"/assets{self.permalink}/css?v={self.css_nonce}"
 
     @property
     def subcat(self):
