@@ -45,3 +45,20 @@ hwen_users = db.query(User).filter(
 	)
 
 print(list(hwen_users))
+
+
+for user in xmas_users:
+	if not user.has_badge(18):
+		new_badge = Badge(
+			user_id=user.id,
+            badge_id=18,
+            created_utc=int(time.time())
+            )
+
+for user in hwen_users:
+	if not user.has_badge(17):
+		new_badge = Badge(
+			user_id=user.id,
+            badge_id=17,
+            created_utc=int(time.time())
+            )
