@@ -98,7 +98,7 @@ def ban_post(post_id):
         )
     g.db.add(ma)
     g.db.commit()
-    return redirect(post.permalink)
+    return jsonify({"message":f"Post {post.base36id} removed"})
 
 
 @app.route("/api/unban_post/<post_id>", methods=["POST"])
@@ -127,7 +127,7 @@ def unban_post(post_id):
     g.db.add(post)
     g.db.commit()
 
-    return redirect(post.permalink)
+    return jsonify({"message":f"Post {post.base36id} approved"})
 
 
 @app.route("/api/distinguish/<post_id>", methods=["POST"])
