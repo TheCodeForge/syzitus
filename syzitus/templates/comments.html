@@ -381,7 +381,7 @@
             
 
             <a href="javascript:void(0)" data-comment-id="{{ c.base36id }}" class="btn btn-link text-muted ml-auto cancel-form btn-cancel-comment">Cancel</a> 
-            <a href="javascript:void(0)" id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-form-id="reply-to-t3_{{ c.base36id }}">Comment</a> 
+            <a href="javascript:void(0)" id="save-reply-to-{{ c.fullname }}" class="btn btn-primary text-white ml-2 btn-save-new-comment" data-form-id="reply-to-t3_{{ c.base36id }}" data-parent-fullname="{{ c.fullname }}">Comment</a> 
           </div> 
         </form> 
       </div>

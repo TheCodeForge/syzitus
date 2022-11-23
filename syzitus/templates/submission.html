@@ -792,7 +792,7 @@
           </label> 
           {% endif %}
 
-        
+
           {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
           <!--admin growth hack-->
           <select class="form-control" name="ident">
@@ -807,7 +807,7 @@
                 <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
                 <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
           </label>
-        <a id="save-reply-to-{{ p.fullname }}" href="javascript:void(0)" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-white ml-auto btn-save-new-comment" data-form-id="reply-to-{{ p.fullname }}">Comment</a>
+        <a id="save-reply-to-{{ p.fullname }}" href="javascript:void(0)" form="reply-to-{{ p.fullname }}" class="btn btn-primary text-white ml-auto btn-save-new-comment" data-form-id="reply-to-{{ p.fullname }}" data-parent-fullname="{{ c.fullname }}">Comment</a>
       </div>
     </form>
   </div>
