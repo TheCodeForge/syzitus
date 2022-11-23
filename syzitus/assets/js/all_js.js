@@ -1380,7 +1380,7 @@ block_user=function() {
 
 $(document).on('click', '.btn-save-new-comment', function(){
 
-  var form = new FormData($('#'+$(this).data('form-id')[0]);
+  var form = new FormData($('#'+$(this).data('form-id')[0]));
 
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/api/comment");
