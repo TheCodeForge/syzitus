@@ -1388,18 +1388,19 @@ $(document).on('click', '.btn-save-new-comment', function(){
   xhr.onload=function(){
     if (xhr.status==200) {
       $('#comment-form-space-'+$(this).data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
-      $('#toast-comment-success').toast('dispose');
-      $('#toast-comment-error').toast('dispose');
-      $('#toast-comment-success').toast('show');
+      $('#toast-success').toast('dispose');
+      $('#toast-error').toast('dispose');
+      $('#toast-success').toast('show')
+      $('#toast-success .toast-text').text("Comment posted!");
     }
     else {
       $(this).prop('disabled', false);
       $(this).removeClass('disabled')
       var commentError = document.getElementById("comment-error-text");
-      $('#toast-comment-success').toast('dispose');
-      $('#toast-comment-error').toast('dispose');
-      $('#toast-comment-error').toast('show');
-      commentError.textContent = JSON.parse(xhr.response)["error"];
+      $('#toast-success').toast('dispose');
+      $('#toast-error').toast('dispose');
+      $('#toast-error').toast('show');
+      $('#toast-error .toast-text').text(JSON.parse(xhr.response)["error"]);
     }
   }
   xhr.send(form)
