@@ -1380,17 +1380,7 @@ block_user=function() {
 
 $(document).on('click', '.btn-save-new-comment', function(){
 
-
-  var form = new FormData();
-
-  var fullname=$(this).data('parent-fullname');
-
-  form.append('formkey', formkey());
-  form.append('parent_fullname', $(this).data('parent-fullname'));
-  form.append('submission', document.getElementById('reply-form-submission-'+$(this).data('parent-fullname')).value);
-  form.append('body', document.getElementById('reply-form-body-'+$(this).data('parent-fullname')).value);
-  form.append('file', document.getElementById('file-upload-reply-'+$(this).data('parent-fullname')).files[0]);
-
+  var form = new FormData($('#'+$(this).data('form-id')[0]);
 
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/api/comment");
@@ -1500,7 +1490,7 @@ $(document).on('click', '.btn-save-edit-comment', function() {
 
   var commentError = document.getElementById("comment-error-text");
 
-  var form = new FormData();
+  var form = new FormData($('#'+$(this).data('form-id')));
 
   form.append('formkey', formkey());
   form.append('body', document.getElementById('comment-edit-body-'+id).value);
