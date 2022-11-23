@@ -78,8 +78,10 @@ Discussion of these topics as they relate to current events or other subject mat
 The following rules apply to clients crawling human-readable {{ "SITE_NAME" | app_config }} pages in a read-only manner ("Crawlers"):
 
 1. Crawlers must use a unique `User-Agent` header. Crawling {{ "SITE_NAME" | app_config }} without a unique user agent header is prohibited.
-2. Crawlers are permitted for the following purposes only: 1) Indexing {{ "SITE_NAME" | app_config }} content for search engines, and 2) creating off-site archives of {{ "SITE_NAME" | app_config }} content.
-3. Crawlers for other purposes that do not benefit {{ "SITE_NAME" | app_config }} or its users are prohibited. This includes but is not limited to:
+2. Crawlers must serve a purpose that benefits {{ 'SITE_NAME" | app_config }} or its users. Examples of such purposes include, but are not limited to:
+    * Indexing {{ "SITE_NAME" | app_config }} content for search engines
+    * Creating off-site archives of {{ "SITE_NAME" | app_config }} content.
+3. Crawlers that do not benefit {{ "SITE_NAME" | app_config }} or its users are prohibited. This includes but is not limited to:
     * Brand monitoring
     * Search engine optimization
     * Plagerism detection
