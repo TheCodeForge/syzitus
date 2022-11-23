@@ -1382,20 +1382,22 @@ $(document).on('click', '.btn-save-new-comment', function(){
 
   var form = new FormData($('#'+$(this).data('form-id'))[0]);
 
+  var btn=$(this);
+
   var xhr = new XMLHttpRequest();
   xhr.open("post", "/api/comment");
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      $('#comment-form-space-'+$(this).data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
+      $('#comment-form-space-'+btn.data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
       $('#toast-success').toast('show')
       $('#toast-success .toast-text').text("Comment posted!");
     }
     else {
-      $(this).prop('disabled', false);
-      $(this).removeClass('disabled')
+      btn.prop('disabled', false);
+      btn.removeClass('disabled')
       var commentError = document.getElementById("comment-error-text");
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
