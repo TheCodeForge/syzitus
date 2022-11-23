@@ -542,4 +542,4 @@ def malicious_scraper_honeypot(path):
 
     g.db.add(new_ip)
     g.db.commit()
-    return "Tech-heresy detected. Commencing purge.",404
+    return "Tech-heresy detected. Commencing purge.", 404
