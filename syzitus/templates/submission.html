@@ -593,8 +593,6 @@
 
               {% if g.user and g.user.id==p.author_id %}
               <li class="list-inline-item"><a href="javascript:void(0)" data-target-id="{{ p.base36id }}" class="btn-edit-post"><i class="fas fa-edit"></i><span class="d-none d-lg-inline">Edit</span></a></li>
-
-              <li class="list-inline-item"><a href="javascript:void(0)" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i><span class="d-none d-lg-inline">Delete</span></a></li>
               {% endif %}
 
               {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
@@ -659,6 +657,8 @@
                     <i class="fas fa-ellipsis-h text-small mr-0"></i>
                   </a>
                   <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
+
+                    <a href="javascript:void(0)" id="block-user-{{ p.base36id }}" class="btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="fas fa-trash-alt"></i>Delete</a>
 
                     {% if g.user and g.user.id!=p.author_id and not p.author.is_deleted %}
                     <a id="block-user-{{ p.base36id }}" class="dropdown-item text-danger btn-block-user{% if p.is_blocking %} d-none{% endif %}"><i class="fas fa-user-slash text-danger"></i>Block user</a>
