@@ -15,7 +15,7 @@ from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_compress import Compress
-#from flask_socketio import SocketIO
+from flask_minify import Minify
 from time import sleep
 from collections import deque
 import psycopg2
