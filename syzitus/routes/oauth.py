@@ -348,13 +348,17 @@ def app_id(aid):
     if g.user.id != oauth.author_id and g.user.admin_level<4:
         abort(403)
 
-    pids=oauth.idlist(page=int(request.args.get("page",1)),
-        )
+    if g.user.admin_level >=4:
+        pids=oauth.idlist(page=int(request.args.get("page",1)),
+            )
 
-    next_exists=len(pids)==101
-    pids=pids[0:100]
+        next_exists=len(pids)==101
+        pids=pids[0:100]
 
-    posts=get_posts(pids)
+        posts=get_posts(pids)
+    else:
+        posts=[]
+        next_exists=False
 
     return render_template("admin/app.html",
                            app=oauth,
