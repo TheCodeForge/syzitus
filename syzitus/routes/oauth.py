@@ -264,7 +264,7 @@ def request_api_keys():
 
 @app.route("/delete_app/<aid>", methods=["POST"])
 @is_not_banned
-def delete_oauth_app(v, aid):
+def delete_oauth_app(aid):
 
     aid = base36decode(aid)
     app = g.db.query(OauthApp).filter_by(id=aid).first()
@@ -280,7 +280,7 @@ def delete_oauth_app(v, aid):
 
 @app.route("/edit_app/<aid>", methods=["POST"])
 @is_not_banned
-def edit_oauth_app(v, aid):
+def edit_oauth_app(aid):
 
     aid = int(aid)
     app = g.db.query(OauthApp).filter_by(id=aid).first()
@@ -294,7 +294,6 @@ def edit_oauth_app(v, aid):
     return redirect('/settings/apps')
 
 
-@app.get("/api/v1/identity")
 @app.get("/api/v2/me")
 @auth_required
 @api("identity")
@@ -308,7 +307,7 @@ Get information about the currently authenticated user. Does not include email o
 
 @app.route("/admin/app/approve/<aid>", methods=["POST"])
 @admin_level_required(4)
-def admin_app_approve(v, aid):
+def admin_app_approve(aid):
 
     app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
 
@@ -321,7 +320,7 @@ def admin_app_approve(v, aid):
 
 @app.route("/admin/app/revoke/<aid>", methods=["POST"])
 @admin_level_required(4)
-def admin_app_revoke(v, aid):
+def admin_app_revoke(aid):
 
     app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
 
@@ -334,7 +333,7 @@ def admin_app_revoke(v, aid):
 
 @app.route("/app/<aid>", methods=["GET"])
 @auth_required
-def admin_app_id(v, aid):
+def app_id(aid):
 
     aid=base36decode(aid)
 
@@ -365,7 +364,7 @@ def admin_app_id(v, aid):
 
 @app.route("/admin/app/<aid>/comments", methods=["GET"])
 @admin_level_required(3)
-def admin_app_id_comments(v, aid):
+def admin_app_id_comments(aid):
 
     aid=base36decode(aid)
 
