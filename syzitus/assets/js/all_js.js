@@ -195,7 +195,7 @@ $(document).on('click', '.btn-distinguish-comment', function(){
   var comment_id=$(this).data('comment-id');
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", "/api/distinguish_comment/"+$(this).data(comment_id));
+  xhr.open("post", "/api/distinguish_comment/"+comment_id);
 
   var form = new FormData();
 
@@ -204,11 +204,10 @@ $(document).on('click', '.btn-distinguish-comment', function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+$(this).data(comment_id)+'-only');
+      comment=document.getElementById('comment-'+comment_id+'-only');
       comment.html(JSON.parse(xhr.response)["html"]);
     }
     else {
-      var commentError = document.getElementById("comment-error-text");
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
       $('#toast-error').toast('show');
