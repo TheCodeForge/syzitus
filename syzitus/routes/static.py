@@ -348,3 +348,8 @@ def docs():
             fulldocs[doc.resource].append(doc)
 
     return render_template("docs.html", docs=fulldocs, v=None)
+
+
+@app.get("/favicon.ico")
+def get_favicon_ico():
+    return redirect(app.config["IMG_URL_FAVICON"])
