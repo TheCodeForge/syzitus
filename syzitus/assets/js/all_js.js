@@ -204,8 +204,7 @@ $(document).on('click', '.btn-distinguish-comment', function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      comment=document.getElementById('comment-'+comment_id+'-only');
-      comment.html(JSON.parse(xhr.response)["html"]);
+      $('#comment-'+comment_id+'-only').html(JSON.parse(xhr.response)["html"]);
     }
     else {
       $('#toast-success').toast('dispose');
