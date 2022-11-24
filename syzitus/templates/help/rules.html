@@ -103,8 +103,8 @@ The following rules apply to third-party clients acting as in intermediary betwe
 The following rules apply to third-party clients interacting with {{ "SITE_NAME" | app_config }} in an automated manner ("Bots"):
 
 1. Bots may not vote.
-2. API clients must use a unique `User-Agent` header.
-3. API clients must authenticate with an OAuth2 token. Username/password authentication is strictly prohibited.
+2. Bots must use a unique `User-Agent` header.
+3. Bots must authenticate with an OAuth2 token. Username/password authentication is strictly prohibited.
 3. Bots must include a `X-User-Type` header with a value of `Bot`.
 
 {% endfilter %}
