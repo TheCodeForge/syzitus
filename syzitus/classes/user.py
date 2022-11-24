@@ -1222,6 +1222,11 @@ class User(Base, Stndrd, Age_times):
                     #b.all_opt_out = False
                     g.db.add(b)
 
+            #ban api applications
+            for app in self.applications:
+                app.is_banned=True
+                g.db.add(app)
+
         g.db.add(self)
         
         discord_ban_action = f"{days} Day Ban" if days else "Perm Ban"
