@@ -69,7 +69,12 @@ Optional query parameters:
         guildname = board.name
     
     # fix incorrect guildname and pid
-    if (board.name != guildname or comment.parent_submission != post.id) and not request.path.startswith("/api/"):
+    if (request.path != comment.permalink) and not request.path.startswith("/api/"):
+
+        #special case to handle incoming ruqqus redirects
+        if request.args.get("from_ruqqus"):
+            abort(410)
+
         return redirect(comment.permalink)
 
     if board.is_banned and not (g.user and g.user.admin_level > 3):

@@ -127,7 +127,12 @@ Optional query parameters:
     board = post.board
     #if the guild name is incorrect, fix the link and redirect
 
-    if boardname and not boardname == board.name:
+    if boardname and request.path != post.permalink:
+
+        #special case to handle incoming from ruqqus redirects
+        if request.args.get("from_ruqqus"):
+            abort(410)
+
         return redirect(post.permalink)
 
     if board.is_banned and not (g.user and g.user.admin_level > 3):
