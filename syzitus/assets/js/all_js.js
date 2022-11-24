@@ -2104,3 +2104,9 @@ $('#guild-ban-reason').on('input', function(){
 $('domain-ban-selector').change(function(){
   $('#domain-ban-submit').prop('disabled', false)
 })
+
+
+$('.app-secret-hider').click(function(){
+  $(this).addClass('d-none');
+  $('#edit-'+$(this).data('app-id')+'-client-secret').removeClass('d-none');
+})

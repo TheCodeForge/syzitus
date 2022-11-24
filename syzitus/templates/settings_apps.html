@@ -14,7 +14,7 @@
 
 {% for app in g.user.applications %}
 
-<form id="edit-app-{{ app.id }}" action="/edit_app/{{ app.id }}" method="post">
+<form id="edit-app-{{ app.base36id }}" action="/edit_app/{{ app.base36id }}" method="post">
 	<div class="settings-section rounded">
 		<div class="d-lg-flex">
 		    <div class="title w-lg-25">
@@ -22,25 +22,25 @@
             </div>
             <div class="body w-lg-100">
 				<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-				<label for="edit-{{ app.id }}-name" class="mb-0 w-lg-25">App Name</label>
-				<input id="edit-{{ app.id }}-name" class="form-control" type="text" name="name" value="{{ app.app_name }}">
+				<label for="edit-{{ app.base36id }}-name" class="mb-0 w-lg-25">App Name</label>
+				<input id="edit-{{ app.base36id }}-name" class="form-control" type="text" name="name" value="{{ app.app_name }}">
 
-				<label for="edit-{{ app.id }}-client-id" class="mb-0 w-lg-25">Client ID</label>
-				<input id="edit-{{ app.id }}-client-id" class="form-control copy-link" type="text" name="name" value="{{ app.client_id }}" data-clipboard-text="{{ app.client_id }}" role="button" readonly="readonly">
-				<label for="edit-{{ app.id }}-client-secret" class="mb-0 w-lg-25">Client Secret</label>
-				<a href="javascript:void(0)" id="secret-{{ app.id }}-click" class="btn btn-secondary d-block" onclick="x=document.getElementById('secret-{{ app.id }}-click');x.classList.add('d-none');x.classList.remove('d-block');document.getElementById('edit-{{ app.id }}-client-secret').classList.remove('d-none');">Click to show</a>
-				<input class="d-none form-control copy-link" id="edit-{{ app.id }}-client-secret" type="text" name="name" value="{{ app.client_secret }}" data-clipboard-text="{{ app.client_secret }}" role="button" readonly="readonly">
+				<label for="edit-{{ app.base36id }}-client-id" class="mb-0 w-lg-25">Client ID</label>
+				<input id="edit-{{ app.base36id }}-client-id" class="form-control copy-link" type="text" name="name" value="{{ app.client_id }}" data-clipboard-text="{{ app.client_id }}" role="button" readonly="readonly">
+				<label for="edit-{{ app.base36id }}-client-secret" class="mb-0 w-lg-25">Client Secret</label>
+				<a href="javascript:void(0)" id="secret-{{ app.base36id }}-click" class="btn btn-secondary d-block app-secret-hider" data-app-id="{{ app.base36id }}">Click to show</a>
+				<input class="d-none form-control copy-link" id="edit-{{ app.base36id }}-client-secret" type="text" name="name" value="{{ app.client_secret }}" data-clipboard-text="{{ app.client_secret }}" role="button" readonly="readonly">
 
 
-				<label for="edit-{{ app.id }}-redirect" class="mb-0 w-lg-25">Redirect URI</label>
-				<input id="edit-{{ app.id }}-redirect" class="form-control" type="text" name="redirect_uri" value="{{ app.redirect_uri }}">
-				<label for="edit-{{ app.id }}-desc" class="mb-0 w-lg-25">Description</label>
-				<textarea form="edit-app-{{ app.id }}" class="form-control" name="description" id="edit-{{ app.id }}-desc" maxlength="256">{{ app.description }}</textarea>
+				<label for="edit-{{ app.base36id }}-redirect" class="mb-0 w-lg-25">Redirect URI</label>
+				<input id="edit-{{ app.base36id }}-redirect" class="form-control" type="text" name="redirect_uri" value="{{ app.redirect_uri }}">
+				<label for="edit-{{ app.base36id }}-desc" class="mb-0 w-lg-25">Description</label>
+				<textarea form="edit-app-{{ app.base36id }}" class="form-control" name="description" id="edit-{{ app.base36id }}-desc" maxlength="256">{{ app.description }}</textarea>
 			</div>
 		</div>
 		<div class="footer">
 			<div class="d-flex">
-				<a href="javascript:void(0)" class="btn btn-secondary ml-auto" onclick="post_toast('/oauth/reroll/{{ app.base36id}}', callback=function(xhr){document.getElementById('edit-{{ app.id }}-client-id').value=JSON.parse(xhr.response)['id'];document.getElementById('edit-{{ app.id }}-client-secret').value=JSON.parse(xhr.response)['secret'];})">Reroll Secret</a>
+				<a href="javascript:void(0)" class="btn btn-secondary ml-auto btn-reroll-app-secret" data-app-id="{{ app.base36id }}" onclick="">Reroll Secret</a>
 				<input type="submit" class="btn btn-primary ml-2" value="Save Changes">
 			</div>
 		</div>
