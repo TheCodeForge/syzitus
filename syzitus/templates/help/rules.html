@@ -100,7 +100,7 @@ The following rules apply to third-party clients acting as in intermediary betwe
 
 ### 7.3 Bots
 
-The following rules apply to third-party clients interacting with {{ "SITE_NAME" | app_config }} in an automated manner ("Bots"):
+The following rules apply to third-party clients interacting with {{ "SITE_NAME" | app_config }} in an automated manner ("Bots"). These rules also apply to API clients that do not follow the one-action-one-call principle, i.e. clients that enable bulk actions.
 
 1. Bots may not vote.
 2. Bots must use a unique `User-Agent` header.
