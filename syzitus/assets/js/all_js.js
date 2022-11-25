@@ -175,13 +175,13 @@ $('.btn-mod-comment').click(function () {
 
   if ($("#comment-"+$(this).data('comment-id')+"-only").hasClass("banned")) {
     url="/api/unban_comment/"+$(this).data('comment-id');
-    callback=function(){
+    callback=function(xhr){
       $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
       $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Approve")
     }
   } else {
     url="/api/ban_comment/"+$(this).data('comment-id');
-    callback=function(){
+    callback=function(xhr){
       $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
       $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Remove")
     }
@@ -588,7 +588,7 @@ function toggleSub(thing_id){
   $('#button-sub-mobile-'+thing_id).toggleClass('d-none');
 }
 
-function post_toast(url, callback=function(){}) {
+function post_toast(url, callback=function(xhr){}) {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", url, true);
   var form = new FormData()
@@ -603,7 +603,7 @@ function post_toast(url, callback=function(){}) {
     if (xhr.status >= 200 && xhr.status < 300) {
       $('#toast-success .toast-text').text(data['message']);
       $('#toast-success').toast('show');
-      callback();
+      callback(xhr);
     } else if (xhr.status >= 300 && xhr.status < 400 ) {
       window.location.href=data['redirect']
     } else {
@@ -1563,7 +1563,7 @@ $(".btn-tip-modal-trigger").click(function() {
 
 $("#sendTipButton").click(function() {
   post_toast($(this).data('tip-url'),
-    callback = function() {
+    callback = function(xhr) {
       window.location.reload()
     }
   )
@@ -1898,7 +1898,7 @@ $(document).on('click', ".post-url", function(){
 })
 
 $(document).on('click', ".post-toast-url-reload", function(){
-  post_toast($(this).data('post-url'), callback=function(){window.location.reload()})
+  post_toast($(this).data('post-url'), callback=function(xhr){window.location.reload()})
 })
 
 $(document).on('click', ".post-toast-url", function(){
@@ -1926,7 +1926,7 @@ $('.btn-block-user').click(function() {
   id=$(this).data('post-id');
   post_toast(
     '/settings/block?username='+name, 
-    callback=function(){
+    callback=function(xhr){
     $('#block-user-'+id).toggleClass('d-none');
     $('#unblock-user-'+id).toggleClass('d-none');
   }
@@ -1938,7 +1938,7 @@ $('.btn-unblock-user').click(function() {
   id=$(this).data('post-id');
   post_toast(
     '/settings/unblock?username='+name, 
-    callback=function(){
+    callback=function(xhr){
     $('#block-user-'+id).toggleClass('d-none');
     $('#unblock-user-'+id).toggleClass('d-none');
   }
@@ -2027,7 +2027,7 @@ $('.btn-hide-guild').click(function(){
   id=$(this).data("post-id")
   post_toast(
     '/settings/block_guild?board='+$(this).data('board-name'), 
-    callback=function(){
+    callback=function(xhr){
       $('#hide-guild-'+id).toggleClass('d-none');
       $('#unhide-guild-'+id).toggleClass('d-none');
     })
@@ -2036,7 +2036,7 @@ $('.btn-unhide-guild').click(function(){
   id=$(this).data("post-id")
   post_toast(
     '/settings/unblock_guild?board='+$(this).data('board-name'), 
-    callback=function(){
+    callback=function(xhr){
       $('#hide-guild-'+id).toggleClass('d-none');
       $('#unhide-guild-'+id).toggleClass('d-none');
     })
