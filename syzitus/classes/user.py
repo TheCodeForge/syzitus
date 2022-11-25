@@ -1192,7 +1192,8 @@ class User(Base, Stndrd, Age_times):
         if not admin:
             action=f"automatically {action}"
 
-        text = f'Your {app.config["SITE_NAME"]} account has been {action}'
+        #really bad import circle issue that I need to figure out
+        text = f'Your account has been {action}'
 
         if message:
             text += f"\n\nAdditional private message from the admins:\n\n{message}"
