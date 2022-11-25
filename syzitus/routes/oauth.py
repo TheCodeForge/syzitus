@@ -242,7 +242,7 @@ def oauth_grant():
         return jsonify({"oauth_error": f"Invalid grant_type `{request.values.get('grant_type','')}`. Expected `code` or `refresh`."}), 400
 
 
-@app.route("/help/api_keys", methods=["POST"])
+@app.post("/settings/apps")
 @is_not_banned
 def request_api_keys():
 
@@ -259,10 +259,10 @@ def request_api_keys():
 
     g.db.commit()
 
-    return redirect(new_app.permalink)
+    return redirect('/settings/apps')
 
 
-@app.route("/delete_app/<aid>", methods=["POST"])
+@app.post("/delete_app/<aid>")
 @is_not_banned
 def delete_oauth_app(aid):
 
