@@ -2108,6 +2108,7 @@ $('domain-ban-selector').change(function(){
 
 $('.app-secret-hider').click(function(){
   $(this).addClass('d-none');
+  $(this).removeClass('d-block');
   $('#edit-'+$(this).data('app-id')+'-client-secret').removeClass('d-none');
 })
 
