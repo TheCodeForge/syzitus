@@ -665,6 +665,8 @@ def admin_nuke_user():
             )
         g.db.add(ma)
 
+    g.db.commit()
+
     return redirect(user.permalink)
 
 @app.route("/admin/demod_user", methods=["POST"])
