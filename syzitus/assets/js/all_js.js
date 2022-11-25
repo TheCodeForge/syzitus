@@ -2116,7 +2116,7 @@ $('.btn-reroll-app-secret').click(function(){
   post_toast(
     '/oauth/reroll/'+app_id,
     callback=function(xhr){
-      $('#edit-'+app_id+'-client-id').val(=JSON.parse(xhr.response)['id']);
+      $('#edit-'+app_id+'-client-id').val(JSON.parse(xhr.response)['id']);
       $('#edit-'+app_id+'-client-secret').val(JSON.parse(xhr.response)['secret']);
     }
     )

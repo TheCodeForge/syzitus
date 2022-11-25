@@ -409,7 +409,7 @@ def admin_apps_list():
 
 @app.route("/oauth/reroll/<aid>", methods=["POST"])
 @auth_required
-def reroll_oauth_tokens(aid, v):
+def reroll_oauth_tokens(aid):
 
     aid = base36decode(aid)
 
@@ -431,7 +431,7 @@ def reroll_oauth_tokens(aid, v):
 
 @app.route("/oauth/rescind/<aid>", methods=["POST"])
 @auth_required
-def oauth_rescind_app(aid, v):
+def oauth_rescind_app(aid):
 
     aid = base36decode(aid)
     auth = g.db.query(ClientAuth).filter_by(id=aid).first()
