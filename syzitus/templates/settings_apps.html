@@ -80,7 +80,7 @@
 
 <h2>Get API Keys</h2>
 
-<form id="api-key-request-form" action="/help/api_keys" method="post">
+<form id="api-key-request-form" action="/settings/apps" method="post">
 	<div class="settings-section rounded">
 		<div class="d-lg-flex">
 			<div class="body w-lg-100">
@@ -108,5 +108,16 @@
 {% endblock %}
 
 
-{% block copytext %}Token copied to clipboard{% endblock %}
-{% block copytextfail %}Unable to copy token{% endblock %}
+{% block toasts %}
+<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+  <div class="toast-body text-center">
+    <i class="fas fa-check-circle text-success mr-2"></i>Token copied to clipboard
+  </div>
+</div>
+
+<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
+  <div class="toast-body text-center">
+    <i class="fas fa-exclamation-circle text-danger mr-2"></i>Unable to copy data
+  </div>
+</div>
+{% endblock %}
