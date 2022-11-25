@@ -556,7 +556,7 @@
 
             <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="right" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
-            <div id="post-{{ p.base36id }}-down" tabindex="0" data-id="{{ p.base36id }}" data-content-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}"></div>
+            <div id="post-{{ p.base36id }}-down" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="text-muted mx-auto arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}"></div>
           </div>
 
           {% else %}
@@ -739,7 +739,7 @@
           <span id="post-score-{{ p.base36id }}" class="score post-score-{{ p.base36id }} {% if voted==1 %}score-up{% elif voted==-1%}score-down{% endif %}" data-toggle="tooltip" data-placement="top" data-original-title="+{{ ups }} | -{{ downs }}">{% if p.is_banned %}✖{% else %}{{ score }}{% endif %}</span>
 
           {% if g.user %}
-          <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id="{{ p.base36id }}" data-content-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
+          <span id="post-{{ p.base36id }}-down-mobile" tabindex="0" data-id="{{ p.base36id }}" data-type="post" class="ml-2 my-0 arrow-down downvote-button post-{{ p.base36id }}-down {% if voted==-1 %}active{% endif %}">
           </span>
           {% else %}
           <span id="arrow-{{ p.base36id }}-mobile-down" tabindex="0" class="arrow-mobile-down ml-2 my-0 go-to-login">
