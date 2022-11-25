@@ -256,7 +256,6 @@ def request_api_keys():
     )
 
     g.db.add(new_app)
-
     g.db.commit()
 
     return redirect('/settings/apps')
@@ -272,9 +271,10 @@ def delete_oauth_app(aid):
     for auth in g.db.query(ClientAuth).filter_by(oauth_client=app.id).all():
         g.db.delete(auth)
 
-    g.db.commit()
+    g.db.flush()
 
     g.db.delete(app)
+    g.db.commit()
 
     return jsonify({"redirect":"/settings/apps"}), 302
 
@@ -290,6 +290,7 @@ def edit_oauth_app(aid):
     app.description = request.form.get("description")[0:256]
 
     g.db.add(app)
+    g.db.commit()
 
     return redirect('/settings/apps')
 
