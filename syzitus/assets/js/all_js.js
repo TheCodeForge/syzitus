@@ -2110,3 +2110,14 @@ $('.app-secret-hider').click(function(){
   $(this).addClass('d-none');
   $('#edit-'+$(this).data('app-id')+'-client-secret').removeClass('d-none');
 })
+
+$('.btn-reroll-app-secret').click(function(){
+  var app_id = $(this).data('app-id');
+  post_toast(
+    '/oauth/reroll/'+app_id,
+    callback=function(xhr){
+      $('#edit-'+app_id+'-client-id').val(=JSON.parse(xhr.response)['id']);
+      $('#edit-'+app_id+'-client-secret').val(JSON.parse(xhr.response)['secret']);
+    }
+    )
+})
