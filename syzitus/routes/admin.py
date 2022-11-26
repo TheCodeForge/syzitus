@@ -56,17 +56,11 @@ def admin_all_posts():
     page = int(request.args.get('page', 1))
     post_ids = g.db.query(Submission).order_by(Submission.id.desc()).offset(25*(page-1)).limit(26)
 
-    posts = [x.id for x in posts]
-    next_exists = (len(posts) == 26)
-    posts = posts[0:25]
+    post_ids = [x.id for x in post_ids]
+    next_exists = (len(post_ids) == 26)
+    post_ids = post_ids[0:25]
 
-    posts = get_posts(posts)
-
-    posts = [x.id for x in posts]
-    next_exists = (len(posts) == 26)
-    posts = posts[0:25]
-
-    posts = get_posts(posts)
+    posts = get_posts(post_ids)
 
     return render_template(
         "admin/image_posts.html",
@@ -82,15 +76,15 @@ def image_posts_listing():
 
     page = int(request.args.get('page', 1))
 
-    posts = g.db.query(Submission).filter_by(domain_ref=1).order_by(Submission.id.desc()
+    post_ids = g.db.query(Submission).filter_by(domain_ref=1).order_by(Submission.id.desc()
                                                                     ).offset(25 * (page - 1)
                                                                              ).limit(26)
 
-    posts = [x.id for x in posts]
-    next_exists = (len(posts) == 26)
-    posts = posts[0:25]
+    post_ids = [x.id for x in post_ids]
+    next_exists = (len(post_ids) == 26)
+    post_ids = post_ids[0:25]
 
-    posts = get_posts(posts)
+    posts = get_posts(post_ids)
 
     return render_template(
         "admin/image_posts.html",
