@@ -564,7 +564,7 @@ Optional file data:
 
 
     # create auto upvote
-    vote = CommentVote(user_id=g.user.id,
+    vote = CommentVote(user_id=author_id,
                        comment_id=c.id,
                        vote_type=1
                        )
