@@ -361,7 +361,7 @@
 
           {% endif %}
           {% if g.user and g.user.mods_anything and p.board.name == 'general' %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted btn-yank-post" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard text-center text-muted mr-3"></i>Yank</button>
           {% endif %}
           {% if g.user %}
             {% if g.user.id==p.author_id and p.board_id not in [1, p.original_board_id] %}
