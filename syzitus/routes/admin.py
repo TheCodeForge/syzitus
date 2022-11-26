@@ -49,9 +49,35 @@ def flagged_posts():
                            next_exists=next_exists, listing=listing, page=page)
 
 
+@app.get("/admin/all")
+@admin_level_required(3)
+def admin_all_posts():
+
+    page = int(request.args.get('page', 1))
+    post_ids = g.db.query(Submission).order_by(Submission.id.desc()).offset(25*(page-1)).limit(26)
+
+    posts = [x.id for x in posts]
+    next_exists = (len(posts) == 26)
+    posts = posts[0:25]
+
+    posts = get_posts(posts)
+
+    posts = [x.id for x in posts]
+    next_exists = (len(posts) == 26)
+    posts = posts[0:25]
+
+    posts = get_posts(posts)
+
+    return render_template(
+        "admin/image_posts.html",
+        listing=posts,
+        next_exists=next_exists,
+        page=page,
+        sort_method="new"
+        )
+
 @app.route("/admin/image_posts", methods=["GET"])
 @admin_level_required(3)
-@api("read")
 def image_posts_listing():
 
     page = int(request.args.get('page', 1))
@@ -66,14 +92,13 @@ def image_posts_listing():
 
     posts = get_posts(posts)
 
-    return {'html': lambda: render_template("admin/image_posts.html",
-                                            listing=posts,
-                                            next_exists=next_exists,
-                                            page=page,
-                                            sort_method="new"
-                                            ),
-            'api': lambda: [x.json for x in posts]
-            }
+    return render_template(
+        "admin/image_posts.html",
+        listing=posts,
+        next_exists=next_exists,
+        page=page,
+        sort_method="new"
+        )
 
 
 @app.route("/admin/flagged/comments", methods=["GET"])
