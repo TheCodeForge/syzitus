@@ -98,6 +98,7 @@ def ban_post(post_id):
         )
     g.db.add(ma)
     g.db.commit()
+
     return jsonify({"message":f"Post {post.base36id} removed"})
 
 
@@ -667,6 +668,8 @@ def admin_nuke_user():
 
     g.db.commit()
 
+    discord_log_event("Nuke", user, g.user)
+
     return redirect(user.permalink)
 
 @app.route("/admin/demod_user", methods=["POST"])
@@ -689,27 +692,30 @@ def admin_demod_user():
         g.db.delete(mod)
 
     g.db.commit()
+
+    discord_log_event("Global De-Mod", user, g.user)
+
     return redirect(user.permalink)
 
-@app.route("/admin/signature", methods=["POST"])
-@admin_level_required(5)
-def admin_sig_generate():
+# @app.route("/admin/signature", methods=["POST"])
+# @admin_level_required(5)
+# def admin_sig_generate():
 
-    file=request.files["file"]
-    return generate_hash(str(file.read()))
+#     file=request.files["file"]
+#     return generate_hash(str(file.read()))
 
-@app.route("/help/signature", methods=["POST"])
-@auth_desired
-def sig_validate():
+# @app.route("/help/signature", methods=["POST"])
+# @auth_desired
+# def sig_validate():
 
-    file=request.files["file"]
+#     file=request.files["file"]
 
-    sig=request.form.get("sig").lstrip().rstrip()
+#     sig=request.form.get("sig").lstrip().rstrip()
 
-    valid=validate_hash(str(file.read()), sig)
+#     valid=validate_hash(str(file.read()), sig)
 
-    return render_template(
-        "help/signature.html",
-        success = valid,
-        error = not valid
-        )
+#     return render_template(
+#         "help/signature.html",
+#         success = valid,
+#         error = not valid
+#         )

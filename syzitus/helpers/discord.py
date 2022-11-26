@@ -36,38 +36,43 @@ def req_wrap(f):
     return wrapper
 
 @req_wrap
-def discord_log_event(action, target_user, admin_user, reason=None):
+def discord_log_event(action, target, user, reason=None, admin_action=False):
     
     channel_id=app.config["DISCORD_CHANNEL_IDS"]["log"]
     url=f"{DISCORD_ENDPOINT}/channels/{channel_id}/messages"
     headers={
         "Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"
     }
+
+    if target.fullname.startswith("t1_"):
+        title_text = f"{action} @{target.username}"
+    elif target.fullname.startswith("t2_"):
+        title_text = f"{action} Post"
+    elif target.fullname.startswith("t3_"):
+        title_text = f"{action} Comment"
+    elif target.fullname.startsiwth("t4_"):
+        title_text = f"{action} +{target.name}"
+
+
     data={
         "embeds":[
             {
-                "title": f"{action} @{target_user.username}",
-                "url": f"https://{app.config['SERVER_NAME']}{target_user.permalink}",
+                "title": title_text,
+                "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
                 "color": int(app.config["COLOR_PRIMARY"], 16),
                 "author": {
-                    "name": admin_user.username,
-                    "icon_url": admin_user.profile_url
-                    #"url": f"https://{app.config['SERVER_NAME']}{admin_user.permalink}"
+                    "name": user.username,
+                    "icon_url": user.profile_url
                 },
                 "fields": [
                     {
-                        "name": "User",
-                        "value": f"@{target_user.username}",
-                        "inline": True
-                    },
-                    {
                         "name": "Reason",
-                        "value": reason,
+                        "value": reason or "null",
                         "inline": True
                     },
                     {
-                        "name": "Admin",
-                        "value": f"@{admin_user.username}",
+                        "name": "Admin" if admin_action else "User",
+                        "value": f"@{user.username}",
                         "inline": True
                     }
                 ]
