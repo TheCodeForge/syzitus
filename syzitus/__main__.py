@@ -472,7 +472,7 @@ def www_redirect(path):
 try:
     debug("recomputing front page...")
     db=db_session()
-    for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(1000):
+    for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(100):
         post.score_hot = post.rank_hot
         post.score_disputed = post.rank_fiery
         post.score_top = post.score
