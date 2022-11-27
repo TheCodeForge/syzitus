@@ -8,14 +8,14 @@ from syzitus.helpers.alerts import send_notification
 ctx=app.test_request_context("/admin/event_badges")
 ctx.push()
 
-app.preprocess_request()
+g.db=db_session()
 
 #guild IDs
-xmas_id = db.query(Board).filter_by(name="Team_Christmas").first().id
-hwen_id = db.query(Board).filter_by(name="Team_Halloween").first().id
+xmas_id = g.db.query(Board).filter_by(name="Team_Christmas").first().id
+hwen_id = g.db.query(Board).filter_by(name="Team_Halloween").first().id
 
 #assemble list of Christmas users
-xmas_users = db.query(User).filter(
+xmas_users = g.db.query(User).filter(
     User.id.op('%')(2)==1,
     or_(
         User.id.in_(
@@ -34,7 +34,7 @@ xmas_users = db.query(User).filter(
 print(list(xmas_users))
 
 #assemble list of Christmas users
-hwen_users = db.query(User).filter(
+hwen_users = g.db.query(User).filter(
     User.id.op('%')(2)==0,
     or_(
         User.id.in_(
@@ -61,8 +61,8 @@ for user in xmas_users:
             created_utc=int(time.time())
             )
 
-        db.add(new_badge)
-        db.commit()
+        g.db.add(new_badge)
+        g.db.commit()
 
         text = f"""
 You have recieved the following badge for your participation in the successfull defense of Christmas from the Halloween invasion:
@@ -80,8 +80,8 @@ for user in hwen_users:
             created_utc=int(time.time())
             )
 
-        db.add(new_badge)
-        db.commit()
+        g.db.add(new_badge)
+        g.db.commit()
 
         text = f"""
 You have recieved the following badge for your particpation in Halloween's ill-fated invasion of Christmas:
@@ -92,6 +92,7 @@ You have recieved the following badge for your particpation in Halloween's ill-f
         send_notification(user, text)
 
 
-db.commit()
+g.db.commit()
+g.db.close()
 
 ctx.pop()
