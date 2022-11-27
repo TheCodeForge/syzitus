@@ -393,7 +393,7 @@
 
                   <form id="guild-guildlock-form" action="/mod/{{ b.base36id }}/settings/guildlock">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildlock" name="guildlock" data-form="guild-settingslock-form" {% if b.is_locked %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildlock" name="guildlock" data-form="guild-guildlock-form" {% if b.is_locked %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
                     <label class="custom-control-label {% if not g.user.admin_level %}disabled{% endif %}" for="guildlock"></label>
                   </form>
                 </div>
@@ -427,7 +427,7 @@
 
                   <form id="guild-nosiege-form" action="/mod/{{ b.base36id }}/settings/nosiege">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="nosiege" name="nosiege" data-form="guild-settingslock-form" {% if not b.is_siegable %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="nosiege" name="nosiege" data-form="guild-nosiege-form" {% if not b.is_siegable %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
                     <label class="custom-control-label {% if not g.user.admin_level %}disabled{% endif %}" for="nosiege"></label>
                   </form>
                 </div>
