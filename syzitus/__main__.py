@@ -199,6 +199,9 @@ app.config["GIPHY_KEY"] = environ.get('GIPHY_KEY','').lstrip().rstrip()
 #Event configs
 app.config["EVENT_SNOWBALL_FIGHT"]=bool(int(environ.get("EVENT_SNOWBALL_FIGHT", 0)))
 
+#random other configs
+app.config['BYPASS_CATEGORIES']=bool(int(environ.get("BYPASS_CATEGORIES", 0)))
+
 Markdown(app)
 cache = Cache(app)
 Compress(app)

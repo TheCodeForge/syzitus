@@ -405,7 +405,7 @@ Optional query parameters:
 
     cats=session.get("catids")
     new_cats=request.args.get('cats','')
-    if not cats and not new_cats and not request.path.startswith('/api/'):
+    if not cats and not new_cats and not request.path.startswith('/api/') and not app.config['BYPASS_CATEGORIES']:
         return make_response(
             render_template(
                 "categorylisting.html",
