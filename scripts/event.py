@@ -1,5 +1,6 @@
 from syzitus.__main__ import *
 from syzitus.classes import *
+from syzitus.helpers.alerts import send_notification
 import time
 
 db = db_session()
@@ -55,6 +56,14 @@ for user in xmas_users:
             created_utc=int(time.time())
             )
 
+	  	text = f"""
+You have recieved the following badge for your participation in the defense of Christmas:
+\n\n![]({new_badge.path})
+\n\n{new_badge.name}
+"""
+
+    	send_notification(user, text)
+
 for user in hwen_users:
 	if not user.has_badge(17):
 		new_badge = Badge(
@@ -62,3 +71,12 @@ for user in hwen_users:
             badge_id=17,
             created_utc=int(time.time())
             )
+
+		text = f"""
+You have recieved the following badge for your participation in the invasion by Halloween:
+\n\n![]({new_badge.path})
+\n\n{new_badge.name}
+"""
+
+    	send_notification(user, text)
+
