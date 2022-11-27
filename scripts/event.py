@@ -56,6 +56,9 @@ for user in xmas_users:
             created_utc=int(time.time())
             )
 
+		g.db.add(new_badge)
+		g.db.commit()
+
 	  	text = f"""
 You have recieved the following badge for your participation in the defense of Christmas:
 \n\n![]({new_badge.path})
@@ -71,6 +74,9 @@ for user in hwen_users:
             badge_id=17,
             created_utc=int(time.time())
             )
+
+		g.db.add(new_badge)
+		g.db.commit()
 
 		text = f"""
 You have recieved the following badge for your participation in the invasion by Halloween:
