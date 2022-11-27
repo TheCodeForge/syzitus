@@ -1196,7 +1196,7 @@ def mod_bid_settings_adminlock(bid, board):
 @app.route("/mod/<bid>/settings/guildlock", methods=["POST"])
 @admin_level_required(4)
 @is_guildmaster("config")
-def mod_bid_settings_adminlock(bid, board):
+def mod_bid_settings_guildlock(bid, board):
 
     # toggle privacy setting
     board.is_locked = bool(request.form.get("guildlock", False))
@@ -1209,6 +1209,29 @@ def mod_bid_settings_adminlock(bid, board):
         user_id=g.user.id,
         board_id=board.id,
         note=f"guild_locked={board.is_locked}"
+        )
+    g.db.add(ma)
+    g.db.commit()
+
+    return jsonify({"message": f"Settings updated for +{board.name}"})
+
+
+@app.route("/mod/<bid>/settings/nosiege", methods=["POST"])
+@admin_level_required(4)
+@is_guildmaster("config")
+def mod_bid_settings_nosiege(bid, board):
+
+    # toggle privacy setting
+    board.is_siegable = not bool(request.form.get("nosiege", False))
+
+    g.db.add(board)
+    g.db.commit()
+
+    ma=ModAction(
+        kind="update_settings",
+        user_id=g.user.id,
+        board_id=board.id,
+        note=f"siege_immune={not board.is_locked}"
         )
     g.db.add(ma)
     g.db.commit()
