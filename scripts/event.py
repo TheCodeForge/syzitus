@@ -1,9 +1,9 @@
 import time
 
+from syzitus.__main__ import *
 from syzitus.classes import *
 from syzitus.helpers.alerts import send_notification
 
-from syzitus.__main__ import *
 
 ctx=app.test_request_context("/admin/event_badges")
 ctx.push()
@@ -93,3 +93,5 @@ You have recieved the following badge for your particpation in Halloween's ill-f
 
 
 db.commit()
+
+ctx.pop()
