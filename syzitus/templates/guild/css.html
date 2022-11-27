@@ -53,7 +53,7 @@
 
               <div class="w-lg-100">
                 <div class="input-group mb-2">
-                  <form id="guild-css-form" action="/mod/{{ b.base36id }}/settings/css">
+                  <form id="guild-css-form" action="/mod/{{ b.base36id }}/settings/css" class="w-100">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <textarea class="form-control rounded mr-0" id="css" form="guild-css-form" aria-label="With textarea" placeholder="custom_css" rows="{{ b.css | lines }}" name="css" maxlength="50000">{{ b.css }}</textarea>
                   </form>
