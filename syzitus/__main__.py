@@ -19,10 +19,11 @@ from flask_minify import Minify
 from time import sleep
 from collections import deque
 import psycopg2
+from psycopg2.errors import UndefinedColumn
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError
+from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError, ProgrammingError
 from sqlalchemy.orm import Session, sessionmaker, scoped_session, Query as _Query
 from sqlalchemy import *
 from sqlalchemy.pool import QueuePool
@@ -479,7 +480,7 @@ try:
     db.commit()
     db.close()
     debug("...done.")
-except psycopg2.errors.UndefinedColumn:
+except UndefinedColumn:
     pass
-except sqlalchemy.exc.ProgrammingError:
+except ProgrammingError:
     pass
