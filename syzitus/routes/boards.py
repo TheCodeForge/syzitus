@@ -1231,7 +1231,7 @@ def mod_bid_settings_nosiege(bid, board):
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"siege_immune={not board.is_locked}"
+        note=f"siege_immune={not board.is_siegable}"
         )
     g.db.add(ma)
     g.db.commit()
