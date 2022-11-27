@@ -48,7 +48,7 @@ class Board(Base, Stndrd, Age_times):
     is_siegable=Column(Boolean, default=True)
     is_locked_category = Column(Boolean, default=False) #this is becoming a more generic "is locked settings"
     subcat_id=Column(Integer, default=0)
-    #secondary_color=Column(String(6), default="ffffff")
+    is_locked=Column(Boolean, default=False)
 
     css_nonce=Column(Integer, default=0)
     css=deferred(Column(String(65536), default='', nullable=False))
@@ -357,7 +357,7 @@ class Board(Base, Stndrd, Age_times):
         if self.has_contributor(user) or self.has_mod(user):
             return True
 
-        if self.is_private or self.restricted_posting:
+        if self.is_private or self.restricted_posting or self.is_locked:
             return False
 
         return True
@@ -376,7 +376,7 @@ class Board(Base, Stndrd, Age_times):
         if self.has_contributor(user) or self.has_mod(user):
             return True
 
-        if self.is_private:
+        if self.is_private or self.is_locked:
             return False
 
         return True
