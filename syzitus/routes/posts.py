@@ -456,7 +456,7 @@ Optional file data:
     if board.has_ban(g.user):
         return jsonify({"error": f"You are exiled from +{board.name}."}), 403
 
-    if (board.restricted_posting or board.is_private) and not (
+    if (board.restricted_posting or board.is_private or board.is_locked) and not (
             board.can_submit(g.user)):
         return jsonify({"error": f"You are not an approved contributor for +{board.name}."}), 403
 
