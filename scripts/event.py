@@ -1,9 +1,14 @@
-from syzitus.__main__ import *
-from syzitus.classes import *
-from syzitus.helpers.alerts import send_notification
 import time
 
-db = db_session()
+from syzitus.classes import *
+from syzitus.helpers.alerts import send_notification
+
+from syzitus.__main__ import *
+
+ctx=app.test_request_context("/admin/event_badges")
+ctx.push()
+
+app.preprocess_request()
 
 #guild IDs
 xmas_id = db.query(Board).filter_by(name="Team_Christmas").first().id
