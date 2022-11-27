@@ -472,7 +472,6 @@ URL path parameters:
         abort(400)
 
     post.board_id = 1
-    #post.guild_name = "general"
     post.is_pinned = False
     g.db.add(post)
 
