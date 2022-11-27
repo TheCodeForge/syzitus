@@ -64,13 +64,15 @@ for user in xmas_users:
         g.db.add(new_badge)
         g.db.commit()
 
-        text = f"""
-You have recieved the following badge for your participation in the successfull defense of Christmas from the Halloween invasion:
-\n\n![]({new_badge.path})
-\n\n{new_badge.name}
-"""
+        print(new_badge)
 
-        send_notification(user, text)
+#         text = f"""
+# You have recieved the following badge for your participation in the successfull defense of Christmas from the Halloween invasion:
+# \n\n![]({new_badge.path})
+# \n\n{new_badge.name}
+# """
+
+#         send_notification(user, text)
 
 for user in hwen_users:
     if not user.has_badge(17):
@@ -82,14 +84,15 @@ for user in hwen_users:
 
         g.db.add(new_badge)
         g.db.commit()
+        print(new_badge)
 
-        text = f"""
-You have recieved the following badge for your particpation in Halloween's ill-fated invasion of Christmas:
-\n\n![]({new_badge.path})
-\n\n{new_badge.name}
-"""
+#         text = f"""
+# You have recieved the following badge for your particpation in Halloween's ill-fated invasion of Christmas:
+# \n\n![]({new_badge.path})
+# \n\n{new_badge.name}
+# """
 
-        send_notification(user, text)
+#         send_notification(user, text)
 
 
 g.db.commit()
