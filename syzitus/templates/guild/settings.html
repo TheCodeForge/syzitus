@@ -341,7 +341,7 @@
         {% if g.user.admin_level>=4 %}
         <div id="settings-lock">
 
-          <h2 class="h5">Lock  settings</h2>
+          <h2 class="h5">Lock settings</h2>
 
           <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
 
@@ -361,6 +361,40 @@
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                     <input type="checkbox" class="custom-control-input toast-form-change-submit" id="settingslock" name="settingslock" data-form="guild-settingslock-form" {% if b.is_locked_category %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
                     <label class="custom-control-label {% if not g.user.admin_level %}disabled{% endif %}" for="settingslock"></label>
+                  </form>
+                </div>
+
+                <span class="text-small-extra text-muted">Lock the guild category, NSFW, and All/Trending Opt-Out settings.</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+        <div id="settings-lock">
+
+          <h2 class="h5">Lock guild</h2>
+
+          <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
+
+          <div class="settings-section rounded">
+
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="disallowbots">Lock Guild</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+
+                  <form id="guild-guildlock-form" action="/mod/{{ b.base36id }}/settings/guildlock">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guildlock" name="guildlock" data-form="guild-settingslock-form" {% if b.is_locked %} checked{% endif %} {% if not g.user.admin_level %}disabled{% endif %}>
+                    <label class="custom-control-label {% if not g.user.admin_level %}disabled{% endif %}" for="guildlock"></label>
                   </form>
                 </div>
 
