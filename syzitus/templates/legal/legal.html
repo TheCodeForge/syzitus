@@ -14,7 +14,7 @@ Abuse of this service may lead to the termination of your {{ 'SITE_NAME' | app_c
 
 {% if g.user and g.user.is_suspended %}
 
-<div>Your {{ 'SITE_NAME' | app_config }} account has been suspended. You are not permitted to submit legal requests via this portal.</div>
+<div>Your {{ 'SITE_NAME' | app_config }} account has been suspended. You are not permitted to submit legal requests at this time.</div>
 
 {% elif g.user and g.user.is_activated %}
 <form id="legal-form" action="/legal/2" method="post">
