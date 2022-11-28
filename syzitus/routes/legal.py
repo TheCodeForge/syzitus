@@ -104,11 +104,13 @@ def dmca_post(v):
         post_html = renderer.render(mistletoe.Document(post_text))
     post_html = sanitize(post_html, linkgen=True)
 
-    # create +RuqqusDMCA post
+    # create +DMCA post
+    guild=get_guild("DMCA")
+
     new_post = Submission(author_id=1,
                           domain_ref=None,
-                          board_id=1000,
-                          original_board_id=1000,
+                          board_id=guild.id,
+                          original_board_id=guild.id,
                           over_18=False,
                           post_public=True,
                           repost_id=None,
@@ -143,7 +145,7 @@ def dmca_post(v):
                 is_nsfl=False,
                 is_op=True,
                 is_offensive=False,
-                original_board_id=1000,
+                original_board_id=guild.id,
                 deleted_utc=int(time.time())
                 )
     g.db.add(c)
