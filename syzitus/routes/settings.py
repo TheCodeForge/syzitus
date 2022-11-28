@@ -201,8 +201,7 @@ def settings_security_post():
     if request.form.get("new_email"):
 
         if not g.user.verifyPass(request.form.get('password')):
-            return redirect("/settings/security?error=" +
-                            escape("Invalid password."))
+            return jsonify({"error": "Invalid password"}), 401
 
         new_email = request.form.get("new_email","").lstrip().rstrip()
         #counteract gmail username+2 and extra period tricks - convert submitted email to actual inbox
@@ -212,15 +211,13 @@ def settings_security_post():
             gmail_username=gmail_username.replace('.','')
             new_email=f"{gmail_username}@gmail.com"
         if new_email == g.user.email:
-            return redirect("/settings/security?error=" +
-                            escape("That email is already yours!"))
+            return jsonify({"error": "That's already your email"}), 400
 
         # check to see if email is in use
         existing = g.db.query(User).filter(User.id != g.user.id,
                                            func.lower(User.email) == new_email.lower()).first()
         if existing:
-            return redirect("/settings/security?error=" +
-                            escape("That email address is already in use."))
+            return jsonify({"error": "That email address is already in use"}), 409
 
         url = f"https://{app.config['SERVER_NAME']}/activate"
 
@@ -242,14 +239,12 @@ def settings_security_post():
     if request.form.get("2fa_token", ""):
 
         if not g.user.verifyPass(request.form.get('password')):
-            return redirect("/settings/security?error=" +
-                            escape("Invalid password or token."))
+            return jsonify({"error": "Invalid password or token"}), 401
 
         secret = request.form.get("2fa_secret")
         x = pyotp.TOTP(secret)
         if not x.verify(request.form.get("2fa_token"), valid_window=1):
-            return redirect("/settings/security?error=" +
-                            escape("Invalid password or token."))
+            return jsonify({"error": "Invalid password or token"}), 401
 
         g.user.mfa_secret = secret
         g.db.add(g.user)
@@ -260,13 +255,12 @@ def settings_security_post():
     if request.form.get("2fa_remove", ""):
 
         if not g.user.verifyPass(request.form.get('password')):
-            return redirect("/settings/security?error=" +
-                            escape("Invalid password or token."))
+            return jsonify({"error": "Invalid password or token"}), 401
 
         token = request.form.get("2fa_remove")
 
         if not g.user.validate_2fa(token) and not safe_compare(g.user.mfa_removal_code, token.lower().replace(' ','')):
-            return jsonify({"error":f"Invalid password or token."}), 401
+            return jsonify({"error": "Invalid password or token"}), 401
 
         g.user.mfa_secret = None
         g.db.add(g.user)
