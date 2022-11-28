@@ -142,7 +142,6 @@ def dmca_post():
                 level=1,
                 over_18=False,
                 is_nsfl=False,
-                is_op=True,
                 is_offensive=False,
                 original_board_id=guild.id,
                 deleted_utc=int(time.time())
