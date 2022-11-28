@@ -307,21 +307,6 @@
         </div>
       </div>
       {% endfor %}
-      <div class="card">
-        <div class="card-header" id="heading-0">
-          <h2 class="mb-0">
-            <button class="btn btn-link btn-block text-left text-muted collapsed" type="button" data-toggle="collapse" data-target="#collapse-0" aria-expanded="true" aria-controls="collapse-0"><i class="fas fa-question-circle fa-fw ml-n1 mr-2"></i>Uncategorized</button>
-          </h2>
-        </div>
-        <div id="collapse-0" class="collapse" aria-labelledby="header-0" data-parent="#accordionCats">
-          <div class="card-body">
-            <div class="custom-control custom-checkbox mb-2">
-              <input type="checkbox" class="custom-control-input cat-check" id="cat-0" data-cat="0" onchange="togglecat('{{ sort_method }}')"{% if 0 in session.get('catids',[]) %} checked{% endif %}>
-              <label class="custom-control-label" for="cat-0">Uncategorized</label>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
