@@ -102,13 +102,10 @@ def activate():
     user.email = email
     user.is_activated = True
 
-    if not any([b.badge_id == 2 for b in user.badges]):
-        mail_badge = Badge(user_id=user.id,
-                           badge_id=2,
-                           created_utc=time.time())
-        g.db.add(mail_badge)
+    user.refresh_selfset_badges()
 
     g.db.add(user)
+    g.db.commit()
 
     return render_template(
         "message.html", 
