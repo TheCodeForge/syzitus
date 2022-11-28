@@ -7,7 +7,7 @@
 		<input type="hidden" name="{{ k }}" value="{{ request.form[k] }}">
 	{% endfor %}
 
-	<div class="h6 mt-5">Provide link(s) to the illegal ruqqus.com content</div>
+	<div class="h6 mt-5">Provide link(s) to the illegal {{ "SERVER_NAME" | app_config }} content</div>
 	<textarea class="form-control" form="takedownform" name="links" required></textarea>
 
 	<div class="h6 mt-5">Which category of non-First-Amendment-protected speech does this content fall into?</div>

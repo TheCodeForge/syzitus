@@ -12,11 +12,10 @@
 
 	<div class="h6 mt-5">What kind of information is needed?</div>
 	<input type="radio" name="info_type" value="basic_info" checked required> Basic account information<br>
-	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by Ruqqus staff.<br>
+	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by {{ "SITE_NAME" | app_config }} staff.<br>
 	<input type="radio" name="info_type" value="deleted_content"> Content that has been deleted by its owner. (Will require search warrant).<br>
 
 	<div class="h6 mt-5">Upload the data preservation request</div>
-	<div class="body">It must be on law enforcement letterhead, and be in English or include an official English translation.</div>
 	<input type="file" name="file" required>	
 
 	<div class="h6 mt-5">Required Statements</div>

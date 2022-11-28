@@ -5,7 +5,13 @@
 {% endblock %}
 
 {% block icon %}
-<i class="fad {{ icon if icon else 'fa-check' }}"></i>
+{% if icon %}
+<i class="fad {{ icon }}"></i>
+{% elif message %}
+<i class="fad fa-square-check"></i>
+{% else %}
+<i class="fad circle-exclamation"></i>
+{% endif %}
 {% endblock %}
 
 {% block pagetitle %}{{ title }}{% endblock %}

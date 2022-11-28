@@ -22,7 +22,7 @@ def legal_1():
 @is_not_banned
 def legal_2():
 
-    if request.form.get("username") != v.username:
+    if request.form.get("username") != g.user.username:
         abort(422)
 
     if request.form.get("about_yourself", "") not in [
@@ -49,7 +49,7 @@ def legal_2():
 @is_not_banned
 def legal_final():
 
-    if request.form.get("username") != v.username:
+    if request.form.get("username") != g.user.username:
         abort(422)
 
     data = [(x, request.form[x]) for x in request.form if x != "formkey"]
@@ -68,13 +68,16 @@ def legal_final():
                   files=files
                   )
     except BaseException:
-        return render_template("legal/legal_done.html",
-                               success=False,
-                               v=v)
+        return render_template(
+            "message.html",
+            title="error",
+            error="We were unable to save your legal request at this time."
+            )
 
-    return render_template("legal/legal_done.html",
-                           success=True,
-                           v=v)
+    return render_template(
+        "message.html",
+        title="Request Saved",
+        message="Your legal request has been saved.")
 
 
 @app.route("/help/dmca", methods=["POST"])
@@ -95,9 +98,11 @@ def dmca_post():
                   email_html
                   )
     except BaseException:
-        return render_template("/help/dmca.html",
-                               error="Unable to save your request. Please try again later.",
-                               v=v)
+        return render_template(
+            "message.html",
+            title="error",
+            error="We were unable to save your DMCA request at this time."
+            )
 
     post_text = render_template("help/dmca_notice.md", **data)
     with CustomRenderer() as renderer:
@@ -173,8 +178,8 @@ def dmca_post():
 def counter_dmca_post(v):
 
     data = [(x, request.form[x]) for x in request.form if x != "formkey"]
-    data.append(("username", v.username))
-    data.append(("email", v.email))
+    data.append(("username", g.user.username))
+    data.append(("email", g.user.email))
 
     data = sorted(data, key=lambda x: x[0])
     try:
