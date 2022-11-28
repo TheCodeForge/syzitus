@@ -138,7 +138,6 @@ def dmca_post():
 
     c = Comment(author_id=1,
                 parent_submission=new_post.id,
-                parent_fullname=new_post.fullname,
                 parent_comment_id=None,
                 level=1,
                 over_18=False,
