@@ -55,10 +55,13 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 	<label class="mt-5" for="input-links">Links to infringing content</label>
 	<textarea id="input-links" class="form-control" for="dmca-form" name="infringing_links" required></textarea>
 
-	<label>Who is the copyright owner?</label><br>
-	<input id="owner-me" type="radio" name="owner" value="me"> Me<br>
-	<input id="owner-rep" type="radio" name="owner" value="someone_i_represent"> A company, client, or organization that I am authorized to represent<br>
-	<input id="owner-other" type="radio" name="owner" value="other"> Someone else<br>
+	<label class="mt-5">Who is the copyright owner?</label><br>
+	<select class="form-control" name="owner" required>
+		<option selected disabled>Select One</option>
+		<option value="me">Me</option>
+		<option value="someone_i_represent">A company, client, or organization that I am authorized to represent</option>
+		<option value="other">Other</option>
+	</select>
 
 	
 	<label class="mt-5" for="input-details">If you selected "A company, client, or organization that I am authorized to represent" above, provide additional information about the copyright owner and your relationship to them.</label>
