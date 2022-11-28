@@ -88,7 +88,7 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 	<input class="btn btn-primary mt-5" type="submit" value="Submit">
 </form>
 
-{% elif v %}
+{% elif g.user %}
 <p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
 {% else %}
 <p>In order to ensure that we can respond to your request if needed, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
