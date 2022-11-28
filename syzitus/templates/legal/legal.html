@@ -66,7 +66,7 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 </form>
 
 {% elif g.user %}
-<p>Please <a href="/settings/profile">verify your email address</a>. Then, refresh this page.</p>
+<p>Please <a href="/settings/security">verify your email address</a>. Then, refresh this page.</p>
 {% else %}
 {% filter markdown %}
 <p>In order to ensure that we can respond to your request, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your official email address</a>. Then, refresh this page.</p>
