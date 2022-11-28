@@ -46,7 +46,7 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 {% elif g.user and g.user.is_activated %}
 
 <div class="h6 mt-5">Email</div>
-<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
+<input type="text" name="email" class="form-control" value="{{ g.user.email }}" readonly="readonly">
 
 <form id="dmca-form" action="/help/dmca" method="post">
 	
