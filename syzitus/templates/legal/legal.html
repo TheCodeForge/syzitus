@@ -8,7 +8,7 @@ Use this page to submit a legal request to {{ 'SITE_NAME' | app_config }}. You m
 
 {{ 'SITE_NAME' | app_config }} may charge reasonable fees for compliance with legal process to which {{ 'SITE_NAME' | app_config }} is not party, in accordance with 18 USC 2706.
 
-Abuse of this service may lead to the termination of your {{ 'SITE_NAME' | app_config }} account, at the sole discretion of {{ 'SITE_NAME' | app_config }} staff.
+Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms of service](/about/terms) and may lead to the termination of your {{ 'SITE_NAME' | app_config }} account, at the sole discretion of {{ 'SITE_NAME' | app_config }} staff.
 
 {% endfilter %}
 
@@ -49,14 +49,16 @@ Abuse of this service may lead to the termination of your {{ 'SITE_NAME' | app_c
 	<input type="text" name="your_reference" class="form-control" required>
 
 	<div class="h6 mt-5">What kind of request is this?</div>
-	<input type="radio" name="request_type" value="user_info_emergency"> Emergency request for user account information<br>
-	<input type="radio" name="request_type" value="user_info_legal"> Subpoena, search warrant, or similar legal request for user account information<br>
-	<input type="radio" name="request_type" value="user_info_baseless" checked required> Other request for user account information<br>
-	<input type="radio" name="request_type" value="post_takedown"> Request to take down illegal content<br>
-	<input type="radio" name="request_type" value="data_save"> Request to preserve data for a future information request<br>
+	<select name="request_type">
+		<option selected disabled>Select One</option>
+		<option value="user_info_emergency">Emergency request for user account information</option>
+		<option value="user_info_legal">Subpoena, search warrant, or similar legal request for user account information</option>
+		<option value="user_info_baseless">Other request for user account information</option>
+		<option value="post_takedown">Request to take down illegal content</option>
+		<option value="data_save">Request to preserve data for a future information request</option>
+	</select>
 
 	<div class="h6 mt-5">Required acknowledgements</div>
-	<input type="checkbox" name="ack_abuse" value="true" required> I acknowledge and understand that abuse of this form may result in the termination of my {{ 'SITE_NAME' | app_config }} account.<br>
 	<input type="checkbox" name="ack_convenience" value="true" required> I acknowledge and understand that this form is for convenience only, and that {{ 'SITE_NAME' | app_config }} does not waive any of its legal rights, including but not limited to its right to object for improper service or lack of jurisdiction.<br>
 	<input type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ g.user.email }}.<br>
 
