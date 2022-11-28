@@ -24,7 +24,7 @@ We will not grant exemptions to https conversion.
 
 ## Share to {{ "SITE_NAME" | app_config }}
 
-To create a "share to {{ "SITE_NAME" | app_config }}" button, create an element which has `onclick="window.location.href='https://{{ "SITE_NAME" | app_config }}.com/submit?url='+window.location.href"`
+To create a "share to {{ "SITE_NAME" | app_config }}" button, create an element which has `onclick="window.location.href='https://{{ "SERVER_NAME" | app_config }}/submit?url='+window.location.href"`
 
 Use [{{ "SITE_NAME" | app_config }} branding and assets](/help/press) to style your "share to {{ "SITE_NAME" | app_config }}" button.
 
@@ -33,13 +33,9 @@ Use [{{ "SITE_NAME" | app_config }} branding and assets](/help/press) to style y
 
 Thumbnail images for posts are determined by using the first successful condition below:
 
-1. If the submitted link has a `Content-Type: image/*` header, the link itself is used as the thumbnail asset.
+1. If the submitted link has a `Content-Type: image/*` header, the link itself is used to generate the thumbnail asset.
 2. If the submitted link has a `Content-Type: text/html` header, and there is a `<meta name="thumbnail">` element, the `content` attribute of that element will be scraped and used as the thumbnail. (Use this option to explicitly set a thumbnail)
 3. If the submitted link has a `Content-Type: text/html` header, and no thumbnail meta element is found, the `src` attribute of the first significant `img` element will be scraped and used as the thumbnail.
-
-## Applications
-
-To request {{ "SITE_NAME" | app_config }} API keys, visit [this page](/help/apps)
 
 {% endfilter %}
 {% endblock %}
