@@ -162,11 +162,12 @@ def dmca_post(v):
 
     return render_template(
         "/message.html",
-        title="DMCA request saved"
+        title="DMCA request saved",
         message="Your request has been saved.",
         icon="fa-scale-unbalanced",
         link_text="View your request",
-        link=new_post.permalink)
+        link=new_post.permalink
+        )
 
 
 @app.route("/help/counter_dmca", methods=["POST"])
