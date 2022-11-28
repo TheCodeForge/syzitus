@@ -167,7 +167,7 @@ def dmca_post():
         "/message.html",
         title="DMCA request saved",
         message="Your request has been saved.",
-        icon="fa-scale-unbalanced",
+        icon="fa-copyright",
         link_text="View your request",
         link=new_post.permalink
         )
