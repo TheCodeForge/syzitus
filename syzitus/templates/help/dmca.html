@@ -53,6 +53,7 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 	<label class="mt-5" for="input-links">Links to infringing content</label>
+	<div>You must include at least one {{ "SERVER_NAME" | app_config }} or {{ "S3_BUCKET" | app_config }} link.</div>
 	<textarea id="input-links" class="form-control" for="dmca-form" name="infringing_links" required></textarea>
 
 	<label class="mt-5">Who is the copyright owner?</label><br>
@@ -60,7 +61,7 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 		<option selected disabled>Select One</option>
 		<option value="me">Me</option>
 		<option value="someone_i_represent">A company, client, or organization that I am authorized to represent</option>
-		<option value="other">Other</option>
+		<option value="other">Someone else</option>
 	</select>
 
 	
