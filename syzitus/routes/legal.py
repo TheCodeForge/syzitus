@@ -158,9 +158,13 @@ def dmca_post(v):
     g.db.add(c_aux)
     g.db.commit()
 
-    return render_template("/help/dmca.html",
-                           msg="Your request has been saved.",
-                           v=v)
+    return render_template(
+        "/message.html",
+        title="DMCA request saved"
+        message="Your request has been saved.",
+        icon="fa-scale-unbalanced",
+        link_text="View your request",
+        link=new_post.permalink)
 
 
 @app.route("/help/counter_dmca", methods=["POST"])
