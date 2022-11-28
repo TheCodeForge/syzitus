@@ -234,7 +234,7 @@ def settings_security_post():
                                        action_url=link)
                   )
 
-        return jsonify({"message":f"Check your {new_email} inbox and click the link to verify it and complete the email change."})
+        return jsonify({"message":f"We sent a verification email to {new_email}. Click the link inside to complete the email change."})
 
     if request.form.get("2fa_token", ""):
 
