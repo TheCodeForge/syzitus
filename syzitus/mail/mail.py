@@ -82,7 +82,8 @@ def activate():
         return render_template(
             "message.html", 
             title="Verification link expired.",
-            message="That link has expired. Visit your settings to send yourself another verification email."
+            message="That link has expired. Visit your settings to send yourself another verification email.",
+            icon="fa-hourglass-end"
             ), 410
 
     if not validate_hash(f"{email}+{id}+{timestamp}", token):
