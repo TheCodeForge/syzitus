@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{% if mfa_secret %}Setup two-step login{% elif mfa_secret and not g.user.email %}Email required for two-step login{% else %}Disable two-step login{% endif %}</h5>
+        <h5 class="modal-title">{% if mfa_secret %}Set up two-factor authentication{% elif mfa_secret and not g.user.email %}Email required for two-step login{% else %}Disable two-factor authentication{% endif %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><i class="far fa-times"></i></span>
         </button>
@@ -25,7 +25,7 @@
             <p>
               <span class="font-weight-bold">Step 2:</span> Write down your Two-Factor Recovery Code and store it in a safe place. This code will <span class="font-weight-bold">not</span> be shown again. <span class="font-weight-bold text-danger">If you lose your two-factor device, you will not be able to recover your account without this code.</span>
             </p>
-            <p class="font-weight-bold text-purple text-center text-monospace">{{ recovery }}</p>
+            <p class="font-weight-bold text-purple text-center text-monospace">{{ recovery | upper }}</p>
             <p>
               <span class="font-weight-bold">Step 3:</span> Enter the six-digit code generated in the authenticator app and your {{ 'SITE_NAME' | app_config }} account password.
             </p>

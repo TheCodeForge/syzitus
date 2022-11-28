@@ -110,4 +110,8 @@ def activate():
 
     g.db.add(user)
 
-    return render_template("message_success.html", title="Email verified.", message=f"Your email {email} has been verified. Thank you.")
+    return render_template(
+        "message.html", 
+        title="Email verified.", 
+        message=f"Your email {email} has been verified. Thank you.",
+        icon="fa-envelope-open")

@@ -5,11 +5,9 @@
 {% endblock %}
 
 {% block icon %}
-<span class="fa-stack text-muted">
-  <i class="fas fa-square text-gray-400 fa-stack-2x"></i>
-  <i class="fas text-gray-600 {% if message %}fa-envelope-open-text{% elif error %}fa-exclamation-triangle{% endif %} fa-stack-1x text-lg"></i>
-</span>
+<i class="fad {{ icon if icon else 'fa-check' }}"></i>
 {% endblock %}
+
 {% block pagetitle %}{{ title }}{% endblock %}
 {% block pagebody %}
 <p class="text-muted mb-5">{{ message if message else error }}</p>
