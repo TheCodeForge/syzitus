@@ -93,11 +93,9 @@
 
       <div class="settings-section rounded">
 
-        <form  id="security-email-form" action="/settings/security" method="post">
-          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-
-          <div class="body">
-
+        <div class="body">
+          <form  id="security-email-form" action="/settings/security" method="post">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
             <div class="d-lg-flex">
 
               <label for="new-email" class="w-lg-25">Email</label>
@@ -118,20 +116,21 @@
 
             <div class="d-lg-flex mt-3">
 
-             <label for="email-password" class="w-lg-25 d-none" id="email-password-label">Password</label>
+              <label for="email-password" class="w-lg-25 d-none" id="email-password-label">Password</label>
 
-             <div class="w-lg-100">
+              <div class="w-lg-100">
 
-               <input autocomplete="new-password" type="password" class="form-control mb-2 d-none" id="email-password" name="password" autocomplete="off" required>
+                <input autocomplete="new-password" type="password" class="form-control mb-2 d-none" id="email-password" name="password" autocomplete="off" required>
 
-               <small id="emailpasswordRequired" class="form-text font-weight-bold text-danger d-none mt-1">Password required to update your email.</small>
+                <small id="emailpasswordRequired" class="form-text font-weight-bold text-danger d-none mt-1">Password required to update your email.</small>
 
-             </div>
+              </div>
 
-           </div>
+            </div>
 
-           <small id="emailpasswordRequired" class="form-text font-weight-bold text-danger d-none mt-1">Password required to update your email.</small>
+            <small id="emailpasswordRequired" class="form-text font-weight-bold text-danger d-none mt-1">Password required to update your email.</small>
 
+          </form>
          </div>
 
          <div class="footer">
@@ -144,7 +143,6 @@
 
         </div>
 
-      </form>
 
     </div>
 
