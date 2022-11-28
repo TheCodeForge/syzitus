@@ -64,6 +64,7 @@ app.config['DATABASE_URL'] = environ.get("DATABASE_URL","").replace("postgres://
 # ]
 
 app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+app.config["ADMIN_EMAIL"]=environ.get("ADMIN_EMAIL","").lstrip().rstrip()
 
 SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "syzitus.com")).lstrip().rstrip()
 # ONION_NAME = environ.get("ONION_NAME", "")

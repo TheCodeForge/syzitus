@@ -61,7 +61,7 @@ def legal_final():
             request.files[x].filename): request.files[x] for x in request.files}
 
     try:
-        send_mail(environ.get("admin_email"),
+        send_mail(app.config["ADMIN_EMAIL"],
                   "Legal request submission",
                   render_template("email/legal.html",
                                   data=data),
