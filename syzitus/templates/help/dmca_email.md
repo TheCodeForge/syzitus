@@ -1,6 +1,6 @@
 ##### Username
 
-[@{{ g.user.username }}]({{ g.user.permalink | full_link }})
+@{{ g.user.username }}
 
 ##### Email
 

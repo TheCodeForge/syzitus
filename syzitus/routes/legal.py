@@ -131,7 +131,7 @@ def dmca_post():
     g.db.add(new_post_aux)
     g.db.flush()
 
-    comment_text = f"##### Username\n\n@{v.username}\n\n##### Email\n\n{v.email}\n\n##### Address\n\n{data['your_address']}"
+    comment_text = f"##### Username\n\n@{g.user.username}\n\n##### Email\n\n{g.user.email}\n\n##### Address\n\n{data['your_address']}"
     with CustomRenderer() as renderer:
         c_html = renderer.render(mistletoe.Document(comment_text))
     c_html = sanitize(c_html, linkgen=True)

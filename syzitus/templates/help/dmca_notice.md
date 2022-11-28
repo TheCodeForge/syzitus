@@ -8,7 +8,7 @@
 
 ##### Who is the copyright holder?
 
-{{ "Me" if owner=="me" else "A company, client, or organization that I am authorized to represent" if owner=="someone_i_represent" else "Other" }}
+{{ {"me":"Me", "someone_i_represent":"A company, client, or organization that I am authorized to represent", "other":"Other"}[owner] }}
 
 ##### If you selected "A company, client, or organization that I am authorized to represent" above, provide additional information about the copyright owner and your relationship to them.
 
