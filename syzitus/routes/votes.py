@@ -62,7 +62,7 @@ URL path parameters:
     elif post.is_archived:
         return jsonify({"error":"That post is archived and can no longer be voted on."}), 403
     elif post.board.is_locked:
-        return jsonify({"error":"This guild is locked and its posts can no longer be voted on."}), 403
+        return jsonify({"error":"This guild is locked and its content can no longer be voted on."}), 403
 
     # check for existing vote
     existing = g.db.query(Vote).filter_by(
@@ -145,7 +145,7 @@ URL path parameters:
     elif comment.post.is_archived:
         return jsonify({"error":"This post and its comments are archived and can no longer be voted on."}), 403
     elif comment.board.is_locked:
-        return jsonify({"error":"This guild is locked and its posts can no longer be voted on."}), 403
+        return jsonify({"error":"This guild is locked and its content can no longer be voted on."}), 403
 
     # check for existing vote
     existing = g.db.query(CommentVote).filter_by(
