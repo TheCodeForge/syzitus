@@ -77,7 +77,7 @@ def legal_final():
     return render_template(
         "message.html",
         title="Request Saved",
-        message="Your legal request has been saved.")
+        message=f"Your legal request has been sent to {app.config['SITE_NAME']} staff.")
 
 
 @app.route("/help/dmca", methods=["POST"])

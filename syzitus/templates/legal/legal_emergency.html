@@ -12,7 +12,7 @@
 
 	<div class="h6 mt-5">What kind of information is needed?</div>
 	<input type="radio" name="info_type" value="basic_info" checked required> Basic account information<br>
-	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by Ruqqus staff.<br>
+	<input type="radio" name="info_type" value="removed_content"> Content that has been removed by {{ 'SITE_NAME' | app_config }} staff.<br>
 	<input type="radio" name="info_type" value="deleted_content"> Content that has been deleted by its owner. (Requires search warrant).<br>
 	
 	
@@ -22,10 +22,10 @@
 	<div class="h6 mt-5">How will this user's information avert or mitigate the emergency?</div>
 	<textarea type="text" name="emergency_connection" class="form-control" required></textarea>	
 
-	<div class="h6 mt-5">Can Ruqqus notify the user that their information has been requested?</div>
-	<div class="body">It is Ruqqus policy to notify a user that their information has been requested by legal process, except when prohibited by law or in certain exigent circumstances.</div>
-	<input type="radio" name="notify_perms" value="exigent"> This emergency involves exigent circumstances such as terrorism, human trafficking, or imminent threats to life. Although Ruqqus is legally permitted to notify the user, Ruqqus policy means we will most likely refrain from doing so.<br>
-	<input type="radio" name="notify_perms" value="may_notify" checked required> Ruqqus is permitted to notify the user that their information has been requested.<br>
+	<div class="h6 mt-5">Can {{ 'SITE_NAME' | app_config }} notify the user that their information has been requested?</div>
+	<div class="body">It is {{ 'SITE_NAME' | app_config }} policy to notify a user that their information has been requested by legal process, except when prohibited by law or in certain exigent circumstances.</div>
+	<input type="radio" name="notify_perms" value="exigent"> This emergency involves exigent circumstances such as terrorism, human trafficking, or imminent threats to life. Although {{ 'SITE_NAME' | app_config }} is legally permitted to notify the user, {{ 'SITE_NAME' | app_config }} policy means we will most likely refrain from doing so.<br>
+	<input type="radio" name="notify_perms" value="may_notify" checked required> {{ 'SITE_NAME' | app_config }} is permitted to notify the user that their information has been requested.<br>
 
 	<div class="h6 mt-5">Upload the legal document</div>
 	<div class="body">It must be in English or include an official English translation.</div>
