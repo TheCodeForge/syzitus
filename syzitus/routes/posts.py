@@ -770,7 +770,10 @@ Optional file data:
         Subscription.get_notifs==True,
         Subscription.user_id != g.user.id,
         Subscription.user_id.notin_(
-            g.db.query(UserBlock.user_id).filter_by(target_id=g.user.id).subquery()
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
+            ),
+        Subscription.user_id.notin_(
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
             )
         )
 
@@ -781,10 +784,10 @@ Optional file data:
         Follow.get_notifs==True,
         Follow.user_id!=g.user.id,
         Follow.user_id.notin_(
-            g.db.query(UserBlock.user_id).filter_by(target_id=g.user.id).subquery()
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
             ),
         Follow.user_id.notin_(
-            g.db.query(UserBlock.target_id).filter_by(user_id=g.user.id).subquery()
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
             )
         ).join(Follow.target).filter(
         User.is_private==False,

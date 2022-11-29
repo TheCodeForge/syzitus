@@ -161,6 +161,50 @@ def dmca_post():
     g.db.add(c_aux)
     g.db.commit()
 
+
+    #Bell notifs
+    board_uids = g.db.query(
+        Subscription.user_id
+        ).options(lazyload('*')).filter(
+        Subscription.board_id==new_post.board_id, 
+        Subscription.is_active==True,
+        Subscription.get_notifs==True,
+        Subscription.user_id != g.user.id,
+        Subscription.user_id.notin_(
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
+            ),
+        Subscription.user_id.notin_(
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
+            )
+        )
+
+    follow_uids=g.db.query(
+        Follow.user_id
+        ).options(lazyload('*')).filter(
+        Follow.target_id==g.user.id,
+        Follow.get_notifs==True,
+        Follow.user_id!=g.user.id,
+        Follow.user_id.notin_(
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
+            ),
+        Follow.user_id.notin_(
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
+            )
+        ).join(Follow.target).filter(
+        User.is_private==False,
+        User.is_nofollow==False,
+        )
+
+    uids=list(set([x[0] for x in board_uids.all()] + [x[0] for x in follow_uids.all()]))
+    for uid in uids:
+        new_notif=Notification(
+            user_id=uid,
+            submission_id=new_post.id
+            )
+        g.db.add(new_notif)
+
+    g.db.commit()
+
     return render_template(
         "/message.html",
         title="DMCA request saved",
