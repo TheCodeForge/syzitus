@@ -33,7 +33,7 @@
 {% filter markdown %}
 # DMCA Takedown Request
 
-Use this page to submit a DMCA takedown request to {{ 'SITE_NAME' | app_config }}. 
+Use this page to submit a DMCA takedown request to {{ 'SITE_NAME' | app_config }}.
 
 Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms of service](/about/terms) and may lead to the termination of your {{ 'SITE_NAME' | app_config }} account, at the sole discretion of {{ 'SITE_NAME' | app_config }} staff.
 
@@ -86,14 +86,14 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
 	<textarea id="input-corrob" class="form-control" for="dmca-form" name="corrob_evidence"></textarea>
 
 	<label class="mt-5">Required statements</label><br>
-	<input id="accept_email" type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request at the email address: {{ g.user.email }}.<br>
+	<input id="accept_email" type="checkbox" name="accept_email" value="true" required> I will accept correspondence related to this Request through {{ 'SITE_NAME' | app_config }}, or at the email address {{ g.user.email }}.<br>
 	<input id="swear_perjury" type="checkbox" name="swear_perjury" value="true" required> I swear, under penalty of perjury, that the information in this Request is accurate, that the linked content is not protected by Fair Use, and that I am authorized to act on behalf of the copyright owner.<br>
 
 	<input class="btn btn-primary mt-5" type="submit" value="Submit">
 </form>
 
 {% elif g.user %}
-<p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
+<p>Please <a target="_blank" href="/settings/security">verify your email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
 {% else %}
 <p>In order to ensure that we can respond to your request if needed, please first <a href="/signup" target="_blank">sign up</a> or <a href="/login" target="_blank">log in</a> and make sure you have <a target="_blank" href="/settings/security">verified your email address</a>. Then, refresh this page.</p>
 {% endif %}

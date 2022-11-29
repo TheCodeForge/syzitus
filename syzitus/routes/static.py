@@ -249,11 +249,15 @@ def press_inquiry():
                   plaintext=str(data)
                   )
     except BaseException:
-        return render_template("/help/press.html",
-                               error="Unable to save your inquiry. Please try again later.")
+        return render_template(
+            "message.html",
+            title="Unable to save"
+            error="Unable to save your inquiry. Please try again later.")
 
-    return render_template("/help/press.html",
-                           msg="Your inquiry has been saved.")
+    return render_template(
+        "message.html",
+        title="Inquiry submitted"
+        message=f"Your inquiry has been sent to {app.config['SITE_NAME']} staff.")
 
 
 @app.route("/info/image_hosts", methods=["GET"])
