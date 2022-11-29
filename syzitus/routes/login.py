@@ -529,17 +529,20 @@ def post_reset():
 @app.get("/<path:path>.aspx")
 @app.get("/<path:path>.xml")
 @app.get("/wp-<path:path>")
+@auth_desired
 def malicious_scraper_honeypot(path):
 
     #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
 
-    new_ipban = IP(
-        addr=request.remote_addr,
-        unban_utc=0,
-        banned_by=1,
-        reason="malicious scraper honeypot"
-        )
+    if not g.user:
+        new_ipban = IP(
+            addr=request.remote_addr,
+            unban_utc=0,
+            banned_by=1,
+            reason="malicious scraper honeypot"
+            )
 
-    g.db.add(new_ip)
-    g.db.commit()
+        g.db.add(new_ip)
+        g.db.commit()
+        
     return "Tech-heresy detected. Commencing purge.", 404
