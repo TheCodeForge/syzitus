@@ -251,7 +251,7 @@ def press_inquiry():
     except BaseException:
         return render_template(
             "message.html",
-            title="Unable to save"
+            title="Unable to save",
             error="Unable to save your inquiry. Please try again later.")
 
     return render_template(
