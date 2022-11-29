@@ -56,9 +56,7 @@ def legal_final():
 
     data = sorted(data, key=lambda x: x[0])
 
-    files = {
-        secure_filename(
-            request.files[x].filename): request.files[x] for x in request.files}
+    files = {secure_filename(request.files[x].filename): request.files[x] for x in request.files}
 
     try:
         send_mail(app.config["ADMIN_EMAIL"],
