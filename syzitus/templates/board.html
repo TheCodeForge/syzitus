@@ -61,7 +61,7 @@
 
     <div class="text-small font-weight-bold text-muted text-uppercase mb-2 mt-3">Settings</div>
     <div class="text-primary">
-      <i class="fas fa-bucket"data-toggle="tooltip" data-placement="bottom" title="Category: {{ b.subcat.category.name }} / {{ b.subcat.name }}"></i>
+      <i class="fas fa-grid-2"data-toggle="tooltip" data-placement="bottom" title="Category: {{ b.subcat.category.name }} / {{ b.subcat.name }}"></i>
       {% if b.is_private %}<i class="fas fa-eye-slash"data-toggle="tooltip" data-placement="bottom" title="Private mode."></i>{% endif %}
       {% if b.restricted_posting %}<i class="fas fa-user-lock"data-toggle="tooltip" data-placement="bottom" title="Restricted posting mode."></i>{% endif %}
       {% if b.is_locked %}<i class="fas fa-lock"data-toggle="tooltip" data-placement="bottom" title="Read-Only"></i>{% endif %}
