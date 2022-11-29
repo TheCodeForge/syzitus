@@ -26,9 +26,12 @@ Abuse of this form is a violation of the {{ 'SITE_NAME' | app_config }} [terms o
   <input type="hidden" name="username" value="{{ g.user.username }}">
 
   <div class="h6 mt-5">Tell us about yourself.</div>
-  <input type="radio" name="about_yourself" value="law_enforcement"> I am an authorized law enforcement representative (ex. police).<br>
-  <input type="radio" name="about_yourself" value="gov_official"> I am an authorized  government representative (ex. district attorney)<br>
-  <input type="radio" name="about_yourself" value="not_authorized" checked required> None of the above<br>
+
+  <select name="about_yourself" class="form-control">
+    <option value="law_enforcement"> I am an authorized law enforcement representative (ex. police).</option>
+    <option value="gov_official"> I am an authorized government representative (ex. district attorney)</option>
+    <option value="not_authorized" checked required> None of the above</option>
+  </select>
 
   <div class="h6 mt-5">Your name</div>
   <div class="body">Your full, legal name. Stage names, pen names, nicknames, pseudonyms, etc. are not accepted and will result in the denial of your request.</div>
