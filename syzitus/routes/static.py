@@ -256,7 +256,7 @@ def press_inquiry():
 
     return render_template(
         "message.html",
-        title="Inquiry submitted"
+        title="Inquiry submitted",
         message=f"Your inquiry has been sent to {app.config['SITE_NAME']} staff.")
 
 
