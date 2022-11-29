@@ -232,10 +232,15 @@ def counter_dmca_post(v):
                   plaintext=str(data)
                   )
     except BaseException:
-        return render_template("/help/counter_dmca.html",
-                               error="Unable to save your request. Please try again later.",
-                               v=v)
+        return render_template(
+            "message.html",
+            title="Unable to save",
+            error="Unable to save your counter-DMCA notfication. Please try again later.",
+            )
 
-    return render_template("/help/counter_dmca.html",
-                           msg="Your request has been saved.",
-                           v=v)
+    return render_template(
+        "message.html",
+        icon="fa-copyright",
+        title="Counter-notification saved",
+        message="Your DMCA counter-notification has been saved.",
+        )
