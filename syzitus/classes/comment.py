@@ -47,7 +47,7 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
         innerjoin=True,
         primaryjoin="Comment.id==CommentAux.id")
     author_id = Column(Integer, ForeignKey("users.id"), index=True)
-    parent_submission = Column(Integer, ForeignKey("submissions.id"))
+    parent_submission = Column(Integer, ForeignKey("submissions.id"), index=True)
 
     # this column is foreignkeyed to comment(id) but we can't do that yet as
     # "comment" class isn't yet defined
@@ -542,8 +542,8 @@ class Notification(Base):
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    comment_id = Column(Integer, ForeignKey("comments.id"), default=None)
+    user_id = Column(Integer, ForeignKey("users.id"), index=True)
+    comment_id = Column(Integer, ForeignKey("comments.id"), index=True, default=None)
     submission_id = Column(Integer, ForeignKey("submissions.id"), default=None)
 
     read = Column(Boolean, default=False)
