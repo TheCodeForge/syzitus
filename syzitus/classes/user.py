@@ -206,6 +206,13 @@ class User(Base, Stndrd, Age_times):
             postgresql_ops={
                 'original_username':'gin_trgm_ops'
                 }
+            ),
+        Index(
+            "users_created_utc_idx", "created_utc",
+            postgresql_using="btree",
+            postgresql_ops={
+                'created_utc':'DESC'
+                }
             )
         )
 
