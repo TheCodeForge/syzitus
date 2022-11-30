@@ -112,7 +112,36 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     rank_fiery = deferred(Column(Float, server_default=FetchedValue()))
     rank_hot = deferred(Column(Float, server_default=FetchedValue()))
 
-
+    __table_args__=(
+        Index(
+            "comments_score_hot_desc_idx", "score_hot",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_hot':'DESC'
+                }
+            ),
+        Index(
+            "comments_score_top_desc_idx", "score_top",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_top':'DESC'
+                }
+            ),
+        Index(
+            "comments_score_disputed_desc_idx", "score_disputed",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_disputed':'DESC'
+                }
+            ),
+        Index(
+            "comments_created_utc_desc_idx", "created_utc",
+            postgresql_using="btree",
+            postgresql_ops={
+                'created_utc':'DESC'
+                }
+            )
+        )
 
 
     #flag_count=deferred(Column(Integer, server_default=FetchedValue()))

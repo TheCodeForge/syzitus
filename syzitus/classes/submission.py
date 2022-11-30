@@ -154,6 +154,47 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     rank_activity = deferred(Column(Float, server_default=FetchedValue()))
     rank_best = deferred(Column(Float, server_default=FetchedValue()))
 
+
+    # ordered indexes on scores
+    __table_args__=(
+        Index(
+            "submissions_score_hot_desc_idx", "score_hot",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_hot':'DESC'
+                }
+            ),
+        Index(
+            "submissions_score_disputed_desc_idx", "score_disputed",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_disputed':'DESC'
+                }
+            ),
+        Index(
+            "submissions_score_top_desc_idx", "score_top",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_top':'DESC'
+                }
+            ),
+        Index(
+            "submissions_score_activity_desc_idx", "score_activity",
+            postgresql_using="btree",
+            postgresql_ops={
+                'score_activity':'DESC'
+                }
+            ),
+        Index(
+            "submissions_created_utc_desc_idx", "created_utc",
+            postgresql_using="btree",
+            postgresql_ops={
+                'created_utc':'DESC'
+                }
+            )
+        )
+
+
     def __init__(self, *args, **kwargs):
 
         if "created_utc" not in kwargs:

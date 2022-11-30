@@ -66,6 +66,24 @@ class Board(Base, Stndrd, Age_times):
     # db side functions
     subscriber_count = deferred(Column(Integer, server_default=FetchedValue()))
 
+
+    __table_args__=(
+        Index(
+            "boards_rank_trending_idx", "rank_trending",
+            postgresql_using="btree",
+            postgresql_ops={
+                'rank_trending':'DESC'
+                }
+            ),
+        Index(
+            "boards_stored_subscriber_idx", "stored_subscriber_count",
+            postgresql_using="btree",
+            postgresql_ops={
+                'stored_subscriber_count':'DESC'
+                }
+            )
+        )
+
     def __init__(self, **kwargs):
 
         kwargs["created_utc"] = int(time.time())
