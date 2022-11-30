@@ -542,7 +542,7 @@ def malicious_scraper_honeypot(path):
             reason="malicious scraper honeypot"
             )
 
-        g.db.add(new_ip)
+        g.db.add(new_ipban)
         g.db.commit()
-        
+
     return "Tech-heresy detected. Commencing purge.", 404
