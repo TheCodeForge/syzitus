@@ -44,11 +44,11 @@
     </a>
 
     {% if g.user and request.path=="/browse" %}
-    <div id="button-sub-mobile-{{ b.fullname }}" class="zi-3 btn-guild-sub {% if b.has_subscriber(v) %}d-none{% endif %}">
-      <a class="btn btn-primary btn-sm" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Join</a>
+    <div id="button-sub-mobile-{{ b.fullname }}" class="zi-3 {% if b.has_subscriber(v) %}d-none{% endif %}">
+      <a class="btn btn-primary btn-sm btn-guild-sub" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Join</a>
     </div>
-    <div id="button-unsub-mobile-{{ b.fullname }}" class="zi-3 btn-guild-unsub {% if not b.has_subscriber(v) %} d-none{% endif %}">
-      <a class="btn btn-secondary btn-sm" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Leave</a>
+    <div id="button-unsub-mobile-{{ b.fullname }}" class="zi-3 {% if not b.has_subscriber(v) %} d-none{% endif %}">
+      <a class="btn btn-secondary btn-sm btn-guild-unsub" href="javascript:void(0)" data-thing-id="{{ b.fullname }}" data-board-name="{{ b.name }}">Leave</a>
     </div>
     {% elif not v and request.path=="/browse" %}
     <a class="btn btn-primary btn-sm zi-3" href="/signup">Join</a>
