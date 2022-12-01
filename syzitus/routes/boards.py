@@ -24,7 +24,7 @@ from flask import *
 
 from syzitus.__main__ import app, limiter, cache
 
-valid_board_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}$")
+valid_board_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 
 @app.route("/m/<name>", methods=["GET"])
 @auth_desired
