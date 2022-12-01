@@ -42,7 +42,6 @@ def mfa_qr(secret):
 
 
 @app.route("/api/is_available/<name>", methods=["GET"])
-@app.route("/api/v1/is_available/<name>", methods=["GET"])
 @auth_desired
 @api("read")
 def api_is_available(name):
@@ -64,17 +63,7 @@ def api_is_available(name):
 def user_uid(uid):
     return redirect(get_account(uid).permalink)
 
-# Allow Id of user to be queryied, and then redirect the bot to the
-# actual user api endpoint.
-# So they get the data and then there will be no need to reinvent
-# the wheel.
-@app.route("/api/v1/uid/<uid>", methods=["GET"])
-@auth_desired
-@api("read")
-def user_by_uid(uid):
-    user=get_account(uid)
-    
-    return redirect(f'/api/v1/user/{user.username}/info')
+
         
 @app.route("/u/<username>", methods=["GET"])
 def redditor_moment_redirect(username):
@@ -83,7 +72,6 @@ def redditor_moment_redirect(username):
 
 
 @app.route("/@<username>", methods=["GET"])
-@app.route("/api/v1/user/<username>/listing", methods=["GET"])
 @app.get("/api/v2/users/<username>/submissions")
 @auth_desired
 @api("read")
@@ -174,7 +162,6 @@ Optional query parameters:
 
 
 @app.route("/@<username>/comments", methods=["GET"])
-@app.route("/api/v1/user/<username>/comments", methods=["GET"])
 @app.get("/api/v2/users/<username>/comments")
 @auth_desired
 @api("read")
@@ -269,7 +256,6 @@ Optional query parameters:
             "api": lambda: jsonify({"data": [c.json for c in listing]})
             }
 
-@app.route("/api/v1/user/<username>/info", methods=["GET"])
 @app.get("/api/v2/users/<username>")
 @auth_desired
 @api("read")
