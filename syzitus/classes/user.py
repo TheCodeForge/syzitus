@@ -67,7 +67,7 @@ class User(Base, Stndrd, Age_times):
 
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    username = Column(String, default=None, index=True)
+    username = Column(String, default=None)
     email = Column(String, default=None)
     passhash = deferred(Column(String, default=None))
     created_utc = Column(Integer, default=0)
@@ -145,7 +145,7 @@ class User(Base, Stndrd, Age_times):
     # signature_html=Column(String(512), default="")
 
     #stuff to support name changes
-    original_username=deferred(Column(String(255), index=True))
+    original_username=deferred(Column(String(255)))
     name_changed_utc=deferred(Column(Integer, default=0))
 
 

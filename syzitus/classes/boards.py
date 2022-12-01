@@ -22,7 +22,7 @@ class Board(Base, Stndrd, Age_times):
     __tablename__ = "boards"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, index=True)
+    name = Column(String) #trigram index below
     created_utc = Column(Integer)
     description = Column(String, default="")
 
@@ -68,6 +68,13 @@ class Board(Base, Stndrd, Age_times):
 
 
     __table_args__=(
+        Index(
+            "boards_name_trgm_idx", "name",
+            postgresql_using="gin",
+            postgresql_ops={
+                'name':'gin_trgm_ops'
+                }
+            ),
         Index(
             "boards_rank_trending_idx", "rank_trending",
             postgresql_using="btree",
