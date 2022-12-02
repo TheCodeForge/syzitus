@@ -1,6 +1,8 @@
 from sqlalchemy import *
+
+from .mix_ins import Stndrd
+
 from syzitus.__main__ import Base, cache
-from .mix_ins import *
 
 
 class Flag(Base, Stndrd):

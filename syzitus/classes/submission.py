@@ -7,15 +7,15 @@ from urllib.parse import urlparse
 import random
 from os import environ
 import requests
-from .mix_ins import *
-from syzitus.helpers.base36 import *
+from .mix_ins import Stndrd, Age_times, Scores, Fuzzing
+from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from syzitus.__main__ import Base, cache, app, debug
-from .votes import Vote, CommentVote
+#from .votes import Vote, CommentVote
 from .domains import Domain
 from .flags import Flag
-from .badwords import *
+from .badwords import BadWord
 from .comment import Comment
 
 

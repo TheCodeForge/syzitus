@@ -9,21 +9,21 @@ import random
 import pyotp
 import mistletoe
 
-from syzitus.helpers.base36 import *
+from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.security import *
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
-from .votes import Vote
+#from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
 from .submission import Submission, SubmissionAux, SaveRelationship
 from .comment import Comment, CommentAux, Notification
 from .boards import Board
 from .board_relationships import *
-from .mix_ins import *
-from .subscriptions import *
-from .userblock import *
+from .mix_ins import Stndrd, Age_times
+from .subscriptions import Subscription, Follow
+from .userblock import UserBlock
 from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
@@ -600,10 +600,6 @@ class User(Base, Stndrd, Age_times):
         
         value= max((self.karma + self.comment_karma), -5)
         return value
-
-    @property
-    def base36id(self):
-        return base36encode(self.id)
 
     @property
     def fullname(self):

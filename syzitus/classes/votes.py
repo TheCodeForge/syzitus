@@ -3,7 +3,6 @@ from time import time, strftime, gmtime
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
-from syzitus.helpers.base36 import *
 from syzitus.__main__ import Base
 
 

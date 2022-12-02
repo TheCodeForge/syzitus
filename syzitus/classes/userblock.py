@@ -3,7 +3,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import relationship
 
 import syzitus.helpers.aws as aws
-from .mix_ins import *
+from .mix_ins import Stndrd, Age_times
 from syzitus.__main__ import Base, cache
 
 

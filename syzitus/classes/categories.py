@@ -1,11 +1,10 @@
-from syzitus.helpers.base36 import *
-from syzitus.helpers.security import *
-from syzitus.helpers.lazy import lazy
+import time
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
+
+from .mix_ins import Stndrd
+
 from syzitus.__main__ import Base, cache, debug, app
-from .mix_ins import *
-import time
 
 
 class Category(Stndrd):

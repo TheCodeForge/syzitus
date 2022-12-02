@@ -292,19 +292,12 @@ Base = declarative_base()
 #set the shared redis cache for misc stuff
 
 r=redis.Redis(
-    host=app.config["CACHE_REDIS_URL"][8:], 
+    host=app.config["CACHE_REDIS_URL"].split("://")[1], 
     decode_responses=True,
     ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
     ssl_cert_reqs=None,
     connection_pool = redispool
     ) if app.config["CACHE_REDIS_URL"] else None
-
-
-
-local_ban_cache={}
-
-IP_BAN_CACHE_TTL = int(environ.get("IP_BAN_CACHE_TTL", 3600))
-UA_BAN_CACHE_TTL = int(environ.get("UA_BAN_CACHE_TTL", 3600))
 
 #debug function
 

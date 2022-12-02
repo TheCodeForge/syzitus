@@ -1,10 +1,10 @@
-from syzitus.helpers.base36 import *
-from syzitus.helpers.security import *
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
-from syzitus.__main__ import Base, cache, app
-from .mix_ins import *
 import time
+
+from .mix_ins import Stndrd, Age_times
+
+from syzitus.__main__ import Base, cache, app
 
 
 class ModAction(Base, Stndrd, Age_times):
