@@ -8,6 +8,7 @@ from io import BytesIO
 import time
 
 from .get import *
+from .aws import upload_from_file
 from syzitus.classes import Submission, SubmissionAux
 from syzitus.__main__ import app, db_session, debug
 
@@ -208,7 +209,7 @@ def thumbnail_thread(pid):
         for chunk in image_req.iter_content(1024):
             file.write(chunk)
 
-    aws.upload_from_file(name, tempname, resize=(98, 68))
+    upload_from_file(name, tempname, resize=(98, 68))
     post.has_thumb = True
     db.add(post)
 
