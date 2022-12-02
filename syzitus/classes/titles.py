@@ -3,7 +3,7 @@ from flask import render_template
 
 from syzitus.helpers.lazy import lazy
 
-from syzitus.__main__ import Base, cache
+from syzitus.__main__ import app, Base, cache
 
 
 class Title():
