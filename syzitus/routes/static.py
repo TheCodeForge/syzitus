@@ -3,6 +3,7 @@ import pyotp
 import sass
 import mistletoe
 from flask import *
+from werkzeug.security import safe_join
 import PIL
 import io
 from PIL import ImageFont, ImageDraw
