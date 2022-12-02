@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import random
 from os import environ
 import requests
+import re
 from .mix_ins import Stndrd, Age_times, Scores, Fuzzing
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
