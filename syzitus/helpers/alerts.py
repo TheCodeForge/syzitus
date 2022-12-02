@@ -2,7 +2,7 @@ import mistletoe
 
 from syzitus.classes.comment import Comment, CommentAux, Notification
 from flask import g
-from .markdown import *
+from .markdown import CustomRenderer
 from .sanitize import *
 
 
