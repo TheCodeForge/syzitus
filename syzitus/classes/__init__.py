@@ -7,7 +7,7 @@ from .categories import CATEGORIES, SUBCAT_DATA
 from .clients import OauthApp, ClientAuth
 from .comment import Comment, CommentAux
 from .custom_errors import PaymentRequired, DatabaseOverload
-from .domains import Domain
+from .domains import Domain, BadLink
 from .flags import Flag, CommentFlag, Report
 from .images import Image, BadPic, random_image
 from .ips import IP, Agent
