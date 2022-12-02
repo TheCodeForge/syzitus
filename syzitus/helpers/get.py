@@ -1,4 +1,4 @@
-from .base36 import *
+from .base36 import base36encode, base36decode
 from syzitus.classes import *
 from flask import g
 from sqlalchemy import *
