@@ -1,4 +1,4 @@
-from syzitus.helpers.base36 import *
+from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
 import math
 import random
