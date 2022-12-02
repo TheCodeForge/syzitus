@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.orm import relationship, deferred, lazyload
 import time
+from flask import g
 
 from syzitus.helpers.base36 import *
 from syzitus.helpers.lazy import *
