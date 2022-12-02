@@ -1,5 +1,5 @@
 import re
-from urllib.parse import *
+from urllib.parse import urlparse, parse_qs
 import requests
 from os import environ
 from flask import *
