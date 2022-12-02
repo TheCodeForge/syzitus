@@ -5,7 +5,7 @@ from werkzeug.wrappers.response import Response as RespObj
 import time
 import random
 
-from syzitus.classes import *
+from syzitus.classes import User, OauthApp, ClientAuth, Submission, Comment
 from .get import *
 from .alerts import send_notification
 from syzitus.__main__ import Base, app, g, debug
