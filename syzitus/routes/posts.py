@@ -17,7 +17,7 @@ from syzitus.helpers.sanitize import *
 from syzitus.helpers.filters import *
 from syzitus.helpers.embed import *
 from syzitus.helpers.markdown import *
-from syzitus.helpers.get import *
+from syzitus.helpers.get import get_post, get_from_fullname
 from syzitus.helpers.thumbs import *
 from syzitus.helpers.session import *
 from syzitus.helpers.aws import *

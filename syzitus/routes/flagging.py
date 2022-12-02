@@ -2,7 +2,6 @@ import time
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.get import *
-from syzitus.helpers.base36 import *
 from flask import g
 from syzitus.__main__ import app
 

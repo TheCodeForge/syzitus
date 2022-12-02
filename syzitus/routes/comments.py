@@ -13,7 +13,7 @@ from syzitus.helpers.sanitize import *
 from syzitus.helpers.filters import *
 from syzitus.helpers.embed import *
 from syzitus.helpers.markdown import *
-from syzitus.helpers.get import *
+from syzitus.helpers.get import get_post, get_comment
 from syzitus.helpers.session import *
 from syzitus.helpers.alerts import *
 from syzitus.helpers.aws import *

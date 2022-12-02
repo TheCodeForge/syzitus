@@ -1,7 +1,5 @@
 from flask import *
 import time
-import hmac
-from os import environ
 import re
 import random
 from urllib.parse import urlencode

@@ -1,7 +1,5 @@
-import time
-import jinja2
+import jinja2.exceptions.TemplateNotFound
 import pyotp
-import pprint
 import sass
 import mistletoe
 from flask import *
@@ -278,7 +276,7 @@ def info_image_hosts():
 @app.route("/dismiss_mobile_tip", methods=["POST"])
 def dismiss_mobile_tip():
 
-    session["tooltip_last_dismissed"]=int(time.time())
+    session["tooltip_last_dismissed"]=g.timestamp
     session.modified=True
 
     return "", 204

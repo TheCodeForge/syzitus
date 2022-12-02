@@ -1,4 +1,3 @@
-import time
 from flask import *
 from sqlalchemy import *
 from sqlalchemy.orm import lazyload
@@ -104,7 +103,7 @@ def notifications_posts():
 def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
               t=None, categories=[], filter_words='', **kwargs):
 
-    # cutoff=int(time.time())-(60*60*24*30)
+    # cutoff=g.timestamp-(60*60*24*30)
 
     if sort == None:
         if g.user: sort = g.user.defaultsorting
@@ -232,7 +231,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
 
     if t == None and g.user: t = g.user.defaulttime
     if t:
-        now = int(time.time())
+        now = g.timestamp
         if t == 'day':
             cutoff = now - 86400
         elif t == 'week':
@@ -545,7 +544,7 @@ def subcat(name):
 
 @cache.memoize()
 def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
-    # cutoff=int(time.time())-(60*60*24*30)
+    # cutoff=g.timestamp-(60*60*24*30)
 
     guilds = g.db.query(Board).filter_by(is_banned=False).filter(
         Board.subcat_id != 108
@@ -720,7 +719,7 @@ def random_post():
         is_banned=False,
         ).filter(Submission.deleted_utc == 0)
 
-    now = int(time.time())
+    now = g.timestamp
     cutoff = now - (60 * 60 * 24 * 180)
     x = x.filter(Submission.created_utc >= cutoff)
 
@@ -797,7 +796,7 @@ def random_comment():
 @auth_desired
 def random_user():
     x = g.db.query(User).filter(or_(User.is_banned == 0, and_(
-        User.is_banned > 0, User.unban_utc < int(time.time()))))
+        User.is_banned > 0, User.unban_utc < g.timestamp)))
 
     x = x.filter_by(is_private=False)
 

@@ -1,10 +1,5 @@
-from os import environ
 import requests
-import urllib
-import hmac
-import pprint
 import time
-import pprint
 
 from flask import *
 

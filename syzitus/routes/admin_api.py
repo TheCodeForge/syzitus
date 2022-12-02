@@ -9,7 +9,6 @@ from sqlalchemy import func
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.aws import delete_file
-from syzitus.helpers.base36 import *
 from syzitus.helpers.alerts import *
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.markdown import *
@@ -67,7 +66,7 @@ def unban_user(user_id):
 @admin_level_required(3)
 def ban_post(post_id):
 
-    post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
+    post = get_post(post_id)
 
     if not post:
         abort(400)
@@ -106,7 +105,7 @@ def ban_post(post_id):
 @admin_level_required(3)
 def unban_post(post_id):
 
-    post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
+    post = get_post(post_id)
 
     if not post:
         abort(400)
@@ -123,7 +122,7 @@ def unban_post(post_id):
 
     post.is_banned = False
     post.is_approved = g.user.id
-    post.approved_utc = int(time.time())
+    post.approved_utc = g.timestamp
 
     g.db.add(post)
     g.db.commit()
@@ -135,7 +134,7 @@ def unban_post(post_id):
 @admin_level_required(1)
 def api_distinguish_post(post_id):
 
-    post = g.db.query(Submission).filter_by(id=base36decode(post_id)).first()
+    post = get_post(post_id)
 
     if not post:
         abort(404)
@@ -176,7 +175,7 @@ def api_sticky_post(post_id):
 @admin_level_required(1)
 def api_ban_comment(c_id):
 
-    comment = g.db.query(Comment).filter_by(id=base36decode(c_id)).first()
+    comment = get_comment(c_id)
     if not comment:
         abort(404)
 
@@ -201,7 +200,7 @@ def api_ban_comment(c_id):
 @admin_level_required(1)
 def api_unban_comment(c_id):
 
-    comment = g.db.query(Comment).filter_by(id=base36decode(c_id)).first()
+    comment = get_comment(c_id)
     if not comment:
         abort(404)
 
@@ -217,7 +216,7 @@ def api_unban_comment(c_id):
 
     comment.is_banned = False
     comment.is_approved = g.user.id
-    comment.approved_utc = int(time.time())
+    comment.approved_utc = g.timestamp
 
     g.db.add(comment)
     g.db.commit()
@@ -318,7 +317,7 @@ def user_stat_data():
 
     days = int(request.args.get("days", 30))
 
-    now = time.gmtime()
+    now = g.timestamp
     midnight_this_morning = time.struct_time(
         (
             now.tm_year,

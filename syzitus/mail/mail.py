@@ -4,7 +4,7 @@ import time
 from flask import *
 from urllib.parse import quote
 
-from syzitus.helpers.security import *
+from syzitus.helpers.security import generate_hash, validate_hash
 from syzitus.helpers.wrappers import *
 from syzitus.classes import *
 from syzitus.__main__ import app

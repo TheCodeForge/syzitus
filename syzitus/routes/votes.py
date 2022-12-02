@@ -1,10 +1,7 @@
-from urllib.parse import urlparse
-import time
-
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.base36 import *
+from syzitus.helpers.base36 import base36decode
 from syzitus.helpers.sanitize import *
-from syzitus.helpers.get import *
+from syzitus.helpers.get import get_post, get_comment
 from syzitus.classes import *
 from flask import *
 from syzitus.__main__ import app, debug
@@ -41,7 +38,7 @@ URL path parameters:
     #                 [g.user.id]+[x.id for x in g.user.alts]
     #                 )
     #             ),
-    #         Vote.created_utc > (int(time.time())-3600), 
+    #         Vote.created_utc > (g.timestamp-3600), 
     #         Vote.vote_type==-1
     #         ).count()
     #     if count >=15:

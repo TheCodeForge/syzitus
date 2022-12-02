@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import pyotp
 import qrcode
 import io
-import gevent
+# import gevent
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.base36 import *

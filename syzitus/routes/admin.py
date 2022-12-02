@@ -3,13 +3,11 @@ import time
 import calendar
 from sqlalchemy import func
 from sqlalchemy.orm import lazyload
-import threading
-import subprocess
 import imagehash
 from os import remove
 from PIL import Image as IMAGE
 import gevent
-import jinja2
+import jinja2.exceptions.TemplateNotFound
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.alerts import *
@@ -176,7 +174,7 @@ def badge_grant_post():
 
     new_badge = Badge(badge_id=badge_id,
                       user_id=user.id,
-                      created_utc=int(time.time())
+                      created_utc=g.timestamp
                       )
 
     desc = request.form.get("description")
@@ -247,7 +245,7 @@ def admin_data():
 @admin_level_required(2)
 def participation_stats():
 
-    now = int(time.time())
+    now = g.timestamp
     cutoff=now-60*60*24*180
 
     data = {"valid_users": g.db.query(User).filter_by(is_deleted=False).filter(or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).count(),
@@ -287,7 +285,7 @@ def participation_stats():
 @admin_level_required(2)
 def money_stats():
 
-    now = time.gmtime()
+    now = g.timestamp
     midnight_year_start = time.struct_time((now.tm_year,
                                               1,
                                               1,
@@ -300,7 +298,7 @@ def money_stats():
                                              )
     midnight_year_start = calendar.timegm(midnight_year_start)
 
-    now=int(time.time())
+    
     intake=sum([int(x[0] - (x[0] * 0.029) - 30 )  for x in g.db.query(PayPalTxn.usd_cents).filter(PayPalTxn.status==3, PayPalTxn.created_utc>midnight_year_start).all()])
     loss=sum([x[0] for x in g.db.query(PayPalTxn.usd_cents).filter(PayPalTxn.status<0, PayPalTxn.created_utc>midnight_year_start).all()])
     revenue=str(intake-loss)
@@ -807,7 +805,7 @@ def admin_siege_count():
     board=get_guild(request.args.get("board"))
     recent=int(request.args.get("days",0))
 
-    now=int(time.time())
+    now=g.timestamp
 
     cutoff=board.stored_subscriber_count//10 + min(recent, (now-board.created_utc)//(60*60*24))
 
@@ -834,27 +832,6 @@ def admin_siege_count():
         "eligible_users":can_siege
         }
         )
-
-
-# @app.route('/admin/deploy', methods=["GET"])
-# @admin_level_required(3)
-# def admin_deploy():
-
-#     def reload_function():
-#         time.sleep(3)
-#         subprocess.run(". ~/go.sh", shell=True)
-
-#     thread=threading.Thread(target=reload_function, daemon=True)
-#     thread.start()
-
-#     return 'Reloading!'
-
-# @app.route('/admin/test', methods=["GET"])
-# @admin_level_required(3)
-# def admin_test():
-
-
-#     return "1"
 
 
 @app.route("/admin/purge_guild_images/<boardname>", methods=["POST"])
@@ -908,7 +885,7 @@ def admin_image_ban():
 
 
     #make phash
-    tempname = f"admin_image_ban_{g.user.username}_{int(time.time())}"
+    tempname = f"admin_image_ban_{g.user.username}_{g.timestamp}"
 
     i.save(tempname)
 
@@ -1053,7 +1030,7 @@ def print_(*x):
 @admin_level_required(3)
 def admin_siege_guild():
 
-    now = int(time.time())
+    now = g.timestamp
     guild = request.form.get("guild")
 
     user=get_user(request.form.get("username"))
@@ -1104,7 +1081,7 @@ def admin_siege_guild():
     recent = g.db.query(ModAction).filter(
         ModAction.target_user_id==user.id,
         ModAction.kind=="add_mod",
-        ModAction.created_utc>int(time.time())-60*60*24*7
+        ModAction.created_utc>g.timestamp-60*60*24*7
     ).first()
     
     if recent:
