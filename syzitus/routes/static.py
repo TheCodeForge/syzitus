@@ -1,4 +1,4 @@
-import jinja2.exceptions.TemplateNotFound
+from jinja2.exceptions import TemplateNotFound
 import pyotp
 import sass
 import mistletoe
@@ -213,7 +213,7 @@ def help_path(path):
         to_render=safe_join("help/", f"{path}.html")
         #debug(to_render)
         return render_template(to_render)
-    except jinja2.exceptions.TemplateNotFound:
+    except TemplateNotFound:
        abort(404)
 
 

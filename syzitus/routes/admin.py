@@ -7,7 +7,7 @@ import imagehash
 from os import remove
 from PIL import Image as IMAGE
 import gevent
-import jinja2.exceptions.TemplateNotFound
+from jinja2.exceptions import TemplateNotFound
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.alerts import *
@@ -499,7 +499,7 @@ def admin_link_accounts():
 def admin_tools(pagename):
     try:
         return render_template(f"admin/{pagename}.html")
-    except jinja2.exceptions.TemplateNotFound:
+    except TemplateNotFound:
         abort(404)
 
 @app.route("/admin/removed", methods=["GET"])
