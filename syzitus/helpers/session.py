@@ -1,6 +1,6 @@
 from flask import *
 import time
-from .security import *
+from .security import generate_hash
 
 
 def session_over18(board):

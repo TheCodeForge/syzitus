@@ -1,5 +1,5 @@
 import requests
-from os import environ, remove
+from os import remove
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from PIL import Image as PILimage

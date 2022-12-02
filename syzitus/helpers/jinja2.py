@@ -1,6 +1,6 @@
 import time
 import json
-from os import environ, path
+#from os import environ, path
 from sqlalchemy import text, func
 from flask import g
 import calendar
@@ -12,7 +12,6 @@ import base64
 
 from syzitus.classes.user import User
 from .get import *
-import requests
 
 from syzitus.__main__ import app, cache
 
@@ -40,18 +39,18 @@ def full_link(url):
     return f"https://{app.config['SERVER_NAME']}{url}"
 
 
-@app.template_filter("env")
-def env_var_filter(x):
+# @app.template_filter("env")
+# def env_var_filter(x):
 
-    x = environ.get(x, 1)
+#     x = environ.get(x, 1)
 
-    try:
-        return int(x)
-    except BaseException:
-        try:
-            return float(x)
-        except BaseException:
-            return x
+#     try:
+#         return int(x)
+#     except BaseException:
+#         try:
+#             return float(x)
+#         except BaseException:
+#             return x
 
 
 @app.template_filter("js_str_escape")

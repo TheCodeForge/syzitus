@@ -4,7 +4,7 @@ from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
 from functools import partial
 from .get import *
-import os.path
+# import os.path
 
 _allowed_tags = tags = ['b',
                         'blockquote',
