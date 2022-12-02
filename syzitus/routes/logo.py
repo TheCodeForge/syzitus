@@ -10,7 +10,7 @@ from syzitus.helpers.wrappers import *
 from syzitus.helpers.markdown import *
 from syzitus.classes import *
 from syzitus.mail import *
-from syzitus.__main__ import app, limiter, debug
+from syzitus.__main__ import app, limiter, debug, cache
 
 @app.get(f"/logo/jumbotron/<color>/{app.config['SITE_NAME'][0].lower()}")
 @cache.memoize()
