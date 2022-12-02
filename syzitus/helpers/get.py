@@ -1,6 +1,6 @@
 from .base36 import base36encode, base36decode
 from syzitus.classes import *
-from flask import g
+from flask import g, abort
 from sqlalchemy import *
 from sqlalchemy.orm import *
 from urllib.parse import urlparse
