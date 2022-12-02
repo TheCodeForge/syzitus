@@ -1,5 +1,5 @@
 import hmac
-from werkzeug.security import *
+from werkzeug.security import generate_password_hash
 from os import environ
 import time
 import random
