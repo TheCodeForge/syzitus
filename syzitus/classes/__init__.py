@@ -9,7 +9,7 @@ from .comment import Comment, CommentAux
 from .custom_errors import PaymentRequired, DatabaseOverload
 from .domains import Domain
 from .flags import Flag, CommentFlag, Report
-from .images import Image, BadPic
+from .images import Image, BadPic, random_image
 from .ips import IP, Agent
 from .mod_logs import ModAction
 from .paypal import PayPalClient, PayPalTxn, PromoCode, AwardRelationship
