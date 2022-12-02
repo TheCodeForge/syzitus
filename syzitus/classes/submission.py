@@ -363,9 +363,7 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     #@lazy
     def thumb_url(self):
 
-        if not self.url:
-            return "/assets/images/icons/default_thumb_text.png"
-        elif self.has_thumb:
+        if self.has_thumb:
             return f"https://{app.config['S3_BUCKET']}/posts/{self.base36id}/thumb.png"
         elif self.is_image:
             return self.url
