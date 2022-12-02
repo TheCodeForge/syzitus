@@ -8,6 +8,7 @@ from io import BytesIO
 import time
 
 from .get import *
+from syzitus.classes import Submission, SubmissionAux
 from syzitus.__main__ import app, db_session, debug
 
 def expand_url(post_url, fragment_url):
