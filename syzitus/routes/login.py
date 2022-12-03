@@ -1,4 +1,4 @@
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, request
 import time
 import re
 import random
