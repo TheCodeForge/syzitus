@@ -1,5 +1,4 @@
 import time
-from sqlalchemy.orm import relationship
 
 from .mix_ins import Stndrd
 

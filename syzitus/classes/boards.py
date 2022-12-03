@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, lazyload
 import time
+from flask import g, abort
 
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
@@ -11,7 +12,7 @@ from .board_relationships import ModRelationship, BanRelationship, ContributorRe
 from .comment import Comment
 from .mix_ins import Stndrd, Age_times
 from .categories import SubCategory
-from syzitus.__main__ import Base, cache, app, g
+from syzitus.__main__ import Base, cache, app
 
 class Board(Base, Stndrd, Age_times):
 
