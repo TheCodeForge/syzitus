@@ -1,4 +1,4 @@
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, request
 from os import environ
 import requests
 from werkzeug.utils import secure_filename
