@@ -7,19 +7,19 @@ import time
 import os.path
 from bs4 import BeautifulSoup 
 import cssutils
+from sqlalchemy import select
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.sanitize import *
-from syzitus.helpers.markdown import *
+from syzitus.helpers.sanitize import sanitize
+from syzitus.helpers.markdown import CustomRenderer
 from syzitus.helpers.get import *
-from syzitus.helpers.alerts import *
+from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.session import *
 from syzitus.helpers.aws import check_csam_url
 from syzitus.classes import *
 from .front import guild_ids
-#from syzitus.classes.rules import *
 from syzitus.classes.categories import CATEGORIES, CATEGORY_DATA, SUBCAT_DATA
-from flask import *
+from flask import g, session, abort, render_template, jsonify
 
 from syzitus.__main__ import app, limiter, cache
 
@@ -44,17 +44,27 @@ def multiboard(name):
     board_ids=[]
     
     for name in name.split("+"):
+
+        if not name:
+            continue
+
         board = get_guild(name)
-        if board.is_banned and not (g.user and g.user.admin_level >= 3): continue
-        if board.over_18 and not (g.user and g.user.over_18) and not session_over18(board): continue
-        if not board.can_view(g.user): continue
+
+        if board.is_banned and not (g.user and g.user.admin_level >= 3): 
+            continue
+
+        if board.over_18 and not (g.user and g.user.over_18) and not session_over18(board): 
+            continue
+
+        if not board.can_view(g.user): 
+            continue
 
         board_ids.append(board.id)
 
     posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False).filter(Submission.deleted_utc == 0, Submission.board_id.in_(tuple(board_ids)))
     
     if g.user:
-        blocking = g.db.query(UserBlock.target_id).filter_by(user_id=g.user.id).subquery()
+        blocking = select(UserBlock.target_id).filter_by(user_id=g.user.id)
         posts = posts.filter(Submission.author_id.notin_(blocking))
 
     if g.user and not g.user.over_18:
