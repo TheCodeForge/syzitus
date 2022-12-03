@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from flask import *
 from os import environ
 from urllib.parse import urlparse
 from syzitus.classes import Domain

@@ -1,7 +1,7 @@
 import time
 import sass
 import mistletoe
-from flask import *
+from flask import g, session, abort, render_template, jsonify
 import PIL
 import io
 from PIL import ImageFont, ImageDraw

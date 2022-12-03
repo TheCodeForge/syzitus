@@ -2,7 +2,6 @@ import re
 from urllib.parse import urlparse, parse_qs
 import requests
 from os import environ
-from flask import *
 from bs4 import BeautifulSoup
 import json
 from syzitus.__main__ import app

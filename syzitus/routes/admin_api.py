@@ -1,6 +1,6 @@
 import time
 import calendar
-from flask import *
+from flask import g, session, abort, render_template, jsonify
 import imagehash
 from PIL import Image
 from os import remove

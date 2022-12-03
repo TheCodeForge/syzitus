@@ -1,4 +1,4 @@
-from flask import *
+from flask import session
 import time
 from .security import generate_hash
 

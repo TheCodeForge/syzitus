@@ -2,7 +2,7 @@ from jinja2.exceptions import TemplateNotFound
 import pyotp
 import sass
 import mistletoe
-from flask import *
+from flask import g, session, abort, render_template, jsonify, make_response
 from werkzeug.security import safe_join
 import PIL
 import io
