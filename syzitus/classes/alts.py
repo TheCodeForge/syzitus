@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Boolean, UniqueConstraint
+from sqlalchemy import Column, Integer, Boolean, UniqueConstraint, ForeignKey
 
 from syzitus.__main__ import Base
 
