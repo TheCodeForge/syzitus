@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from os import environ
+from flask import g
 from urllib.parse import urlparse
 from syzitus.classes import Domain
 from syzitus.__main__ import app
