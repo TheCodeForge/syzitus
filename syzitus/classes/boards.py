@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, lazyload
 import time
-from flask import g, abort
+from flask import g, abort, request
 
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
