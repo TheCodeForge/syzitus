@@ -17,7 +17,7 @@ from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 #from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
-from .submission import Submission, SubmissionAux, SaveRelationship
+from .submission import Submission, SubmissionAux #, SaveRelationship
 from .comment import Comment, CommentAux, Notification
 from .boards import Board
 from .board_relationships import ModRelationship, BanRelationship, ContributorRelationship, BoardBlock
@@ -176,10 +176,10 @@ class User(Base, Stndrd, Age_times):
     authorizations = relationship("ClientAuth", lazy="dynamic")
     #notification_subscriptions = relationship("PostNotificationSubscriptions", lazy="dynamic")
 
-    saved_posts=relationship(
-        "SaveRelationship",
-        lazy="dynamic",
-        primaryjoin="User.id==SaveRelationship.user_id")
+    # saved_posts=relationship(
+    #     "SaveRelationship",
+    #     lazy="dynamic",
+    #     primaryjoin="User.id==SaveRelationship.user_id")
 
     # _transactions = relationship(
     #     "PayPalTxn",
@@ -1297,55 +1297,55 @@ class User(Base, Stndrd, Age_times):
             OauthApp.id.asc()).all()]
 
 
-    def saved_idlist(self, page=1):
+    # def saved_idlist(self, page=1):
 
-        posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
-                                                                           deleted_utc=0
-                                                                           )
+    #     posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
+    #                                                                        deleted_utc=0
+    #                                                                        )
 
-        if not self.over_18:
-            posts = posts.filter_by(over_18=False)
-
-
-        saved=select(SaveRelationship.submission_id).filter(SaveRelationship.user_id==self.id)
-        posts=posts.filter(Submission.id.in_(saved))
+    #     if not self.over_18:
+    #         posts = posts.filter_by(over_18=False)
 
 
+    #     saved=select(SaveRelationship.submission_id).filter(SaveRelationship.user_id==self.id)
+    #     posts=posts.filter(Submission.id.in_(saved))
 
-        if self.admin_level < 4:
-            # admins can see everything
 
-            m = select(
-                ModRelationship.board_id).filter_by(
-                user_id=self.id,
-                invite_rescinded=False)
-            c = select(
-                ContributorRelationship.board_id).filter_by(
-                user_id=self.id)
-            posts = posts.filter(
-                or_(
-                    Submission.author_id == self.id,
-                    Submission.post_public == True,
-                    Submission.board_id.in_(m),
-                    Submission.board_id.in_(c)
-                )
-            )
 
-            blocking = select(
-                UserBlock.target_id).filter_by(
-                user_id=self.id)
-            blocked = select(
-                UserBlock.user_id).filter_by(
-                target_id=self.id)
+    #     if self.admin_level < 4:
+    #         # admins can see everything
 
-            posts = posts.filter(
-                Submission.author_id.notin_(blocking),
-                Submission.author_id.notin_(blocked)
-            )
+    #         m = select(
+    #             ModRelationship.board_id).filter_by(
+    #             user_id=self.id,
+    #             invite_rescinded=False)
+    #         c = select(
+    #             ContributorRelationship.board_id).filter_by(
+    #             user_id=self.id)
+    #         posts = posts.filter(
+    #             or_(
+    #                 Submission.author_id == self.id,
+    #                 Submission.post_public == True,
+    #                 Submission.board_id.in_(m),
+    #                 Submission.board_id.in_(c)
+    #             )
+    #         )
 
-        posts=posts.order_by(Submission.created_utc.desc())
+    #         blocking = select(
+    #             UserBlock.target_id).filter_by(
+    #             user_id=self.id)
+    #         blocked = select(
+    #             UserBlock.user_id).filter_by(
+    #             target_id=self.id)
+
+    #         posts = posts.filter(
+    #             Submission.author_id.notin_(blocking),
+    #             Submission.author_id.notin_(blocked)
+    #         )
+
+    #     posts=posts.order_by(Submission.created_utc.desc())
         
-        return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
+    #     return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
 
 
