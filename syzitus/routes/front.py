@@ -1,6 +1,6 @@
 from flask import *
 from sqlalchemy import *
-from sqlalchemy.orm import lazyload
+from sqlalchemy.orm import lazyload, contains_eager
 import random
 
 from syzitus.helpers.wrappers import *
