@@ -16,7 +16,7 @@ from syzitus.helpers.base36 import base36encode, base36decode
 from syzitus.helpers.sanitize import sanitize
 from syzitus.helpers.filters import *
 from syzitus.helpers.embed import *
-from syzitus.helpers.markdown import CustomRenderer
+from syzitus.helpers.markdown import CustomRenderer, preprocess
 from syzitus.helpers.get import get_post, get_from_fullname
 from syzitus.helpers.thumbs import thumbnail_thread
 from syzitus.helpers.session import *
