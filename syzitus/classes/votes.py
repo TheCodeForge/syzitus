@@ -1,4 +1,4 @@
-from flask import g
+from flask import g, request
 from time import time, strftime, gmtime
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
