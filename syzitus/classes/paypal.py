@@ -1,7 +1,7 @@
 import requests
 from os import environ
 import time
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, deferred
 from flask import abort
 from .mix_ins import *
