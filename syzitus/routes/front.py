@@ -1,4 +1,4 @@
-from flask import g, session, abort, render_template, jsonify, make_response
+from flask import g, session, abort, render_template, jsonify, make_response, redirect
 from sqlalchemy import *
 from sqlalchemy.orm import lazyload, contains_eager
 import random
