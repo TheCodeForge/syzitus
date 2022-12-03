@@ -1,7 +1,7 @@
 from urllib.parse import urlparse, ParseResult, urlunparse, urlencode
 import mistletoe
 from sqlalchemy import func
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, contains_eager
 from bs4 import BeautifulSoup
 import secrets
 import threading
