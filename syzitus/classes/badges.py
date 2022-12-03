@@ -1,12 +1,12 @@
 from flask import render_template
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, ForeignKey
 
 from syzitus.__main__ import Base, app
 
 
 class BadgeDef():
 
-    id = Column(BigInteger, primary_key=True)
+    id = Column(Integer, primary_key=True)
 
 
     def __init__(self, **kwargs):

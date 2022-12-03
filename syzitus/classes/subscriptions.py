@@ -1,6 +1,4 @@
-from syzitus.helpers.base36 import *
-from syzitus.helpers.security import *
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue
 from sqlalchemy.orm import relationship
 from syzitus.__main__ import Base, cache
 import time

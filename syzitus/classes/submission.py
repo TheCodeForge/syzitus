@@ -1,6 +1,6 @@
 from flask import render_template, request, abort, g
 import time
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue
 from sqlalchemy.orm import relationship, deferred
 import math
 from urllib.parse import urlparse

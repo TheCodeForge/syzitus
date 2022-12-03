@@ -1,5 +1,5 @@
 from flask import *
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, ForeignKey
 from syzitus.__main__ import Base
 
 

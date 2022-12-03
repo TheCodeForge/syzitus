@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Boolean
 from syzitus.__main__ import Base, cache, app
 
 reasons = {

@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String
 import re
 
 from syzitus.__main__ import Base

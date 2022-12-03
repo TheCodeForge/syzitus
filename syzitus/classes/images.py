@@ -1,5 +1,5 @@
 import time
-from sqlalchemy import *
+from sqlalchemy import Column, BigInteger, String, Integer
 from sqlalchemy.orm import relationship
 from flask import g
 import random

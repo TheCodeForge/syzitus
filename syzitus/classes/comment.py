@@ -1,6 +1,6 @@
 from flask import *
 import time
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue
 from sqlalchemy.orm import relationship, deferred
 from sqlalchemy.ext.associationproxy import association_proxy
 from random import randint

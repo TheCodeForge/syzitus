@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import Column, BigInteger, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 import time
 

@@ -1,9 +1,8 @@
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue
 from sqlalchemy.orm import relationship, deferred, lazyload
 import time
 
-from syzitus.helpers.base36 import *
-from syzitus.helpers.lazy import *
+from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from .userblock import UserBlock
 from .submission import Submission
@@ -11,7 +10,7 @@ from .subscriptions import Subscription
 from .board_relationships import ModRelationship, BanRelationship, ContributorRelationship
 from .comment import Comment
 from .mix_ins import Stndrd, Age_times
-from .categories import *
+from .categories import SubCategory
 from syzitus.__main__ import Base, cache, app, g
 
 class Board(Base, Stndrd, Age_times):

@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue
 
 from .mix_ins import Stndrd
 

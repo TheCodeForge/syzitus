@@ -1,4 +1,3 @@
-from sqlalchemy import *
 from flask import render_template
 
 from syzitus.helpers.lazy import lazy

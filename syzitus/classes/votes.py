@@ -1,6 +1,6 @@
 from flask import *
 from time import time, strftime, gmtime
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from syzitus.__main__ import Base

@@ -1,5 +1,5 @@
 from flask import *
-from sqlalchemy import *
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, lazyload
 
 from .mix_ins import Stndrd
