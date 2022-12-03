@@ -2,7 +2,7 @@ import time
 import json
 #from os import environ, path
 from sqlalchemy import text, func
-from flask import g
+from flask import g, session
 import calendar
 import re
 from urllib.parse import quote_plus
