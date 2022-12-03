@@ -2,7 +2,7 @@ from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from urllib.parse import quote
 import re
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from sqlalchemy import select
 from sqlalchemy.orm import contains_eager, lazyload, joinedload
