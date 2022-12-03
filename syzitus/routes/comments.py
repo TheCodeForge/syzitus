@@ -7,7 +7,7 @@ from datetime import datetime
 import secrets
 import threading
 from os import environ
-from flask import g, session, abort, render_template, jsonify, make_response
+from flask import g, session, abort, render_template, jsonify, make_response, redirect
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.base36 import base36encode, base36decode
