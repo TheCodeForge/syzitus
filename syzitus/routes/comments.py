@@ -9,8 +9,8 @@ import threading
 from os import environ
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.base36 import *
-from syzitus.helpers.sanitize import *
+from syzitus.helpers.base36 import base36encode, base36decode
+from syzitus.helpers.sanitize import sanitize
 from syzitus.helpers.filters import *
 from syzitus.helpers.embed import *
 from syzitus.helpers.markdown import *
@@ -20,7 +20,7 @@ from syzitus.helpers.alerts import *
 from syzitus.helpers.aws import *
 from syzitus.classes import *
 from flask import *
-from syzitus.__main__ import app, limiter
+from syzitus.__main__ import app, limiter, cache
 
 
 BUCKET=app.config["S3_BUCKET"]
