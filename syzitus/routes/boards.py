@@ -9,7 +9,6 @@ from bs4 import BeautifulSoup
 import cssutils
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.base36 import *
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.markdown import *
 from syzitus.helpers.get import *
@@ -2193,7 +2192,7 @@ URL path parameters:
 * `id` - The base 36 id of the mod log entry
 """
 
-    action=g.db.query(ModAction).filter_by(id=base36decode(id)).first()
+    action=g.db.query(ModAction).filter_by(id=int(id, 36)).first()
 
     if not action:
         abort(404)

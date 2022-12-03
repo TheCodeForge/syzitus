@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import *
 import time
-from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load
 from os import environ
 from secrets import token_hex
