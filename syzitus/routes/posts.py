@@ -10,7 +10,7 @@ import re
 import bleach
 import time
 import gevent
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.base36 import base36encode, base36decode
