@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, lazyload
 import time
 
