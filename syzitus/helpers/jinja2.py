@@ -12,6 +12,7 @@ import base64
 
 from syzitus.classes.user import User
 from .get import *
+from .security import generate_hash
 
 from syzitus.__main__ import app, cache
 
