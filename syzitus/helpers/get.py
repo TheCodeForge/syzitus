@@ -1,8 +1,8 @@
 from .base36 import base36encode, base36decode
 from syzitus.classes import *
 from flask import g, abort
-from sqlalchemy import select, or_, and_, Load
-from sqlalchemy.orm import aliased, joinedload, lazyload
+from sqlalchemy import select, or_, and_
+from sqlalchemy.orm import aliased, joinedload, lazyload, Load
 from urllib.parse import urlparse
 from syzitus.__main__ import debug
 
