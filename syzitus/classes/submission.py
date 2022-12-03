@@ -685,10 +685,10 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
     def outside_embed_url(self):
         return f"/embed/post/{self.base36id}"
     
-class SaveRelationship(Base, Stndrd):
+# class SaveRelationship(Base, Stndrd):
 
-    __tablename__="save_relationship"
+#     __tablename__="save_relationship"
 
-    id=Column(Integer, primary_key=true)
-    user_id=Column(Integer, ForeignKey("users.id"))
-    submission_id=Column(Integer, ForeignKey("submissions.id"))
+#     id=Column(Integer, primary_key=True)
+#     user_id=Column(Integer, ForeignKey("users.id"))
+#     submission_id=Column(Integer, ForeignKey("submissions.id"))
