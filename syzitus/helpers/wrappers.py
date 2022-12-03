@@ -1,4 +1,4 @@
-from flask import g, session, abort, render_template, jsonify, request
+from flask import g, session, abort, render_template, jsonify, request, make_response
 from os import environ
 import requests
 from werkzeug.wrappers.response import Response as RespObj
