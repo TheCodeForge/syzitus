@@ -8,7 +8,7 @@ import os.path
 from bs4 import BeautifulSoup 
 import cssutils
 from sqlalchemy import select
-from flask import g, session, abort, render_template, jsonify, make_response
+from flask import g, session, abort, render_template, jsonify, make_response, redirect
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.sanitize import sanitize
