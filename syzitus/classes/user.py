@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import *
+from flask import g, session, abort, request
 import time
 from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load

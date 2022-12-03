@@ -1,4 +1,4 @@
-from flask import *
+from flask import g
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, lazyload
 

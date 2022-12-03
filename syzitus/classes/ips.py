@@ -1,4 +1,3 @@
-from flask import *
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from syzitus.__main__ import Base
 
