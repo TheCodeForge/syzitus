@@ -2,7 +2,7 @@ from os import environ
 import requests
 import pprint
 
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
