@@ -1,6 +1,5 @@
 import time
 import json
-#from os import environ, path
 from sqlalchemy import text, func
 from flask import g, session
 import calendar
@@ -38,20 +37,6 @@ def source_code(file_name):
 def full_link(url):
 
     return f"https://{app.config['SERVER_NAME']}{url}"
-
-
-# @app.template_filter("env")
-# def env_var_filter(x):
-
-#     x = environ.get(x, 1)
-
-#     try:
-#         return int(x)
-#     except BaseException:
-#         try:
-#             return float(x)
-#         except BaseException:
-#             return x
 
 
 @app.template_filter("js_str_escape")
