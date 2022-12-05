@@ -13,7 +13,6 @@ import secrets
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 from flask_compress import Compress
 from flask_minify import Minify
 from time import sleep
@@ -238,13 +237,9 @@ app.config["RATELIMIT_DEFAULTS_DEDUCT_WHEN"]=lambda x:True
 app.config["RATELIMIT_DEFAULTS_EXEMPT_WHEN"]=lambda:False
 app.config["RATELIMIT_HEADERS_ENABLED"]=True
 
-
-def limiter_key_func():
-    return request.remote_addr
-
 limiter = Limiter(
     app,
-    key_func=limiter_key_func,
+    key_func=lambda: request.remote_addr,
     default_limits=["60/minute"],
     headers_enabled=True,
     strategy="fixed-window",
