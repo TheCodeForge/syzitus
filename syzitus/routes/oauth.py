@@ -5,7 +5,6 @@ import re
 from flask import g, session, abort, render_template, jsonify
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.base36 import *
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.get import *
 from syzitus.classes import *
@@ -265,7 +264,7 @@ def request_api_keys():
 @is_not_banned
 def delete_oauth_app(aid):
 
-    aid = base36decode(aid)
+    aid = int(aid, 36)
     app = g.db.query(OauthApp).filter_by(id=aid).first()
 
     for auth in g.db.query(ClientAuth).filter_by(oauth_client=app.id).all():
@@ -310,7 +309,7 @@ Get information about the currently authenticated user. Does not include email o
 @admin_level_required(4)
 def admin_app_approve(aid):
 
-    app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
+    app = g.db.query(OauthApp).filter_by(id=int(aid,36)).first()
 
     app.is_banned=False
 
@@ -323,7 +322,7 @@ def admin_app_approve(aid):
 @admin_level_required(4)
 def admin_app_revoke(aid):
 
-    app = g.db.query(OauthApp).filter_by(id=base36decode(aid)).first()
+    app = g.db.query(OauthApp).filter_by(id=int(aid, 36)).first()
 
     app.is_banned=True
 
@@ -336,7 +335,7 @@ def admin_app_revoke(aid):
 @auth_required
 def app_id(aid):
 
-    aid=base36decode(aid)
+    aid=int(aid, 36)
 
     oauth = g.db.query(OauthApp).options(
         joinedload(
@@ -371,7 +370,7 @@ def app_id(aid):
 @admin_level_required(3)
 def admin_app_id_comments(aid):
 
-    aid=base36decode(aid)
+    aid=int(aid, 36)
 
     oauth = g.db.query(OauthApp).options(
         joinedload(
@@ -412,7 +411,7 @@ def admin_apps_list():
 @auth_required
 def reroll_oauth_tokens(aid):
 
-    aid = base36decode(aid)
+    aid = int(aid, 36)
 
     a = g.db.query(OauthApp).filter_by(id=aid).first()
 
@@ -434,7 +433,7 @@ def reroll_oauth_tokens(aid):
 @auth_required
 def oauth_rescind_app(aid):
 
-    aid = base36decode(aid)
+    aid = int(aid, 36)
     auth = g.db.query(ClientAuth).filter_by(id=aid).first()
 
     if auth.user_id != g.user.id:

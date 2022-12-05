@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import pyotp
 import qrcode
 import io
+from flask import g, session, abort, render_template, jsonify
 # import gevent
 
 from syzitus.helpers.wrappers import *
@@ -16,7 +17,6 @@ from syzitus.helpers.markdown import *
 from syzitus.helpers.get import *
 from syzitus.classes import *
 from syzitus.mail import *
-from flask import g, session, abort, render_template, jsonify
 from syzitus.__main__ import app, cache, limiter, db_session
 
 BAN_REASONS = ['',

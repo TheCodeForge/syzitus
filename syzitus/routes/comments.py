@@ -10,7 +10,7 @@ from os import environ
 from flask import g, session, abort, render_template, jsonify, make_response, redirect, request
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.base36 import base36encode, base36decode
+from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.sanitize import sanitize
 from syzitus.helpers.filters import *
 from syzitus.helpers.embed import *
@@ -20,6 +20,7 @@ from syzitus.helpers.session import *
 from syzitus.helpers.alerts import *
 from syzitus.helpers.aws import *
 from syzitus.classes import *
+
 from syzitus.__main__ import app, limiter, cache
 
 
@@ -32,7 +33,7 @@ BUCKET=app.config["S3_BUCKET"]
 def comment_cid(cid, pid=None):
 
     try:
-        x=base36decode(cid)
+        x=int(cid, 36)
     except:
         abort(400)
         
@@ -307,7 +308,7 @@ Optional file data:
         parent = parent_post
         parent_comment_id = None
         level = 1
-        parent_submission = base36decode(parent_id)
+        parent_submission = int(parent_id, 36)
     elif parent_fullname.startswith("t3"):
         parent = get_comment(parent_id)
         parent_comment_id = parent.id
@@ -747,7 +748,7 @@ URL path parameters:
 """
 
 
-    c = g.db.query(Comment).filter_by(id=base36decode(cid)).first()
+    c = g.db.query(Comment).filter_by(id=int(cid, 36)).first()
 
     if not c:
         return jsonify({"error": f"Comment ID `{cid}` not found"}), 404

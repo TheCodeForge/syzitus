@@ -10,7 +10,7 @@ gevent.monkey.patch_all()
 import os
 from os import environ
 import secrets
-from flask import *
+from flask import app, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -24,8 +24,8 @@ from psycopg2.errors import UndefinedColumn
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError, ProgrammingError
-from sqlalchemy.orm import Session, sessionmaker, scoped_session, Query as _Query
-from sqlalchemy import *
+from sqlalchemy.orm import Session, sessionmaker, scoped_session
+from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
 import threading
 import requests

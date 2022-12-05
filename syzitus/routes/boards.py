@@ -19,6 +19,7 @@ from syzitus.helpers.session import *
 from syzitus.helpers.aws import check_csam_url
 from syzitus.classes import *
 from .front import guild_ids
+
 from syzitus.classes.categories import CATEGORIES, CATEGORY_DATA, SUBCAT_DATA
 
 from syzitus.__main__ import app, limiter, cache

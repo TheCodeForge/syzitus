@@ -1,9 +1,10 @@
+from flask import g, session, abort, render_template, jsonify, request
+
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.base36 import base36decode
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.get import get_post, get_comment
 from syzitus.classes import *
-from flask import g, session, abort, render_template, jsonify, request
 from syzitus.__main__ import app, debug
 
 

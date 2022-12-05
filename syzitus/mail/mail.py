@@ -1,7 +1,7 @@
 from os import environ
 import requests
 import time
-from flask import *
+from flask import g, render_template, jsonfiy, abort
 from urllib.parse import quote
 
 from syzitus.helpers.security import generate_hash, validate_hash

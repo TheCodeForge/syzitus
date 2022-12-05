@@ -11,8 +11,7 @@ from jinja2.exceptions import TemplateNotFound
 from flask import g, session, abort, render_template, jsonify
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.alerts import *
-from syzitus.helpers.base36 import *
+from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.get import *
 from syzitus.classes import *

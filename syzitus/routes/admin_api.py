@@ -9,7 +9,7 @@ from sqlalchemy import func
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.aws import delete_file
-from syzitus.helpers.alerts import *
+from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.markdown import *
 from syzitus.helpers.security import *
