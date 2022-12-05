@@ -262,7 +262,7 @@
 {% include "tip_modal.html" %}
 {% endif %}
 
-{% if g.user and p and ('FEATURE_ENABLE_GIFS'|app_config) %}
+{% if g.user and not g.user.is_suspended and p and ('FEATURE_ENABLE_GIFS'|app_config) %}
 {% include "gif_modal.html" %}
 {% endif %}
 

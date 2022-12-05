@@ -7,7 +7,7 @@ import mistletoe
 from syzitus.helpers.get import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.markdown import CustomRenderer
-from syzitus.helpers.sanitize import *
+from syzitus.helpers.sanitize import sanitize
 from syzitus.mail.mail import send_mail
 from syzitus.__main__ import app, limiter
 

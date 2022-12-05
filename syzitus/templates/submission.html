@@ -892,17 +892,3 @@
   </div>
 </div>
 {% endblock %}
-
-{% block GIFpicker %}
-{% if g.user %}
-
-  {% if ( 'TENOR_KEY' | app_config ) and ( 'FEATURE_ENABLE_GIFS' | app_config ) %}
-  {% include "gif_modal.html" %}
-  {% endif %}
-
-  {% if 'FEATURE_ENABLE_EMOJI' | app_config %}
-  {% include "emoji_modal.html" %}
-  {% endif %}
-
-{% endif %}
-{% endblock %}
