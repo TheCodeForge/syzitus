@@ -6,7 +6,7 @@ import calendar
 import re
 from urllib.parse import quote_plus
 import io
-import qrcode
+import qrcode.QRCode
 import base64
 
 from syzitus.classes.user import User
