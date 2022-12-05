@@ -208,26 +208,23 @@ Compress(app)
 if bool(int(environ.get("MINIFY",0))):
     Minify(app)
 
-class CorsMatch(str):
+# class CorsMatch(str):
 
-    def __eq__(self, other):
-        if isinstance(other, str):
-            if other == f'https://{app.config["SERVER_NAME"]}':
-                return True
+#     def __eq__(self, other):
+#         if isinstance(other, str):
+#             if other == f'https://{app.config["SERVER_NAME"]}':
+#                 return True
 
-            elif other.endswith(f".{app.config['SERVER_NAME']}"):
-                return True
+#             elif other.endswith(f".{app.config['SERVER_NAME']}"):
+#                 return True
 
-        elif isinstance(other, list):
-            if f'https://{app.config["SERVER_NAME"]}' in other:
-                return True
-            elif any([x.endswith(f".{app.config['SERVER_NAME']}") for x in other]):
-                return True
+#         elif isinstance(other, list):
+#             if f'https://{app.config["SERVER_NAME"]}' in other:
+#                 return True
+#             elif any([x.endswith(f".{app.config['SERVER_NAME']}") for x in other]):
+#                 return True
 
-        return False
-
-
-
+#         return False
 
 # app.config["CACHE_REDIS_URL"]
 app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL").lstrip().rstrip() if environ.get("REDIS_URL") else 'memory://'
