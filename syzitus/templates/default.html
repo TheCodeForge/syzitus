@@ -34,6 +34,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+  {% block ios_data %}
   <!-- iOS webapp -->
   <meta name="apple-mobile-web-app-title" content="{{ 'SITE_NAME' | app_config }}">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -75,6 +76,7 @@
   <link rel="apple-touch-startup-image" sizes="2436x1125" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/2436/1125" />
   <link rel="apple-touch-startup-image" sizes="2668x1242" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/2668/1242" />
   <link rel="apple-touch-startup-image" sizes="2737x2048" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/2737/2048" />
+  {% endblock %}
 
   <!-- Ruqqus CSS -->
   
