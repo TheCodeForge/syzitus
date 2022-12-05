@@ -27,11 +27,10 @@ from sqlalchemy.exc import OperationalError, StatementError, InternalError, Inte
 from sqlalchemy.orm import Session, sessionmaker, scoped_session
 from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
-import threading
-import requests
-import random
+#import threading
+#import random
 import redis
-import gevent
+#import gevent
 import sys
 
 from redis import BlockingConnectionPool, ConnectionPool
@@ -313,11 +312,11 @@ import syzitus.helpers.jinja2
 #purge css from cache
 cache.delete_memoized(syzitus.routes.main_css)
 
-def drop_connection():
+# def drop_connection():
 
-    g.db.rollback()
-    g.db.close()
-    gevent.getcurrent().kill()
+#     g.db.rollback()
+#     g.db.close()
+#     gevent.getcurrent().kill()
 
 
 # enforce https
