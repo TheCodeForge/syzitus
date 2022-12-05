@@ -144,12 +144,14 @@ def logged_out_formkey(t):
 @cache.memoize(600)
 def event_faction_score(x):
 
+    guilds=[
+        "Team_Halloween",
+        "Team_Christmas"
+        ]
+
     guild=get_guild(x)
 
-    if guild.name=="Team_Christmas":
-        modulo=1
-    elif guild.name=="Team_Halloween":
-        modulo=0
+    modulo=guilds.index(x)
 
     post_karma = (g.db.query(func.sum(Submission.score_top)).filter(
         Submission.board_id==guild.id,
