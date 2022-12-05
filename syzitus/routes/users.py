@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import pyotp
 import qrcode
 import io
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 # import gevent
 
 from syzitus.helpers.wrappers import *
