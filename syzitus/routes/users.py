@@ -3,7 +3,7 @@ import mistletoe
 from sqlalchemy import func
 from bs4 import BeautifulSoup
 import pyotp
-import qrcode
+import qrcode.QRCode, qrcode.constants.ERROR_CORRECT_L
 import io
 from flask import g, session, abort, render_template, jsonify, redirect
 # import gevent
