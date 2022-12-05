@@ -62,7 +62,14 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
         posts=posts.filter(
                 Submission.author_id==get_user(criteria['author']).id,
                 User.is_private==False,
-                User.is_deleted==False
+                User.is_deleted==False,
+                or_(
+                    User.banned_utc==0,
+                    and_(
+                        User.is_banned>0,
+                        User.unban_utc<g.timestamp
+                    )
+                )
             )
 
     if b:
@@ -86,7 +93,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
         #sanitize domain by removing anything that isn't [a-z0-9.]
         domain=domain.lower()
-        domain=re.sub("[^a-z0-9.]","", domain)
+        domain=re.sub("[^a-z0-9.-]","", domain)
         #escape periods
         domain=domain.replace(".","\.")
 
