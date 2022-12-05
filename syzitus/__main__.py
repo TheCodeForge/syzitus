@@ -10,7 +10,7 @@ gevent.monkey.patch_all()
 import os
 from os import environ
 import secrets
-from flask import app, redirect, render_template, jsonify, abort, g, request
+from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
