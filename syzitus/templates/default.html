@@ -257,6 +257,7 @@
 {% include "toasts.html" %}
 {% endblock %}
 
+{% block user_modals %}
 {% if g.user %}
 {% include "flag_post_modal.html" %}
 {% include "flag_comment_modal.html" %}
@@ -275,11 +276,12 @@
 {% endif %}
 
 {% include "expanded_image_modal.html" %}
+{% endblock %}
 
 {% include "bootstrap.html" %}
 
+{% block clipboardjs %}
 <!-- ClipboardJS -->
-
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 <!-- Instantiate clipboard by passing a string selector -->
@@ -300,6 +302,7 @@
     console.log(e);
   });
 </script>
+{% endblock %}
 
 <script src="/assets/js/all_js.js?v=3.1.50" importance="high" ></script>
 
