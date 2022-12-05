@@ -8,7 +8,7 @@ from os import remove
 from PIL import Image as IMAGE
 import gevent
 from jinja2.exceptions import TemplateNotFound
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.alerts import send_notification
