@@ -92,19 +92,19 @@ def urlencode(s):
     return quote_plus(s)
 
 
-@app.template_filter("post_embed")
-def crosspost_embed(url):
+# @app.template_filter("post_embed")
+# def crosspost_embed(url):
 
-    matches = re.match(post_regex, url)
+#     matches = re.match(post_regex, url)
 
-    b36id = matches.group(1)
+#     b36id = matches.group(1)
 
-    p = get_post(b36id, graceful=True)
+#     p = get_post(b36id, graceful=True)
 
-    return render_template(
-        "embeds/submission.html",
-        p=p,
-        )
+#     return render_template(
+#         "embeds/submission.html",
+#         p=p,
+#         )
 
 # @app.template_filter("general_chat_count")
 # def general_chat_count(x):
