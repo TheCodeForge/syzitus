@@ -6,7 +6,7 @@ import calendar
 import re
 from urllib.parse import quote_plus
 import io
-import qrcode.QRCode
+from qrcode import QRCode
 import base64
 
 from syzitus.classes.user import User
@@ -120,7 +120,7 @@ def lines_count(x):
 def qrcode_filter(x):
   
     mem=io.BytesIO()
-    qr=qrcode.QRCode()
+    qr=QRCode()
     qr.add_data(x)
     img=qr.make_image(
         fill_color=f"#{app.config['COLOR_PRIMARY']}",

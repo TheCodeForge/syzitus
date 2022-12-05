@@ -3,7 +3,8 @@ import mistletoe
 from sqlalchemy import func
 from bs4 import BeautifulSoup
 import pyotp
-import qrcode.QRCode, qrcode.constants.ERROR_CORRECT_L
+from qrcode import QRCode
+from qrcode.constants import ERROR_CORRECT_L
 import io
 from flask import g, session, abort, render_template, jsonify, redirect
 # import gevent
@@ -28,8 +29,8 @@ BAN_REASONS = ['',
 @auth_required
 def mfa_qr(secret):
     x = pyotp.TOTP(secret)
-    qr = qrcode.QRCode(
-        error_correction=qrcode.constants.ERROR_CORRECT_L
+    qr = QRCode(
+        error_correction=ERROR_CORRECT_L
     )
     qr.add_data(x.provisioning_uri(g.user.username, issuer_name=app.config["SITE_NAME"]))
     img = qr.make_image(fill_color="#"+app.config["COLOR_PRIMARY"], back_color="white")
