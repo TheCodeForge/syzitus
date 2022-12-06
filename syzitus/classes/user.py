@@ -112,7 +112,7 @@ class User(Base, Stndrd, Age_times):
     profile_nonce = Column(Integer, default=0)
     banner_nonce = Column(Integer, default=0)
     last_siege_utc = Column(Integer, default=0)
-    mfa_secret = deferred(Column(String(16), default=None))
+    mfa_secret = deferred(Column(String(64), default=None))
     hide_offensive = Column(Boolean, default=True)
     hide_bot = Column(Boolean, default=False)
     show_nsfl = Column(Boolean, default=False)
