@@ -78,7 +78,6 @@ def static_service(path):
 
 
 @app.route("/robots.txt", methods=["GET"])
-@cf_cache
 def robots_txt():
 
     # banned_robot_uas = ["Mozilla", "Chrome", "Safari"]
