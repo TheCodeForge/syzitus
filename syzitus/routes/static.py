@@ -18,6 +18,7 @@ from syzitus.__main__ import app, limiter, debug, cache
 # take care of misc pages that never really change (much)
 
 @app.route("/assets/style/<color>/<file>.css", methods=["GET"])
+@cf_cache
 @cache.memoize()
 def main_css(color, file, n=None):
 
@@ -59,6 +60,7 @@ def main_css(color, file, n=None):
     return resp
 
 @app.get('/assets/<path:path>')
+@cf_cache
 @limiter.exempt
 def static_service(path):
 
@@ -76,6 +78,7 @@ def static_service(path):
 
 
 @app.route("/robots.txt", methods=["GET"])
+@cf_cache
 def robots_txt():
 
     # banned_robot_uas = ["Mozilla", "Chrome", "Safari"]

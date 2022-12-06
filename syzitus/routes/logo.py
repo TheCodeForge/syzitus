@@ -13,6 +13,7 @@ from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug, cache
 
 @app.get(f"/logo/jumbotron/<color>/{app.config['SITE_NAME'][0].lower()}")
+@cf_cache
 @cache.memoize()
 def get_logo_jumbotron(color):
 
@@ -125,6 +126,7 @@ def get_logo_jumbotron(color):
     return send_file(output_bytes, mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
+@cf_cache
 @cache.memoize()
 def get_logo_main():
 
@@ -183,6 +185,7 @@ def get_logo_main():
 
 
 @app.get(app.config["IMG_URL_LOGO_WHITE"])
+@cf_cache
 @cache.memoize()
 def get_logo_white():
 
@@ -232,6 +235,7 @@ def get_logo_white():
     return send_file(output_bytes, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
+@cf_cache
 @cache.memoize()
 def get_assets_images_splash(kind, width, height, color=None, letter=None):
 

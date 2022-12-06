@@ -343,9 +343,10 @@ URL path parameters:
     return "", 204
 
 
-@app.get("/@<username>/pic/profile")
+@app.get("/@<username>/pic/profile/<profile_nonce>")
+@cf_cache
 @limiter.exempt
-def user_profile(username):
+def user_profile(username, profile_nonce):
     x = get_user(username)
     return redirect(x.profile_url)
 

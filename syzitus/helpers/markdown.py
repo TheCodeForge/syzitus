@@ -103,7 +103,7 @@ class CustomRenderer(HTMLRenderer):
         if (not user or (user.is_banned and not user.unban_utc) or user.is_deleted):
             return f"{space}@{target}"
 
-        return f'{space}<a href="{user.permalink}" class="d-inline-block mention-user" data-original-name="{user.original_username}"><img src="/uid/{user.base36id}/pic/profile" class="profile-pic-20 mr-1">@{user.username}</a>'
+        return f'{space}<a href="{user.permalink}" class="d-inline-block mention-user" data-original-name="{user.original_username}"><img src="{user.dynamic_profile_url}" class="profile-pic-20 mr-1">@{user.username}</a>'
 
     def render_board_mention(self, token):
         space = token.target[0]
@@ -114,7 +114,7 @@ class CustomRenderer(HTMLRenderer):
         if not board or board.is_banned:
             return f"{space}+{target}"
         else:
-            return f'{space}<a href="{board.permalink}" class="d-inline-block"><img src="/+{board.name}/pic/profile" class="profile-pic-20 mr-1">+{board.name}</a>'
+            return f'{space}<a href="{board.permalink}" class="d-inline-block"><img src="{board.dynamic_profile_url}" class="profile-pic-20 mr-1">+{board.name}</a>'
 
     def render_chat_mention(self, token):
         space = token.target[0]

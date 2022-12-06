@@ -1040,6 +1040,11 @@ class User(Base, Stndrd, Age_times):
             return app.config["IMG_URL_JUMBOTRON"]
 
     @property
+    def dynamic_profile_url(self):
+        return f'/uid/{self.base36id}/pic/profile/{self.profile_nonce}'
+    
+
+    @property
     def profile_url(self):
 
         if self.has_profile and not self.is_deleted:

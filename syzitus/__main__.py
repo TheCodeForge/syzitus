@@ -427,10 +427,6 @@ def after_request(response):
     if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
         response.headers.add("X-Frame-Options", "deny")
 
-
-    if request.path.startswith(("/assets/", "/logo/")) or request.path.endswith('.css'):
-        response.headers.add("Cache-Control", "public, max-age=2592000")
-
     # signups - hit discord webhook
     # if request.method == "POST" and response.status_code in [
     #         301, 302] and request.path == "/signup":

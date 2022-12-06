@@ -1461,6 +1461,7 @@ def board_edit_css(bid, board):
     return jsonify({"message": f"+{board.name} CSS updated"})
 
 @app.get("/assets/+<guildname>/css")
+@cf_cache
 def board_get_css(guildname):
 
     board=get_guild(guildname)
@@ -2005,9 +2006,10 @@ Required form data:
     return "", 204
 
 
-@app.route("/+<guild>/pic/profile")
+@app.route("/+<guild>/pic/profile/<profile_nonce>")
+@cf_cache
 @limiter.exempt
-def guild_profile(guild):
+def guild_profile(guild, profile_nonce):
     x = get_guild(guild)
 
     if x.over_18:

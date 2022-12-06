@@ -480,6 +480,10 @@ class Board(Base, Stndrd, Age_times):
             return f"/logo/jumbotron/{self.color.lower()}/{app.config['SITE_NAME'][0].lower()}"
 
     @property
+    def dynamic_profile_url(self):
+        return f'/+{self.name}/pic/profile/{self.profile_nonce}'
+
+    @property
     def profile_url(self):
 
         if self.has_profile:

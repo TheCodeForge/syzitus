@@ -1,4 +1,4 @@
-from flask import g, session, abort, render_template, jsonify, request, make_response
+from flask import g, session, abort, render_template, jsonify, request, make_response, Response
 from os import environ
 import requests
 from werkzeug.wrappers.response import Response as RespObj
@@ -544,14 +544,21 @@ def no_sanctions(f):
     return wrapper
 
 
-def public_cache(f):
+def cf_cache(f):
+
+    #Tell cloudflare that it can cache the resource
 
     def wrapper(*args, **kwargs):
 
         resp = f(*args, **kwargs)
-        debug(f"remove deprecated wrapper public_cache from function {f.__name__}")
+
+        if not isinstance(resp, Response):
+            resp=make_response(resp)
+
+        if not g.user:
+            resp.headers.add("Cache-Control", "public, max-age=2592000")
+
         return resp
 
     wrapper.__name__=f.__name__
-    wrapper.__doc__=f.__doc__
-    return wrapper
+    wrapper.__doc__ = f._
