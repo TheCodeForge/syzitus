@@ -357,7 +357,7 @@ def user_profile(username, profile_nonce):
 @app.get("/uid/<uid>/pic/profile/<profile_nonce>")
 @cf_cache
 @limiter.exempt
-def user_profile_uid(uid):
+def user_profile_uid(uid, profile_nonce):
     x=get_account(uid)
     return redirect(x.profile_url)
 
