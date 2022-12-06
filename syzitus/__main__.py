@@ -375,7 +375,7 @@ def before_request():
     if ua_ban and "archive" in ua_ban.reason:
             g.db.ua=ua_ban
             g.is_archive=True
-    elif ua_ban:
+    elif ua_ban and request.path != "/robots.txt":
         abort(418)
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
