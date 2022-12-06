@@ -55,6 +55,7 @@ def main_css(color, file, n=None):
 
     output += "\n".join([f".title-color-{x}"+"{color: #"+x+";}" for x in colors])
 
+    resp = Response(output, mimetype='text/css')
     return resp
 
 @app.get('/assets/<path:path>')
