@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 from time import time
 import secrets
 import re
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.sanitize import *

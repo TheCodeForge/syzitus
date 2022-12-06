@@ -1,7 +1,7 @@
 import requests
 import time
 
-from flask import g, session, abort, render_template, jsonify
+from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
