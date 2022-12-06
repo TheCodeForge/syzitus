@@ -343,6 +343,10 @@ URL path parameters:
     return "", 204
 
 
+@app.get("/uid/<uid>/pic/profile")
+def old_user_profile(guild):
+    return redirect(get_account(uid).dynamic_profile_url)
+
 @app.get("/@<username>/pic/profile/<profile_nonce>")
 @cf_cache
 @limiter.exempt
@@ -350,7 +354,8 @@ def user_profile(username, profile_nonce):
     x = get_user(username)
     return redirect(x.profile_url)
 
-@app.get("/uid/<uid>/pic/profile")
+@app.get("/uid/<uid>/pic/profile/<profile_nonce>")
+@cf_cache
 @limiter.exempt
 def user_profile_uid(uid):
     x=get_account(uid)

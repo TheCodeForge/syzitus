@@ -2006,10 +2006,14 @@ Required form data:
     return "", 204
 
 
-@app.route("/+<guild>/pic/profile/<profile_nonce>")
+@app.get("/+<guild>/pic/profile")
+def old_guild_profile(guild):
+    return redirect(get_guild(guild).dynamic_profile_url)
+
+@app.get("/+<guild>/pic/profile/<profile_nonce>")
 @cf_cache
 @limiter.exempt
-def guild_profile(guild, profile_nonce):
+def guild_profile(guild, profile_nonce=None):
     x = get_guild(guild)
 
     if x.over_18:
