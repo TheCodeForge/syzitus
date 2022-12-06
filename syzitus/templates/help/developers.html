@@ -37,5 +37,19 @@ Thumbnail images for posts are determined by using the first successful conditio
 2. If the submitted link has a `Content-Type: text/html` header, and there is a `<meta name="thumbnail">` element, the `content` attribute of that element will be scraped and used as the thumbnail. (Use this option to explicitly set a thumbnail)
 3. If the submitted link has a `Content-Type: text/html` header, and no thumbnail meta element is found, the `src` attribute of the first significant `img` element will be scraped and used as the thumbnail.
 
+
+## Crawler Policies
+
+{{ "SITE_NAME" | app_config }} has the following policies regarding crawler acceptability.
+
+To be permitted to crawl {{ "SITE_NAME" | app_config }}, crawlers must:
+
+1. Use a unique, descriptive `User-Agent` header, and
+2. Respect `robots.txt`, including the `Crawl-delay` directive, and
+3. Respect `<meta name="robots" content="noindex">` tags where they appear, and
+4. Serve a useful purpose that benefits either {{ "SITE_NAME" | app_config }} or its users.
+
+Crawlers that do not satisfy all of the above requirements will be blocked.
+
 {% endfilter %}
 {% endblock %}

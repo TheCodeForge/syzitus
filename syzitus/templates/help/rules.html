@@ -73,24 +73,7 @@ Discussion of these topics as they relate to current events or other subject mat
 
 ## 7: Developer Terms
 
-### 7.1: Crawlers
-
-The following rules apply to clients crawling human-readable {{ "SITE_NAME" | app_config }} pages in a read-only manner ("Crawlers"):
-
-1. Crawlers must use a unique `User-Agent` header. Crawling {{ "SITE_NAME" | app_config }} without a unique user agent header is prohibited.
-2. Crawlers must serve a purpose that benefits {{ "SITE_NAME" | app_config }} or its users. Examples of such purposes include, but are not limited to:
-    * Indexing {{ "SITE_NAME" | app_config }} content for search engines
-    * Creating off-site archives of {{ "SITE_NAME" | app_config }} content.
-3. Crawlers that do not benefit {{ "SITE_NAME" | app_config }} or its users are prohibited. Examples of prohibited purposes include, but are not limited to:
-    * Brand monitoring
-    * Search engine optimization
-    * Plagerism detection
-    * Censorship of any sort, including site categorization in support of web filtering products.
-4. Crawlers must respect `<meta name="robots" content="noindex">` tags wherever presented.
-5. Crawlers must respect robots.txt.
-6. {{ "SITE_NAME" | app_config }} reserves the right to deny access to Crawlers at any time and for any reason.
-
-### 7.2 API Clients
+### 7.1 API Clients
 
 The following rules apply to third-party clients acting as in intermediary between {{ "SITE_NAME" | app_config }} and a human user ("API Clients"):
 
@@ -98,7 +81,7 @@ The following rules apply to third-party clients acting as in intermediary betwe
 2. API clients must authenticate with an OAuth2 token. Username/password authentication is strictly prohibited.
 3. API clients must operate on the principle of one human action to one API call. Bulk actions are not permitted.
 
-### 7.3 Bots
+### 7.2 Bots
 
 The following rules apply to third-party clients interacting with {{ "SITE_NAME" | app_config }} in an automated manner ("Bots"). These rules also apply to API clients that do not follow the one-action-one-call principle, i.e. clients that enable bulk actions.
 
