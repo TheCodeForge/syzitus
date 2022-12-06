@@ -7,6 +7,7 @@ Disallow: /settings
 Disallow: /me
 Disallow: /discord
 
+User-Agent: AHC
 User-Agent: AhrefsBot
 User-Agent: AwarioSmartBot
 User-Agent: CCBot
