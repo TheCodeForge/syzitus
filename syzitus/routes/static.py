@@ -59,8 +59,8 @@ def main_css(color, file, n=None):
     return resp
 
 @app.get('/assets/<path:path>')
-@cf_cache
 @limiter.exempt
+@cf_cache
 def static_service(path):
 
     try:
