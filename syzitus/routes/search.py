@@ -103,19 +103,6 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
                 )
             )
 
-            # or_(
-            #     SubmissionAux.url.ilike("https://"+domain+'/%'),
-            #     SubmissionAux.url.ilike("http://"+domain+'/%'),
-            #     SubmissionAux.url.ilike("https://"+domain),
-            #     SubmissionAux.url.ilike("http://"+domain),
-            #     SubmissionAux.url.ilike("https://%."+domain+'/%'),
-            #     SubmissionAux.url.ilike("http://%."+domain+'/%'),
-            #     SubmissionAux.url.ilike("https://%."+domain),
-            #     SubmissionAux.url.ilike("http://%."+domain)
-            #     ),
-            # not_(SubmissionAux.url.ilike("https://%/%"+domain)),
-            # not_(SubmissionAux.url.ilike("http://%/%"+domain))
-
 
     if not (g.user and g.user.over_18):
         posts = posts.filter(Submission.over_18 == False)
