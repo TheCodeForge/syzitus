@@ -19,5 +19,6 @@ User-Agent: SiteSnagger
 User-Agent: TeleportPro
 User-Agent: TurnitinBot
 User-Agent: Xaldon_WebSpider
+User-Agent: YandexBot
 User-Agent: ZoominfoBot
 Disallow: /
