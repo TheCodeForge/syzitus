@@ -1,8 +1,9 @@
 import gevent
-from flask import g, session, abort, render_template, jsonify, make_response, redirect, safe_join
+from flask import g, session, abort, render_template, jsonify, make_response, redirect
 from urllib.parse import quote, urlencode
 import time
 import gevent
+from werkzeug import safe_join
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.session import *
