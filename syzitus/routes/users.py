@@ -352,14 +352,14 @@ def old_user_profile(uid):
 @limiter.exempt
 def user_profile(username, profile_nonce):
     x = get_user(username)
-    return redirect(x.profile_url)
+    return redirect(x.profile_url), 301
 
 @app.get("/uid/<uid>/pic/profile/<profile_nonce>")
 @cf_cache
 @limiter.exempt
 def user_profile_uid(uid, profile_nonce):
     x=get_account(uid)
-    return redirect(x.profile_url)
+    return redirect(x.profile_url), 301
 
 
 @app.route("/saved", methods=["GET"])

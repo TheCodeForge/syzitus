@@ -439,7 +439,6 @@ class Board(Base, Stndrd, Age_times):
     def set_profile(self, file):
 
         self.del_profile()
-        self.profile_nonce += 1
 
         aws.upload_file(name=f"board/{self.name.lower()}/profile-{self.profile_nonce}.png",
                         file=file,
@@ -451,7 +450,6 @@ class Board(Base, Stndrd, Age_times):
     def set_banner(self, file):
 
         self.del_banner()
-        self.banner_nonce += 1
 
         aws.upload_file(name=f"board/{self.name.lower()}/banner-{self.banner_nonce}.png",
                         file=file)
@@ -463,12 +461,14 @@ class Board(Base, Stndrd, Age_times):
 
         aws.delete_file(name=f"board/{self.name.lower()}/profile-{self.profile_nonce}.png")
         self.has_profile = False
+        self.profile_nonce += 1
         g.db.add(self)
 
     def del_banner(self):
 
         aws.delete_file(name=f"board/{self.name.lower()}/banner-{self.banner_nonce}.png")
         self.has_banner = False
+        self.banner_nonce += 1
         g.db.add(self)
 
     @property

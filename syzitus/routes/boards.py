@@ -2017,9 +2017,9 @@ def guild_profile(guild, profile_nonce=None):
     x = get_guild(guild)
 
     if x.over_18:
-        return redirect("/assets/images/icons/nsfw_guild_icon.png")
+        return redirect("/assets/images/icons/nsfw_guild_icon.png"), 301
     else:
-        return redirect(x.profile_url)
+        return redirect(x.profile_url), 301
 
 @app.route("/mod/post_pin/<guildname>/<pid>/<x>", methods=["POST"])
 @app.patch("/api/v2/guilds/<guildname>/submissions/<pid>/pin/<x>")

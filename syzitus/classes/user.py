@@ -1021,6 +1021,7 @@ class User(Base, Stndrd, Age_times):
 
         aws.delete_file(name=f"uid/{self.base36id}/profile-{self.profile_nonce}.png")
         self.has_profile = False
+        self.profile_nonce+=1
         g.db.add(self)
         g.db.commit()
 
@@ -1028,6 +1029,7 @@ class User(Base, Stndrd, Age_times):
 
         aws.delete_file(name=f"uid/{self.base36id}/banner-{self.banner_nonce}.png")
         self.has_banner = False
+        self.banner_nonce+=1
         g.db.add(self)
         g.db.commit()
 
