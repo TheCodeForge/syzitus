@@ -562,3 +562,4 @@ def cf_cache(f):
 
     wrapper.__name__=f.__name__
     wrapper.__doc__ = f.__doc__
+    return wrapper
