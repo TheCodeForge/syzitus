@@ -55,8 +55,6 @@ def main_css(color, file, n=None):
 
     output += "\n".join([f".title-color-{x}"+"{color: #"+x+";}" for x in colors])
 
-    resp = Response(output, mimetype='text/css')
-    resp.headers.add("Cache-Control", "public")
     return resp
 
 @app.get('/assets/<path:path>')
@@ -68,7 +66,6 @@ def static_service(path):
         resp = make_response(send_file(safe_join('./assets', path)))
     except FileNotFoundError:
            abort(404)
-    resp.headers.add("Cache-Control", "public")
 
     if request.path.endswith('.css'):
         resp.headers.add("Content-Type", "text/css")
@@ -357,5 +354,6 @@ def docs():
 
 
 @app.get("/favicon.ico")
+@cf_cache
 def get_favicon_ico():
     return redirect(app.config["IMG_URL_FAVICON"])
