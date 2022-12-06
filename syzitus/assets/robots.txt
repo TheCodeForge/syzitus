@@ -1,4 +1,5 @@
 User-Agent: *
+Crawl-delay: 5
 Disallow: /api/*
 Disallow: /mod/*
 Disallow: /submit
