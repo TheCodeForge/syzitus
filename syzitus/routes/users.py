@@ -344,7 +344,7 @@ URL path parameters:
 
 
 @app.get("/uid/<uid>/pic/profile")
-def old_user_profile(guild):
+def old_user_profile(uid):
     return redirect(get_account(uid).dynamic_profile_url)
 
 @app.get("/@<username>/pic/profile/<profile_nonce>")
