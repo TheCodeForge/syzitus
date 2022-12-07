@@ -1211,8 +1211,6 @@ class User(Base, Stndrd, Age_times):
         if message:
             text += f"\n\nAdditional private message from the admins:\n\n{message}"
 
-        if not admin:
-
         send_notif(self, text)
 
         if days > 0:
