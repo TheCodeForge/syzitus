@@ -323,7 +323,7 @@ def mascot_redirect():
     return redirect(app.config["IMG_URL_MASCOT"])
 
 @app.get("/mascot/<color>")
-@cf_cache
+#@cf_cache
 def mascot_color(color=None):
 
     color = color or app.config['COLOR_PRIMARY']
@@ -340,7 +340,8 @@ def mascot_color(color=None):
     ImageDraw.floodfill(
         ruqqie,
         (ruqqie.size[0]//2, ruqqie.size[1]//2),
-        value=primary
+        value=primary,
+        thresh=15
         )
 
     output_bytes=io.BytesIO()
