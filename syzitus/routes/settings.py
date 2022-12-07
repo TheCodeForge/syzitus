@@ -24,7 +24,7 @@ valid_password_regex = re.compile("^.{8,100}$")
 
 
 @app.route("/settings/profile", methods=["POST"])
-@auth_required
+@is_not_banned
 def settings_profile_post():
 
     updated = False
@@ -174,7 +174,7 @@ def settings_profile_post():
 
 
 @app.route("/settings/security", methods=["POST"])
-@auth_required
+@is_not_banned
 def settings_security_post():
 
     if request.form.get("new_password"):
@@ -349,7 +349,7 @@ def settings_images_banner():
 
 
 @app.route("/settings/delete/profile", methods=["POST"])
-@auth_required
+@is_not_banned
 def settings_delete_profile():
 
     g.user.del_profile()
@@ -358,7 +358,7 @@ def settings_delete_profile():
 
 
 @app.route("/settings/delete/banner", methods=["POST"])
-@auth_required
+@is_not_banned
 def settings_delete_banner():
 
     g.user.del_banner()
@@ -367,7 +367,7 @@ def settings_delete_banner():
 
 
 @app.route("/settings/toggle_collapse", methods=["POST"])
-@auth_required
+@auth_desired
 def settings_toggle_collapse():
 
     session["sidebar_collapsed"] = not session.get("sidebar_collapsed", False)
@@ -376,7 +376,7 @@ def settings_toggle_collapse():
 
 
 @app.route("/settings/read_announcement", methods=["POST"])
-@auth_required
+@auth_desired
 def update_announcement():
 
     g.user.read_announcement_utc = int(time.time())
@@ -596,7 +596,7 @@ def settings_apps():
 
 
 @app.route("/settings/remove_discord", methods=["POST"])
-@auth_required
+@is_not_banned
 def settings_remove_discord():
 
     if g.user.admin_level>1:
@@ -623,7 +623,7 @@ def settings_purchase_history():
     return render_template("settings_txnlist.html", v=g.user)
 
 @app.route("/settings/name_change", methods=["POST"])
-@auth_required
+@is_not_banned
 @user_update_lock
 def settings_name_change():
 
