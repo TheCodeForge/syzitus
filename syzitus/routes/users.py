@@ -52,7 +52,7 @@ def api_is_available(name):
     if len(name)<3 or len(name)>25:
         return jsonify({name:False})
         
-    x=get_user(name)
+    x=get_user(name, graceful=True)
 
     if x:
         return jsonify({name: False})
