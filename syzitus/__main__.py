@@ -114,8 +114,7 @@ app.config["CACHE_DIR"] = environ.get("CACHE_DIR", "ruqquscache")
 
 # captcha configs
 app.config["HCAPTCHA_SITEKEY"] = environ.get("HCAPTCHA_SITEKEY","").lstrip().rstrip()
-app.config["HCAPTCHA_SECRET"] = environ.get(
-    "HCAPTCHA_SECRET","").lstrip().rstrip()
+app.config["HCAPTCHA_SECRET"] = environ.get("HCAPTCHA_SECRET","").lstrip().rstrip()
 app.config["SIGNUP_HOURLY_LIMIT"]=int(environ.get("SIGNUP_HOURLY_LIMIT",0))
 
 # antispam configs
@@ -195,6 +194,10 @@ app.config["FEATURE_ENABLE_GIFS"]=bool(int(environ.get("FEATURE_ENABLE_GIFS",1))
 
 #GIPHY
 app.config["GIPHY_KEY"] = environ.get('GIPHY_KEY','').lstrip().rstrip()
+
+#Cloudflare Turnstile
+app.config["CLOUDFLARE_TURNSTILE_KEY"]=environ.get("CLOUDFLARE_TURNSTILE_KEY",'').lstrip().rstrip()
+app.config["CLOUDFLARE_TURNSTILE_SECRET"]=environ.get("CLOUDFLARE_TURNSTILE_SECRET",'').lstrip().rstrip()
 
 #Event configs
 app.config["EVENT_SNOWBALL_FIGHT"]=bool(int(environ.get("EVENT_SNOWBALL_FIGHT", 0)))
@@ -427,7 +430,7 @@ def after_request(response):
 
     if app.config["FORCE_HTTPS"]:
         response.headers.add("Content-Security-Policy", 
-            f"default-src https:; form-action {app.config['SERVER_NAME']}; frame-src {app.config['SERVER_NAME']}  *.hcaptcha.com *.youtube.com youtube.com platform.twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com unpkg.com cdn.jsdelivr.net; script-src 'self' 'nonce-{g.nonce}' *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net unpkg.com platform.twitter.com; img-src https: data:")
+            f"default-src https:; form-action {app.config['SERVER_NAME']}; frame-src {app.config['SERVER_NAME']}  *.hcaptcha.com *.youtube.com youtube.com platform.twitter.com; object-src none; style-src 'self' 'nonce-{g.nonce}' maxcdn.bootstrapcdn.com unpkg.com cdn.jsdelivr.net; script-src 'self' 'nonce-{g.nonce}' challenges.cloudflare.com *.hcaptcha.com hcaptcha.com code.jquery.com cdnjs.cloudflare.com stackpath.bootstrapcdn.com cdn.jsdelivr.net unpkg.com platform.twitter.com; img-src https: data:")
 
 
     if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
