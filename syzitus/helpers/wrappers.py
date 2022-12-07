@@ -207,10 +207,12 @@ def auth_desired(f):
 
         resp = make_response(f(*args, **kwargs))
         if g.user:
-            resp.headers.add("Cache-Control", "no-cache")
+            resp.headers.add("Cache-Control", "private")
             resp.headers.add(
                 "Access-Control-Allow-Origin",
                 app.config["SERVER_NAME"])
+        else:
+            resp.headers.add("Cache-Control", "public")
         return resp
 
     wrapper.__name__ = f.__name__
@@ -234,7 +236,7 @@ def auth_required(f):
 
         resp = make_response(f(*args, **kwargs))
 
-        resp.headers.add("Cache-Control", "no-cache")
+        resp.headers.add("Cache-Control", "private")
         resp.headers.add(
             "Access-Control-Allow-Origin",
             app.config["SERVER_NAME"])
@@ -263,7 +265,7 @@ def is_not_banned(f):
         validate_csrf_token()
 
         resp = make_response(f(*args, **kwargs))
-        resp.headers.add("Cache-Control", "no-cache")
+        resp.headers.add("Cache-Control", "private")
         resp.headers.add(
             "Access-Control-Allow-Origin",
             app.config["SERVER_NAME"])
@@ -387,7 +389,7 @@ def admin_level_required(x):
             else:
                 resp = make_response(response)
 
-            resp.headers.add("Cache-Control", "no-cache")
+            resp.headers.add("Cache-Control", "private")
             resp.headers.add(
                 "Access-Control-Allow-Origin",
                 app.config["SERVER_NAME"])
@@ -489,7 +491,7 @@ def api(*scopes, no_ban=False):
                 if not isinstance(resp, RespObj):
                     resp = make_response(resp)
 
-                resp.headers.add("Cache-Control", "no-cache")
+                resp.headers.add("Cache-Control", "private")
                 resp.headers.add(
                     "Access-Control-Allow-Origin",
                     app.config["SERVER_NAME"])
