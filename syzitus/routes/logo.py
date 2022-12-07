@@ -334,14 +334,13 @@ def mascot_color(color=None):
 
     primary = (primary_r, primary_g, primary_b, 255)
 
-    ruqqie = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/ruqqie.png")
+    ruqqie = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/ruqqie2.png")
 
     #flood fill main ruqqie shape
     ImageDraw.floodfill(
         ruqqie,
         (ruqqie.size[0]//2, ruqqie.size[1]//2),
-        value=primary,
-        thresh=100
+        value=primary
         )
 
     output_bytes=io.BytesIO()

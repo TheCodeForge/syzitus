@@ -416,6 +416,7 @@ def after_request(response):
 
     if "Cache-Control" not in response.headers:
         response.headers.add("Cache-Control", "no-cache")
+        
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth")
     response.headers.add("Strict-Transport-Security", "max-age=31536000")
