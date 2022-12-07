@@ -412,6 +412,10 @@ def after_request(response):
         debug([g.get('user'), request.path, request.url_rule])
     except:
         debug(["<detached>", request.path, request.url_rule])
+
+
+    if "Cache-Control" not in response.headers:
+        response.headers.add("Cache-Control", "private")
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth")
     response.headers.add("Strict-Transport-Security", "max-age=31536000")
@@ -427,6 +431,8 @@ def after_request(response):
 
     if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
         response.headers.add("X-Frame-Options", "deny")
+
+
 
     # signups - hit discord webhook
     # if request.method == "POST" and response.status_code in [
