@@ -318,33 +318,32 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
 
-@app.get("/mascot")
-def mascot_redirect():
-    return redirect(app.config["IMG_URL_MASCOT"])
+# @app.get("/mascot")
+# def mascot_redirect():
+#     return redirect(app.config["IMG_URL_MASCOT"])
 
-@app.get("/mascot/<color>")
-#@cf_cache
-def mascot_color(color=None):
+# @app.get("/mascot/<color>")
+# #@cf_cache
+# def mascot_color(color=None):
 
-    color = color or app.config['COLOR_PRIMARY']
+#     color = color or app.config['COLOR_PRIMARY']
 
-    primary_r=int(color[0:2], 16)
-    primary_g=int(color[2:4], 16)
-    primary_b=int(color[4:6], 16)
+#     primary_r=int(color[0:2], 16)
+#     primary_g=int(color[2:4], 16)
+#     primary_b=int(color[4:6], 16)
 
-    primary = (primary_r, primary_g, primary_b, 255)
+#     primary = (primary_r, primary_g, primary_b, 255)
 
-    ruqqie = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/ruqqie2.png")
+#     ruqqie = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/ruqqie2.png")
 
-    #flood fill main ruqqie shape
-    ImageDraw.floodfill(
-        ruqqie,
-        (ruqqie.size[0]//2, ruqqie.size[1]//2),
-        value=primary,
-        thresh=255
-        )
+#     #flood fill main ruqqie shape
+#     ImageDraw.floodfill(
+#         ruqqie,
+#         (ruqqie.size[0]//2, ruqqie.size[1]//2),
+#         value=primary
+#         )
 
-    output_bytes=io.BytesIO()
-    ruqqie.save(output_bytes, format="PNG")
-    output_bytes.seek(0)
-    return send_file(output_bytes, mimetype="image/png")
+#     output_bytes=io.BytesIO()
+#     ruqqie.save(output_bytes, format="PNG")
+#     output_bytes.seek(0)
+#     return send_file(output_bytes, mimetype="image/png")
