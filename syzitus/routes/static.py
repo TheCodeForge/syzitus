@@ -30,7 +30,7 @@ def main_css(color, file, n=None):
     name=f"{app.config['RUQQUSPATH']}/assets/style/{file}.scss"
     #print(name)
     with open(name, "r") as file:
-        raw = file.read()
+        output = file.read()
 
     # This doesn't use python's string formatting because
     # of some odd behavior with css files
@@ -38,14 +38,14 @@ def main_css(color, file, n=None):
     downvote_color = hex(0xFFFFFF - int(color,16))[2:]
     while len(downvote_color)<6:
         downvote_color=f"0{downvote_color}"
-    scss = raw.replace("{primary}", color)
+    output = output.replace("{primary}", color)
 
-    scss = scss.replace("{secondary}", app.config["COLOR_SECONDARY"])
-    scss = scss.replace("{main}", app.config["COLOR_PRIMARY"])
-    scss = scss.replace("{downvote}", downvote_color)
+    output = output.replace("{secondary}", app.config["COLOR_SECONDARY"])
+    output = output.replace("{main}", app.config["COLOR_PRIMARY"])
+    output = output.replace("{downvote}", downvote_color)
 
     #compile the regular css
-    output=sass.compile(string=scss)
+    output=sass.compile(string=output)
 
     #add title classes
 
