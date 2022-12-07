@@ -144,7 +144,7 @@ def check_ban_evade():
     
     if random.randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
         g.user.ban(reason="Evading a site-wide ban")
-        send_notification(g.user, f"Your {app_config['SITE_NAME']} account has been permanently suspended for the following reason:\n\n> ban evasion")
+        #send_notification(g.user, f"Your {app.config['SITE_NAME']} account has been permanently suspended for the following reason:\n\n> ban evasion")
 
         for post in g.db.query(Submission).filter_by(author_id=g.user.id).all():
             if post.is_banned:
