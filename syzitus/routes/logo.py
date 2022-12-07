@@ -340,7 +340,8 @@ def mascot_color(color=None):
     ImageDraw.floodfill(
         ruqqie,
         (ruqqie.size[0]//2, ruqqie.size[1]//2),
-        value=primary
+        value=primary,
+        thresh=255
         )
 
     output_bytes=io.BytesIO()
