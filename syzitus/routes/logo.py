@@ -341,7 +341,7 @@ def mascot_color(color=None):
         ruqqie,
         (ruqqie.size[0]//2, ruqqie.size[1]//2),
         value=primary,
-        thresh=45
+        thresh=100
         )
 
     output_bytes=io.BytesIO()
