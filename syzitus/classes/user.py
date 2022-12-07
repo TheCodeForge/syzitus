@@ -1207,10 +1207,6 @@ class User(Base, Stndrd, Age_times):
 
         if not admin:
             text += f"\n\nBecause this ban was performed automatically, it may be appealed. If your ban was applied in error, [join the {app.config['SITE_NAME']} discord server](/discord), and you will be automatically added to the ban appeals channel."
-        
-
-        #really bad import circle issue that I need to figure out
-        text = f'Your account has been {action}'
 
         if message:
             text += f"\n\nAdditional private message from the admins:\n\n{message}"
