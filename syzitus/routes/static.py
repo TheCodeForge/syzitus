@@ -357,4 +357,4 @@ def docs():
 @app.get("/favicon.ico")
 @cf_cache
 def get_favicon_ico():
-    return redirect(app.config["IMG_URL_FAVICON"])
+    return redirect(app.config["IMG_URL_FAVICON"]), 301
