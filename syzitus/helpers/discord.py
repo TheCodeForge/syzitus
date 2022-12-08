@@ -90,7 +90,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": app.config['SITE_NAME'].lower(),
-                        "icon_url": app.config['IMG_URL_FAVICON']
+                        "icon_url": f"https://{app.config['SERVER_NAME']}{app.config['IMG_URL_FAVICON']}"
                     },
                     "fields": [
                         {
