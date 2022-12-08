@@ -37,7 +37,7 @@ def ban_user(user_id):
     user.ban(admin=g.user, reason=reason, message=message)
 
 
-    for x in user.alts:
+    for x in user.alts if not x.admin_level:
         if not x.is_deleted:
             x.ban(admin=g.user, reason=reason)
 
@@ -54,10 +54,6 @@ def unban_user(user_id):
         abort(404)
 
     user.unban()
-
-    send_notification(user,
-                      "Your Ruqqus account has been reinstated. Please carefully review and abide by the [terms of service](/help/terms) and [content policy](/help/rules) to ensure that you don't get suspended again.")
-
 
     return (redirect(user.url), user)
 
@@ -403,8 +399,8 @@ def user_stat_data():
              "guild_data": guild_stats,
              "comment_data": comment_stats,
              "vote_data": vote_stats,
-             "single_plot": f"https://i.ruqqus.com/{x[0]}",
-             "multi_plot": f"https://i.ruqqus.com/{x[1]}"
+             "single_plot": f"https://{app.config['S3_BUCKET']}/{x[0]}",
+             "multi_plot": f"https://{app.config['S3_BUCKET']}/{x[1]}"
              }
 
     return jsonify(final)
@@ -566,7 +562,7 @@ def admin_csam_nuke(pid):
         alt.is_banned = g.user.id
         g.db.add(alt)
 
-    if post.domain == "i.ruqqus.com":
+    if post.domain == app.config['S3_BUCKET']:
 
         x = requests.get(url)
         # load image into PIL
