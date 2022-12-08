@@ -1494,8 +1494,7 @@ class User(Base, Stndrd, Age_times):
     @property
     @cache.memoize(60*60*24)
     def badges(self):
-        self.refresh_selfset_badges()
-        g.db.commit()
+        #self.refresh_selfset_badges()
         return self._badges.all()
 
     @property
