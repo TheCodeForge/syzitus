@@ -110,7 +110,8 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
 
     debug(data)
     x=requests.post(url, headers=headers, json=data)
-    debug(x.status_code, x.content)
+    debug(x.status_code)
+    debug(x.content)
 
 
 @discord_wrap
