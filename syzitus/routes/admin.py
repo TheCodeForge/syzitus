@@ -127,8 +127,8 @@ def admin_all_comments():
 
     posts = g.db.query(
         Comment
-        ).join(
-        Comment.flags
+        # ).join(
+        # Comment.flags
         # ).options(
         # contains_eager(Comment.flags)
         ).order_by(
@@ -143,7 +143,7 @@ def admin_all_comments():
 
     return render_template("home_comments.html",
                            next_exists=next_exists,
-                           listing=listing,
+                           comments=listing,
                            page=page
                            )
 
