@@ -37,7 +37,9 @@ def ban_user(user_id):
     user.ban(admin=g.user, reason=reason, message=message)
 
 
-    for x in user.alts if not x.admin_level:
+    for x in user.alts:
+        if x.admin_level:
+            continue
         if not x.is_deleted:
             x.ban(admin=g.user, reason=reason)
 
