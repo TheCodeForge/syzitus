@@ -1,5 +1,6 @@
 import requests
 import threading
+from .get import get_user
 from syzitus.__main__ import app, debug
 
 DISCORD_ENDPOINT = "https://discordapp.com/api"
@@ -38,6 +39,9 @@ def req_wrap(f):
 @req_wrap
 def discord_log_event(action, target, user, reason=None, admin_action=False):
 
+    if not user:
+        user=get_user(app.config['SITE_NAME'])
+
     
     channel_id=app.config["DISCORD_CHANNEL_IDS"]["log"]
     url=f"{DISCORD_ENDPOINT}/channels/{channel_id}/messages"
@@ -62,8 +66,8 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                 "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
                 "color": int(app.config["COLOR_PRIMARY"], 16),
                 "author": {
-                    "name": user.username if user else app.config['SITE_NAME'].lower(),
-                    "icon_url": user.profile_url if user else app.config["IMG_URL_FAVICON"]
+                    "name": user.username,
+                    "icon_url": user.profile_url
                 },
                 "fields": [
                     {
@@ -73,7 +77,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                     },
                     {
                         "name": "Admin" if admin_action else "User",
-                        "value": f"@{user.username}" if user else f"@{app.config['SITE_NAME'].lower()}",
+                        "value": f"@{user.username}",
                         "inline": True
                     }
                 ]
