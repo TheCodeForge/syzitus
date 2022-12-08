@@ -1,6 +1,5 @@
 import requests
 import threading
-from .get import get_user
 from syzitus.__main__ import app, debug
 
 DISCORD_ENDPOINT = "https://discordapp.com/api"
@@ -39,9 +38,6 @@ def req_wrap(f):
 @req_wrap
 def discord_log_event(action, target, user, reason=None, admin_action=False):
 
-    if not user:
-        user=get_user(app.config['SITE_NAME'])
-
     
     channel_id=app.config["DISCORD_CHANNEL_IDS"]["log"]
     url=f"{DISCORD_ENDPOINT}/channels/{channel_id}/messages"
@@ -59,31 +55,59 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
         title_text = f"{action} +{target.name}"
 
 
-    data={
-        "embeds":[
-            {
-                "title": title_text,
-                "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
-                "color": int(app.config["COLOR_PRIMARY"], 16),
-                "author": {
-                    "name": user.username,
-                    "icon_url": user.profile_url
-                },
-                "fields": [
-                    {
-                        "name": "Reason",
-                        "value": reason or "null",
-                        "inline": True
+    if user:
+        data={
+            "embeds":[
+                {
+                    "title": title_text,
+                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "color": int(app.config["COLOR_PRIMARY"], 16),
+                    "author": {
+                        "name": user.username,
+                        "icon_url": user.profile_url
                     },
-                    {
-                        "name": "Admin" if admin_action else "User",
-                        "value": f"@{user.username}",
-                        "inline": True
-                    }
-                ]
-            }
-        ]
-    }
+                    "fields": [
+                        {
+                            "name": "Reason",
+                            "value": reason or "null",
+                            "inline": True
+                        },
+                        {
+                            "name": "Admin" if admin_action else "User",
+                            "value": f"@{user.username}",
+                            "inline": True
+                        }
+                    ]
+                }
+            ]
+        }
+    else:
+        data={
+            "embeds":[
+                {
+                    "title": title_text,
+                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "color": int(app.config["COLOR_PRIMARY"], 16),
+                    "author": {
+                        "name": app.config['SITE_NAME'].lower(),
+                        "icon_url": app.config['IMG_URL_FAVICON']
+                    },
+                    "fields": [
+                        {
+                            "name": "Reason",
+                            "value": reason or "null",
+                            "inline": True
+                        },
+                        {
+                            "name": "Admin",
+                            "value": f"@{app.config['SITE_NAME'].lower()}",
+                            "inline": True
+                        }
+                    ]
+                }
+            ]
+        }
+
     x=requests.post(url, headers=headers, json=data)
 #    print(x.status_code, x.content)
 
