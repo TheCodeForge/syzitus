@@ -27,7 +27,7 @@ IMG_DATA=[
     {'number': 1, 'state': 'CO', 'text': "Pikes Peak Highway, Colorado"},
     {'number': 1, 'state': 'DC', 'text': 'Lincoln Memorial, Washington DC'},
     {'number': 1, 'state': 'DE', 'text': 'Breakwater East End Lighthouse, Delaware'},
-    {'number': 1, 'state': 'FL', 'text': 'Everglades, Florida'},
+    {'number': 1, 'state': 'FL', 'text': 'Cape Canaveral, Florida'},
     {'number': 1, 'state': 'GA', 'text': 'Atlanta, Georgia'},
     {'number': 1, 'state': 'HI', 'text': 'Waikiki Beach, Hawaii'},
     {'number': 1, 'state': 'IA', 'text': 'Des Moines State Capitol, Iowa'},
