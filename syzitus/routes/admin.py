@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 import time
 import calendar
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from sqlalchemy.orm import lazyload
 import imagehash
 from os import remove
@@ -210,7 +210,13 @@ def users_list():
     show_all=int(request.args.get('all','0'))
     
     if not show_all:
-        users=users.filter_by(is_banned=0)
+        users=users.filter(
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+             User.is_deleted==False
+             )
         
     users=users.order_by(User.created_utc.desc()).offset(25 * (page - 1)).limit(26)
 
