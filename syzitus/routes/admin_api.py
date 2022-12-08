@@ -13,6 +13,7 @@ from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.sanitize import *
 from syzitus.helpers.markdown import *
 from syzitus.helpers.security import *
+from syzitus.helpers.discord import discord_log_event
 from urllib.parse import urlparse
 from secrets import token_hex
 import matplotlib.pyplot as plt
