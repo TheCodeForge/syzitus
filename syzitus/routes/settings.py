@@ -683,8 +683,8 @@ def settings_name_change():
     return jsonify({"message":"Username changed successfully."})
 
 
-@app.route("/settings/badges", methods=["POST"])
-@auth_required
+@app.post("/settings/badges")
+@is_not_banned
 def settings_badge_recheck():
 
     g.user.refresh_selfset_badges()
