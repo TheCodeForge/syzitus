@@ -1269,6 +1269,11 @@ class User(Base, Stndrd, Age_times):
                                     0 or self.unban_utc > g.timestamp))
 
     @property
+    def is_permbanned(self):
+        return self.is_banned and self.unban_urc==0
+    
+
+    @property
     def is_blocking(self):
         return self.__dict__.get('_is_blocking', 0)
 

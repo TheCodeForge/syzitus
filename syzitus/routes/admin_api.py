@@ -40,7 +40,7 @@ def ban_user(user_id):
     for x in user.alts:
         if x.admin_level:
             continue
-        if not x.is_deleted:
+        if not x.is_deleted and not x.is_permbanned:
             x.ban(admin=g.user, reason=reason)
 
     return (redirect(user.url), user)
