@@ -1302,10 +1302,8 @@ class User(Base, Stndrd, Age_times):
                 if bad_badge:
                     g.db.delete(bad_badge)
 
-        try:
-            g.db.add(self)
-        except:
-            pass
+        g.db.commit()
+
 
     @property
     def applications(self):
