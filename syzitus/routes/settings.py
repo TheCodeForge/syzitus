@@ -687,6 +687,6 @@ def settings_name_change():
 @is_not_banned
 def settings_badge_recheck():
 
-    g.user.refresh_selfset_badges()
+    data=g.user.refresh_selfset_badges()
 
-    return jsonify({"message":"Badges Refreshed"})
+    return jsonify({"message":f"Badges Refreshed. Added: {data['added'] or 'None'}. Removed: {data['removed'] or 'None'}"})

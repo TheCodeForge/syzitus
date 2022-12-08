@@ -1283,6 +1283,9 @@ class User(Base, Stndrd, Age_times):
 
     def refresh_selfset_badges(self):
 
+        added=[]
+        removed={}
+
 
         for badge in BADGE_DEFS.values():
             if not badge.__dict__.get('expr'):
@@ -1296,13 +1299,20 @@ class User(Base, Stndrd, Age_times):
                                       created_utc=g.timestamp
                                       )
                     g.db.add(new_badge)
+                    added.append(new_badge.name)
 
             elif should_have==False:
                 bad_badge = self.has_badge(badge.id)
+                removed.append(bad_badge.name)
                 if bad_badge:
                     g.db.delete(bad_badge)
 
         g.db.commit()
+
+        return {
+            "added":added,
+            "removed":removed}
+
 
 
     @property
