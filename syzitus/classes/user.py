@@ -1303,8 +1303,8 @@ class User(Base, Stndrd, Age_times):
 
             elif should_have==False:
                 bad_badge = self.has_badge(badge.id)
-                removed.append(bad_badge.name)
                 if bad_badge:
+                    removed.append(bad_badge.name)
                     g.db.delete(bad_badge)
 
         g.db.commit()
