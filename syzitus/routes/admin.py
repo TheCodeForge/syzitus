@@ -145,7 +145,8 @@ def admin_all_comments():
     return render_template("home_comments.html",
                            next_exists=next_exists,
                            comments=listing,
-                           page=page
+                           page=page,
+                           standalone=True
                            )
 
 # @app.route("/admin/<path>", methods=["GET"])
