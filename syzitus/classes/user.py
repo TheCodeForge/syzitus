@@ -1284,7 +1284,7 @@ class User(Base, Stndrd, Age_times):
     def refresh_selfset_badges(self):
 
         added=[]
-        removed={}
+        removed=[]
 
 
         for badge in BADGE_DEFS.values():
