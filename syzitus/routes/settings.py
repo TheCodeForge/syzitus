@@ -681,13 +681,3 @@ def settings_name_change():
     g.db.commit()
     
     return jsonify({"message":"Username changed successfully."})
-
-
-@app.post("/settings/badges")
-@is_not_banned
-def settings_badge_recheck():
-
-    data=g.user.refresh_selfset_badges()
-    cache.delete_memoized(User.badges, g.user)
-
-    return jsonify({"message":f"Badges Refreshed. Added: {data['added'] or 'None'}. Removed: {data['removed'] or 'None'}"})

@@ -1283,10 +1283,6 @@ class User(Base, Stndrd, Age_times):
 
     def refresh_selfset_badges(self):
 
-        added=[]
-        removed=[]
-
-
         for badge in BADGE_DEFS.values():
             if not badge.__dict__.get('expr'):
                 continue
@@ -1299,20 +1295,13 @@ class User(Base, Stndrd, Age_times):
                                       created_utc=g.timestamp
                                       )
                     g.db.add(new_badge)
-                    added.append(new_badge.name)
 
             elif should_have==False:
                 bad_badge = self.has_badge(badge.id)
                 if bad_badge:
-                    removed.append(bad_badge.name)
                     g.db.delete(bad_badge)
 
         g.db.commit()
-
-        return {
-            "added":added,
-            "removed":removed}
-
 
 
     @property
@@ -1494,7 +1483,7 @@ class User(Base, Stndrd, Age_times):
     @property
     @cache.memoize(60*60*24)
     def badges(self):
-        #self.refresh_selfset_badges()
+        self.refresh_selfset_badges()
         return self._badges.all()
 
     @property
