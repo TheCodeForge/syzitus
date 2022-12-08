@@ -61,7 +61,7 @@ def admin_all_posts():
     posts = get_posts(post_ids)
 
     return render_template(
-        "admin/image_posts.html",
+        "home.html",
         listing=posts,
         next_exists=next_exists,
         page=page,
@@ -119,6 +119,32 @@ def flagged_comments():
                            page=page,
                            standalone=True)
 
+@app.route("/admin/all/comments", methods=["GET"])
+@admin_level_required(3)
+def flagged_comments():
+
+    page = max(1, int(request.args.get("page", 1)))
+
+    posts = g.db.query(
+        Comment
+        ).join(
+        Comment.flags
+        # ).options(
+        # contains_eager(Comment.flags)
+        ).order_by(
+        Comment.id.desc()
+        ).offset(25 * (page - 1)).limit(26).all()
+
+    listing = [p.id for p in posts]
+    next_exists = (len(listing) == 26)
+    listing = listing[0:25]
+
+    listing = get_comments(listing)
+
+    return render_template("home_comments.html",
+                           next_exists=next_exists,
+                           listing=listing,
+                           page=page,
 
 # @app.route("/admin/<path>", methods=["GET"])
 # @admin_level_required(3):
