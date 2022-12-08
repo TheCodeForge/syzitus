@@ -224,8 +224,7 @@ def sign_up_get():
                            i=random_image(),
                            redirect=redir,
                            ref_user=ref_user,
-                           error=error,
-                           hcaptcha=app.config["HCAPTCHA_SITEKEY"]
+                           error=error
                            )
 
 # signup api
@@ -339,6 +338,24 @@ def sign_up_post():
         if not x.json()["success"]:
             debug(x.json())
             return new_signup("Unable to verify captcha [2].")
+
+    elif app.config.get("CLOUDFLARE_TURNSTILE_KEY"):
+        token = request.form.get("cf-turnstile-response")
+        if not token:
+            return new_signup("CloudFlare challenge not completed.")
+
+        data = {"secret": app.config["CLOUDFLARE_TURNSTILE_SECRET"],
+                "response": token
+                }
+        url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+
+        x = requests.post(url, data=data)
+
+        if not x.json()["success"]:
+            debug(x.json())
+            return new_signup(f"CloudFlare validation failed")
+
+
 
     # get referral
     ref_id = int(request.form.get("referred_by", 0))

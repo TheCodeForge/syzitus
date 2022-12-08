@@ -3,43 +3,41 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Sign up in under 27 seconds.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Sign up in under 27 seconds.">
 
-    <meta name="author" content="">
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
-    <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-    <meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
-    <meta property="og:url" content="https://{{ 'SERVER_NAME' | app_config }}">
-    <meta property="og:description" name="description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
-    <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config | lower }}" />
-    <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+  <meta name="author" content="">
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+  <meta property="og:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
+  <meta property="og:url" content="https://{{ 'SERVER_NAME' | app_config }}">
+  <meta property="og:description" name="description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
+  <meta property="og:author" name="author" content="@{{ 'SITE_NAME' | app_config | lower }}" />
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
 
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:site" content="@{{ 'SITE_NAME' | app_config | lower }}">
-    <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
-    <meta name="twitter:creator" content="@{{ 'SITE_NAME' | app_config | lower }}">
-    <meta name="twitter:description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design." />
-    <meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
-    <meta name="twitter:url" content="https://{{ 'SERVER_NAME' | app_config }}" />
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@{{ 'SITE_NAME' | app_config | lower }}">
+  <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
+  <meta name="twitter:creator" content="@{{ 'SITE_NAME' | app_config | lower }}">
+  <meta name="twitter:description" content="Sign up now! {{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design." />
+  <meta name="twitter:image" content="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] }}/1200/630" />
+  <meta name="twitter:url" content="https://{{ 'SERVER_NAME' | app_config }}" />
 
-    <title>{% if ref_user %}{{ ref_user.username }} invites you to {{ 'SITE_NAME' | app_config }}{% else %}Sign up - {{ 'SITE_NAME' | app_config }}{% endif %}</title>
+  <title>{% if ref_user %}{{ ref_user.username }} invites you to {{ 'SITE_NAME' | app_config }}{% else %}Sign up - {{ 'SITE_NAME' | app_config }}{% endif %}</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
-    <!-- Font Awesome -->
-    <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+  <!-- Ruqqus CSS -->
+  <link id="css-link-light" rel="stylesheet" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.50">
 
-    <!-- Ruqqus CSS -->
-    <link id="css-link-light" rel="stylesheet" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.50">
-
-    <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
+  <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
 
 </head>
 
@@ -71,111 +69,112 @@
 <!-- Page Content -->
 
 <div class="container-fluid position-absolute h-100 p-0 overflow-auto">
-    <div class="row no-gutters h-100">
+  <div class="row no-gutters h-100">
 
-        <div class="col-12 col-md-6 my-auto p-3">
+    <div class="col-12 col-md-6 my-auto p-3">
 
-            <div class="row justify-content-center">
+      <div class="row justify-content-center">
 
-                <div class="col-10 col-md-7">
+        <div class="col-10 col-md-7">
 
-                    <div class="mb-3">
-                        <a href="/" class="text-decoration-none"><span class="h3 text-primary">{{ 'SITE_NAME' | app_config }}</span></a>
-                    </div>
+          <div class="mb-3">
+              <a href="/" class="text-decoration-none"><span class="h3 text-primary">{{ 'SITE_NAME' | app_config }}</span></a>
+          </div>
 
-                    <div id="register-form" class="">
+          <div id="register-form" class="">
 
-                       {% if ref_user %}
-                       <h1 class="h2">@{{ ref_user.username }} has invited you!</h1>
-                       <p class="text-muted mb-md-2">Looks like someone wants you to join the party.</p>
-                       {% else %}
-                       <h1 class="h2">Create your account.</h1>
-                       <p class="text-muted mb-md-2">Usernames aplenty. No email address required :)</p>
-                       {% endif %}
+           {% if ref_user %}
+           <h1 class="h2">@{{ ref_user.username }} has invited you!</h1>
+           <p class="text-muted mb-md-2">Looks like someone wants you to join the party.</p>
+           {% else %}
+           <h1 class="h2">Create your account.</h1>
+           <p class="text-muted mb-md-2">Usernames aplenty. No email address required :)</p>
+           {% endif %}
 
-                       <form action="/signup" method="post" class="mt-md-3" id="signup">
+           <form action="/signup" method="post" class="mt-md-3" id="signup">
 
-                            {% if error %}<span class="text-danger">{{ error }}</span><br>{% endif %}
+              {% if error %}<span class="text-danger">{{ error }}</span><br>{% endif %}
 
-                            <input type="hidden" name="formkey" value="{{ g.timestamp | formkey }}">
-                            <input type="hidden" name="time" value="{{ g.timestamp }}">
+              <input type="hidden" name="formkey" value="{{ g.timestamp | formkey }}">
+              <input type="hidden" name="time" value="{{ g.timestamp }}">
 
-                            {% if redirect %}<input type="hidden" name="redirect" value="{{ redirect }}">{% endif %}
-                            {% if ref_user %}
-                            <input type="hidden" name="referred_by" value="{{ ref_user.id }}">{% endif %}
+              {% if redirect %}
+              <input type="hidden" name="redirect" value="{{ redirect }}">
+              {% endif %}
+              {% if ref_user %}
+              <input type="hidden" name="referred_by" value="{{ ref_user.id }}">
+              {% endif %}
 
-                            <label for="username-register" class="mt-3">Username</label>
+              <label for="username-register" class="mt-3">Username</label>
 
-                            <input class="form-control" id="username-register"
-                            aria-describedby="usernameHelpRegister" type="text" name="username" pattern="[a-zA-Z0-9_]{3,25}" required="">
-                            <small id="usernameHelpRegister"></small>
+              <input class="form-control" id="username-register"
+              aria-describedby="usernameHelpRegister" type="text" name="username" pattern="[a-zA-Z0-9_]{3,25}" required="">
+              <small id="usernameHelpRegister"></small>
 
-                            <label for="email-register" class="mt-3">Email Address</label>
+              <label for="email-register" class="mt-3">Email Address</label>
 
-                            <small class="d-inline-block text-muted ml-1">(optional)</small>
+              <small class="d-inline-block text-muted ml-1">(optional)</small>
 
-                            <input class="form-control" id="email-register"
-                            aria-describedby="emailHelpRegister" type="text" name="email">
+              <input class="form-control" id="email-register"
+              aria-describedby="emailHelpRegister" type="text" name="email">
 
-                            <label for="password-register" class="mt-3">Password</label>
+              <label for="password-register" class="mt-3">Password</label>
 
-                            <input class="form-control" id="password-register"
-                            aria-describedby="passwordHelpReigster" type="password" name="password" required="">
-                            <small id="passwordHelpRegister" class="form-text font-weight-bold text-muted d-none mt-1">Minimum of 8
-                                characters
-                            required.</small>
-                            <small id="passwordHelpSuccess" class="form-text font-weight-bold text-success d-none mt-1">Your password meets the requirements.
-                            </small>
+              <input class="form-control" id="password-register"
+              aria-describedby="passwordHelpReigster" type="password" name="password" required="">
+              <small id="passwordHelpRegister" class="form-text font-weight-bold text-muted d-none mt-1">Minimum of 8 characters required.</small>
+              <small id="passwordHelpSuccess" class="form-text font-weight-bold text-success d-none mt-1">Your password meets the requirements.</small>
 
-                            <label for="password_confirm" class="mt-3">Confirm Password</label>
+              <label for="password_confirm" class="mt-3">Confirm Password</label>
 
-                            <input class="form-control" id="password_confirm"
-                            aria-describedby="passwordConfirmHelp" type="password" name="password_confirm"
-                            required="">
+              <input class="form-control" id="password_confirm"
+              aria-describedby="passwordConfirmHelp" type="password" name="password_confirm"
+              required="">
 
-                            <div class="custom-control custom-checkbox mt-4">
-                                <input type="checkbox" class="custom-control-input" id="termsCheck" required>
-                                <label class="custom-control-label terms" for="termsCheck">I accept the <a
-                                    href="/about/terms" target="_blank">terms and conditions</a></label>
-                            </div>
+              <div class="custom-control custom-checkbox mt-4">
+                <input type="checkbox" class="custom-control-input" id="termsCheck" required>
+                <label class="custom-control-label terms" for="termsCheck">I accept the <a href="/about/terms" target="_blank">terms and conditions</a></label>
+              </div>
 
-                            {% if hcaptcha %}
-                                <div class="h-captcha" data-sitekey="{{ hcaptcha }}"></div>
-                                <script src="https://hcaptcha.com/1/api.js" async defer></script>
-                            {% endif %}
+              {% if 'HCAPTCHA_SITEKEY' | app_config %}
+              <div class="h-captcha" data-sitekey="{{ hcaptcha }}"></div>
+              <script src="https://hcaptcha.com/1/api.js" async defer></script>
 
-                            <button class="btn btn-primary login w-100 mt-3" id="register_button">Register</button>
+              {% elif 'CLOUDFLARE_TURNSTILE_KEY' | app_config %}
+              <div class="cf-turnstile" data-sitekey="{{ 'CLOUDFLARE_TURNSTILE_KEY' | app_config }}"></div>
+              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+              {% endif %}
 
-                            <div class="text-center text-muted text-small mt-2 mb-0">
-                                    Already have an account? <a href="/login{{ '?redirect='+redirect if redirect else '' }}" class="font-weight-bold toggle-login">Log in</a>
-                            </div>
+              <button class="btn btn-primary login w-100 mt-3" id="register_button">Register</button>
 
-                        </form>
+              <div class="text-center text-muted text-small mt-2 mb-0">Already have an account? <a href="/login{{ '?redirect='+redirect if redirect else '' }}" class="font-weight-bold toggle-login">Log in</a>
+              </div>
 
-                    </div>
+            </form>
 
-                </div>
-
-            </div>
+          </div>
 
         </div>
 
-        <div class="col-12 col-md-6 d-none d-md-block">
-
-            <div class="splash-wrapper">
-
-                <div class="splash-overlay"></div>
-
-                <h6 class="splash-text">
-                    {{ i.text }}
-                </h6>
-
-                <img class="splash-img" src="{{ i.path }}"></img>
-            </div>
-
-        </div>
+      </div>
 
     </div>
+
+    <div class="col-12 col-md-6 d-none d-md-block">
+
+      <div class="splash-wrapper">
+        <div class="splash-overlay"></div>
+
+        <h6 class="splash-text">
+            {{ i.text }}
+        </h6>
+
+        <img class="splash-img" src="{{ i.path }}"></img>
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
 {% include "bootstrap.html" %}

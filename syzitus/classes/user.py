@@ -1189,21 +1189,24 @@ class User(Base, Stndrd, Age_times):
         g.db.flush()
 
         #send message
-        if days:
-            action=f"suspended for {days} day{'s' if days>1 else ''}"
-        else:
-            action="terminated"
 
-        if reason:
-            action += f" for the following reason:\n\n> {reason}"
-        else:
-            action += "."
+        text="Your account has been"
 
         if not admin:
-            action=f"automatically {action}"
+            text += " automatically"
 
-        #really bad import circle issue that I need to figure out
-        text = f'Your account has been {action}'
+        if days:
+            text += f" suspended for {days} day{'s' if days>1 else ''}"
+        else:
+            text += " terminated"
+
+        if reason:
+            text += f" for the following reason:\n\n> {reason}"
+        else:
+            text += "."
+
+        if not admin:
+            text += f"\n\nBecause this ban was performed automatically, it may be appealed. If your ban was applied in error, [join the {app.config['SITE_NAME']} discord server](/discord), and you will be automatically added to the ban appeals channel."
 
         if message:
             text += f"\n\nAdditional private message from the admins:\n\n{message}"

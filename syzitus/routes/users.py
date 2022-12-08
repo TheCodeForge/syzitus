@@ -52,7 +52,7 @@ def api_is_available(name):
     if len(name)<3 or len(name)>25:
         return jsonify({name:False})
         
-    x=get_user(name)
+    x=get_user(name, graceful=True)
 
     if x:
         return jsonify({name: False})
@@ -418,132 +418,132 @@ URL path parameters:
     return jsonify({"message":f"Notifications {'en' if follow.get_notifs else 'dis'}abled for @{user.username}"})
 
 
-def convert_file(html):
+# def convert_file(html):
 
-    if not isinstance(html, str):
-        return html
+#     if not isinstance(html, str):
+#         return html
 
-    soup=BeautifulSoup(html, 'html.parser')
+#     soup=BeautifulSoup(html, 'html.parser')
 
-    for thing in soup.find_all('link', rel="stylesheet"):
+#     for thing in soup.find_all('link', rel="stylesheet"):
 
-        if not thing['href'].startswith('https'):
+#         if not thing['href'].startswith('https'):
 
-            if app.config["FORCE_HTTPS"]:
-                thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
-            else: 
-                thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
+#             if app.config["FORCE_HTTPS"]:
+#                 thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
+#             else: 
+#                 thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
 
-    for thing in soup.find_all('a', href=True):
+#     for thing in soup.find_all('a', href=True):
 
-        if thing["href"].startswith('/') and not thing["href"].startswith(("javascript",'//')):
-            if app.config["FORCE_HTTPS"]:
-                thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
-            else:
-                thing["href"]=f"http://{app.config['SERVER_NAME']}{thing['href']}"
+#         if thing["href"].startswith('/') and not thing["href"].startswith(("javascript",'//')):
+#             if app.config["FORCE_HTTPS"]:
+#                 thing["href"]=f"https://{app.config['SERVER_NAME']}{thing['href']}"
+#             else:
+#                 thing["href"]=f"http://{app.config['SERVER_NAME']}{thing['href']}"
 
-    for thing in soup.find_all('img', src=True):
+#     for thing in soup.find_all('img', src=True):
 
-        if thing["src"].startswith('/') and not thing["src"].startswith('//'):
-            if app.config["FORCE_HTTPS"]:
-                thing["src"]=f"https://{app.config['SERVER_NAME']}{thing['src']}"
-            else:
-                thing["src"]=f"http://{app.config['SERVER_NAME']}{thing['src']}"
-
-
-
-
-    return str(soup)
-
-
-def info_packet(username, method="html"):
-
-    print(f"starting {username}")
-
-    packet={}
-
-    with app.test_request_context("/my_info"):
-
-        db=db_session()
-        g.timestamp=int(time.time())
-        g.db=db
-
-        user=get_user(username)
-
-        #submissions
-        post_ids=db.query(Submission.id).filter_by(author_id=user.id).order_by(Submission.created_utc.desc()).all()
-        post_ids=[i[0] for i in post_ids]
-        posts=get_posts(post_ids, v=user)
-        packet["posts"]={
-            'html':lambda:render_template("userpage.html", v=None, u=user, listing=posts, page=1, next_exists=False),
-            'json':lambda:[x.self_download_json for x in posts]
-        }
-
-        #comments
-        comment_ids=db.query(Comment.id).filter_by(author_id=user.id).order_by(Comment.created_utc.desc()).all()
-        comment_ids=[x[0] for x in comment_ids]
-        comments=get_comments(comment_ids, v=user)
-        packet["comments"]={
-            'html':lambda:render_template("userpage_comments.html", v=None, u=user, listing=comments, page=1, next_exists=False),
-            'json':lambda:[x.self_download_json for x in comments]
-        }
-
-        #upvoted posts
-        upvote_query=db.query(Vote.submission_id).filter_by(user_id=user.id, vote_type=1).order_by(Vote.id.desc()).all()
-        upvote_posts=get_posts([i[0] for i in upvote_query], v=user)
-        upvote_posts=[i for i in upvote_posts]
-        for post in upvote_posts:
-            post.__dict__['voted']=1
-        packet['upvoted_posts']={
-            'html':lambda:render_template("userpage.html", v=None, listing=posts, page=1, next_exists=False),
-            'json':lambda:[x.json_core for x in upvote_posts]
-        }
-
-        print('post_downvotes')
-        downvote_query=db.query(Vote.submission_id).filter_by(user_id=user.id, vote_type=-1).order_by(Vote.id.desc()).all()
-        downvote_posts=get_posts([i[0] for i in downvote_query], v=user)
-        packet['downvoted_posts']={
-            'html':lambda:render_template("userpage.html", v=None, listing=posts, page=1, next_exists=False),
-            'json':lambda:[x.json_core for x in downvote_posts]
-        }
-
-        print('comment_upvotes')
-        upvote_query=db.query(CommentVote.comment_id).filter_by(user_id=user.id, vote_type=1).order_by(CommentVote.id.desc()).all()
-        upvote_comments=get_comments([i[0] for i in upvote_query], v=user)
-        packet["upvoted_comments"]={
-            'html':lambda:render_template("userpage_comments.html", v=None, listing=upvote_comments, page=1, next_exists=False),
-            'json':lambda:[x.json_core for x in upvote_comments]
-        }
-
-        print('comment_downvotes')
-        downvote_query=db.query(CommentVote.comment_id).filter_by(user_id=user.id, vote_type=-1).order_by(CommentVote.id.desc()).all()
-        downvote_comments=get_comments([i[0] for i in downvote_query], v=user)
-        packet["downvoted_comments"]={
-            'html':lambda:render_template("userpage_comments.html", v=None, listing=downvote_comments, page=1, next_exists=False),
-            'json':lambda:[x.json_core for x in downvote_comments]
-        }
-
-        print('blocked users')
-        blocked_users=db.query(UserBlock.target_id).filter_by(user_id=user.id).order_by(UserBlock.id.desc()).all()
-        users=[get_account(base36encode(x[0])) for x in blocked_users]
-        packet["blocked_users"]={
-            "html":lambda:render_template("admin/new_users.html", users=users, v=None, page=1, next_exists=False),
-            "json":lambda:[x.json_core for x in users]
-        }
+#         if thing["src"].startswith('/') and not thing["src"].startswith('//'):
+#             if app.config["FORCE_HTTPS"]:
+#                 thing["src"]=f"https://{app.config['SERVER_NAME']}{thing['src']}"
+#             else:
+#                 thing["src"]=f"http://{app.config['SERVER_NAME']}{thing['src']}"
 
 
 
 
-        send_mail(
-            user.email,
-            "Your Ruqqus Data",
-            "Your Ruqqus data is attached.",
-            "Your Ruqqus data is attached.",
-            files={f"{user.username}_{entry}.{method}": io.StringIO(convert_file(str(packet[entry][method]()))) for entry in packet}
-        )
+#     return str(soup)
 
 
-    print("finished")
+# def info_packet(username, method="html"):
+
+#     print(f"starting {username}")
+
+#     packet={}
+
+#     with app.test_request_context("/my_info"):
+
+#         db=db_session()
+#         g.timestamp=int(time.time())
+#         g.db=db
+
+#         user=get_user(username)
+
+#         #submissions
+#         post_ids=db.query(Submission.id).filter_by(author_id=user.id).order_by(Submission.created_utc.desc()).all()
+#         post_ids=[i[0] for i in post_ids]
+#         posts=get_posts(post_ids, v=user)
+#         packet["posts"]={
+#             'html':lambda:render_template("userpage.html", v=None, u=user, listing=posts, page=1, next_exists=False),
+#             'json':lambda:[x.self_download_json for x in posts]
+#         }
+
+#         #comments
+#         comment_ids=db.query(Comment.id).filter_by(author_id=user.id).order_by(Comment.created_utc.desc()).all()
+#         comment_ids=[x[0] for x in comment_ids]
+#         comments=get_comments(comment_ids, v=user)
+#         packet["comments"]={
+#             'html':lambda:render_template("userpage_comments.html", v=None, u=user, listing=comments, page=1, next_exists=False),
+#             'json':lambda:[x.self_download_json for x in comments]
+#         }
+
+#         #upvoted posts
+#         upvote_query=db.query(Vote.submission_id).filter_by(user_id=user.id, vote_type=1).order_by(Vote.id.desc()).all()
+#         upvote_posts=get_posts([i[0] for i in upvote_query], v=user)
+#         upvote_posts=[i for i in upvote_posts]
+#         for post in upvote_posts:
+#             post.__dict__['voted']=1
+#         packet['upvoted_posts']={
+#             'html':lambda:render_template("userpage.html", v=None, listing=posts, page=1, next_exists=False),
+#             'json':lambda:[x.json_core for x in upvote_posts]
+#         }
+
+#         print('post_downvotes')
+#         downvote_query=db.query(Vote.submission_id).filter_by(user_id=user.id, vote_type=-1).order_by(Vote.id.desc()).all()
+#         downvote_posts=get_posts([i[0] for i in downvote_query], v=user)
+#         packet['downvoted_posts']={
+#             'html':lambda:render_template("userpage.html", v=None, listing=posts, page=1, next_exists=False),
+#             'json':lambda:[x.json_core for x in downvote_posts]
+#         }
+
+#         print('comment_upvotes')
+#         upvote_query=db.query(CommentVote.comment_id).filter_by(user_id=user.id, vote_type=1).order_by(CommentVote.id.desc()).all()
+#         upvote_comments=get_comments([i[0] for i in upvote_query], v=user)
+#         packet["upvoted_comments"]={
+#             'html':lambda:render_template("userpage_comments.html", v=None, listing=upvote_comments, page=1, next_exists=False),
+#             'json':lambda:[x.json_core for x in upvote_comments]
+#         }
+
+#         print('comment_downvotes')
+#         downvote_query=db.query(CommentVote.comment_id).filter_by(user_id=user.id, vote_type=-1).order_by(CommentVote.id.desc()).all()
+#         downvote_comments=get_comments([i[0] for i in downvote_query], v=user)
+#         packet["downvoted_comments"]={
+#             'html':lambda:render_template("userpage_comments.html", v=None, listing=downvote_comments, page=1, next_exists=False),
+#             'json':lambda:[x.json_core for x in downvote_comments]
+#         }
+
+#         print('blocked users')
+#         blocked_users=db.query(UserBlock.target_id).filter_by(user_id=user.id).order_by(UserBlock.id.desc()).all()
+#         users=[get_account(base36encode(x[0])) for x in blocked_users]
+#         packet["blocked_users"]={
+#             "html":lambda:render_template("admin/new_users.html", users=users, v=None, page=1, next_exists=False),
+#             "json":lambda:[x.json_core for x in users]
+#         }
+
+
+
+
+#         send_mail(
+#             user.email,
+#             "Your Ruqqus Data",
+#             "Your Ruqqus data is attached.",
+#             "Your Ruqqus data is attached.",
+#             files={f"{user.username}_{entry}.{method}": io.StringIO(convert_file(str(packet[entry][method]()))) for entry in packet}
+#         )
+
+
+#     print("finished")
 
 
 
