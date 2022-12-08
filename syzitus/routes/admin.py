@@ -121,7 +121,7 @@ def flagged_comments():
 
 @app.route("/admin/all/comments", methods=["GET"])
 @admin_level_required(3)
-def flagged_comments():
+def admin_all_comments():
 
     page = max(1, int(request.args.get("page", 1)))
 
