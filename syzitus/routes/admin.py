@@ -144,7 +144,8 @@ def flagged_comments():
     return render_template("home_comments.html",
                            next_exists=next_exists,
                            listing=listing,
-                           page=page,
+                           page=page
+                           )
 
 # @app.route("/admin/<path>", methods=["GET"])
 # @admin_level_required(3):
