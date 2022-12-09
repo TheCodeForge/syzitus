@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g, session, abort, request
-import time
+from time import strftime, gmtime
 from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load
 from os import environ
@@ -28,6 +28,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
+
 from syzitus.__main__ import Base, cache, app, g
 
 
@@ -223,7 +224,7 @@ class User(Base, Stndrd, Age_times):
             kwargs["passhash"] = self.hash_password(kwargs["password"])
             kwargs.pop("password")
 
-        kwargs["created_utc"] = int(time.time())
+        kwargs["created_utc"] = g.timestamp
 
         super().__init__(**kwargs)
 
@@ -276,7 +277,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def age(self):
-        return int(time.time()) - self.created_utc
+        return g.timestamp - self.created_utc
 
     @property
     def title(self):
@@ -359,7 +360,7 @@ class User(Base, Stndrd, Age_times):
                 posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
         if t:
-            now = int(time.time())
+            now = g.timestamp
             if t == 'day':
                 cutoff = now - 86400
             elif t == 'week':
@@ -455,7 +456,7 @@ class User(Base, Stndrd, Age_times):
         elif sort == "activity":
             submissions = submissions.order_by(Submission.score_activity.desc())
 
-        now = int(time.time())
+        now = g.timestamp
         if t == 'day':
             cutoff = now - 86400
         elif t == 'week':
@@ -532,7 +533,7 @@ class User(Base, Stndrd, Age_times):
         elif sort == "top":
             comments = comments.order_by(Comment.score_top.desc())
 
-        now = int(time.time())
+        now = g.timestamp
         if t == 'day':
             cutoff = now - 86400
         elif t == 'week':
@@ -997,7 +998,7 @@ class User(Base, Stndrd, Age_times):
                         )
         self.has_profile = True
         self.profile_upload_ip=request.remote_addr
-        self.profile_set_utc=int(time.time())
+        self.profile_set_utc=g.timestamp
         self.profile_upload_region=request.headers.get("cf-ipcountry")
         g.db.add(self)
         g.db.commit()
@@ -1079,7 +1080,7 @@ class User(Base, Stndrd, Age_times):
         if self.is_suspended:
             return False
 
-        now = int(time.time())
+        now = g.timestamp
 
         return now - max(self.last_siege_utc,
                          self.created_utc) > 60 * 60 * 24 * 7
@@ -1124,7 +1125,7 @@ class User(Base, Stndrd, Age_times):
     @property
     def json_core(self):
 
-        now=int(time.time())
+        now=g.timestamp
         if self.is_suspended:
             return {'username': self.username,
                     'permalink': self.permalink,
@@ -1214,7 +1215,7 @@ class User(Base, Stndrd, Age_times):
         send_notif(self, text)
 
         if days > 0:
-            ban_time = int(time.time()) + (days * 86400)
+            ban_time = g.timestamp + (days * 86400)
             self.unban_utc = ban_time
 
         else:
@@ -1237,9 +1238,9 @@ class User(Base, Stndrd, Age_times):
                     g.db.add(b)
 
             #ban api applications
-            for app in self.applications:
-                app.is_banned=True
-                g.db.add(app)
+            for application in self.applications:
+                application.is_banned=True
+                g.db.add(application)
 
         g.db.add(self)
         
@@ -1265,7 +1266,12 @@ class User(Base, Stndrd, Age_times):
     @property
     def is_suspended(self):
         return (self.is_banned and (self.unban_utc ==
-                                    0 or self.unban_utc > time.time()))
+                                    0 or self.unban_utc > g.timestamp))
+
+    @property
+    def is_permbanned(self):
+        return self.is_banned and self.unban_urc==0
+    
 
     @property
     def is_blocking(self):
@@ -1277,7 +1283,6 @@ class User(Base, Stndrd, Age_times):
 
     def refresh_selfset_badges(self):
 
-
         for badge in BADGE_DEFS.values():
             if not badge.__dict__.get('expr'):
                 continue
@@ -1287,7 +1292,7 @@ class User(Base, Stndrd, Age_times):
                 if not self.has_badge(badge.id):
                     new_badge = Badge(user_id=self.id,
                                       badge_id=badge.id,
-                                      created_utc=int(time.time())
+                                      created_utc=g.timestamp
                                       )
                     g.db.add(new_badge)
 
@@ -1296,10 +1301,8 @@ class User(Base, Stndrd, Age_times):
                 if bad_badge:
                     g.db.delete(bad_badge)
 
-        try:
-            g.db.add(self)
-        except:
-            pass
+        g.db.commit()
+
 
     @property
     def applications(self):
@@ -1369,7 +1372,7 @@ class User(Base, Stndrd, Age_times):
             is_bot=False)
 
         if recent:
-            cutoff=int(time.time())-60*60*24*recent
+            cutoff=g.timestamp-60*60*24*recent
             posts=posts.filter(Submission.created_utc>cutoff)
 
         posts=posts.all()
@@ -1383,7 +1386,7 @@ class User(Base, Stndrd, Age_times):
             is_bot=False)
 
         if recent:
-            cutoff=int(time.time())-60*60*24*recent
+            cutoff=g.timestamp-60*60*24*recent
             comments=comments.filter(Comment.created_utc>cutoff)
 
         comments=comments.all()
@@ -1395,7 +1398,7 @@ class User(Base, Stndrd, Age_times):
     @property
     def has_premium(self):
         
-        now=int(time.time())
+        now=g.timestamp
 
         if self.negative_balance_cents:
             return False
@@ -1425,7 +1428,7 @@ class User(Base, Stndrd, Age_times):
     @property
     def has_premium_no_renew(self):
         
-        now=int(time.time())
+        now=g.timestamp
 
         if self.negative_balance_cents:
             return False
@@ -1439,8 +1442,7 @@ class User(Base, Stndrd, Age_times):
     
     @property
     def renew_premium_time(self):
-        return time.strftime("%d %b %Y at %H:%M:%S",
-                             time.gmtime(self.premium_expires_utc))
+        return strftime("%d %b %Y at %H:%M:%S", gmtime(self.premium_expires_utc))
     
 
     @property
@@ -1482,7 +1484,6 @@ class User(Base, Stndrd, Age_times):
     @cache.memoize(60*60*24)
     def badges(self):
         self.refresh_selfset_badges()
-        g.db.commit()
         return self._badges.all()
 
     @property
@@ -1494,7 +1495,7 @@ class User(Base, Stndrd, Age_times):
         if self.unban_utc==0:
             return "Permanent Ban"
 
-        wait = self.unban_utc - int(time.time())
+        wait = self.unban_utc - g.timestamp
 
         if wait<60:
             text="just a moment"

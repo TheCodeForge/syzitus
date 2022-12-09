@@ -46,7 +46,7 @@
       {% else %}
 
       <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
-        <a class="nav-link" href="/notifications?all=true" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-bell"></i></a>
+        <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-bell"></i></a>
       </li>
 
       {% endif %}
@@ -97,7 +97,7 @@
               {% if g.user.notifications_count %}
               <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
               {% else %}
-              <a class="dropdown-item" href="/notifications?all=true"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+              <a class="dropdown-item" href="/notifications/all"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
               {% endif %}
               <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
 
@@ -144,7 +144,7 @@
         <a class="nav-link" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ g.user.username }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications?all=true">
+        <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications/all">
           <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
           {% if g.user.notifications_count %}
           <i class="fas fa-circle text-danger position-absolute" id="red-notif-circle"></i>

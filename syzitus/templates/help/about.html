@@ -13,8 +13,6 @@
   <meta name="description" content="{{ 'SITE_NAME' | app_config }} is an open-source platform for online communities, free of censorship and moderator abuse by design.">
   {% endblock %}
 
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet">
-
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -59,14 +57,14 @@
 
 <!-- Hero -->
 
-<section class="pt-5 pt-md-7 bg-primary">
+<section class="pt-5 pt-md-7 bg-sky">
  <div class="container">
   <div class="row text-dark text-center justify-content-md-center">
     <div class="col col-md-10 col-lg-8 col-xl-6">
       <h1 class="text-capitalize font-weight-bolder">The open-Source platform for independent internet communities</h1>
       <p class="text-lg mb-6">{{ "SITE_NAME" | app_config }} is an open-source platform that powers independent online communities.</p>
       <div class="text-center">
-        <a href="/" class="btn btn-lg btn-secondary shadow-md">Enter {{ "SERVER_NAME" | app_config }}</a>
+        <a href="/" class="btn btn-lg btn-primary shadow-md">Enter {{ "SERVER_NAME" | app_config }}</a>
         <p class="text-small mt-3">Already using {{ "SITE_NAME" | app_config }}? <a href="/login">Sign in</a></p>
       </div>
     </div>
@@ -75,31 +73,13 @@
 <div class="container-fluid">
   <div class="row px-0">
     <div class="col px-0">
-      <img src="/assets/images/jumbotron/ruqqus_landscape_4.svg" class="jumbotron">
+      <img src="/assets/images/jumbotron/ruqqus_landscape_4.svg" class="jumbotron p-0 m-0">
     </div>
   </div>
 </div>
 </section>
 
-  <!-- Features
 
-  <section class="py-7 py-md-8">
-    <div class="container">
-      <div class="row justify-content-center text-center text-dark">
-
-        <div class="col">
-
-          <h2 class="mb-6 mb-md-7">
-            Share, vote, and discuss on the web without censorship.
-          </h2>
-
-        </div>
-
-      </div>
-
-  </section>
-
--->
 
 <!-- Why Choose {{ "SITE_NAME" | app_config }} -->
 
@@ -320,6 +300,10 @@
 
     });
   </script>
+
+  <style nonce="{{ g.nonce }}">
+    .bg-sky {background-color: #bee3f8;}
+  </style>
 
 </body>
 

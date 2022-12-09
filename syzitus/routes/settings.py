@@ -101,7 +101,7 @@ def settings_profile_post():
         g.db.commit()
         
         #seo profile spam
-        if int(time.time())-g.user.created_utc < 60*60*24 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
+        if g.timestamp-g.user.created_utc < 60*60*24 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
             g.user.ban(reason="seo spam")
         
         
@@ -681,12 +681,3 @@ def settings_name_change():
     g.db.commit()
     
     return jsonify({"message":"Username changed successfully."})
-
-
-@app.route("/settings/badges", methods=["POST"])
-@auth_required
-def settings_badge_recheck():
-
-    g.user.refresh_selfset_badges()
-
-    return jsonify({"message":"Badges Refreshed"})

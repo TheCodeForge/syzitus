@@ -11,6 +11,7 @@ from PIL import ImageFont, ImageDraw
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.markdown import *
 from syzitus.classes import *
+from syzitus.classes.badges import BADGE_DEFS
 from syzitus.mail import *
 
 from syzitus.__main__ import app, limiter, debug, cache

@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 import time
 import calendar
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from sqlalchemy.orm import lazyload
 import imagehash
 from os import remove
@@ -61,7 +61,7 @@ def admin_all_posts():
     posts = get_posts(post_ids)
 
     return render_template(
-        "admin/image_posts.html",
+        "home.html",
         listing=posts,
         next_exists=next_exists,
         page=page,
@@ -99,11 +99,14 @@ def flagged_comments():
 
     page = max(1, int(request.args.get("page", 1)))
 
-    posts = g.db.query(Comment
-                       ).filter_by(
+    posts = g.db.query(
+        Comment
+        ).filter_by(
         is_approved=0,
         purged_utc=0,
         is_banned=False
+        ).filter(
+        Comment.parent_submission != None
     ).join(Comment.flags).options(contains_eager(Comment.flags)
                                   ).order_by(Comment.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
@@ -119,6 +122,32 @@ def flagged_comments():
                            page=page,
                            standalone=True)
 
+@app.route("/admin/all/comments", methods=["GET"])
+@admin_level_required(3)
+def admin_all_comments():
+
+    page = max(1, int(request.args.get("page", 1)))
+
+    posts = g.db.query(
+        Comment
+        ).filter(
+        Comment.parent_submission != None
+        ).order_by(
+        Comment.id.desc()
+        ).offset(25 * (page - 1)).limit(26).all()
+
+    listing = [p.id for p in posts]
+    next_exists = (len(listing) == 26)
+    listing = listing[0:25]
+
+    listing = get_comments(listing)
+
+    return render_template("home_comments.html",
+                           next_exists=next_exists,
+                           comments=listing,
+                           page=page,
+                           standalone=True
+                           )
 
 # @app.route("/admin/<path>", methods=["GET"])
 # @admin_level_required(3):
@@ -210,7 +239,13 @@ def users_list():
     show_all=int(request.args.get('all','0'))
     
     if not show_all:
-        users=users.filter_by(is_banned=0)
+        users=users.filter(
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+             User.is_deleted==False
+             )
         
     users=users.order_by(User.created_utc.desc()).offset(25 * (page - 1)).limit(26)
 

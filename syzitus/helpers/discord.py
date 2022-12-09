@@ -55,33 +55,63 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
         title_text = f"{action} +{target.name}"
 
 
-    data={
-        "embeds":[
-            {
-                "title": title_text,
-                "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
-                "color": int(app.config["COLOR_PRIMARY"], 16),
-                "author": {
-                    "name": user.username if user else app.config['SITE_NAME'].lower(),
-                    "icon_url": user.profile_url if user else app.config["IMG_URL_FAVICON"]
-                },
-                "fields": [
-                    {
-                        "name": "Reason",
-                        "value": reason or "null",
-                        "inline": True
+    if user:
+        data={
+            "embeds":[
+                {
+                    "title": title_text,
+                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "color": int(app.config["COLOR_PRIMARY"], 16),
+                    "author": {
+                        "name": user.username,
+                        "icon_url": user.profile_url
                     },
-                    {
-                        "name": "Admin" if admin_action else "User",
-                        "value": f"@{user.username}" if user else f"@{app.config['SITE_NAME'].lower()}",
-                        "inline": True
-                    }
-                ]
-            }
-        ]
-    }
+                    "fields": [
+                        {
+                            "name": "Reason",
+                            "value": reason or "null",
+                            "inline": True
+                        },
+                        {
+                            "name": "Admin" if admin_action else "User",
+                            "value": f"@{user.username}",
+                            "inline": True
+                        }
+                    ]
+                }
+            ]
+        }
+    else:
+        data={
+            "embeds":[
+                {
+                    "title": title_text,
+                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "color": int(app.config["COLOR_PRIMARY"], 16),
+                    "author": {
+                        "name": app.config['SITE_NAME'].lower(),
+                        "icon_url": f"https://{app.config['SERVER_NAME']}{app.config['IMG_URL_FAVICON']}"
+                    },
+                    "fields": [
+                        {
+                            "name": "Reason",
+                            "value": reason or "null",
+                            "inline": True
+                        },
+                        {
+                            "name": "Admin",
+                            "value": f"@{app.config['SITE_NAME'].lower()}",
+                            "inline": True
+                        }
+                    ]
+                }
+            ]
+        }
+
+    #debug(data)
     x=requests.post(url, headers=headers, json=data)
-#    print(x.status_code, x.content)
+    #debug(x.status_code)
+    #debug(x.content)
 
 
 @discord_wrap
