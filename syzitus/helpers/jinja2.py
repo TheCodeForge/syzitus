@@ -82,33 +82,10 @@ def coin_goal(x):
 def app_config(x):
     return app.config.get(x)
 
-# @app.template_filter("eval")
-# def eval_filter(s):
-
-#     return render_template_string(s)
 
 @app.template_filter("urlencode")
 def urlencode(s):
     return quote_plus(s)
-
-
-# @app.template_filter("post_embed")
-# def crosspost_embed(url):
-
-#     matches = re.match(post_regex, url)
-
-#     b36id = matches.group(1)
-
-#     p = get_post(b36id, graceful=True)
-
-#     return render_template(
-#         "embeds/submission.html",
-#         p=p,
-#         )
-
-# @app.template_filter("general_chat_count")
-# def general_chat_count(x):
-#     return get_guild("general").chat_count
 
 
 @app.template_filter("lines")
