@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import time
 import calendar
 from sqlalchemy import func, or_
-from sqlalchemy.orm import lazyload
+from sqlalchemy.orm import lazyload, contains_eager
 import imagehash
 from os import remove
 from PIL import Image as IMAGE
