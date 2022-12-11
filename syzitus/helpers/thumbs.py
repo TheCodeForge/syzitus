@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from PIL import Image as PILimage
 from flask import g
 from io import BytesIO
-import time
+from time import sleep
 
 from .get import *
 from .aws import upload_from_file
@@ -34,7 +34,7 @@ def thumbnail_thread(pid):
     post = db.query(Submission).filter_by(id=base36decode(pid)).first()
     if not post:
         # account for possible follower lag
-        time.sleep(60)
+        sleep(60)
         post = db.query(Submission).filter_by(id=base36decode(pid)).first()
 
 
