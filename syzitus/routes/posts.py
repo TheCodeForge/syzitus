@@ -1028,6 +1028,8 @@ URL path parameters:
     if post.is_archived:
         return jsonify({"error": "Post is archived"}), 409
 
+    if post.thumb_url:
+        return jsonify({"error": "Post already has thumbnail"}), 409
     # try:
     success= thumbnail_thread(post.base36id)
     # except Exception as e:
