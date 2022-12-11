@@ -3,13 +3,13 @@ from .get import *
 from mistletoe.span_token import SpanToken
 from mistletoe.html_renderer import HTMLRenderer
 import os.path
-import re
+from re import compile as re_compile, sub as re_sub
 
 from flask import g
 
 #preprocess re
 
-enter_re=re.compile("(\n\r?\w+){3,}")
+enter_re=re_compile("(\n\r?\w+){3,}")
 
 
 
@@ -18,7 +18,7 @@ enter_re=re.compile("(\n\r?\w+){3,}")
 
 class UserMention(SpanToken):
 
-    pattern = re.compile("(^|\s|\n)@(\w{3,25})")
+    pattern = re_compile("(^|\s|\n)@(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -27,7 +27,7 @@ class UserMention(SpanToken):
 
 class BoardMention(SpanToken):
 
-    pattern = re.compile("(^|\s|\n)\+(\w{3,25})")
+    pattern = re_compile("(^|\s|\n)\+(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -36,7 +36,7 @@ class BoardMention(SpanToken):
 
 class ChatMention(SpanToken):
 
-    pattern = re.compile("(^|\s|\n)#(\w{3,25})")
+    pattern = re_compile("(^|\s|\n)#(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -45,7 +45,7 @@ class ChatMention(SpanToken):
         
 class Emoji(SpanToken):
     
-    pattern=re.compile(":([A-Za-z0-9_-]+):")
+    pattern=re_compile(":([A-Za-z0-9_-]+):")
     parse_inner=False
     
     def __init__(self, match_obj):
@@ -54,7 +54,7 @@ class Emoji(SpanToken):
 
 class Spoiler(SpanToken):
 
-    pattern=re.compile("(>!|<s>|\|\|)(.+?)(\|\||</s>|!<)")
+    pattern=re_compile("(>!|<s>|\|\|)(.+?)(\|\||</s>|!<)")
     parse_inner=True
 
     def __init__(self, match_obj):
@@ -66,7 +66,7 @@ class Spoiler(SpanToken):
 
 # class OpMention(SpanToken):
 
-#     pattern = re.compile("(^|\W|\s)@([Oo][Pp])\b")
+#     pattern = re_compile("(^|\W|\s)@([Oo][Pp])\b")
 #     parse_inner = False
 
 #     def __init__(self, match_obj):
@@ -165,9 +165,9 @@ def preprocess(text):
 
     text=text.lstrip().rstrip()
     
-    text=re.sub(enter_re, "\n\n", text)
+    text=re_sub(enter_re, "\n\n", text)
 
-    text=re.sub("(\u200b|\u200c|\u200d)",'', text)
+    text=re_sub("(\u200b|\u200c|\u200d)",'', text)
     
     return text
     
