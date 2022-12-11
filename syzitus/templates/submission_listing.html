@@ -218,7 +218,7 @@
 
               <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
 
-                <a  class="dropdown-item text-black" href="{{ p.votes_permalink }}"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
+                <a  class="dropdown-item text-black" href="{{ p.votes_permalink }}" target="_blank"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
 
                 {% if g.user and not p.is_subscribed and not b %}
                 <a id="button-sub-{{ p.fullname }}" class="dropdown-item text-black btn-guild-sub" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.fullname }}"><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
