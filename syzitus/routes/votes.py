@@ -191,7 +191,7 @@ def public_vote_info_posts_get(boardname=None, pid=None, anything=None):
 Get public vote information about a post.
 
 URL path parameters:
-* `pid` - The base 36 comment ID
+* `pid` - The base 36 post ID
 """
 
     if not pid:
