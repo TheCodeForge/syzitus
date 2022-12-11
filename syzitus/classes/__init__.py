@@ -12,7 +12,7 @@ from .flags import Flag, CommentFlag, Report
 from .images import Image, BadPic, random_image
 from .ips import IP, Agent
 from .mod_logs import ModAction
-#from .paypal import PayPalClient, PayPalTxn, PromoCode, AwardRelationship
+from .paypal import PayPalClient, PayPalTxn, PromoCode, AwardRelationship
 from .submission import Submission, SubmissionAux
 from .subscriptions import Subscription, Follow
 from .titles import Title, TITLES
