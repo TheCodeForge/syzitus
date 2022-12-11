@@ -1,9 +1,9 @@
 import hmac
 from werkzeug.security import generate_password_hash
 from os import environ
-import time
+from time import time
 import random
-import gevent
+from gevent import sleep
 
 from syzitus.__main__ import app
 
@@ -31,12 +31,12 @@ def hash_password(password):
 
 def safe_compare(x, y):
     
-    before=time.time()
+    before=time()
     
     returnval=(x==y)
     
-    after=time.time()
+    after=time()
     
-    gevent.sleep(random.uniform(0.0, 0.1)-(after-before))
+    sleep(random.uniform(0.0, 0.1)-(after-before))
     
     return returnval

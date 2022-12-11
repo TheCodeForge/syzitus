@@ -1,12 +1,12 @@
 from urllib.parse import urlparse
-import time
-import calendar
+from time import struct_time
+from calendar import timegm as calendar_timegm
 from sqlalchemy import func, or_
 from sqlalchemy.orm import lazyload, contains_eager
-import imagehash
+from imagehash import phash
 from os import remove
 from PIL import Image as IMAGE
-import gevent
+from gevent import spawn as gevent_spawn, joinall as gevent_joinall
 from jinja2.exceptions import TemplateNotFound
 from flask import g, session, abort, render_template, jsonify, redirect
 
@@ -322,17 +322,20 @@ def participation_stats():
 def money_stats():
 
     now = g.timestamp
-    midnight_year_start = time.struct_time((now.tm_year,
-                                              1,
-                                              1,
-                                              0,
-                                              0,
-                                              0,
-                                              now.tm_wday,
-                                              now.tm_yday,
-                                              0)
-                                             )
-    midnight_year_start = calendar.timegm(midnight_year_start)
+    midnight_year_start = struct_time(
+        (
+            now.tm_year,
+            1,
+            1,
+            0,
+            0,
+            0,
+            now.tm_wday,
+            now.tm_yday,
+            0
+            )
+        )
+    midnight_year_start = calendar_timegm(midnight_year_start)
 
     
     intake=sum([int(x[0] - (x[0] * 0.029) - 30 )  for x in g.db.query(PayPalTxn.usd_cents).filter(PayPalTxn.status==3, PayPalTxn.created_utc>midnight_year_start).all()])
@@ -903,11 +906,11 @@ def admin_purge_guild_images(boardname):
     threads=[]
     for post in posts.all():
         i+=1
-        threads.append(gevent.spawn(del_function, post))
+        threads.append(gevent_spawn(del_function, post))
         post.has_thumb=False
         g.db.add(post)
 
-    gevent.joinall(threads)
+    gevent_joinall(threads)
 
     g.db.commit()
 
@@ -925,7 +928,7 @@ def admin_image_ban():
 
     i.save(tempname)
 
-    h=imagehash.phash(IMAGE.open(tempname))
+    h=phash(IMAGE.open(tempname))
     h=hex2bin(str(h))
 
     #check db for existing

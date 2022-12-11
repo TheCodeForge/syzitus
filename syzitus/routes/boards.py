@@ -1,7 +1,6 @@
 from urllib.parse import urlparse
-import mistletoe
+from mistletoe import Document
 import re
-import sass
 import threading
 import time
 import os.path
@@ -215,7 +214,7 @@ Optional form data:
 
 
     with CustomRenderer() as renderer:
-        description_md = renderer.render(mistletoe.Document(description))
+        description_md = renderer.render(Document(description))
     description_html = sanitize(description_md, linkgen=True)
 
     # make the board
@@ -1281,7 +1280,7 @@ def mod_bid_settings_description(bid, board):
     # board description
     description = request.form.get("description")
     with CustomRenderer() as renderer:
-        description_md = renderer.render(mistletoe.Document(description))
+        description_md = renderer.render(Document(description))
     description_html = sanitize(description_md, linkgen=True)
 
     board.description = description

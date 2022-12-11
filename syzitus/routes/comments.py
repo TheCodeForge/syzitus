@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-import mistletoe
+from mistletoe import document
 from sqlalchemy import func, literal
 from sqlalchemy.orm import contains_eager
 from bs4 import BeautifulSoup
@@ -331,7 +331,7 @@ Optional file data:
 
     body=preprocess(body)
     with CustomRenderer(post_id=parent_id) as renderer:
-        body_md = renderer.render(mistletoe.Document(body))
+        body_md = renderer.render(Document(body))
     body_html = sanitize(body_md, linkgen=True)
 
     # Run safety filter
@@ -510,7 +510,7 @@ Optional file data:
             body = request.form.get("body") + f"\n\n![](https://{BUCKET}/{name})"
             body=preprocess(body)
             with CustomRenderer(post_id=parent_id) as renderer:
-                body_md = renderer.render(mistletoe.Document(body))
+                body_md = renderer.render(Document(body))
             body_html = sanitize(body_md, linkgen=True)
             
             #csam detection
@@ -623,7 +623,7 @@ Required form data:
     body = request.form.get("body", "")[0:10000]
     body=preprocess(body)
     with CustomRenderer(post_id=c.post.base36id) as renderer:
-        body_md = renderer.render(mistletoe.Document(body))
+        body_md = renderer.render(Document(body))
     body_html = sanitize(body_md, linkgen=True)
 
     # Run safety filter
