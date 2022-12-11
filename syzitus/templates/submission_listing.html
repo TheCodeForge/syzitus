@@ -55,7 +55,7 @@
     <div class="card-header bg-transparent border-0 d-flex flex-row flex-nowrap pl-2 pl-md-0 p-0 mr-md-2">
 
       <div class="position-relative d-none d-md-block zi-3">
-        {% if request.path.startswith('/embed/') %}
+        {% if request.path.startswith('/embed/') and p.thumb_url %}
         <a href="{{ p.permalink }}">
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
