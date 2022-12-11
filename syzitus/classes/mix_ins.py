@@ -1,8 +1,8 @@
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
 from flask import g
-import math
-import random
+from math import floor, ceil
+from random import randint
 import time
 
 from syzitus.__main__ import cache, app
@@ -176,9 +176,9 @@ class Fuzzing:
 
         k = 0.01
 
-        a = math.floor(real * (1 - k))
-        b = math.ceil(real * (1 + k))
-        return random.randint(a, b)
+        a = floor(real * (1 - k))
+        b = ceil(real * (1 + k))
+        return randint(a, b)
 
     @property
     def upvotes_fuzzed(self):
@@ -189,7 +189,7 @@ class Fuzzing:
         lower = int(self.upvotes * 0.99)
         upper = int(self.upvotes * 1.01) + 1
 
-        return random.randint(lower, upper)
+        return randint(lower, upper)
 
     @property
     def downvotes_fuzzed(self):
@@ -199,4 +199,4 @@ class Fuzzing:
         lower = int(self.downvotes * 0.99)
         upper = int(self.downvotes * 1.01) + 1
 
-        return random.randint(lower, upper)
+        return randint(lower, upper)

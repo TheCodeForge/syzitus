@@ -2,7 +2,6 @@ import time
 from sqlalchemy import Column, BigInteger, String, Integer, Index
 from sqlalchemy.orm import relationship
 from flask import g
-import random
 
 from syzitus.helpers.base36 import *
 from syzitus.__main__ import Base
