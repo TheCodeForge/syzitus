@@ -1,5 +1,4 @@
 from flask import g, request
-from time import time, strftime, gmtime
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 
@@ -26,7 +25,7 @@ class Vote(Base):
     def __init__(self, *args, **kwargs):
 
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time())
+            kwargs["created_utc"] = g.timestamp
 
         kwargs["creation_ip"]=request.remote_addr
 
@@ -47,7 +46,7 @@ class Vote(Base):
             abort(400)
 
         self.vote_type = x
-        self.created_utc = int(time())
+        self.created_utc = g.timestamp
 
         g.db.add(self)
 
@@ -89,7 +88,7 @@ class CommentVote(Base):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time())
+            kwargs["created_utc"] = g.timestamp
 
         kwargs["creation_ip"]=request.remote_addr
 
@@ -110,7 +109,7 @@ class CommentVote(Base):
             abort(400)
 
         self.vote_type = x
-        self.created_utc = int(time())
+        self.created_utc = g.timestamp
 
         g.db.add(self)
 
