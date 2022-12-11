@@ -1,13 +1,13 @@
-import time
+from time import struct_time
 import json
 from sqlalchemy import text, func
 from flask import g, session
 import calendar
 import re
 from urllib.parse import quote_plus
-import io
+from io import BytesIO
 from qrcode import QRCode
-import base64
+from base64 import b64encode
 
 from syzitus.classes.user import User
 from .get import *
@@ -57,8 +57,8 @@ def jinja_is_mod(uid, bid):
 @cache.cached(timeout=600, key_prefix="premium_coin_goal")
 def coin_goal(x):
     
-    now = time.gmtime()
-    midnight_month_start = time.struct_time((now.tm_year,
+    now = g.timestamp
+    midnight_month_start = struct_time((now.tm_year,
                                               now.tm_mon,
                                               1,
                                               0,
@@ -96,7 +96,7 @@ def lines_count(x):
 @app.template_filter('qrcode_img_data')
 def qrcode_filter(x):
   
-    mem=io.BytesIO()
+    mem=BytesIO()
     qr=QRCode()
     qr.add_data(x)
     img=qr.make_image(
@@ -109,7 +109,7 @@ def qrcode_filter(x):
     )
     mem.seek(0)
     
-    data=base64.b64encode(mem.read()).decode('ascii')
+    data=b64encode(mem.read()).decode('ascii')
     return f"data:image/png;base64,{data}"
 
 
