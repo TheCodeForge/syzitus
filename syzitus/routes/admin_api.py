@@ -5,6 +5,7 @@ import imagehash
 from PIL import Image
 from os import remove
 from sqlalchemy import func
+import mistletoe
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
