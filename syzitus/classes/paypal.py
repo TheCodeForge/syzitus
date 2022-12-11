@@ -1,9 +1,8 @@
 import requests
 from os import environ
-import time
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import relationship, deferred
-from flask import abort
+from flask import abort, g
 from .mix_ins import *
 
 from syzitus.__main__ import Base, app
@@ -53,7 +52,7 @@ class PayPalClient():
 		x=x.json()
 
 		self.paypal_token=x["access_token"]
-		self.token_expires=int(time.time())+int(x["expires_in"])
+		self.token_expires=g.timestamp+int(x["expires_in"])
 
 	def _get(self, url):
 
@@ -206,7 +205,7 @@ class PromoCode(Base):
 
 	def adjust_price(self, cents):
 
-		now=int(time.time())
+		now=g.timestamp
 
 		if self.promo_start_utc and now < self.promo_start_utc:
 			return cents
@@ -231,7 +230,7 @@ class PromoCode(Base):
 
 	@property
 	def promo_is_active(self):
-		now=int(time.time())
+		now=g.timestamp
 
 		if self.promo_start_utc and now<self.promo_start_utc:
 			return False
@@ -258,7 +257,7 @@ class PromoCode(Base):
 	@property
 	def promo_text(self):
 
-		now=int(time.time())
+		now=g.timestamp
 
 		if self.promo_start_utc and now < self.promo_start_utc:
 			return f"This promotion hasn't started yet. Try again later."

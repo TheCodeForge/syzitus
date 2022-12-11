@@ -5,9 +5,8 @@ from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey,
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load
 from os import environ
 from secrets import token_hex
-import random
-import pyotp
-import mistletoe
+from pyotp import TOTP
+from mistletoe import markdown
 
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.security import generate_hash, validate_hash
@@ -34,7 +33,7 @@ from syzitus.__main__ import Base, cache, app, g
 
 #this is repeated here to avoid import circle
 def send_notif(user, text):
-    text_html = mistletoe.markdown(text)
+    text_html = markdown(text)
 
     #text_html = sanitize(text_html, linkgen=True)#, noimages=True)
 
@@ -250,7 +249,7 @@ class User(Base, Stndrd, Age_times):
 
     def validate_2fa(self, token):
 
-        x = pyotp.TOTP(self.mfa_secret)
+        x = TOTP(self.mfa_secret)
         return x.verify(token, valid_window=1)
 
     @property

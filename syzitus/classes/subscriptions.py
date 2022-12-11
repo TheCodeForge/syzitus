@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue
 from sqlalchemy.orm import relationship
+from flask import g
+
 from syzitus.__main__ import Base, cache
-import time
 
 
 class Subscription(Base):
@@ -18,7 +19,7 @@ class Subscription(Base):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(*args, **kwargs)
 
@@ -47,7 +48,7 @@ class Follow(Base):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(*args, **kwargs)
 
