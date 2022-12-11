@@ -25,7 +25,7 @@
 	<div class="h6 mt-5">Can {{ "SITE_NAME" | app_config }} notify the user that their information has been requested?</div>
 	<div class="body">It is {{ "SITE_NAME" | app_config }} policy to notify a user that their information has been requested by legal process, except when prohibited by law or in certain exigent circumstances.</div>
 	<input type="radio" name="notify_perms" value="non_disclosure"> This legal process includes a non-disclosure provision pursuant to 18 USC 2705(b). {{ "SITE_NAME" | app_config }} is prohibited from notifying the user.<br>
-	<input type="radio" name="notify_perms" value="exigent"> This legal process involves exigent circumstances such as terrorism, human trafficking, or imminent threats to life. Although {{ "SITE_NAME" | app_config }} is legally permitted to notify the user, {{ "SITE_NAME" | app_config }} policy means we will most likely refrain from doing so.<br>
+	<input type="radio" name="notify_perms" value="exigent"> This legal process involves exigent circumstances such as terrorism, human trafficking, or imminent threats to life.  It would be unethical for {{ "SITE_NAME" | app_config }} to notify the user.<br>
 	<input type="radio" name="notify_perms" value="may_notify" checked required> None of the above. {{ "SITE_NAME" | app_config }} is permitted to notify the user that their information has been requested.<br>
 
 	<div class="h6 mt-5">Upload the legal document</div>

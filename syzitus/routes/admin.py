@@ -400,7 +400,7 @@ def admin_vote_info_get():
     return render_template("admin/votes.html",
                            thing=thing,
                            ups=ups,
-                           downs=downs,)
+                           downs=downs)
 
 
 @app.route("/admin/alt_votes", methods=["GET"])
