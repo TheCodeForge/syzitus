@@ -258,6 +258,12 @@
 
                 {% endif %}
 
+                {% if g.user and not c.is_banned and not c.is_deleted %}
+                <a class="dropdown-item" href="{{ c.votes_permalink }}"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
+                {% endif %}
+
+                <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed</a>
+
                 {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 %}
                 <a href="javascript:void(0)" class="dropdown-item btn-toggle-comment-edit" data-comment-id="{{ c.base36id }}"><i class="fas fa-edit fa-fw"></i>Edit</a>
 
@@ -267,8 +273,6 @@
                 {% if g.user and not g.user.id==c.author_id %}
                 <a class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger fa-fw"></i>Block user</a>
                 {% endif %}
-
-                <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed</a>
 
                 {% if g.user %}
                 {% if g.user.admin_level and g.user.id==c.author_id %}
@@ -461,9 +465,15 @@
               <li class="list-group-item"><a class="d-block" href="{{ c.oauth_app.permalink }}/comments"><i class="fas fa-fw fa-code"></i>API App</a></li>
             {% endif %}
 
+            {% if g.user and not c.is_deleted and not c.is_banned %}
+            <li class="list-group-item">
+              <a href="{{ c.votes_permalink }}" class="d-block post-toast-url" data-dismiss="modal"><i class="fas fa-fw fa-arrow-up-arrow-down"></i>Votes</a>
+            </li>
+            {% endif %}
+
             {% if not g.user.id==c.author_id %}
             <li class="list-group-item">
-              <a href="javascript:void(0)" class="d-block post-toast-url" data-post-url="/settings/block?username={{ c.author.username }}" data-dismiss="modal"><i class="fas fa-fw fa-user-slash text-danger"></i>Block user</a>
+              <a href="javascript:void(0)" class="d-block post-toast-url text-danger" data-post-url="/settings/block?username={{ c.author.username }}" data-dismiss="modal"><i class="fas fa-fw fa-user-slash text-danger"></i>Block user</a>
             </li>
             {% endif %}
             {% endif %}

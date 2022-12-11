@@ -218,6 +218,8 @@
 
               <div class="dropdown-menu border-0 shadow" aria-labelledby="dropdownMoreLink-{{ p.base36id }}">
 
+                <a  class="dropdown-item text-black" href="{{ p.votes_permalink }}"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
+
                 {% if g.user and not p.is_subscribed and not b %}
                 <a id="button-sub-{{ p.fullname }}" class="dropdown-item text-black btn-guild-sub" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.fullname }}"><i class="fas fa-chess-rook text-black"></i>Join Guild</a>
                 {% endif %}
@@ -261,7 +263,7 @@
       <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link}}"><i class="fas fa-link"></i>Share</a></li>
       {% if g.user %}
       <li class="list-inline-item">
-        <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.base36id }}">
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#actionsModal-{{ p.fullname }}">
           <i class="fas fa-ellipsis-h"></i>
         </a>
       </li>
@@ -320,7 +322,7 @@
       
 
 <!-- Post Actions Modal -->
-<div class="modal fade modal-sm-bottom d-md-none" id="actionsModal-{{ p.base36id }}" tabindex="-1" role="dialog" aria-labelledby="actionsModalTitle" aria-hidden="true">
+<div class="modal fade modal-sm-bottom d-md-none" id="actionsModal-{{ p.fullname }}" tabindex="-1" role="dialog" aria-labelledby="actionsModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header p-3">
@@ -338,6 +340,11 @@
           {% if g.user and not g.user.id==p.author_id %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}" class="d-block btn-report-post"><i class="far fa-flag fa-fw text-center text-muted mr-3"></i>Flag</button>
           {% endif %}
+
+          {% if g.user and not p.is_deleted and not p.is_banned %}
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal"><a href="{{ p.votes_permalink }}" target="_blank"><i class="far fa-arrow-up-arrow-down fa-fw text-center text-muted mr-3"></i>Votes</a></button>
+          {% endif %}
+
           {% if g.user and g.user.id==p.author_id and p.deleted_utc == 0 %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="far fa-trash-alt fa-fw text-center text-muted mr-3"></i>Delete</button>
           {% endif %}
@@ -346,7 +353,7 @@
           {% endif %}
           {% if g.user %}
           {% if not p.is_subscribed %}
-          <button id="button-sub-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-muted btn-guild-sub" data-dismiss="modal" data-board-name="{{ p.board.name }}"" data-thing-id="{{ p.base36id }}"><i class="fas fa-chess-rook fa-fw text-muted mr-3"></i>Join +{{ p.board.name }}</button>
+          <button id="button-sub-{{ p.base36id }}" class="btn btn-link btn-block btn-lg text-left text-muted btn-guild-sub" data-dismiss="modal" data-board-name="{{ p.board.name }}" data-thing-id="{{ p.base36id }}"><i class="fas fa-chess-rook fa-fw text-muted mr-3"></i>Join +{{ p.board.name }}</button>
           {% endif %}
           {% if p.is_guildmaster('content') %}
           <button class="btn btn-link btn-block btn-lg text-left text-danger" id="kick-post-{{ p.base36id }}" class="kick-button-listing" href="javascript:void(0)" data-boardname="{{ p.board.boardname }}" data-pid="{{ p.base36id }}"><i class="far fa-sign-out fa-fw fa-flip-horizontal text-center text-danger mr-3"></i><span class="kick-text">Kick</span></button>

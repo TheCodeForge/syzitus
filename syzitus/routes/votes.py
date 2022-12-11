@@ -183,7 +183,7 @@ URL path parameters:
 
 @app.get("/+<boardname>/votes/<pid>/<anything>")
 @app.get("/+<boardname>/votes/<pid>/<anything>/<cid>")
-@auth_required
+@is_not_banned
 def public_vote_info_get(boardname, pid, anything, cid=None):
 
     if cid:
@@ -196,6 +196,9 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
     if thing.is_banned or thing.is_deleted:
         return redirect(thing.permalink)
+
+    if not thing.board.can_view(g.user):
+        abort(403)
 
     if isinstance(thing, Submission):
 
