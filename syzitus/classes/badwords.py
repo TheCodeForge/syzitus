@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-import re
+from re import search, IGNORECASE
 
 from syzitus.__main__ import Base
 
@@ -13,8 +13,8 @@ class BadWord(Base):
     regex = Column(String(256))
 
     def check(self, text):
-        return bool(re.search(self.regex,
+        return bool(search(self.regex,
                               text,
-                              re.IGNORECASE
+                              IGNORECASE
                               )
                     )

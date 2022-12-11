@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_, select
 from sqlalchemy.orm import relationship, deferred, lazyload
-import time
 from flask import g, abort, request
 
 from syzitus.helpers.lazy import lazy
@@ -89,7 +88,7 @@ class Board(Base, Stndrd, Age_times):
 
     def __init__(self, **kwargs):
 
-        kwargs["created_utc"] = int(time.time())
+        kwargs["created_utc"] = g.timestamp
 
         super().__init__(**kwargs)
 
@@ -202,7 +201,7 @@ class Board(Base, Stndrd, Age_times):
 
         if t == None and v: t = g.user.defaulttime
         if t:
-            now = int(time.time())
+            now = g.timestamp
             if t == 'day':
                 cutoff = now - 86400
             elif t == 'week':
@@ -645,7 +644,7 @@ class Board(Base, Stndrd, Age_times):
     @property
     def siege_rep_requirement(self):
 
-        now=int(time.time())
+        now=g.timestamp
 
         return self.stored_subscriber_count//10 + min(180, (now-self.created_utc)//(60*60*24))
 

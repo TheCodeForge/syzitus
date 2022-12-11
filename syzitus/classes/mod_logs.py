@@ -1,6 +1,6 @@
 from sqlalchemy import Column, BigInteger, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
-import time
+from flask import g
 
 from .mix_ins import Stndrd, Age_times
 
@@ -32,7 +32,7 @@ class ModAction(Base, Stndrd, Age_times):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         if "note" in kwargs:
             kwargs["_note"]=kwargs["note"]

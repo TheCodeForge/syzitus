@@ -1,5 +1,3 @@
-import time
-
 from .mix_ins import Stndrd
 
 from syzitus.__main__ import Base, cache, debug, app

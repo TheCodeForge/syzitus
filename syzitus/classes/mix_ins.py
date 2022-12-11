@@ -43,7 +43,7 @@ class Age_times:
     @property
     def age(self):
 
-        now = int(time.time())
+        now = g.timestamp
 
         return now - self.created_utc
 

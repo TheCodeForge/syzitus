@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, BigInteger, Boolean, ForeignKey, String
 from sqlalchemy.orm import relationship
-import time
+from flask import g
 
 from .mix_ins import Stndrd, Age_times
 from syzitus.__main__ import Base, cache
@@ -26,7 +26,7 @@ class ModRelationship(Base, Age_times):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(*args, **kwargs)
 
@@ -111,7 +111,7 @@ class BanRelationship(Base, Stndrd, Age_times):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(*args, **kwargs)
 
@@ -159,7 +159,7 @@ class BanRelationship(Base, Stndrd, Age_times):
 
 #     def __init__(self, *args, **kwargs):
 #         if "created_utc" not in kwargs:
-#             kwargs["created_utc"] = int(time.time())
+#             kwargs["created_utc"] = g.timestamp
 
 #         super().__init__(*args, **kwargs)
 
@@ -210,7 +210,7 @@ class ContributorRelationship(Base, Stndrd, Age_times):
 
     def __init__(self, *args, **kwargs):
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(*args, **kwargs)
 

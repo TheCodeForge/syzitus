@@ -1,5 +1,4 @@
 from flask import g, render_template, request
-import time
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Index, Float
 from sqlalchemy.orm import relationship, deferred
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -152,7 +151,7 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
     def __init__(self, *args, **kwargs):
 
         if "created_utc" not in kwargs:
-            kwargs["created_utc"] = int(time.time())
+            kwargs["created_utc"] = g.timestamp
 
         kwargs["creation_ip"] = request.remote_addr
 
