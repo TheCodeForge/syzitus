@@ -202,13 +202,9 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
     if isinstance(thing, Submission):
 
-        ups=g.db.query(User).filter(
-            User.id.in_(
-                select(Vote.user_id).filter_by(
-                    submission_id=thing.id,
-                    vote_type=1
-                    )
-                ),
+        ups=g.db.query(User).join(Vote).filter(
+            Vote.submission_id==thing.id,
+            Vote.vote_type==1,
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -217,13 +213,9 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
             ).order_by(User.username.asc())
 
 
-        downs = g.db.query(User).filter(
-            User.id.in_(
-                select(Vote.user_id).filter_by(
-                    submission_id=thing.id,
-                    vote_type=-1
-                    )
-                ),
+        downs = g.db.query(User).join(Vote).filter(
+            Vote.submission_id==thing.id,
+            Vote.vote_type==-1,
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -233,13 +225,9 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
     elif isinstance(thing, Comment):
 
-        ups = g.db.query(User).filter(
-            User.id.in_(
-                select(CommentVote.user_id).filter_by(
-                    comment_id=thing.id,
-                    vote_type=1
-                    )
-                ),
+        ups = g.db.query(User).join(CommentVote).filter(
+            CommentVote.comment_id==thing.id,
+            CommentVote.vote_type==1,
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -248,13 +236,9 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
             ).order_by(User.username.asc())
 
         downs = g.db.query(User).filter(
-            User.id.in_(
-                select(CommentVote.user_id).filter_by(
-                    comment_id=thing.id,
-                    vote_type=-1
-                    )
-                ),
-            or_(
+            CommentVote.comment_id==thing.id,
+            CommentVote.vote_type==-1,
+             or_(
                 User.is_banned==0,
                 User.unban_utc>0
                 ),
