@@ -1,4 +1,3 @@
-import time
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.get import *
@@ -24,7 +23,7 @@ def api_flag_post(pid):
 
         flag = Flag(post_id=post.id,
                     user_id=g.user.id,
-                    created_utc=int(time.time())
+                    created_utc=g.timestamp
                     )
 
     elif kind == "guild":
@@ -37,7 +36,7 @@ def api_flag_post(pid):
 
         flag = Report(post_id=post.id,
                       user_id=g.user.id,
-                      created_utc=int(time.time())
+                      created_utc=g.timestamp
                       )
     else:
         return "", 422
@@ -62,7 +61,7 @@ def api_flag_comment(cid):
 
     flag = CommentFlag(comment_id=comment.id,
                        user_id=g.user.id,
-                       created_utc=int(time.time())
+                       created_utc=g.timestamp
                        )
 
     g.db.add(flag)
