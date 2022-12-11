@@ -208,8 +208,6 @@ URL path parameters:
     if post.is_banned or post.is_deleted:
         abort(410)
 
-    embed=f"/embed/post/{post.base36id}"
-
     ups=g.db.query(User).join(Vote).filter(
         Vote.submission_id==post.id,
         Vote.vote_type==1,
@@ -234,7 +232,7 @@ URL path parameters:
     return {
         "html":lambda:render_template("help/votes.html",
                            thing=post,
-                           embed_url=embed,
+                           embed_url=f"/embed/post/{post.base36id}",
                            ups=ups,
                            downs=downs),
         "api": lambda:jsonify(
@@ -273,8 +271,6 @@ URL path parameters:
     if comment.is_banned or comment.is_deleted:
         abort(410)
 
-    embed=f"/embed/comment/{comment.base36id}"
-
     ups = g.db.query(User).join(CommentVote).filter(
         CommentVote.comment_id==comment.id,
         CommentVote.vote_type==1,
@@ -299,7 +295,7 @@ URL path parameters:
     return {
         "html":lambda:render_template("help/votes.html",
                            thing=comment,
-                           embed_url=embed,
+                           embed_url=f"/embed/comment/{comment.base36id}",
                            ups=ups,
                            downs=downs),
         "api": lambda:jsonify(
