@@ -70,10 +70,10 @@ IMG_DATA=[
     {'number': 1, 'state': 'WY', 'text': 'Jackson Hole Valley, Wyoming'}
 ]
 
-IMAGES=[Image(**x) for x in IMG_DATA]
+#IMAGES=[Image(**x) for x in IMG_DATA]
 
 def random_image():
-    return IMAGES[g.timestamp % len(IMAGES) + 1]
+    return Image(**IMAGES[g.timestamp % len(IMAGES) + 1])
 
 
 
