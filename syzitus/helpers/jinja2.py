@@ -1,4 +1,4 @@
-from time import struct_time
+from time import struct_time, gmtime
 import json
 from sqlalchemy import text, func
 from flask import g, session
@@ -52,7 +52,7 @@ def jinja_is_mod(uid, bid):
 @cache.cached(timeout=600, key_prefix="premium_coin_goal")
 def coin_goal(x):
     
-    now = g.timestamp
+    now = gmtime()
     midnight_month_start = struct_time((now.tm_year,
                                               now.tm_mon,
                                               1,
