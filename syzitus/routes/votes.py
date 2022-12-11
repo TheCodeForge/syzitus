@@ -185,7 +185,7 @@ URL path parameters:
 @app.get("/+<boardname>/votes/<pid>/<anything>/<cid>")
 #@auth_required
 @admin_level_required(4)
-def public_vote_info_get(boardname, pid, cid=None):
+def public_vote_info_get(boardname, pid, anything, cid=None):
 
     if cid:
         thing=get_comment(cid)
