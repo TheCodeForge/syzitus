@@ -202,6 +202,8 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
     if isinstance(thing, Submission):
 
+        embed=f"/embed/post/{thing.base36id}"
+
         ups=g.db.query(User).join(Vote).filter(
             Vote.submission_id==thing.id,
             Vote.vote_type==1,
@@ -224,6 +226,8 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
             ).order_by(User.username.asc())
 
     elif isinstance(thing, Comment):
+
+        embed=f"/embed/comment/{thing.base36id}"
 
         ups = g.db.query(User).join(CommentVote).filter(
             CommentVote.comment_id==thing.id,
@@ -248,7 +252,10 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
     else:
         abort(400)
 
+
+
     return render_template("help/votes.html",
                            thing=thing,
+                           embed_url=embed,
                            ups=ups,
                            downs=downs)

@@ -12,9 +12,7 @@
 
 {% if thing %}
 
-<h1>Info</h1>
-<p><a href="{{ thing.permalink }}">{{ thing.permalink }}</a></p>
-<p><b>Created At:</b> {{ thing.created_datetime }}</p>
+<iframe id="embed-iframe-{{ 'SITE_NAME' | app_config | lower }}" class="internal-embed w-100 border-0" src="{{ embed_url }}"></iframe>
 
 <h2>Upvotes</h2>
 <table class="table table-striped mb-5">
