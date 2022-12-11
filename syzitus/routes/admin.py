@@ -16,6 +16,7 @@ from syzitus.helpers.sanitize import *
 from syzitus.helpers.get import *
 from syzitus.classes import *
 from syzitus.classes.domains import reasons as REASONS
+from syzitus.classes.badges import BADGE_DEFS
 from syzitus.routes.admin_api import create_plot, user_stat_data
 from syzitus.classes.categories import CATEGORIES
 
