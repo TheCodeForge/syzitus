@@ -1,4 +1,4 @@
-import re
+from re import compile as re_compile, match as re_match
 from urllib.parse import urlparse, parse_qs
 import requests
 from os import environ
@@ -7,14 +7,14 @@ import json
 from syzitus.__main__ import app
 from .get import *
 
-youtube_regex = re.compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)?([\w-]*)")
+youtube_regex = re_compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)?([\w-]*)")
 
 regexified_server_name=app.config['SERVER_NAME'].replace('.','\.')
-ruqqus_regex = re.compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
+ruqqus_regex = re_compile(f"^https?://.*{regexified_server_name}/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/(\w+))?")
 
-twitter_regex=re.compile("/status/(\d+)")
+twitter_regex=re_compile("/status/(\d+)")
 
-#rumble_regex=re.compile("/embed/(\w+)-/")
+#rumble_regex=re_compile("/embed/(\w+)-/")
 
 FACEBOOK_TOKEN=environ.get("FACEBOOK_TOKEN","").lstrip().rstrip()
 
@@ -22,7 +22,7 @@ FACEBOOK_TOKEN=environ.get("FACEBOOK_TOKEN","").lstrip().rstrip()
 
 def youtube_embed(url):
 
-    yt_id = re.match(youtube_regex, url).group(3)
+    yt_id = re_match(youtube_regex, url).group(3)
 
     # if not yt_id or len(yt_id) != 11:
     #     return "error"
@@ -38,7 +38,7 @@ def youtube_embed(url):
 
 def ruqqus_embed(url):
 
-    matches = re.match(ruqqus_regex, url)
+    matches = re_match(ruqqus_regex, url)
 
     post_id = matches.group(1)
     comment_id = matches.group(3)
