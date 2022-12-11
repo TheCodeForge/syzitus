@@ -1,0 +1,58 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>{{ "SITE_NAME" | app_config }} - Votes</title>
+{% endblock %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block content %}
+<h1>Vote Info</h1>
+
+{% if thing %}
+
+<h1>Info</h1>
+<p><a href="{{ thing.permalink }}">{{ thing.permalink }}</a></p>
+<p><b>Created At:</b> {{ thing.created_utc }} ({{ thing.created_datetime }} UTC)</p>
+
+<h2>Upvotes</h2>
+<table class="table table-striped mb-5">
+  <thead class="bg-primary text-white">
+    <tr>
+      <th></th>
+      <th>User</th>
+    </tr>
+  </thead>
+
+  {% for user in ups %}
+  <tr>
+      <td>{{ loop.index }}</td>
+      <td><a href="{{ user.permalink }}" target="_blank"><img class="profile-pic-20 mr-1" src="{{ user.profile_url }}">{{ user.username }}</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Downvotes</h2>
+<table class="table table-striped mb-5">
+  <thead class="bg-primary text-white">
+    <tr>
+      <th></th>
+      <th>User</th>
+    </tr>
+  </thead>
+
+  {% for user in downs %}
+  <tr>
+      <td>{{ loop.index }}</td>
+      <td><a href="{{ user.permalink }}" target="_blank"><img class="profile-pic-20 mr-1" src="{{ user.profile_url }}">{{ user.username }}</a></td>
+  </tr>
+  {% endfor %}
+</table>
+
+
+
+{% endif %}
+
+
+{% endblock %}

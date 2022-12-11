@@ -218,6 +218,11 @@ class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
         return f"{self.post.permalink}/{self.base36id}"
 
     @property
+    @lazy
+    def votes_permalink(self):
+        return self.permalink.replace('/post/', '/votes/', 1)
+
+    @property
     def any_descendants_live(self):
 
         if self.replies == []:

@@ -254,6 +254,11 @@ class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
         return f"/+{self.board.name}/post/{self.base36id}/{output}"
 
     @property
+    @lazy
+    def votes_permalink(self):
+        return self.permalink.replace('/post/', '/votes/', 1)
+
+    @property
     def is_archived(self):
 
         now = int(time.time())

@@ -179,3 +179,87 @@ URL path parameters:
     g.db.commit()
 
     return make_response(""), 204
+
+
+@app.get("/+<boardname>/votes/<pid>/<anything>")
+@app.get("/+<boardname>/votes/<pid>/<anything>/<cid>")
+#@auth_required
+@admin_level_required(4)
+def public_vote_info_get(boardname, pid, cid=None):
+
+    if cid:
+        thing=get_comment(cid)
+    else:
+        thing=get_post(pid)
+
+    if request.path!=thing.votes_permalink:
+        abort(404)
+
+    if isinstance(thing, Submission):
+
+        ups=g.db.query(User).filter(
+            User.id.in_(
+                select(Vote).filter_by(
+                    submission_id=thing.id,
+                    vote_type=1
+                    )
+                )
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+            User.is_deleted==False
+            ).order_by(User.username.asc())
+
+
+        downs = g.db.query(User).filter(
+            User.id.in_(
+                select(Vote).filter_by(
+                    submission_id=thing.id,
+                    vote_type=-1
+                    )
+                )
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+            User.is_deleted==False
+            ).order_by(User.username.asc())
+
+    elif isinstance(thing, Comment):
+
+        ups = g.db.query(User).filter(
+            User.id.in_(
+                select(CommentVote).filter_by(
+                    comment_id=thing.id,
+                    vote_type=1
+                    )
+                )
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+            User.is_deleted==False
+            ).order_by(User.username.asc())
+
+        downs = g.db.query(User).filter(
+            User.id.in_(
+                select(CommentVote).filter_by(
+                    comment_id=thing.id,
+                    vote_type=-1
+                    )
+                )
+            or_(
+                User.is_banned==0,
+                User.unban_utc>0
+                ),
+            User.is_deleted==False
+            ).order_by(User.username.asc())
+
+    else:
+        abort(400)
+
+    return render_template("admin/votes.html",
+                           thing=thing,
+                           ups=ups,
+                           downs=downs)
