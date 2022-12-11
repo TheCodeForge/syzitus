@@ -199,7 +199,7 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
         ups=g.db.query(User).filter(
             User.id.in_(
-                select(Vote).filter_by(
+                select(Vote.user_id).filter_by(
                     submission_id=thing.id,
                     vote_type=1
                     )
@@ -214,7 +214,7 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
         downs = g.db.query(User).filter(
             User.id.in_(
-                select(Vote).filter_by(
+                select(Vote.user_id).filter_by(
                     submission_id=thing.id,
                     vote_type=-1
                     )
@@ -230,7 +230,7 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
         ups = g.db.query(User).filter(
             User.id.in_(
-                select(CommentVote).filter_by(
+                select(CommentVote.user_id).filter_by(
                     comment_id=thing.id,
                     vote_type=1
                     )
@@ -244,7 +244,7 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
 
         downs = g.db.query(User).filter(
             User.id.in_(
-                select(CommentVote).filter_by(
+                select(CommentVote.user_id).filter_by(
                     comment_id=thing.id,
                     vote_type=-1
                     )
