@@ -167,4 +167,5 @@ TITLE_DATA={
         'text': ', the Famous'}
 }
 
-TITLES={x:Title(id=x, **TITLE_DATA[x]) for x in TITLE_DATA}
+def TITLES():
+    return {x:Title(id=x, **TITLE_DATA[x]) for x in TITLE_DATA}
