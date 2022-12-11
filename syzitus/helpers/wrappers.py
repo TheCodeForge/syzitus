@@ -2,8 +2,7 @@ from flask import g, session, abort, render_template, jsonify, request, make_res
 from os import environ
 import requests
 from werkzeug.wrappers.response import Response as RespObj
-import time
-import random
+from random import randint
 
 from syzitus.classes import User, OauthApp, ClientAuth, Submission, Comment
 from .get import *
@@ -94,7 +93,7 @@ def get_logged_in_user():
 
         client =g.db.query(ClientAuth).filter(
             ClientAuth.access_token == token,
-            ClientAuth.access_token_expire_utc > int(time.time())
+            ClientAuth.access_token_expire_utc > g.timestamp
         ).first()
 
         g.user=client.user
@@ -143,7 +142,7 @@ def check_ban_evade():
     if not g.user or not g.user.ban_evade:
         return
     
-    if random.randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
+    if randint(0,30) < g.user.ban_evade and not g.user.is_suspended:
         g.user.ban(reason="Evading a site-wide ban")
         #send_notification(g.user, f"Your {app.config['SITE_NAME']} account has been permanently suspended for the following reason:\n\n> ban evasion")
 
