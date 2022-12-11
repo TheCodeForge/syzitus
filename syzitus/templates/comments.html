@@ -259,7 +259,7 @@
                 {% endif %}
 
                 {% if g.user and not c.is_banned and not c.is_deleted %}
-                <a class="dropdown-item" href="{{ c.votes_permalink }}"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
+                <a class="dropdown-item" href="{{ c.votes_permalink }}" target="_blank"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
                 {% endif %}
 
                 <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed</a>
@@ -467,7 +467,7 @@
 
             {% if g.user and not c.is_deleted and not c.is_banned %}
             <li class="list-group-item">
-              <a href="{{ c.votes_permalink }}" class="d-block post-toast-url" data-dismiss="modal"><i class="fas fa-fw fa-arrow-up-arrow-down"></i>Votes</a>
+              <a href="{{ c.votes_permalink }}" target="_blank" class="d-block post-toast-url" data-dismiss="modal"><i class="fas fa-fw fa-arrow-up-arrow-down"></i>Votes</a>
             </li>
             {% endif %}
 
