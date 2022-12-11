@@ -182,80 +182,130 @@ URL path parameters:
 
 
 @app.get("/+<boardname>/votes/<pid>/<anything>")
-@app.get("/+<boardname>/votes/<pid>/<anything>/<cid>")
+@app.get("/api/v2/submissions/<pid>/votes")
 @is_not_banned
-def public_vote_info_get(boardname, pid, anything, cid=None):
+@api("read")
+def public_vote_info_posts_get(boardname=None, pid=None, anything=None):
 
-    if cid:
-        thing=get_comment(cid)
-    else:
-        thing=get_post(pid)
+    """
+Get public vote information about a post.
 
-    if request.path!=thing.votes_permalink:
+URL path parameters:
+* `pid` - The base 36 comment ID
+"""
+
+    if not pid:
         abort(404)
 
-    if not thing.board.can_view(g.user):
+    post=get_post(pid)
+
+    if request.path!=post.votes_permalink:
+        abort(404)
+
+    if not post.board.can_view(g.user):
         abort(403)
 
-    if thing.is_banned or thing.is_deleted:
+    if post.is_banned or post.is_deleted:
         abort(410)
 
-    if isinstance(thing, Submission):
+    embed=f"/embed/post/{post.base36id}"
 
-        embed=f"/embed/post/{thing.base36id}"
-
-        ups=g.db.query(User).join(Vote).filter(
-            Vote.submission_id==thing.id,
-            Vote.vote_type==1,
-            or_(
-                User.is_banned==0,
-                User.unban_utc>0
-                ),
-            User.is_deleted==False
-            ).order_by(User.username.asc())
+    ups=g.db.query(User).join(Vote).filter(
+        Vote.submission_id==post.id,
+        Vote.vote_type==1,
+        or_(
+            User.is_banned==0,
+            User.unban_utc>0
+            ),
+        User.is_deleted==False
+        ).order_by(User.username.asc())
 
 
-        downs = g.db.query(User).join(Vote).filter(
-            Vote.submission_id==thing.id,
-            Vote.vote_type==-1,
-            or_(
-                User.is_banned==0,
-                User.unban_utc>0
-                ),
-            User.is_deleted==False
-            ).order_by(User.username.asc())
+    downs = g.db.query(User).join(Vote).filter(
+        Vote.submission_id==post.id,
+        Vote.vote_type==-1,
+        or_(
+            User.is_banned==0,
+            User.unban_utc>0
+            ),
+        User.is_deleted==False
+        ).order_by(User.username.asc())
 
-    elif isinstance(thing, Comment):
-
-        embed=f"/embed/comment/{thing.base36id}"
-
-        ups = g.db.query(User).join(CommentVote).filter(
-            CommentVote.comment_id==thing.id,
-            CommentVote.vote_type==1,
-            or_(
-                User.is_banned==0,
-                User.unban_utc>0
-                ),
-            User.is_deleted==False
-            ).order_by(User.username.asc())
-
-        downs = g.db.query(User).filter(
-            CommentVote.comment_id==thing.id,
-            CommentVote.vote_type==-1,
-             or_(
-                User.is_banned==0,
-                User.unban_utc>0
-                ),
-            User.is_deleted==False
-            ).order_by(User.username.asc())
-
-    else:
-        abort(400)
-
-
-
-    return render_template("help/votes.html",
-                           thing=thing,
+    return {
+        "html":lambda:render_template("help/votes.html",
+                           thing=post,
                            embed_url=embed,
                            ups=ups,
-                           downs=downs)
+                           downs=downs),
+        "api": lambda:jsonify(
+            {
+            "upvoted":[x.username for x in ups],
+            "downvoted":[x.username for x in downs]
+            }
+            )
+        }
+
+
+@app.get("/+<boardname>/votes/<pid>/<anything>/<cid>")
+@app.get("/api/v2/comments/<cid>/votes")
+@is_not_banned
+@api("read")
+def public_vote_info_comments_get(boardname=None, pid=None, anything=None, cid=None):
+
+    """
+Get public vote information about a comment.
+
+URL path parameters:
+* `cid` - The base 36 comment ID
+"""
+
+    if not cid:
+        abort(404)
+
+    comment=get_comment(cid)
+
+    if request.path!=comment.votes_permalink:
+        abort(404)
+
+    if not comment.board.can_view(g.user):
+        abort(403)
+
+    if comment.is_banned or comment.is_deleted:
+        abort(410)
+
+    embed=f"/embed/comment/{comment.base36id}"
+
+    ups = g.db.query(User).join(CommentVote).filter(
+        CommentVote.comment_id==comment.id,
+        CommentVote.vote_type==1,
+        or_(
+            User.is_banned==0,
+            User.unban_utc>0
+            ),
+        User.is_deleted==False
+        ).order_by(User.username.asc())
+
+    downs = g.db.query(User).filter(
+        CommentVote.comment_id==comment.id,
+        CommentVote.vote_type==-1,
+         or_(
+            User.is_banned==0,
+            User.unban_utc>0
+            ),
+        User.is_deleted==False
+        ).order_by(User.username.asc())
+
+
+    return {
+        "html":lambda:render_template("help/votes.html",
+                           thing=comment,
+                           embed_url=embed,
+                           ups=ups,
+                           downs=downs),
+        "api": lambda:jsonify(
+            {
+            "upvoted":[x.username for x in ups],
+            "downvoted":[x.username for x in downs]
+            }
+            )
+        }
