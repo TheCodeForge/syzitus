@@ -203,7 +203,7 @@ def public_vote_info_get(boardname, pid, cid=None):
                     submission_id=thing.id,
                     vote_type=1
                     )
-                )
+                ),
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -218,7 +218,7 @@ def public_vote_info_get(boardname, pid, cid=None):
                     submission_id=thing.id,
                     vote_type=-1
                     )
-                )
+                ),
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -234,7 +234,7 @@ def public_vote_info_get(boardname, pid, cid=None):
                     comment_id=thing.id,
                     vote_type=1
                     )
-                )
+                ),
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
@@ -248,7 +248,7 @@ def public_vote_info_get(boardname, pid, cid=None):
                     comment_id=thing.id,
                     vote_type=-1
                     )
-                )
+                ),
             or_(
                 User.is_banned==0,
                 User.unban_utc>0
