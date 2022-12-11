@@ -2,7 +2,7 @@ from time import struct_time
 import json
 from sqlalchemy import text, func
 from flask import g, session
-import calendar
+from calendar import timegm as calendar_timegm
 import re
 from urllib.parse import quote_plus
 from io import BytesIO
@@ -68,7 +68,7 @@ def coin_goal(x):
                                               now.tm_yday,
                                               0)
                                              )
-    cutoff = calendar.timegm(midnight_month_start)
+    cutoff = calendar_timegm(midnight_month_start)
     
     coins=g.db.query(func.sum(PayPalTxn.coin_count)).filter(
         PayPalTxn.created_utc>cutoff,
