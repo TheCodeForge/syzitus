@@ -1,5 +1,5 @@
 import requests
-import threading
+from threading import Thread
 from syzitus.__main__ import app, debug
 
 DISCORD_ENDPOINT = "https://discordapp.com/api"
@@ -16,7 +16,7 @@ def discord_wrap(f):
             return
 
 
-        thread=threading.Thread(target=f, args=args, kwargs=kwargs)
+        thread=Thread(target=f, args=args, kwargs=kwargs)
         thread.start()
 
     wrapper.__name__=f.__name__
@@ -29,7 +29,7 @@ def req_wrap(f):
         if not app.config['DISCORD_CLIENT_ID']:
             return
 
-        thread=threading.Thread(target=f, args=args, kwargs=kwargs)
+        thread=Thread(target=f, args=args, kwargs=kwargs)
         thread.start()
 
     wrapper.__name__=f.__name__

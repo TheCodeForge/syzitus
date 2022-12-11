@@ -1,11 +1,11 @@
-import boto3
+from boto3 import client as AWSClient
 import requests
 from os import environ, remove
-import piexif
+from piexif import remove as exif_remove
 import time
 from urllib.parse import urlparse
 from PIL import Image
-import imagehash
+from imagehash import phash
 from sqlalchemy import func
 from os import remove
 
@@ -18,7 +18,7 @@ CF_KEY = environ.get("CLOUDFLARE_KEY",'').lstrip().rstrip()
 CF_ZONE = environ.get("CLOUDFLARE_ZONE",'').lstrip().rstrip()
 
 # setup AWS connection
-S3 = boto3.client("s3",
+S3 = AWSClient("s3",
                   aws_access_key_id=environ.get(
                       "AWS_ACCESS_KEY_ID",'').lstrip().rstrip(),
                   aws_secret_access_key=environ.get(
@@ -30,7 +30,7 @@ def check_phash(db, name):
     return db.query(BadPic).filter(
         func.levenshtein(
             BadPic.phash,
-            hex2bin(str(imagehash.phash(Image.open(name))))
+            hex2bin(str(phash(Image.open(name))))
             ) < 10
         ).first()
 
@@ -50,7 +50,7 @@ def upload_from_url(name, url):
             file.write(chunk)
 
     if tempname.split('.')[-1] in ['jpg', 'jpeg']:
-        piexif.remove(tempname)
+        exif_remove(tempname)
 
     S3.upload_file(tempname,
                    Bucket=BUCKET,
@@ -92,7 +92,7 @@ def upload_file(name, file, resize=None):
     file.save(tempname)
 
     if tempname.split('.')[-1] in ['jpg', 'jpeg']:
-        piexif.remove(tempname)
+        exif_remove(tempname)
 
     if resize:
         i = Image.open(tempname)
@@ -115,7 +115,7 @@ def upload_from_file(name, filename, resize=None):
     tempname = name.replace("/", "_")
 
     if filename.split('.')[-1] in ['jpg', 'jpeg']:
-        piexif.remove(tempname)
+        exif_remove(tempname)
 
     if resize:
         i = Image.open(tempname)
