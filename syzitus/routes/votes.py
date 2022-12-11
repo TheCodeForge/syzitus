@@ -259,7 +259,7 @@ def public_vote_info_get(boardname, pid, anything, cid=None):
     else:
         abort(400)
 
-    return render_template("admin/votes.html",
+    return render_template("help/votes.html",
                            thing=thing,
                            ups=ups,
                            downs=downs)
