@@ -6,7 +6,7 @@ $setsecondary: #{secondary};
 $primary: lighten($setprimary, 20%);
 $dark: #dce7c1;
 $secondary: darken($setsecondary, 20%);
-$danger: #E53E3E;
+$danger: darken(#E53E3E, 20%);
 $white: #000000;
 $black: #EDEDED;
 $light: #0f1619;
