@@ -1,18 +1,17 @@
-from flask import session
-import time
+from flask import session, g
 from .security import generate_hash
 
 
 def session_over18(board):
 
-    now = int(time.time())
+    now = g.timestamp
 
     return session.get('over_18', {}).get(board.base36id, 0) >= now
 
 
 def session_isnsfl(board):
 
-    now = int(time.time())
+    now = g.timestamp
 
     return session.get('show_nsfl', {}).get(board.base36id, 0) >= now
 
