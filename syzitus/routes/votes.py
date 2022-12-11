@@ -281,7 +281,7 @@ URL path parameters:
         User.is_deleted==False
         ).order_by(User.username.asc())
 
-    downs = g.db.query(User).filter(
+    downs = g.db.query(User).join(CommentVote).filter(
         CommentVote.comment_id==comment.id,
         CommentVote.vote_type==-1,
          or_(
