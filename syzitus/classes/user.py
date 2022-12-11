@@ -16,7 +16,7 @@ import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 #from .votes import Vote
 from .alts import Alt
-from .titles import Title, TITLE_DATA
+from .titles import TITLES
 from .submission import Submission, SubmissionAux #, SaveRelationship
 from .comment import Comment, CommentAux, Notification
 from .boards import Board
@@ -281,7 +281,7 @@ class User(Base, Stndrd, Age_times):
 
     @property
     def title(self):
-        return Title(id=self.title_id, **TITLE_DATA[self.title_id])
+        return TITLES.get(self.title_id)
     
 
     @cache.memoize()

@@ -133,7 +133,7 @@ def settings_profile():
 @auth_desired
 def titles():
     return render_template("/help/titles.html",
-                           titles=list(TITLES().values())
+                           titles=list(TITLES.values())
                            )
 
 
