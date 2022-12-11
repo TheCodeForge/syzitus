@@ -3,7 +3,6 @@ import json
 from sqlalchemy import text, func
 from flask import g, session
 from calendar import timegm as calendar_timegm
-import re
 from urllib.parse import quote_plus
 from io import BytesIO
 from qrcode import QRCode
@@ -14,10 +13,6 @@ from .get import *
 from .security import generate_hash
 
 from syzitus.__main__ import app, cache
-
-
-post_regex = re.compile("^https?://[a-zA-Z0-9_.-]+/\+\w+/post/(\w+)(/[a-zA-Z0-9_-]+/?)?$")
-
 
 @app.template_filter("total_users")
 @cache.memoize(timeout=60)
