@@ -1,5 +1,6 @@
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
+from flask import g
 import math
 import random
 import time
