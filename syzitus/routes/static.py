@@ -1,11 +1,9 @@
 from jinja2.exceptions import TemplateNotFound
-import pyotp
-import sass
+from pyotp import random_base32 as pyotp_random_base32
+from sass import compile as sass_compile
 import mistletoe
 from flask import g, session, abort, render_template, jsonify, make_response, request, send_file, Response, redirect
 from werkzeug.security import safe_join
-import PIL
-import io
 from PIL import ImageFont, ImageDraw
 
 from syzitus.helpers.wrappers import *
@@ -46,7 +44,7 @@ def main_css(color, file, n=None):
     output = output.replace("{downvote}", downvote_color)
 
     #compile the regular css
-    output=sass.compile(string=output)
+    output=sass_compile(string=output)
 
     #add title classes
 
@@ -170,7 +168,7 @@ def help_admins():
 @auth_required
 def settings_security():
 
-    mfa_secret=pyotp.random_base32() if not g.user.mfa_secret else None
+    mfa_secret=pyotp_random_base32() if not g.user.mfa_secret else None
 
     if mfa_secret:
         recovery=f"{mfa_secret}+{g.user.id}+{g.user.original_username}"
