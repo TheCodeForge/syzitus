@@ -217,6 +217,7 @@ def badge_grant_post():
     g.db.add(new_badge)
 
     g.db.commit()
+    cache.delete_memoized(User.badges, user)
 
     text = f"""
 @{g.user.username} has given you the following profile badge:
