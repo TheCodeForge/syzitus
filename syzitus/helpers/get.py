@@ -6,7 +6,7 @@ from sqlalchemy.orm import aliased, joinedload, lazyload, Load
 from urllib.parse import urlparse
 from syzitus.__main__ import debug
 
-import re
+from re import search as re_search
 
 
 def get_user(username, graceful=False):
@@ -1037,19 +1037,19 @@ def get_from_permalink(link, v=None):
 
     if "@" in link:
 
-        name = re.search("/@(\w+)", link)
+        name = re_search("/@(\w+)", link)
         if name:
             name=name.group(1)
             return get_user(name)
 
     if "+" in link:
 
-        x = re.search("/\+(\w+)$", link)
+        x = re_search("/\+(\w+)$", link)
         if x:
             name=x.group(1)
             return get_guild(name)
 
-    ids = re.search("/\+\w+/post/(\w+)/[^/]+(/(\w+))?", link)
+    ids = re_search("/\+\w+/post/(\w+)/[^/]+(/(\w+))?", link)
 
     post_id = ids.group(1)
     comment_id = ids.group(3)
