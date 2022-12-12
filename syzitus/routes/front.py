@@ -1,7 +1,7 @@
 from flask import g, session, abort, render_template, jsonify, make_response, redirect
 from sqlalchemy import select, and_, or_
 from sqlalchemy.orm import lazyload, contains_eager, Load
-import random
+from random import randint
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.get import *
@@ -744,7 +744,7 @@ def random_post():
     x=x.join(Submission.board).filter(Board.is_banned==False)
 
     total = x.count()
-    n = random.randint(0, total - 1)
+    n = randint(0, total - 1)
 
     post = x.order_by(Submission.id.asc()).offset(n).limit(1).first()
     return redirect(post.permalink)
@@ -765,7 +765,7 @@ def random_guild():
         x = x.filter(Board.id.notin_([i[0] for i in bans]))
 
     total = x.count()
-    n = random.randint(0, total - 1)
+    n = randint(0, total - 1)
 
     board = x.order_by(Board.id.asc()).offset(n).limit(1).first()
 
@@ -786,7 +786,7 @@ def random_comment():
         x = x.filter(Comment.board_id.notin_([i[0] for i in bans]))
 
     total = x.count()
-    n = random.randint(0, total - 1)
+    n = randint(0, total - 1)
     comment = x.order_by(Comment.id.asc()).offset(n).limit(1).first()
 
     return redirect(comment.permalink)
@@ -801,7 +801,7 @@ def random_user():
     x = x.filter_by(is_private=False)
 
     total = x.count()
-    n = random.randint(0, total - 1)
+    n = randint(0, total - 1)
 
     user = x.offset(n).limit(1).first()
 
