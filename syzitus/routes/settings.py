@@ -1,9 +1,8 @@
 from flask import g, session, abort, render_template, jsonify, redirect
 from sqlalchemy import func
-import time
-import threading
-import mistletoe
-import re
+from threading import Thread as threading_Thread
+from mistletoe import Document
+from re import compile as re_compile, match as re_match
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
@@ -19,8 +18,8 @@ from .front import frontlist
 from syzitus.__main__ import app, cache
 
 
-valid_username_regex = re.compile("^[a-zA-Z0-9_]{3,25}$")
-valid_password_regex = re.compile("^.{8,100}$")
+valid_username_regex = re_compile("^[a-zA-Z0-9_]{3,25}$")
+valid_password_regex = re_compile("^.{8,100}$")
 
 
 @app.route("/settings/profile", methods=["POST"])
@@ -78,7 +77,7 @@ def settings_profile_post():
 
 
         with CustomRenderer() as renderer:
-            bio_html = renderer.render(mistletoe.Document(bio))
+            bio_html = renderer.render(Document(bio))
         bio_html = sanitize(bio_html, linkgen=True)
 
         # Run safety filter
@@ -183,7 +182,7 @@ def settings_security_post():
             return redirect("/settings/security?error=" +
                             escape("Passwords do not match."))
 
-        if not re.match(valid_password_regex, request.form.get("new_password")):
+        if not re_match(valid_password_regex, request.form.get("new_password")):
             #print(f"signup fail - {username } - invalid password")
             return redirect("/settings/security?error=" + 
                             escape("Password must be between 8 and 100 characters."))
@@ -223,7 +222,7 @@ def settings_security_post():
 
         url = f"https://{app.config['SERVER_NAME']}/activate"
 
-        now = int(time.time())
+        now = g.timestamp
 
         token = generate_hash(f"{new_email}+{g.user.id}+{now}")
         params = f"?email={quote(new_email)}&id={g.user.id}&time={now}&token={token}"
@@ -321,7 +320,7 @@ def settings_images_profile():
     g.user.set_profile(request.files["profile"])
 
     # anti csam
-    new_thread = threading.Thread(target=check_csam_url,
+    new_thread = threading_Thread(target=check_csam_url,
                                   args=(g.user.profile_url,
                                         lambda: board.del_profile()
                                         )
@@ -338,7 +337,7 @@ def settings_images_banner():
     g.user.set_banner(request.files["banner"])
 
     # anti csam
-    new_thread = threading.Thread(target=check_csam_url,
+    new_thread = threading_Thread(target=check_csam_url,
                                   args=(g.user.banner_url,
                                         lambda: board.del_banner()
                                         )
@@ -379,7 +378,7 @@ def settings_toggle_collapse():
 @auth_desired
 def update_announcement():
 
-    g.user.read_announcement_utc = int(time.time())
+    g.user.read_announcement_utc = g.timestamp
     g.db.add(g.user)
     g.db.commit()
 
@@ -437,7 +436,7 @@ def delete_account():
     session.pop("session_id", None)
 
     #deal with throwaway spam - auto nuke content if account age below threshold
-    if int(time.time()) - g.user.created_utc < 60*60*12:
+    if g.timestamp - g.user.created_utc < 60*60*12:
         for post in g.user.submissions:
             post.is_banned=True
 
@@ -510,7 +509,7 @@ def settings_block_user():
     
     new_block = UserBlock(user_id=g.user.id,
                           target_id=user.id,
-                          created_utc=int(time.time())
+                          created_utc=g.timestamp
                           )
     g.db.add(new_block)
     g.db.commit()
@@ -556,7 +555,7 @@ def settings_block_guild():
 
     new_block = BoardBlock(user_id=g.user.id,
                            board_id=board.id,
-                           created_utc=int(time.time())
+                           created_utc=g.timestamp
                            )
     g.db.add(new_block)
     g.db.commit()
@@ -641,15 +640,15 @@ def settings_name_change():
         return jsonify({"error":"Verified ID users can't change their name."}), 403
 
     #7 day cooldown
-    if g.user.name_changed_utc > int(time.time()) - 60*60*24*app.config["COOLDOWN_DAYS_CHANGE_USERNAME"]:
-        return jsonify({"error":f"You changed your name {(int(time.time()) - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait {app.config['COOLDOWN_DAYS_CHANGE_USERNAME']} days between name changes."}), 401
+    if g.user.name_changed_utc > g.timestamp - 60*60*24*app.config["COOLDOWN_DAYS_CHANGE_USERNAME"]:
+        return jsonify({"error":f"You changed your name {(g.timestamp - g.user.name_changed_utc)//(60*60*24)} days ago. You need to wait {app.config['COOLDOWN_DAYS_CHANGE_USERNAME']} days between name changes."}), 401
 
     #costs 20 coins
     if g.user.coin_balance < app.config["COINS_REQUIRED_CHANGE_USERNAME"]:
         return jsonify({"error":f"Username changes cost {app.config['COINS_REQUIRED_CHANGE_USERNAME']} coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
 
     #verify acceptability
-    if not re.match(valid_username_regex, new_name):
+    if not re_match(valid_username_regex, new_name):
         return jsonify({"error":"That isn't a valid username."}), 400
 
     #verify availability
@@ -673,7 +672,7 @@ def settings_name_change():
 
     g.user.username=new_name
     g.user.coin_balance-=app.config['COINS_REQUIRED_CHANGE_USERNAME']
-    g.user.name_changed_utc=int(time.time())
+    g.user.name_changed_utc=g.timestamp
 
     set_nick(g.user, new_name)
 
