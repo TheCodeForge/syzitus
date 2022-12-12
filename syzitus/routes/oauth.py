@@ -1,7 +1,5 @@
 from urllib.parse import urlparse
-from time import time
-import secrets
-import re
+from secrets import token_urlsafe
 from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.helpers.wrappers import *
@@ -138,7 +136,7 @@ def oauth_authorize_post():
 
     new_auth = ClientAuth(
         oauth_client=application.id,
-        oauth_code=secrets.token_urlsafe(128)[0:128],
+        oauth_code=token_urlsafe(128)[0:128],
         user_id=g.user.id,
         scope_identity="identity" in scopes,
         scope_create="create" in scopes,
@@ -147,8 +145,8 @@ def oauth_authorize_post():
         scope_delete="delete" in scopes,
         scope_vote="vote" in scopes,
         scope_guildmaster="guildmaster" in scopes,
-        refresh_token=secrets.token_urlsafe(128)[0:128] if permanent else None,
-        access_token_expire_utc=int(time.time())+3600
+        refresh_token=token_urlsafe(128)[0:128] if permanent else None,
+        access_token_expire_utc=g.timestamp+3600
     )
 
     g.db.add(new_auth)
@@ -190,8 +188,8 @@ def oauth_grant():
             return jsonify({"oauth_error": "Invalid code"}), 401
 
         auth.oauth_code = None
-        auth.access_token = secrets.token_urlsafe(128)[0:128]
-        auth.access_token_expire_utc = int(time.time()) + 60 * 60
+        auth.access_token = token_urlsafe(128)[0:128]
+        auth.access_token_expire_utc = g.timestamp + 60 * 60
 
         g.db.add(auth)
 
@@ -224,8 +222,8 @@ def oauth_grant():
         if not auth:
             return jsonify({"oauth_error": "Invalid refresh_token"}), 401
 
-        auth.access_token = secrets.token_urlsafe(128)[0:128]
-        auth.access_token_expire_utc = int(time.time()) + 60 * 60
+        auth.access_token = token_urlsafe(128)[0:128]
+        auth.access_token_expire_utc = g.timestamp + 60 * 60
 
         g.db.add(auth)
 
@@ -250,8 +248,8 @@ def request_api_keys():
         redirect_uri=request.form.get('redirect_uri'),
         author_id=g.user.id,
         description=request.form.get("description")[0:256],
-        client_id=secrets.token_urlsafe(32)[0:32],
-        client_secret=secrets.token_urlsafe(64)[0:64]
+        client_id=token_urlsafe(32)[0:32],
+        client_secret=token_urlsafe(64)[0:64]
     )
 
     g.db.add(new_app)
@@ -418,7 +416,7 @@ def reroll_oauth_tokens(aid):
     if a.author_id != g.user.id:
         abort(403)
 
-    a.client_secret = secrets.token_urlsafe(64)[0:64]
+    a.client_secret = token_urlsafe(64)[0:64]
 
     g.db.add(a)
 
