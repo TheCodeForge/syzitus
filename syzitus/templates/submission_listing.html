@@ -342,7 +342,7 @@
           {% endif %}
 
           {% if g.user and not p.is_deleted and not p.is_banned %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal"><a href="{{ p.votes_permalink }}" target="_blank"><i class="far fa-arrow-up-arrow-down fa-fw text-center text-muted mr-3"></i>Votes</a></button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted"><a href="{{ p.votes_permalink }}" target="_blank"><i class="far fa-arrow-up-arrow-down fa-fw text-center text-muted mr-3"></i>Votes</a></button>
           {% endif %}
 
           {% if g.user and g.user.id==p.author_id and p.deleted_utc == 0 %}
