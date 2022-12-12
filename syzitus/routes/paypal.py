@@ -1,6 +1,3 @@
-import requests
-import time
-
 from flask import g, session, abort, render_template, jsonify, redirect
 
 from syzitus.classes import *
@@ -75,7 +72,7 @@ def shop_buy_coins():
 
     new_txn=PayPalTxn(
         user_id=g.user.id,
-        created_utc=int(time.time()),
+        created_utc=g.timestamp,
         coin_count=coin_count,
         usd_cents=coins_to_price_cents(coin_count, code=promo),
         promo_id= promo.id if promo else None
@@ -100,7 +97,7 @@ def shop_negative_balance():
 
     new_txn=PayPalTxn(
         user_id=g.user.id,
-        created_utc=int(time.time()),
+        created_utc=g.timestamp,
         coin_count=0,
         usd_cents=g.user.negative_balance_cents
         )
@@ -139,7 +136,7 @@ def shop_buy_coins_completed():
     if not CLIENT.capture(txn):
         abort(402)
 
-    txn.created_utc=int(time.time())
+    txn.created_utc=g.timestamp
 
     g.db.add(txn)
     g.db.flush()
@@ -278,7 +275,7 @@ def gift_post_pid(pid):
 
     if not g.db.query(AwardRelationship).filter_by(user_id=g.user.id, submission_id=post.id).first():
         text=f"Someone liked [your post]({post.permalink}) and has given you a Coin!\n\n"
-        if u.premium_expires_utc < int(time.time()):
+        if u.premium_expires_utc < g.timestamp:
             text+=f"Your Coin has been automatically redeemed for one week of [{app_config['SITE_NAME']} Premium](/settings/premium)."
         else:
             text+=f"Since you already have {app_config['SITE_NAME']} Premium, the Coin has been added to your balance. You can keep it for yourself, or give it to someone else."
@@ -360,7 +357,7 @@ def gift_comment_pid(cid):
 
     if not g.db.query(AwardRelationship).filter_by(user_id=g.user.id, comment_id=comment.id).first():
         text=f"Someone liked [your comment]({comment.permalink}) and has given you a Coin!\n\n"
-        if u.premium_expires_utc < int(time.time()):
+        if u.premium_expires_utc < g.timestamp:
             text+=f"Your Coin has been automatically redeemed for one week of [{app_config['SITE_NAME']} Premium](/settings/premium)."
         else:
             text+=f"Since you already have {app_config['SITE_NAME']} Premium, the Coin has been added to your balance. You can keep it for yourself, or give it to someone else."
