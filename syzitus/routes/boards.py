@@ -21,7 +21,7 @@ from syzitus.classes.categories import CATEGORIES, CATEGORY_DATA, SUBCAT_DATA
 
 from syzitus.__main__ import app, limiter, cache
 
-valid_board_regex = re_match("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
+valid_board_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 
 @app.route("/m/<name>", methods=["GET"])
 @auth_desired
