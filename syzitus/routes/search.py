@@ -1,5 +1,5 @@
 from urllib.parse import quote
-import re
+from re import compile as re_compile, sub as re_sub
 from flask import g, session, abort, render_template, jsonify, redirect
 from sqlalchemy import select
 from sqlalchemy.orm import contains_eager, lazyload, joinedload
@@ -12,7 +12,7 @@ from syzitus.__main__ import app, cache
 
 
 
-query_regex=re.compile("(\w+):(\S+)")
+query_regex=re_compile("(\w+):(\S+)")
 valid_params=[
     'author',
     'domain',
@@ -93,7 +93,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
         #sanitize domain by removing anything that isn't [a-z0-9.]
         domain=domain.lower()
-        domain=re.sub("[^a-z0-9.-]","", domain)
+        domain=re_sub("[^a-z0-9.-]","", domain)
         #escape periods
         domain=domain.replace(".","\.")
 
