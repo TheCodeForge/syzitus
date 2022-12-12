@@ -72,7 +72,7 @@ IMG_DATA=[
 #IMAGES=[Image(**x) for x in IMG_DATA]
 
 def random_image():
-    return Image(**IMAGE_DATA[g.timestamp % len(IMAGES) + 1])
+    return Image(**IMG_DATA[g.timestamp % len(IMG_DATA) + 1])
 
 
 
