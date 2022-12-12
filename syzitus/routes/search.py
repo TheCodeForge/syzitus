@@ -155,7 +155,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
             )
 
     if t:
-        now = int(time.time())
+        now = g.timestamp
         if t == 'day':
             cutoff = now - 86400
         elif t == 'week':
