@@ -1,5 +1,5 @@
-import time
-import calendar
+# import time
+# import calendar
 from flask import g, session, abort, render_template, jsonify, redirect
 from PIL import Image
 from os import remove
@@ -444,7 +444,7 @@ def mod_self_to_guild(bid):
 #     plt.grid()
 #     plt.legend()
 
-#     now = int(time.time())
+#     now = g.timestamp
 #     single_plot = "single_plot.png"
 #     plt.savefig(single_plot)
 
@@ -506,7 +506,7 @@ def mod_self_to_guild(bid):
 #     comments_chart.legend(loc='upper left', frameon=True)
 #     votes_chart.legend(loc='upper left', frameon=True)
 
-#     now = int(time.time())
+#     now = g.timestamp
 #     name = "multiplot.png"
 
 #     plt.savefig(name)
