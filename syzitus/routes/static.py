@@ -1,7 +1,7 @@
 from jinja2.exceptions import TemplateNotFound
 from pyotp import random_base32 as pyotp_random_base32
 from sass import compile as sass_compile
-import mistletoe
+from mistletoe import markdown as mistletoe_markdown
 from flask import g, session, abort, render_template, jsonify, make_response, request, send_file, Response, redirect
 from werkzeug.security import safe_join
 from PIL import ImageFont, ImageDraw
@@ -303,7 +303,7 @@ def docs():
 
         @property
         def docstring_html(self):
-            return mistletoe.markdown(self.docstring)
+            return mistletoe_markdown(self.docstring)
 
         @property
         def resource(self):
