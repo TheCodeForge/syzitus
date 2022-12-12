@@ -146,7 +146,7 @@ $('.comment-box').blur(function () {
 */
 
 // Comment edit form
-$('.btn-toggle-comment-edit').click(function(){
+$(document).on('click', '.btn-toggle-comment-edit', .function(){
   id=$(this).data('comment-id')
   $("#comment-text-"+id).toggleClass('d-none');
   $("#comment-edit-"+id).toggleClass('d-none');
