@@ -270,7 +270,7 @@ def search(search_type="posts"):
         term=term.replace('\\','')
         term=term.replace('_','\_')
         
-        now=int(time.time())
+        now=g.timestamp
         users=g.db.query(User).filter(
             User.username.ilike(f'%{term}%'))
         
