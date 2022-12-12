@@ -17,7 +17,7 @@ from syzitus.helpers.get import *
 from syzitus.classes import *
 from syzitus.classes.domains import reasons as REASONS
 from syzitus.classes.badges import BADGE_DEFS
-from syzitus.routes.admin_api import create_plot, user_stat_data
+#from syzitus.routes.admin_api import user_stat_data
 from syzitus.classes.categories import CATEGORIES
 
 import syzitus.helpers.aws as aws
@@ -263,18 +263,18 @@ def users_list():
                            show_all=show_all
                            )
 
-@app.route("/admin/data", methods=["GET"])
-@admin_level_required(2)
-def admin_data():
+# @app.route("/admin/data", methods=["GET"])
+# @admin_level_required(2)
+# def admin_data():
 
-    data = user_stat_data().get_json()
+#     data = user_stat_data().get_json()
 
-    return render_template("admin/new_users.html",
-                           next_exists=False,
-                           page=1,
-                           single_plot=data['single_plot'],
-                           multi_plot=data['multi_plot']
-                           )
+#     return render_template("admin/new_users.html",
+#                            next_exists=False,
+#                            page=1,
+#                            single_plot=data['single_plot'],
+#                            multi_plot=data['multi_plot']
+#                            )
 
 
 @app.route("/admin/content_stats", methods=["GET"])
