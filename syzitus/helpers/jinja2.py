@@ -1,5 +1,4 @@
 from time import struct_time, gmtime
-import json
 from sqlalchemy import text, func
 from flask import g, session
 from calendar import timegm as calendar_timegm
