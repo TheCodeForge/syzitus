@@ -3,9 +3,11 @@ from urllib.parse import urlparse, parse_qs
 import requests
 from os import environ
 from bs4 import BeautifulSoup
-import json
-from syzitus.__main__ import app
+#import json
+
 from .get import *
+
+from syzitus.__main__ import app
 
 youtube_regex = re_compile("^.*(youtube\.com|youtu\.be)/(embed/|shorts/|watch\?v=)?([\w-]*)")
 
