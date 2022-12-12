@@ -7,17 +7,14 @@ gevent.monkey.patch_all()
 #import psycogreen.gevent
 #psycogreen.gevent.patch_psycopg()
 
-import os
-from os import environ
-import secrets
+from os import environ, path
+from secrets import token_hex
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
 #from flask_compress import Compress
 #from flask_minify import Minify
-from time import sleep
 from collections import deque
-import psycopg2
 from psycopg2.errors import UndefinedColumn
 
 from flaskext.markdown import Markdown
@@ -28,9 +25,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
 #import threading
 #import random
-import redis
+from redis import Redis
 #import gevent
-import sys
 
 from redis import BlockingConnectionPool, ConnectionPool
 
@@ -50,7 +46,7 @@ app.config["SITE_NAME"]=environ.get("SITE_NAME", "Syzitus").lstrip().rstrip()
 app.config["COLOR_PRIMARY"]=environ.get("COLOR_PRIMARY", "805AD5").lstrip().rstrip()
 app.config["COLOR_SECONDARY"]=environ.get("COLOR_SECONDARY", "E2E8F0").lstrip().rstrip()
 
-app.config["RUQQUSPATH"]=environ.get("RUQQUSPATH", os.path.dirname(os.path.realpath(__file__)))
+app.config["RUQQUSPATH"]=environ.get("RUQQUSPATH", path.dirname(path.realpath(__file__)))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DATABASE_URL'] = environ.get("DATABASE_URL","").replace("postgres://", "postgresql://")
@@ -286,7 +282,7 @@ Base = declarative_base()
 
 #set the shared redis cache for misc stuff
 
-r=redis.Redis(
+r=Redis(
     host=app.config["CACHE_REDIS_URL"].split("://")[1], 
     decode_responses=True,
     ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
@@ -388,7 +384,7 @@ def before_request():
         return redirect(url, code=301)
 
     if not session.get("session_id"):
-        session["session_id"] = secrets.token_hex(16)
+        session["session_id"] = token_hex(16)
 
     #default user to none
     g.user=None
