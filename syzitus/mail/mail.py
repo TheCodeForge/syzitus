@@ -1,6 +1,5 @@
 from os import environ
 import requests
-import time
 from flask import g, render_template, jsonify, abort
 from urllib.parse import quote
 
@@ -46,7 +45,7 @@ def send_verification_email(user, email=None):
         email = user.email
 
     url = f"https://{app.config['SERVER_NAME']}/activate"
-    now = int(time.time())
+    now = g.timestamp
 
     token = generate_hash(f"{email}+{user.id}+{now}")
     params = f"?email={quote(email)}&id={user.id}&time={now}&token={token}"
@@ -78,7 +77,7 @@ def activate():
     timestamp = int(request.args.get("time", "0"))
     token = request.args.get("token", "")
 
-    if int(time.time()) - timestamp > 3600:
+    if g.timestamp - timestamp > 3600:
         return render_template(
             "message.html", 
             title="Verification link expired.",
