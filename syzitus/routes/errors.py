@@ -1,8 +1,5 @@
-import gevent
 from flask import g, session, abort, render_template, jsonify, make_response, redirect
 from urllib.parse import quote, urlencode
-import time
-import gevent
 from werkzeug.security import safe_join
 
 from syzitus.helpers.wrappers import *
@@ -163,7 +160,7 @@ def error_429(e):
             except:
                 pass
             
-            r.set(f"ban_ip_{ip}", int(time.time()))
+            r.set(f"ban_ip_{ip}", g.timestamp)
             r.expire(f"ban_ip_{ip}", 3600)
             return "", 429
 
@@ -215,7 +212,7 @@ def error_503(e):
 @auth_required
 def allow_nsfw_logged_in(bid):
 
-    cutoff = int(time.time()) + 3600
+    cutoff = g.timestamp + 3600
 
     if not session.get("over_18", None):
         session["over_18"] = {}
@@ -247,7 +244,7 @@ def allow_nsfw_logged_out(bid):
 @auth_required
 def allow_nsfl_logged_in(bid):
 
-    cutoff = int(time.time()) + 3600
+    cutoff = g.timestamp + 3600
 
     if not session.get("show_nsfl", None):
         session["show_nsfl"] = {}
