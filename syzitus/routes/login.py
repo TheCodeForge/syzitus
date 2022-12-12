@@ -1,7 +1,7 @@
 from flask import g, session, abort, render_template, jsonify, request, redirect
-import time
-import re
-import random
+from gevent import sleep
+from re import compile as re_compile, match as re_match, fullmatch as re_fullmatch
+from random import uniform
 from urllib.parse import urlencode
 
 from syzitus.classes import *
@@ -16,9 +16,9 @@ from secrets import token_hex
 from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug
 
-valid_username_regex = re.compile("^[a-zA-Z0-9_]{3,25}+$")
-valid_password_regex = re.compile("^.{8,100}+$")
-# valid_email_regex=re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+valid_username_regex = re_compile("^[a-zA-Z0-9_]{3,25}+$")
+valid_password_regex = re_compile("^.{8,100}+$")
+# valid_email_regex=re_compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
 # login form
 
@@ -84,11 +84,11 @@ def login_post():
         account = get_user(username, graceful=True)
 
     if not account:
-        time.sleep(random.uniform(0, 2))
+        sleep(uniform(0, 2))
         return render_template("login.html", failed=True, i=random_image())
 
     if account.is_deleted:
-        time.sleep(random.uniform(0, 2))
+        sleep(uniform(0, 2))
         return render_template("login.html", failed=True, i=random_image())
 
     # test password
@@ -96,11 +96,11 @@ def login_post():
     if request.form.get("password"):
 
         if not account.verifyPass(request.form.get("password")):
-            time.sleep(random.uniform(0, 2))
+            sleep(uniform(0, 2))
             return render_template("login.html", failed=True, i=random_image())
 
         if account.mfa_secret:
-            now = int(time.time())
+            now = g.timestamp
             hash = generate_hash(f"{account.id}+{now}+2fachallenge")
             return render_template("login_2fa.html",
                                    v=account,
@@ -110,7 +110,7 @@ def login_post():
                                    redirect=request.form.get("redirect", "/")
                                    )
     elif request.form.get("2fa_token", "x"):
-        now = int(time.time())
+        now = g.timestamp
 
         if now - int(request.form.get("time")) > 600:
             return redirect('/login')
@@ -212,7 +212,7 @@ def sign_up_get():
     #        ref_user=ref_user)
 
     # Make a unique form key valid for one account creation
-    now = int(time.time())
+    now = g.timestamp
     ip = request.remote_addr
 
     redir = request.args.get("redirect", None)
@@ -248,7 +248,7 @@ def sign_up_post():
     #        i=random_image()
     #    )
 
-    now = int(time.time())
+    now = g.timestamp
 
     username = request.form.get("username")
 
@@ -278,15 +278,15 @@ def sign_up_post():
         return new_signup("Passwords did not match. Please try again.")
 
     # check username/pass conditions
-    if not re.fullmatch(valid_username_regex, username):
+    if not re_fullmatch(valid_username_regex, username):
         debug(f"signup fail - {username } - mismatched passwords")
         return new_signup("Invalid username")
 
-    if not re.fullmatch(valid_password_regex, request.form.get("password")):
+    if not re_fullmatch(valid_password_regex, request.form.get("password")):
         debug(f"signup fail - {username } - invalid password")
         return new_signup("Password must be between 8 and 100 characters.")
 
-    # if not re.match(valid_email_regex, request.form.get("email")):
+    # if not re_match(valid_email_regex, request.form.get("email")):
     #    return new_signup("That's not a valid email.")
 
     # Check for existing acocunts
@@ -317,8 +317,7 @@ def sign_up_post():
     # ip ratelimit
     previous = g.db.query(User).filter_by(
         creation_ip=request.remote_addr).filter(
-        User.created_utc > int(
-            time.time()) - 60 * 60).first()
+        User.created_utc > g.timestamp - 60 * 60).first()
     if previous:
         abort(429)
 
@@ -375,10 +374,10 @@ def sign_up_post():
             original_username = username,
             password=request.form.get("password"),
             email=email,
-            created_utc=int(time.time()),
+            created_utc=g.timestamp,
             creation_ip=request.remote_addr,
             referred_by=ref_id or None,
-            tos_agreed_utc=int(time.time()),
+            tos_agreed_utc=g.timestamp,
             creation_region=request.headers.get("cf-ipcountry"),
             ban_evade =  int(any([x.is_suspended for x in g.db.query(User).filter(User.id.in_(tuple(session.get("history", [])))).all() if x]))
             )
@@ -450,7 +449,7 @@ def post_forgot():
 
     if user:
         # generate url
-        now = int(time.time())
+        now = g.timestamp
         token = generate_hash(f"{user.id}+{now}+forgot+{user.login_nonce}")
         url = f"https://{app.config['SERVER_NAME']}/reset?id={user.id}&time={now}&token={token}"
 
@@ -473,7 +472,7 @@ def get_reset():
     timestamp = int(request.args.get("time",0))
     token = request.args.get("token")
 
-    now = int(time.time())
+    now = g.timestamp
 
     if now - timestamp > 600:
         return render_template("message.html", 
@@ -511,7 +510,7 @@ def post_reset():
     password = request.form.get("password")
     confirm_password = request.form.get("confirm_password")
 
-    now = int(time.time())
+    now = g.timestamp
 
     if now - timestamp > 600:
         return render_template("message.html",
