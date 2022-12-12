@@ -3,13 +3,12 @@ import mistletoe
 from sqlalchemy import func, literal
 from sqlalchemy.orm import aliased, contains_eager, lazyload, joinedload
 from bs4 import BeautifulSoup
-import secrets
-import threading
-import requests
-import re
-import bleach
-import time
-import gevent
+from secrets import token_urlsafe
+from threading import Thread as threading_Thread
+from requests import get as requests_get
+from re import compile as re_compile
+from bleach import clean as bleach_clean
+from gevent import spawn as gevent_spawn
 from flask import g, session, abort, render_template, jsonify, redirect, request
 
 from syzitus.helpers.wrappers import *
@@ -87,7 +86,7 @@ URL path parameters:
                                p=True)
 
     if post.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
-        t = int(time.time())
+        t = g.timestamp
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
                                lo_formkey=make_logged_out_formkey(t),
@@ -142,7 +141,7 @@ Optional query parameters:
                                p=True)
 
     if post.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
-        t = int(time.time())
+        t = g.timestamp
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
                                lo_formkey=make_logged_out_formkey(t),
@@ -265,7 +264,7 @@ Required form data:
 
     p.body = body
     p.body_html = body_html
-    p.edited_utc = int(time.time())
+    p.edited_utc = g.timestamp
 
     # offensive
     p.is_offensive = False
@@ -293,7 +292,7 @@ def get_post_title():
     #mimic chrome browser agent
     headers = {"User-Agent": f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36"}
     try:
-        x = requests.get(url, headers=headers)
+        x = requests_get(url, headers=headers)
     except BaseException:
         return jsonify({"error": "Could not reach page"}), 400
 
@@ -344,7 +343,7 @@ Optional file data:
     title = title.replace("\t", "")
     
     # sanitize title
-    title = bleach.clean(title)
+    title = bleach_clean(title)
 
     url = request.form.get("url", "")
 
@@ -374,7 +373,7 @@ Optional file data:
         return jsonify({"error": "`url` or `body` required"}), 400
 
     # sanitize title
-    title = bleach.clean(title, tags=[])
+    title = bleach_clean(title, tags=[])
 
     # Force https for submitted urls
 
@@ -465,7 +464,7 @@ Optional file data:
         return jsonify({"error": f"403 Not Authorized - +{board.name} disallows bots."}), 403
 
     # similarity check
-    now = int(time.time())
+    now = g.timestamp
     cutoff = now - 60 * 60 * 24
 
 
@@ -695,7 +694,7 @@ Optional file data:
             g.db.rollback()
             return jsonify({"error": "Image files only"}), 400
 
-        name = f'post/{new_post.base36id}/{secrets.token_urlsafe(8)}'
+        name = f'post/{new_post.base36id}/{token_urlsafe(8)}'
         upload_file(name, file)
 
         # thumb_name=f'posts/{new_post.base36id}/thumb.png'
@@ -727,7 +726,7 @@ Optional file data:
             db.close()
 
             
-        csam_thread=threading.Thread(target=check_csam_url, 
+        csam_thread=threading_Thread(target=check_csam_url, 
                                      args=(f"https://{BUCKET}/{name}", 
                                            g.user, 
                                            del_function
@@ -739,7 +738,7 @@ Optional file data:
 
     # spin off thumbnail generation and csam detection as  new threads
     if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
-        new_thread = gevent.spawn(
+        new_thread = gevent_spawn(
             thumbnail_thread,
             new_post.base36id
         )
@@ -754,7 +753,7 @@ Optional file data:
     notify_users = set()
 	
     soup = BeautifulSoup(body_html, features="html.parser")
-    for mention in soup.find_all("a", href=re.compile("^/@(\w+)"), limit=3):
+    for mention in soup.find_all("a", href=re_compile("^/@(\w+)"), limit=3):
         username = mention["href"].split("@")[1]
         user = g.db.query(User).filter_by(username=username).first()
         if user and not g.user.any_block_exists(user) and user.id != g.user.id: 
@@ -885,7 +884,7 @@ URL path parameters:
     if post.is_deleted:
         abort(404)
         
-    post.deleted_utc = int(time.time())
+    post.deleted_utc = g.timestamp
     post.is_pinned = False
     post.stickied = False
 
