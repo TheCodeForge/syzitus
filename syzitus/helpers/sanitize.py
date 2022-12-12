@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
 from functools import partial
+from re import match as re_match
+
 from .get import *
 # import os.path
 
@@ -219,7 +221,7 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
         #disguised link preventer
         for tag in soup.find_all("a"):
 
-            if re.match("https?://\S+", str(tag.string)):
+            if re_match("https?://\S+", str(tag.string)):
                 try:
                     tag.string = tag["href"]
                 except:
