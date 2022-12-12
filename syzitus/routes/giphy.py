@@ -1,6 +1,6 @@
 from flask import g, session, abort, render_template, jsonify
 from os import environ
-import requests
+from requests import get as requests_get
 
 from syzitus.helpers.wrappers import *
 
@@ -25,4 +25,4 @@ def giphy():
 
     debug([url, params])
 
-    return jsonify(requests.get(url, params=params).json())
+    return jsonify(requests_get(url, params=params).json())
