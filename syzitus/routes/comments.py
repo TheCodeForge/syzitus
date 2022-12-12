@@ -5,6 +5,7 @@ from sqlalchemy.orm import contains_eager
 from bs4 import BeautifulSoup
 from datetime import datetime
 import secrets
+import re
 import threading
 from os import environ
 from flask import g, session, abort, render_template, jsonify, make_response, redirect, request
