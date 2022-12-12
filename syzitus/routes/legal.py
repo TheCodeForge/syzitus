@@ -1,8 +1,7 @@
 from flask import g, session, abort, render_template, jsonify, request
 from os import environ
-import requests
 from werkzeug.utils import secure_filename
-import mistletoe
+from mistletoe import Document
 
 from syzitus.helpers.get import *
 from syzitus.helpers.wrappers import *
@@ -87,7 +86,7 @@ def dmca_post():
     email_text = render_template("help/dmca_email.md", **data)
 
     with CustomRenderer() as renderer:
-        email_html = renderer.render(mistletoe.Document(email_text))
+        email_html = renderer.render(Document(email_text))
     email_html = sanitize(email_html, linkgen=True)
 
     try:
@@ -104,7 +103,7 @@ def dmca_post():
 
     post_text = render_template("help/dmca_notice.md", **data)
     with CustomRenderer() as renderer:
-        post_html = renderer.render(mistletoe.Document(post_text))
+        post_html = renderer.render(Document(post_text))
     post_html = sanitize(post_html, linkgen=True)
 
     # create +DMCA post
@@ -136,7 +135,7 @@ def dmca_post():
 
     comment_text = f"##### Username\n\n@{g.user.username}\n\n##### Email\n\n{g.user.email}\n\n##### Address\n\n{data['your_address']}"
     with CustomRenderer() as renderer:
-        c_html = renderer.render(mistletoe.Document(comment_text))
+        c_html = renderer.render(Document(comment_text))
     c_html = sanitize(c_html, linkgen=True)
 
     c = Comment(author_id=1,
