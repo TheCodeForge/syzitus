@@ -21,7 +21,7 @@ from syzitus.routes.admin_api import create_plot, user_stat_data
 from syzitus.classes.categories import CATEGORIES
 
 import syzitus.helpers.aws as aws
-from syzitus.__main__ import app
+from syzitus.__main__ import app, cache
 
 
 @app.route("/admin/flagged/posts", methods=["GET"])
