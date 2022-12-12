@@ -1,9 +1,7 @@
 from urllib.parse import urlparse
 from mistletoe import Document
-import re
-import threading
-import time
-import os.path
+from re import compile as re_compile, match as re_match
+from threading import Thread as threading_Thread
 from bs4 import BeautifulSoup 
 import cssutils
 from sqlalchemy import select
@@ -23,7 +21,7 @@ from syzitus.classes.categories import CATEGORIES, CATEGORY_DATA, SUBCAT_DATA
 
 from syzitus.__main__ import app, limiter, cache
 
-valid_board_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
+valid_board_regex = re_match("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 
 @app.route("/m/<name>", methods=["GET"])
 @auth_desired
@@ -80,7 +78,7 @@ def multiboard(name):
         posts = posts.filter_by(is_nsfl=False)
 
     if t:
-        now = int(time.time())
+        now = g.timestamp
         if t == 'day':
             cutoff = now - 86400
         elif t == 'week':
@@ -137,7 +135,7 @@ def create_board_get():
                                message="You need to step down from a guild before you can make any more." if not g.user.can_join_gms else "You need more Reputation.")
 
     # check # recent boards made by user
-    cutoff = int(time.time()) - 60 * 60 * 24
+    cutoff = g.timestamp - 60 * 60 * 24
     recent = g.db.query(Board).filter(
         Board.creator_id == g.user.id,
         Board.created_utc >= cutoff).all()
@@ -158,7 +156,7 @@ def create_board_get():
 @auth_desired
 @api()
 def api_board_available(name):
-    if get_guild(name, graceful=True) or not re.match(valid_board_regex, name):
+    if get_guild(name, graceful=True) or not re_match(valid_board_regex, name):
         return jsonify({"board": name, "available": False})
     else:
         return jsonify({"board": name, "available": True})
@@ -188,7 +186,7 @@ Optional form data:
     board_name = board_name.lstrip("+")
     description = request.form.get("description")
 
-    if not re.match(valid_board_regex, board_name):
+    if not re_match(valid_board_regex, board_name):
         return jsonify({"error": 'Guild names must be 3-25 letters or numbers.'}), 400
 
     # check name
@@ -196,7 +194,7 @@ Optional form data:
         return jsonify({"error": f'The guild +{board_name} already exists.'}), 400
 
     # check # recent boards made by user
-    cutoff = int(time.time()) - 60 * 60 * 24
+    cutoff = g.timestamp - 60 * 60 * 24
     alt_ids=[x.id for x in g.user.alts]
     user_ids=[g.user.id]+alt_ids
     recent = g.db.query(Board).filter(
@@ -304,7 +302,7 @@ Optional query parameters:
                 'api': lambda: (jsonify({'error': f'410 Gone - +{board.name} is banned.'}), 410)
                 }
     if board.over_18 and not (g.user and g.user.over_18) and not session_over18(board):
-        t = int(time.time())
+        t = g.timestamp
         return {'html': lambda: render_template("errors/nsfw.html",
                                                 t=t,
                                                 board=board
@@ -606,7 +604,7 @@ Optional form data:
         user_id=user.id, board_id=board.id, is_active=False).first()
     if existing_ban:
         existing_ban.is_active = True
-        existing_ban.created_utc = int(time.time())
+        existing_ban.created_utc = g.timestamp
         existing_ban.banning_mod_id = g.user.id
         existing_ban.target_submission_id=target_submission_id
         existing_ban.target_comment_id=target_comment_id
@@ -754,7 +752,7 @@ def mod_take_pid(pid, board):
         return jsonify({"error": "invalid post id"}), 404
 
     #check cooldowns
-    now=int(time.time())
+    now=g.timestamp
     if post.original_board_id != board.id and post.author_id != g.user.id:
         #look for modlog action with either board or user
 
@@ -954,7 +952,7 @@ def mod_accept_board(bid):
     if board.has_ban(g.user):
         return jsonify({"error": f"You are exiled from +{board.name} and can't currently become a guildmaster."}), 409
     x.accepted = True
-    x.created_utc=int(time.time())
+    x.created_utc=g.timestamp
     g.db.add(x)
 
     ma=ModAction(
@@ -1764,7 +1762,7 @@ def mod_board_images_profile(bid, board):
     board.set_profile(request.files["profile"])
 
     # anti csam
-    new_thread = threading.Thread(target=check_csam_url,
+    new_thread = threading_Thread(target=check_csam_url,
                                   args=(board.profile_url,
                                         g.user,
                                         lambda: board.del_profile()
@@ -1796,7 +1794,7 @@ def mod_board_images_banner(bid, board):
     board.set_banner(request.files["banner"])
 
     # anti csam
-    new_thread = threading.Thread(target=check_csam_url,
+    new_thread = threading_Thread(target=check_csam_url,
                                   args=(board.banner_url,
                                         g.user,
                                         lambda: board.del_banner()
@@ -1936,7 +1934,7 @@ Required form data:
         user_id=user.id, board_id=board.id, is_active=False).first()
     if existing_contrib:
         existing_contrib.is_active = True
-        existing_contrib.created_utc = int(time.time())
+        existing_contrib.created_utc = g.timestamp
         existing_contrib.approving_mod_id = g.user.id
         g.db.add(existing_contrib)
     else:
@@ -2296,7 +2294,7 @@ def mod_unchatban_bid_user(bid, board):
 @is_not_banned
 def siege_guild():
 
-    now = int(time.time())
+    now = g.timestamp
     guild = request.form.get("guild", None)
 
     if not guild:
