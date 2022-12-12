@@ -1,9 +1,6 @@
-import time
-import sass
-import mistletoe
 from flask import g, session, abort, render_template, jsonify, send_file, redirect
 import PIL
-import io
+from io import BytesIO
 from PIL import ImageFont, ImageDraw
 
 from syzitus.helpers.wrappers import *
@@ -120,7 +117,7 @@ def get_logo_jumbotron(color):
                     )
                 )
 
-    output_bytes=io.BytesIO()
+    output_bytes=BytesIO()
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
@@ -178,7 +175,7 @@ def get_logo_main():
         resample=PIL.Image.BILINEAR)
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
-    output_bytes=io.BytesIO()
+    output_bytes=BytesIO()
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
@@ -229,7 +226,7 @@ def get_logo_white():
         resample=PIL.Image.BILINEAR)
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
-    output_bytes=io.BytesIO()
+    output_bytes=BytesIO()
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
@@ -313,7 +310,7 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    output_bytes=io.BytesIO()
+    output_bytes=BytesIO()
     output.save(output_bytes, format="PNG")
     output_bytes.seek(0)
     return send_file(output_bytes, mimetype="image/png")
@@ -343,7 +340,7 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 #         value=primary
 #         )
 
-#     output_bytes=io.BytesIO()
+#     output_bytes=BytesIO()
 #     ruqqie.save(output_bytes, format="PNG")
 #     output_bytes.seek(0)
 #     return send_file(output_bytes, mimetype="image/png")
