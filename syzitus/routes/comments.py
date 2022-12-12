@@ -4,9 +4,9 @@ from sqlalchemy import func, literal
 from sqlalchemy.orm import contains_eager
 from bs4 import BeautifulSoup
 from datetime import datetime
-import secrets
-import re
-import threading
+from secrets import token_urlsafe
+from re import compile as re_compile
+from threading import Thread as threading_Thread
 from os import environ
 from flask import g, session, abort, render_template, jsonify, make_response, redirect, request
 
@@ -505,7 +505,7 @@ Optional file data:
             if not file.content_type.startswith('image/'):
                 return jsonify({"error": "That wasn't an image!"}), 400
             
-            name = f'comment/{c.base36id}/{secrets.token_urlsafe(8)}'
+            name = f'comment/{c.base36id}/{token_urlsafe(8)}'
             upload_file(name, file)
 
             body = request.form.get("body") + f"\n\n![](https://{BUCKET}/{name})"
@@ -521,7 +521,7 @@ Optional file data:
                 g.db.add(c)
                 g.db.commit()
                 
-            csam_thread=threading.Thread(target=check_csam_url, 
+            csam_thread=threading_Thread(target=check_csam_url, 
                                          args=(f"https://{BUCKET}/{name}", 
                                                g.user, 
                                                del_function
@@ -548,7 +548,7 @@ Optional file data:
 
     # queue up notifications for username mentions
     soup = BeautifulSoup(body_html, features="html.parser")
-    mentions = soup.find_all("a", href=re.compile("^/@(\w+)"), limit=3)
+    mentions = soup.find_all("a", href=re_compile("^/@(\w+)"), limit=3)
     for mention in mentions:
         username = mention["href"].split("@")[1]
 
