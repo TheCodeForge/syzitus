@@ -12,7 +12,7 @@ class ModAction(Base, Stndrd, Age_times):
     id = Column(BigInteger, primary_key=True)
 
     user_id = Column(Integer, ForeignKey("users.id"))
-    board_id = Column(Integer, ForeignKey("boards.id"))
+    board_id = Column(Integer, ForeignKey("boards.id"), index=True)
     kind = Column(String(32))
     target_user_id = Column(Integer, ForeignKey("users.id"), default=None)
     target_submission_id = Column(Integer, ForeignKey("submissions.id"), default=None)

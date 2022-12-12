@@ -10,8 +10,8 @@ class UserBlock(Base, Stndrd, Age_times):
 
     __tablename__ = "userblocks"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    target_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"), index=True)
+    target_id = Column(Integer, ForeignKey("users.id"), index=True)
     created_utc = Column(Integer)
 
     user = relationship(

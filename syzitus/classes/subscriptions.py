@@ -8,8 +8,8 @@ from syzitus.__main__ import Base, cache
 class Subscription(Base):
     __tablename__ = "subscriptions"
     id = Column(BigInteger, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey("users.id"))
-    board_id = Column(BigInteger, ForeignKey("boards.id"))
+    user_id = Column(BigInteger, ForeignKey("users.id"), index=True)
+    board_id = Column(BigInteger, ForeignKey("boards.id"), index=True)
     created_utc = Column(BigInteger, default=0)
     is_active = Column(Boolean, default=True)
     get_notifs=Column(Boolean, default=False)
@@ -30,8 +30,8 @@ class Subscription(Base):
 class Follow(Base):
     __tablename__ = "follows"
     id = Column(BigInteger, primary_key=True)
-    user_id = Column(BigInteger, ForeignKey("users.id"))
-    target_id = Column(BigInteger, ForeignKey("users.id"))
+    user_id = Column(BigInteger, ForeignKey("users.id"), index=True)
+    target_id = Column(BigInteger, ForeignKey("users.id"), index=True)
     created_utc = Column(BigInteger, default=0)
     get_notifs=Column(Boolean, default=False)
 
