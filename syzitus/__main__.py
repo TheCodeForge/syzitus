@@ -14,7 +14,7 @@ from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
 #from flask_compress import Compress
-from flask_minify import Minify
+#from flask_minify import Minify
 from time import sleep
 from collections import deque
 import psycopg2
@@ -209,8 +209,8 @@ Markdown(app)
 cache = Cache(app)
 #Compress(app)
 
-if bool(int(environ.get("MINIFY",0))):
-    Minify(app)
+# if bool(int(environ.get("MINIFY",0))):
+#     Minify(app)
 
 # class CorsMatch(str):
 
