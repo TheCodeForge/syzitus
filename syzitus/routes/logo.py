@@ -118,7 +118,7 @@ def get_logo_jumbotron(color):
                 )
 
     tempname=f"logo_jumbotron_{color}.png"
-    output.save(tempname, format="PNG")
+    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
     return send_file(tempname, mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
@@ -176,7 +176,7 @@ def get_logo_main():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
     tempname="logo_main.png"
-    output.save(tempname, format="PNG")
+    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
     return send_file(tempname, mimetype="image/png")
 
 
@@ -227,8 +227,8 @@ def get_logo_white():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
 
-    #tempname="logo_white.png"
-    #output.save(tempname, format="PNG")
+    tempname="logo_white.png"
+    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
     return send_file(output, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
@@ -311,5 +311,5 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
     tempname=f"logo_splash_{width}_{height}.png"
-    output.save(tempname, format="PNG")
+    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
     return send_file(tempname, mimetype="image/png")
