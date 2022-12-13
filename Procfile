@@ -1,1 +1,1 @@
-web: newrelic-admin run-program gunicorn syzitus.__main__:app -k gevent --preload
+web: newrelic-admin run-program gunicorn syzitus.__main__:app -k gevent
