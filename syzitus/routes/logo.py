@@ -227,9 +227,9 @@ def get_logo_white():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
 
-    tempname="logo_white.png"
-    output.save(tempname, format="PNG")
-    return send_file(tempname, mimetype="image/png")
+    #tempname="logo_white.png"
+    #output.save(tempname, format="PNG")
+    return send_file(output, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
