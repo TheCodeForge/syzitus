@@ -499,4 +499,5 @@ def get_size(obj, seen=None):
         size += sum([get_size(i, seen) for i in obj])
     return size
 
-debug(f"Loaded app size: {get_size(app)}")
+with app.test_request_context('/'):
+    debug(f"Loaded app size: {get_size(app)}")
