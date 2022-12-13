@@ -11,7 +11,7 @@ from syzitus.__main__ import app, limiter, debug, cache
 
 @app.get(f"/logo/jumbotron/<color>/{app.config['SITE_NAME'][0].lower()}")
 @cf_cache
-@cache.memoize()
+#@cache.memoize()
 def get_logo_jumbotron(color):
 
     primary_r=int(color[0:2], 16)
@@ -123,7 +123,7 @@ def get_logo_jumbotron(color):
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cf_cache
-@cache.memoize()
+#@cache.memoize()
 def get_logo_main():
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
@@ -182,7 +182,7 @@ def get_logo_main():
 
 @app.get(app.config["IMG_URL_LOGO_WHITE"])
 @cf_cache
-@cache.memoize()
+#@cache.memoize()
 def get_logo_white():
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
@@ -233,7 +233,7 @@ def get_logo_white():
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
-@cache.memoize()
+#@cache.memoize()
 def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     try:
