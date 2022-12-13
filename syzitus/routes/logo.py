@@ -1,6 +1,7 @@
 from flask import g, session, abort, render_template, jsonify, send_file, redirect
 import PIL
 from PIL import ImageFont, ImageDraw
+from werkzeug.security import safe_join
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.markdown import *
@@ -116,7 +117,7 @@ def get_logo_jumbotron(color):
                     )
                 )
 
-    with open(request.path, 'w+') as file:
+    with open(safe_join('.',request.path), 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -172,7 +173,7 @@ def get_logo_main():
             ),
         resample=PIL.Image.BILINEAR)
 
-    with open(request.path, 'w+') as file:
+    with open(safe_join('.',request.path), 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -224,7 +225,7 @@ def get_logo_white():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
 
-    with open(request.path, 'w+') as file:
+    with open(safe_join('.',request.path), 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -307,6 +308,6 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    with open(request.path, 'w+') as file:
+    with open(safe_join('.',request.path), 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
