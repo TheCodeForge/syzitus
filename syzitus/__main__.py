@@ -16,7 +16,7 @@ from flask_limiter import Limiter
 #from flask_minify import Minify
 from collections import deque
 from psycopg2.errors import UndefinedColumn
-import sys.getsizeof
+from sys import getsizeof
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
@@ -481,7 +481,7 @@ except ProgrammingError:
 #this function came from stackoverflow
 def get_size(obj, seen=None):
     """Recursively finds size of objects"""
-    size = sys.getsizeof(obj)
+    size = getsizeof(obj)
     if seen is None:
         seen = set()
     obj_id = id(obj)
