@@ -117,7 +117,7 @@ def get_logo_jumbotron(color):
                     )
                 )
 
-    with open(safe_join('.',request.path), 'w+') as file:
+    with open(f"./logo/jumbotron/{color}", 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -173,7 +173,7 @@ def get_logo_main():
             ),
         resample=PIL.Image.BILINEAR)
 
-    with open(safe_join('.',request.path), 'w+') as file:
+    with open("./logo/main", 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -225,7 +225,7 @@ def get_logo_white():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
 
-    with open(safe_join('.',request.path), 'w+') as file:
+    with open("./logo/white", 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
 
@@ -308,6 +308,6 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    with open(safe_join('.',request.path), 'w+') as file:
+    with open(f"./logo/splash/{width}/{height}", 'w+') as file:
         output.save(file, format="PNG")
     return send_file(request.path, mimetype="image/png")
