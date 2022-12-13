@@ -1,4 +1,4 @@
-import requests
+from requests import get as requests_get
 from os import remove
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
@@ -62,7 +62,7 @@ def thumbnail_thread(pid):
 
     try:
         debug(f"loading {fetch_url}")
-        x=requests.get(fetch_url, headers=headers)
+        x=requests_get(fetch_url, headers=headers)
     except:
         debug(f"unable to connect to {fetch_url}")
         db.close()
@@ -153,7 +153,7 @@ def thumbnail_thread(pid):
             debug(f"Trying url {url}")
 
             try:
-                image_req=requests.get(url, headers=headers)
+                image_req=requests_get(url, headers=headers)
             except:
                 debug(f"Unable to connect to candidate url {url}")
                 continue

@@ -1,4 +1,4 @@
-import bleach
+from bleach import Cleaner
 from bs4 import BeautifulSoup
 from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
@@ -131,11 +131,11 @@ def a_modify(attrs, new=False):
 
 
 
-_clean_wo_links = bleach.Cleaner(tags=_allowed_tags,
+_clean_wo_links = Cleaner(tags=_allowed_tags,
                                  attributes=_allowed_attributes,
                                  protocols=_allowed_protocols,
                                  )
-_clean_w_links = bleach.Cleaner(tags=_allowed_tags_with_links,
+_clean_w_links = Cleaner(tags=_allowed_tags_with_links,
                                 attributes=_allowed_attributes,
                                 protocols=_allowed_protocols,
                                 filters=[partial(LinkifyFilter,
@@ -146,7 +146,7 @@ _clean_w_links = bleach.Cleaner(tags=_allowed_tags_with_links,
                                          ]
                                 )
 
-_clean_bio = bleach.Cleaner(tags=_allowed_tags_in_bio,
+_clean_bio = Cleaner(tags=_allowed_tags_in_bio,
                             attributes=_allowed_attributes,
                             protocols=_allowed_protocols,
                             filters=[partial(LinkifyFilter,

@@ -1,6 +1,5 @@
 from flask import g, session, abort, render_template, jsonify, request, make_response, Response
 from os import environ
-import requests
 from werkzeug.wrappers.response import Response as RespObj
 from random import randint
 
