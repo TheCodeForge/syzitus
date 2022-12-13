@@ -16,6 +16,7 @@ from flask_limiter import Limiter
 #from flask_minify import Minify
 from collections import deque
 from psycopg2.errors import UndefinedColumn
+import sys.getsizeof
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
