@@ -1,15 +1,15 @@
-import mistletoe
+from mistletoe import Document
 
 from syzitus.classes.comment import Comment, CommentAux, Notification
 from flask import g
 from .markdown import CustomRenderer
-from .sanitize import *
+from .sanitize import sanitize
 
 
 def send_notification(user, text):
 
     with CustomRenderer() as renderer:
-        text_html = renderer.render(mistletoe.Document(text))
+        text_html = renderer.render(Document(text))
 
     text_html = sanitize(text_html, linkgen=True)#, noimages=True)
 
