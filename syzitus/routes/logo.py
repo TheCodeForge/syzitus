@@ -119,7 +119,7 @@ def get_logo_jumbotron(color):
 
     with open(f"logo_jumbotron_{color}.png", 'bw+') as file:
         output.save(file, format="PNG")
-    return send_file(f"logo_jumbotron_{color}.png", mimetype="image/png")
+    return send_file(f"./logo_jumbotron_{color}.png", mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cf_cache
@@ -175,7 +175,7 @@ def get_logo_main():
 
     with open("logo_main.png", 'bw+') as file:
         output.save(file, format="PNG")
-    return send_file("logo_main.png", mimetype="image/png")
+    return send_file("./logo_main.png", mimetype="image/png")
 
 
 @app.get(app.config["IMG_URL_LOGO_WHITE"])
@@ -227,7 +227,7 @@ def get_logo_white():
 
     with open("logo_white.png", 'bw+') as file:
         output.save(file, format="PNG")
-    return send_file("logo_white.png", mimetype="image/png")
+    return send_file("./logo_white.png", mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
