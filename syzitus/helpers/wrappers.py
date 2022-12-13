@@ -23,7 +23,7 @@ def get_logged_in_user():
             return
 
         user=g.db.query(User).options(
-            joinedload(User.moderates).joinedload(ModRelationship.board), #joinedload(Board.reports),
+            joinedload(User.moderates).joinedload(ModRelationship.board).joinedload(Board.reports),
             joinedload(User.subscriptions).joinedload(Subscription.board),
             joinedload(User.notifications)
             ).filter_by(
