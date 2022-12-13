@@ -308,6 +308,6 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    with open(f"./logo/splash/{width}/{height}", 'bw+') as file:
+    with open(f"logo_splash_{width}_{height}.png", 'bw+') as file:
         output.save(file, format="PNG")
-    return send_file(f"./logo/splash/{width}/{height}", mimetype="image/png")
+    return send_file(f"./logo_splash_{width}_{height}.png", mimetype="image/png")
