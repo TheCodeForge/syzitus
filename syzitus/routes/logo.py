@@ -1,6 +1,5 @@
 from flask import g, session, abort, render_template, jsonify, send_file, redirect
 import PIL
-from io import BytesIO
 from PIL import ImageFont, ImageDraw
 
 from syzitus.helpers.wrappers import *
@@ -117,10 +116,9 @@ def get_logo_jumbotron(color):
                     )
                 )
 
-    output_bytes=BytesIO()
-    output.save(output_bytes, format="PNG")
-    output_bytes.seek(0)
-    return send_file(output_bytes, mimetype="image/png")
+    with open(request.path, 'w+') as file:
+        output.save(file, format="PNG")
+    return send_file(request.path, mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cf_cache
@@ -174,11 +172,9 @@ def get_logo_main():
             ),
         resample=PIL.Image.BILINEAR)
 
-    output=PIL.Image.alpha_composite(base_layer, text_layer)
-    output_bytes=BytesIO()
-    output.save(output_bytes, format="PNG")
-    output_bytes.seek(0)
-    return send_file(output_bytes, mimetype="image/png")
+    with open(request.path, 'w+') as file:
+        output.save(file, format="PNG")
+    return send_file(request.path, mimetype="image/png")
 
 
 @app.get(app.config["IMG_URL_LOGO_WHITE"])
@@ -226,10 +222,11 @@ def get_logo_white():
         resample=PIL.Image.BILINEAR)
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
-    output_bytes=BytesIO()
-    output.save(output_bytes, format="PNG")
-    output_bytes.seek(0)
-    return send_file(output_bytes, mimetype="image/png")
+
+
+    with open(request.path, 'w+') as file:
+        output.save(file, format="PNG")
+    return send_file(request.path, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
@@ -310,37 +307,6 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    output_bytes=BytesIO()
-    output.save(output_bytes, format="PNG")
-    output_bytes.seek(0)
-    return send_file(output_bytes, mimetype="image/png")
-
-# @app.get("/mascot")
-# def mascot_redirect():
-#     return redirect(app.config["IMG_URL_MASCOT"])
-
-# @app.get("/mascot/<color>")
-# #@cf_cache
-# def mascot_color(color=None):
-
-#     color = color or app.config['COLOR_PRIMARY']
-
-#     primary_r=int(color[0:2], 16)
-#     primary_g=int(color[2:4], 16)
-#     primary_b=int(color[4:6], 16)
-
-#     primary = (primary_r, primary_g, primary_b, 255)
-
-#     ruqqie = PIL.Image.open(f"{app.config['RUQQUSPATH']}/assets/images/logo/ruqqie2.png")
-
-#     #flood fill main ruqqie shape
-#     ImageDraw.floodfill(
-#         ruqqie,
-#         (ruqqie.size[0]//2, ruqqie.size[1]//2),
-#         value=primary
-#         )
-
-#     output_bytes=BytesIO()
-#     ruqqie.save(output_bytes, format="PNG")
-#     output_bytes.seek(0)
-#     return send_file(output_bytes, mimetype="image/png")
+    with open(request.path, 'w+') as file:
+        output.save(file, format="PNG")
+    return send_file(request.path, mimetype="image/png")
