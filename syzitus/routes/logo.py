@@ -229,7 +229,7 @@ def get_logo_white():
 
     tempname="logo_white.png"
     output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
-    return send_file(output, mimetype="image/png")
+    return send_file(tempname, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
