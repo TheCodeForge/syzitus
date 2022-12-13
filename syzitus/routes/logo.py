@@ -173,6 +173,8 @@ def get_logo_main():
             ),
         resample=PIL.Image.BILINEAR)
 
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
+
     with open("logo_main.png", 'bw+') as file:
         output.save(file, format="PNG")
     return send_file("./logo_main.png", mimetype="image/png")
