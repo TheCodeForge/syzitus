@@ -485,4 +485,4 @@ def using(point=""):
     return f"{point}: usertime={usage[0]} systime={usage[1]} mem={usage[2]/1024.0} mb"
 
 with app.test_request_context('/'):
-    debug(usage("Fully loaded"))
+    debug(using("Fully loaded"))
