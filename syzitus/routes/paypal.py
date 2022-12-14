@@ -216,7 +216,7 @@ def paypal_webhook_handler():
 
 
 @app.route("/gift_post/<pid>", methods=["POST"])
-@no_sanctions
+#@no_sanctions
 @is_not_banned
 @no_negative_balance("toast")
 @user_update_lock
@@ -301,7 +301,7 @@ def gift_post_pid(pid):
     return jsonify({"redirect":post.permalink}), 301
 
 @app.route("/gift_comment/<cid>", methods=["POST"])
-@no_sanctions
+#@no_sanctions
 @is_not_banned
 @no_negative_balance("toast")
 @user_update_lock
