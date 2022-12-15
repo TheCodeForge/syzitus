@@ -2,12 +2,12 @@ from sqlalchemy import Column, BigInteger, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
 from flask import g
 
-from .mix_ins import Stndrd, Age_times
+from .mix_ins import *
 
 from syzitus.__main__ import Base, cache, app
 
 
-class ModAction(Base, Stndrd, Age_times):
+class ModAction(Base, standard_mixin, age_mixin):
     __tablename__ = "modactions"
     id = Column(BigInteger, primary_key=True)
 

@@ -8,7 +8,7 @@ import random
 from os import environ
 import requests
 import re
-from .mix_ins import Stndrd, Age_times, Scores, Fuzzing
+from .mix_ins import *
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
@@ -54,7 +54,7 @@ class SubmissionAux(Base):
         )
 
 
-class Submission(Base, Stndrd, Age_times, Scores, Fuzzing):
+class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
 
     __tablename__ = "submissions"
 

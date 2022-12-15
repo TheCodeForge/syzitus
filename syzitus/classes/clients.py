@@ -2,13 +2,13 @@ from flask import g
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, lazyload
 
-from .mix_ins import Stndrd
+from .mix_ins import standard_mixin
 from .submission import Submission
 from .comment import Comment
 from syzitus.__main__ import app, Base
 
 
-class OauthApp(Base, Stndrd):
+class OauthApp(Base, standard_mixin):
 
     __tablename__ = "oauth_apps"
 
@@ -54,7 +54,7 @@ class OauthApp(Base, Stndrd):
 
 
 
-class ClientAuth(Base, Stndrd):
+class ClientAuth(Base, standard_mixin):
 
     __tablename__ = "client_auths"
 

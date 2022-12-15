@@ -147,7 +147,7 @@ class PayPalClient():
 		return status=="COMPLETED"
 
 
-class PayPalTxn(Base, Stndrd, Age_times):
+class PayPalTxn(Base, standard_mixin, age_mixin):
 
 	__tablename__="paypal_txns"
 

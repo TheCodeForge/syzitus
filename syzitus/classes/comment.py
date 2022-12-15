@@ -8,7 +8,7 @@ import math
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.lazy import lazy
 
-from .mix_ins import Age_times, Scores, Stndrd, Fuzzing
+from .mix_ins import *
 from .votes import CommentVote
 from .flags import CommentFlag
 from .badwords import BadWord
@@ -37,7 +37,7 @@ class CommentAux(Base):
         )
 
 
-class Comment(Base, Age_times, Scores, Stndrd, Fuzzing):
+class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
 
     __tablename__ = "comments"
 

@@ -8,7 +8,7 @@ import time
 from syzitus.__main__ import cache, app
 
 
-class Stndrd:
+class standard_mixin():
 
     @property
     @lazy
@@ -39,7 +39,7 @@ class Stndrd:
     
 
 
-class Age_times:
+class age_mixin:
 
     @property
     def age(self):
@@ -145,7 +145,7 @@ class Age_times:
         return years
 
 
-class Scores:
+class score_mixin:
 
     @property
     #@cache.memoize(timeout=60)
@@ -163,7 +163,7 @@ class Scores:
         return int(self.score_top) or 0
 
 
-class Fuzzing:
+class fuzzing_mixin:
 
     @property
     #@cache.memoize(timeout=60)

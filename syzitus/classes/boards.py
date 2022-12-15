@@ -9,11 +9,11 @@ from .submission import Submission
 from .subscriptions import Subscription
 from .board_relationships import ModRelationship, BanRelationship, ContributorRelationship
 from .comment import Comment
-from .mix_ins import Stndrd, Age_times
+from .mix_ins import *
 from .categories import SubCategory
 from syzitus.__main__ import Base, cache, app
 
-class Board(Base, Stndrd, Age_times):
+class Board(Base, standard_mixin, age_mixin):
 
     __tablename__ = "boards"
 

@@ -1,11 +1,11 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue
 
-from .mix_ins import Stndrd
+from .mix_ins import standard_mixin
 
 from syzitus.__main__ import Base, cache
 
 
-class Flag(Base, Stndrd):
+class Flag(Base, standard_mixin):
 
     __tablename__ = "flags"
 
@@ -19,7 +19,7 @@ class Flag(Base, Stndrd):
         return f"<Flag(id={self.id})>"
 
 
-class CommentFlag(Base, Stndrd):
+class CommentFlag(Base, standard_mixin):
 
     __tablename__ = "commentflags"
 

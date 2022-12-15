@@ -1,9 +1,9 @@
-from .mix_ins import Stndrd
+from .mix_ins import standard_mixin
 
 from syzitus.__main__ import Base, cache, debug, app
 
 
-class Category(Stndrd):
+class Category(standard_mixin):
 
 
     def __init__(self, id):
@@ -24,7 +24,7 @@ class Category(Stndrd):
             "subcategories": [x.json for x in self.subcats]
         }
 
-class SubCategory(Stndrd):
+class SubCategory(standard_mixin):
 
 
     def __init__(self, id):

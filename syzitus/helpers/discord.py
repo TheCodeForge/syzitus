@@ -62,7 +62,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "url": target.permalink_full,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": user.username,
@@ -88,7 +88,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": f"https://{app.config['SERVER_NAME']}{target.permalink}",
+                    "url": ftarget.permalink_full,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": app.config['SITE_NAME'].lower(),

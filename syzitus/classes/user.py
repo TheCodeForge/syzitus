@@ -20,7 +20,7 @@ from .submission import Submission, SubmissionAux #, SaveRelationship
 from .comment import Comment, CommentAux, Notification
 from .boards import Board
 from .board_relationships import ModRelationship, BanRelationship, ContributorRelationship, BoardBlock
-from .mix_ins import Stndrd, Age_times
+from .mix_ins import *
 from .subscriptions import Subscription, Follow
 from .userblock import UserBlock
 from .badges import *
@@ -63,7 +63,7 @@ def send_notif(user, text):
 
 
 
-class User(Base, Stndrd, Age_times):
+class User(Base, standard_mixin, age_mixin):
 
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
