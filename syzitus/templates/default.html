@@ -81,12 +81,12 @@
   <!-- Ruqqus CSS -->
   
   {% if b and not request.path.startswith("/mod") %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?v=3.1.58">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?v=3.1.58">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_dark_url }}?v=3.1.59">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="{{ b.main_css_light_url }}?v=3.1.59">
     <link rel="stylesheet" href="{{ b.custom_css_url }}">
   {% else %}
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.1.58">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.58">
+    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=3.1.59">
+    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.59">
   {% endif %}
 
   <!-- Font Awesome -->
@@ -300,7 +300,7 @@
 </script>
 {% endblock %}
 
-<script src="/assets/js/all_js.js?v=3.1.58" importance="high" ></script>
+<script src="/assets/js/all_js.js?v=3.1.59" importance="high" ></script>
 
 
 <!-- Mobile "install the app" tooltip -->
