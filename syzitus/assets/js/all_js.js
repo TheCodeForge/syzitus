@@ -1857,14 +1857,23 @@ function postformtoast(x, callback=function(data){}){
     else if (xhr.status >=400 && xhr.status < 500) {
       $('#toast-error .toast-text').text(data['error']);
       $('#toast-error').toast('show')
+      if (x.hasClass('btn')) {
+        x.prop('disabled', false)
+      }
     } 
     else {
       $('#toast-error .toast-text').text("Something went wrong. Please try again later.");
       $('#toast-error').toast('show')
+      if (x.hasClass('btn')) {
+        x.prop('disabled', false)
+      }
     }
   };
 
   xhr.send(form);
+  if (x.hasClass('btn')) {
+    x.prop('disabled', true)
+  }
 }
 
 $('.toast-form-submit').click(function(){postformtoast($(this))});
@@ -2122,3 +2131,4 @@ $('.btn-reroll-app-secret').click(function(){
     }
     )
 })
+
