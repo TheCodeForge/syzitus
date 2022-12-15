@@ -262,6 +262,8 @@ def api_ban_guild(bid):
     g.db.add(board)
     g.db.commit()
 
+    discord_log_event("Ban Guild", board, g.user, reason=board.ban_reason, admin_action=True)
+
     return redirect(board.permalink)
 
 
@@ -272,10 +274,13 @@ def api_unban_guild(bid):
     board = get_board(bid)
 
     board.is_banned = False
+    original_ban_reason=board.ban_reason
     board.ban_reason = ""
 
     g.db.add(board)
     g.db.commit()
+
+    discord_log_event("Unban Guild", board, g.user, reason=original_ban_reason, admin_action=True)
 
     return redirect(board.permalink)
 
@@ -521,15 +526,15 @@ def mod_self_to_guild(bid):
 def admin_domain_nuke(domain):
 
     domain=domain.lower()
-    domain=re.sub("[^a-z0-9.]","", domain)
+    domain_regex=re.sub("[^a-z0-9.]","", domain)
     #escape periods
-    domain=domain.replace(".","\.")
+    domain_regex=domain_regex.replace(".","\.")
 
     posts=g.db.query(Submission).join(
         Submission.submission_aux
         ).filter(
         SubmissionAux.url.op('~')(
-            "https?://([^/]*\.)?"+domain+"(/|$)"
+            "https?://([^/]*\.)?"+domain_regex+"(/|$)"
             )
         ).all()
 
@@ -537,7 +542,16 @@ def admin_domain_nuke(domain):
         post.is_banned=True
         g.db.add(post)
 
+
+    d=get_domain(domain)
+    if d:
+        reason=d.reason
+    else:
+        reason="none"
+
     g.db.commit()
+    discord_log_event("Nuke Domain", domain, g.user, reason=reason, admin_action=True)
+
     return redirect(f"/search?q=domain:{domain}")
 
 
@@ -590,7 +604,7 @@ def admin_dump_cache():
 @admin_level_required(4)
 def admin_ban_domain():
 
-    domain=request.form.get("domain",'').lstrip().rstrip()
+    domain=request.form.get("domain",'').lstrip().rstrip().lower()
 
     if not domain:
         abort(400)
@@ -599,11 +613,9 @@ def admin_ban_domain():
     if not reason:
         abort(400)
 
-    d_query=domain.replace("_","\_")
-    d=g.db.query(Domain).filter_by(domain=d_query).first()
+    d=get_domain(domain)
     if d:
-        d.can_submit=False
-        d.can_comment=False
+        d.is_banned=True
         d.reason=reason
     else:
         d=Domain(
@@ -617,6 +629,9 @@ def admin_ban_domain():
 
     g.db.add(d)
     g.db.commit()
+
+    discord_log_event("Ban Domain", domain, g.user, reason=reason, admin_action=True)
+
     return redirect(d.permalink)
 
 
@@ -666,7 +681,7 @@ def admin_nuke_user():
 
     g.db.commit()
 
-    discord_log_event("Nuke", user, g.user)
+    discord_log_event("Nuke user", user, g.user, reason=user.ban_reason, admin_action=True)
 
     return redirect(user.permalink)
 
@@ -691,7 +706,7 @@ def admin_demod_user():
 
     g.db.commit()
 
-    discord_log_event("Global De-Mod", user, g.user)
+    discord_log_event("Global De-Mod", user, g.user, admin_action=True)
 
     return redirect(user.permalink)
 

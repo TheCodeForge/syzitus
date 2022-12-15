@@ -45,7 +45,9 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
         "Authorization": f"Bot {app.config['DISCORD_BOT_TOKEN']}"
     }
 
-    if target.fullname.startswith("t1_"):
+    if isinstance(target, str):
+        title_text = f"{action} {target}"
+    elif target.fullname.startswith("t1_"):
         title_text = f"{action} @{target.username}"
     elif target.fullname.startswith("t2_"):
         title_text = f"{action} Post"
@@ -69,7 +71,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                     "fields": [
                         {
                             "name": "Reason",
-                            "value": reason or "null",
+                            "value": reason or "n/a",
                             "inline": True
                         },
                         {
@@ -95,7 +97,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                     "fields": [
                         {
                             "name": "Reason",
-                            "value": reason or "null",
+                            "value": reason or "n/a",
                             "inline": True
                         },
                         {
