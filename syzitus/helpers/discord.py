@@ -53,7 +53,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
         title_text = f"{action} Post"
     elif target.fullname.startswith("t3_"):
         title_text = f"{action} Comment"
-    elif target.fullname.startsiwth("t4_"):
+    elif target.fullname.startswith("t4_"):
         title_text = f"{action} +{target.name}"
 
 
