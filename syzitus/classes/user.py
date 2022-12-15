@@ -13,7 +13,6 @@ from syzitus.helpers.security import generate_hash, validate_hash
 from syzitus.helpers.lazy import lazy
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
-#from .votes import Vote
 from .alts import Alt
 from .titles import TITLES
 from .submission import Submission, SubmissionAux #, SaveRelationship
@@ -65,7 +64,9 @@ def send_notif(user, text):
 
 class User(Base, standard_mixin, age_mixin):
 
-    __tablename__ = "users"
+    __tablename__ = "users"\
+
+    #basic stuff
     id = Column(Integer, primary_key=True)
     username = Column(String, default=None)
     email = Column(String, default=None)
@@ -75,48 +76,39 @@ class User(Base, standard_mixin, age_mixin):
     is_activated = Column(Boolean, default=False)
     over_18 = Column(Boolean, default=False)
     creation_ip = Column(String, default=None)
-    submissions = relationship(
-        "Submission",
-        lazy="dynamic",
-        primaryjoin="Submission.author_id==User.id")
-    comments = relationship(
-        "Comment",
-        lazy="dynamic",
-        primaryjoin="Comment.author_id==User.id")
-    # votes = relationship("Vote", lazy="dynamic", backref="users")
-    # commentvotes = relationship("CommentVote", lazy="dynamic", backref="users")
     bio = Column(String, default="")
     bio_html = Column(String, default="")
-    _badges = relationship("Badge", lazy="dynamic", backref="user")
     real_id = Column(String, default=None)
-    notifications = relationship("Notification")
-
-    #unread_notifications_relationship=relationship(
-    #    "Notification",
-    #    primaryjoin="and_(Notification.user_id==User.id, Notification.read==False)")
-
     referred_by = Column(Integer, default=None)
     is_banned = Column(Integer, default=0)
     unban_utc = Column(Integer, default=0)
     ban_reason = Column(String, default="")
+
+    #content preferences
     defaultsorting = Column(String, default="hot")
     defaulttime = Column(String, default="all")
-    feed_nonce = Column(Integer, default=0)
+    hide_offensive = Column(Boolean, default=True)
+    hide_bot = Column(Boolean, default=False)
+    show_nsfl = Column(Boolean, default=False)
+    custom_filter_list=Column(String(1000), default="")
+
+    #security
     login_nonce = Column(Integer, default=0)
+    mfa_secret = deferred(Column(String(64), default=None))
+    is_private = Column(Boolean, default=False)
+    is_nofollow = Column(Boolean, default=False)
+
+    #bio
     title_id = Column(Integer)
     has_profile = Column(Boolean, default=False)
     has_banner = Column(Boolean, default=False)
     reserved = Column(String(256), default=None)
     is_nsfw = Column(Boolean, default=False)
-    tos_agreed_utc = Column(Integer, default=0)
     profile_nonce = Column(Integer, default=0)
     banner_nonce = Column(Integer, default=0)
+
+    #siege
     last_siege_utc = Column(Integer, default=0)
-    mfa_secret = deferred(Column(String(64), default=None))
-    hide_offensive = Column(Boolean, default=True)
-    hide_bot = Column(Boolean, default=False)
-    show_nsfl = Column(Boolean, default=False)
-    is_private = Column(Boolean, default=False)
     unban_utc = Column(Integer, default=0)
     is_deleted = Column(Boolean, default=False)
     delete_reason = Column(String(500), default='')
@@ -128,8 +120,6 @@ class User(Base, standard_mixin, age_mixin):
     premium_expires_utc=Column(Integer, default=0)
     negative_balance_cents=Column(Integer, default=0)
 
-    is_nofollow = Column(Boolean, default=False)
-    custom_filter_list=Column(String(1000), default="")
     discord_id=Column(String(64), default=None)
     creation_region=Column(String(2), default=None)
     ban_evade=Column(Integer, default=0)
@@ -148,7 +138,17 @@ class User(Base, standard_mixin, age_mixin):
     original_username=deferred(Column(String(255)))
     name_changed_utc=deferred(Column(Integer, default=0))
 
+    submissions = relationship(
+        "Submission",
+        lazy="dynamic",
+        primaryjoin="Submission.author_id==User.id")
+    comments = relationship(
+        "Comment",
+        lazy="dynamic",
+        primaryjoin="Comment.author_id==User.id")
 
+    _badges = relationship("Badge", lazy="dynamic", backref="user")
+    notifications = relationship("Notification")
     moderates = relationship("ModRelationship")
     banned_from = relationship("BanRelationship",
                                primaryjoin="BanRelationship.user_id==User.id")
