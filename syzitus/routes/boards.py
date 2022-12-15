@@ -14,6 +14,7 @@ from syzitus.helpers.get import *
 from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.session import *
 from syzitus.helpers.aws import check_csam_url
+from syzitus.helpers.discord import discord_log_event
 from syzitus.classes import *
 from .front import guild_ids
 
@@ -254,6 +255,8 @@ Optional form data:
     g.db.add(ma)
 
     g.db.commit()
+
+    discord_log_event("Create Guild", new_board, g.user)
 
     # clear cache
     cache.delete_memoized(guild_ids, sort="new")
@@ -1512,32 +1515,6 @@ Optional query parameters
         "api":lambda:jsonify({"data":[x.json for x in bans]})
         }
 
-@app.route("/+<guildname>/mod/chatbans", methods=["GET"])
-@app.route("/api/v1/<guildname>/mod/chatbans", methods=["GET"])
-@auth_required
-@is_guildmaster("chat")
-@api("read", "guildmaster")
-def board_about_chatbanned(guildname, board):
-
-    page = int(request.args.get("page", 1))
-
-    bans = board.chatbans.order_by(
-        ChatBan.created_utc.desc()).offset(25 * (page - 1)).limit(26)
-
-    bans = [ban for ban in bans]
-    next_exists = (len(bans) == 26)
-    bans = bans[0:25]
-
-    return {
-        "html":lambda:render_template(
-            "guild/chatbans.html", 
-            b=board, 
-            bans=bans,
-            page=page,
-            next_exists=next_exists
-            ),
-        "api":lambda:jsonify({"data":[x.json for x in bans]})
-        }
 
 
 
@@ -2259,35 +2236,6 @@ def board_mod_perms_change(guildname, board):
     g.db.commit()
 
     return redirect(f"{board.permalink}/mod/mods")
-
-
-@app.route("/mod/unchatban/<bid>", methods=["POST"])
-@app.route("/api/v1/unchatban/<bid>", methods=["POST"])
-@auth_required
-@is_guildmaster('chat')
-@api("guildmaster")
-def mod_unchatban_bid_user(bid, board):
-
-    user = get_user(request.values.get("username"))
-
-    x =  g.db.query(ChatBan).filter_by(board_id=board.id, user_id=user.id).first()
-
-    if not x:
-        abort(409)
-
-    g.db.delete(x)
-
-    ma=ModAction(
-        kind="unchatban_user",
-        user_id=g.user.id,
-        target_user_id=user.id,
-        board_id=board.id
-        )
-    g.db.add(ma)
-
-    g.db.commit()
-
-    return "", 204
 
 
 @app.route("/siege_guild", methods=["POST"])

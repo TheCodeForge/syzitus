@@ -1244,7 +1244,7 @@ class User(Base, Stndrd, Age_times):
         g.db.add(self)
         
         discord_ban_action = f"{days} Day Ban" if days else "Perm Ban"
-        discord_log_event(discord_ban_action, self, admin, reason=reason)
+        discord_log_event(discord_ban_action, self, admin, reason=reason, admin_action=True)
 
     def unban(self):
 
@@ -1257,7 +1257,7 @@ class User(Base, Stndrd, Age_times):
 
         g.db.add(self)
         
-        discord_log_event("Unban", self, g.user, reason=self.ban_reason)
+        discord_log_event("Unban", self, g.user, reason=self.ban_reason, admin_action=True)
 
         text = f'Your {app.config["SITE_NAME"]} account has been reinstated. Please review the [Terms of Service](/help/terms) and [Rules](/help/rules), and avoid breaking them in the future.'
         send_notif(self, text)
