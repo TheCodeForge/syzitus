@@ -613,6 +613,9 @@ def admin_ban_domain():
     if not reason:
         abort(400)
 
+    if domain==app.config["SERVER_NAME"].lower() or domain==app.config["S3_BUCKET"].lower():
+        return jsonify({"error":f"{app.config['SITE_NAME']} can't ban itself!"}), 422
+
     d=get_domain(domain)
     if d:
         d.is_banned=True
@@ -632,7 +635,10 @@ def admin_ban_domain():
 
     discord_log_event("Ban Domain", domain, g.user, reason=reason, admin_action=True)
 
-    return redirect(d.permalink)
+    if request.form.get("from")=="admin":
+        return redirect(d.permalink)
+    else:
+        return redirect(f"/search?domain:{domain}")
 
 
 @app.route("/admin/nuke_user", methods=["POST"])
