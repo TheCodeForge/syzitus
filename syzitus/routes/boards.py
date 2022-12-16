@@ -1075,11 +1075,16 @@ def mod_bid_settings_nsfw(bid, board):
 
     g.db.add(board)
 
+    note=f"over_18={board.over_18}"
+
+    if not board.has_mod(g.user):
+        note+=" | admin action"
+
     ma=ModAction(
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"over_18={board.over_18}"
+        note=note
         )
     g.db.add(ma)
     g.db.commit()
@@ -1100,11 +1105,16 @@ def mod_bid_settings_optout(bid, board):
 
     g.db.add(board)
 
+    note=f"all_opt_out={board.all_opt_out}"
+
+    if not board.has_mod(g.user):
+        note+=" | admin_action"
+
     ma=ModAction(
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"all_opt_out={board.all_opt_out}"
+        note=note
         )
     g.db.add(ma)
     g.db.commit()
@@ -1194,7 +1204,7 @@ def mod_bid_settings_adminlock(bid, board):
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"settings_locked={board.is_locked_category}"
+        note=f"settings_locked={board.is_locked_category} | admin_action"
         )
     g.db.add(ma)
     g.db.commit()
@@ -1217,7 +1227,7 @@ def mod_bid_settings_guildlock(bid, board):
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"guild_locked={board.is_locked}"
+        note=f"guild_locked={board.is_locked} | admin_action"
         )
     g.db.add(ma)
     g.db.commit()
@@ -1240,7 +1250,7 @@ def mod_bid_settings_nosiege(bid, board):
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"siege_immune={not board.is_siegable}"
+        note=f"siege_immune={not board.is_siegable} | admin_action"
         )
     g.db.add(ma)
     g.db.commit()
@@ -2103,11 +2113,15 @@ def change_guild_category(board, bid):
     subcat = SUBCAT_DATA[category]['name']
     cat = CATEGORIES[SUBCAT_DATA[category]['cat_id']].name
 
+    note=f"category={cat} / {subcat}"
+    if not board.has_mod(g.user):
+        note+= " | admin_action"
+
     ma=ModAction(
         kind="update_settings",
         user_id=g.user.id,
         board_id=board.id,
-        note=f"category={cat} / {subcat}"
+        note=note
     )
     g.db.add(ma)
 
