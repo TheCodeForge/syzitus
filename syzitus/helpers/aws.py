@@ -30,7 +30,7 @@ def check_phash(db, name):
     return db.query(BadPic).filter(
         func.levenshtein(
             BadPic.phash,
-            hex2bin(str(phash(Image.open({app.config["RUQQUSPATH"]}/name))))
+            hex2bin(str(phash(Image.open(f"{app.config["RUQQUSPATH"]}/{name}"))))
             ) < 10
         ).first()
 
