@@ -27,7 +27,8 @@ class Board(Base, standard_mixin, age_mixin):
     is_banned=Column(Boolean, default=False)
     ban_reason=Column(String(256), default=None)
     is_locked_category = Column(Boolean, default=False) #the actual function of this is a more generic "is locked settings"
-    is_locked=Column(Boolean, default=False) #admin controlled guild immune to siege
+    is_locked=Column(Boolean, default=False) #Freeze guild content
+    is_siegable=Column(Boolean, default=True)
 
     #cosmetic settings
     description = Column(String, default="")
@@ -47,14 +48,11 @@ class Board(Base, standard_mixin, age_mixin):
     disallowbots=Column(Boolean, default=False)
     is_private=Column(Boolean, default=False)
     all_opt_out=Column(Boolean, default=False)
+    subcat_id=Column(Integer, default=0)
 
     #pre-stored values from db-side functions
     rank_trending=Column(Float, default=0)
     stored_subscriber_count=Column(Integer, default=1, nullable=False)
-
-    #siege
-    is_siegable=Column(Boolean, default=True)
-    subcat_id=Column(Integer, default=0)
 
     #relationships
     moderators=relationship("ModRelationship")
