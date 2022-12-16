@@ -210,6 +210,13 @@ class User(Base, standard_mixin, age_mixin):
                 }
             ),
         Index(
+            "users_email_trgm_idx", "email",
+            postgresql_using="gin",
+            postgresql_ops={
+                'email':'gin_trgm_ops'
+                }
+            ),
+        Index(
             "users_created_utc_idx", "created_utc",
             postgresql_using="btree",
             postgresql_ops={
