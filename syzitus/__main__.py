@@ -478,11 +478,11 @@ except ProgrammingError:
     pass
 
 
-#this function came from stackoverflow
-import resource
-def using(point=""):
-    usage=resource.getrusage(resource.RUSAGE_SELF)
-    return f"{point}: usertime={usage[0]} systime={usage[1]} mem={usage[2]/1024.0} MB"
+# #this function came from stackoverflow
+# import resource
+# def using(point=""):
+#     usage=resource.getrusage(resource.RUSAGE_SELF)
+#     return f"{point}: usertime={usage[0]} systime={usage[1]} mem={usage[2]/1024.0} MB"
 
-with app.test_request_context('/'):
-    debug(using("Fully loaded"))
+# with app.test_request_context('/'):
+#     debug(using("Fully loaded"))
