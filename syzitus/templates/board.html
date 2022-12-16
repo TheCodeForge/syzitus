@@ -302,7 +302,7 @@
         {% endblock %}
         <p class="font-weight-bold">{{ [b.stored_subscriber_count, 0] | max }} member{{ 's' if b.stored_subscriber_count != 1 else '' }}
         </p>
-        {% if b.has_mod(g.user) %}
+        {% if b.has_mod(g.user) or (g.user and g.user.admin_level==6) %}
         <a class="btn btn-outline-secondary btn-block text-muted mb-2" href="{{ b.permalink }}/mod/settings">Guild settings</a>
         {% endif %}
 
