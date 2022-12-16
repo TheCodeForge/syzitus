@@ -336,18 +336,21 @@ def is_guildmaster(*perms):
             else:
                 return jsonify({"error": f"no guild specified"}), 400
 
-            m=board.has_mod(g.user)
-            if not m:
-                return jsonify({"error":f"You aren't a guildmaster of +{board.name}"}), 403
+            if g.user.is_permbanned:
+                return jsonify({"error":f"Permanently suspended users may not perform guildmaster actions."}), 403
 
-            if perms:
-                for perm in perms:
-                    if not m.__dict__.get(f"perm_{perm}") and not m.perm_full:
-                        return jsonify({"error":f"Permission `{perm}` required in guild"}), 403
+            if g.user.admin_level<6 and perms!=('config',):
+                m=board.has_mod(g.user)
+                if not m::
+                    return jsonify({"error":f"You aren't a guildmaster of +{board.name}"}), 403
+
+                if perms:
+                    for perm in perms:
+                        if not m.__dict__.get(f"perm_{perm}") and not m.perm_full:
+                            return jsonify({"error":f"Permission `{perm}` required in guild"}), 403
 
 
-            if g.user.is_banned and not g.user.unban_utc:
-                abort(403)
+
 
             return f(*args, board=board, **kwargs)
 

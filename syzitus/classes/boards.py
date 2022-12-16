@@ -17,38 +17,46 @@ class Board(Base, standard_mixin, age_mixin):
 
     __tablename__ = "boards"
 
+    #basic stuff
     id = Column(Integer, primary_key=True)
     name = Column(String) #trigram index below
     created_utc = Column(Integer)
-    description = Column(String, default="")
+    creator_id=Column(Integer, ForeignKey("users.id"))
 
-    description_html=Column(String, default="")
-    over_18=Column(Boolean, default=False)
-    is_nsfl=Column(Boolean, default=False)
+    #administrative variables
     is_banned=Column(Boolean, default=False)
+    ban_reason=Column(String(256), default=None)
+    is_locked_category = Column(Boolean, default=False) #the actual function of this is a more generic "is locked settings"
+    is_locked=Column(Boolean, default=False) #admin controlled guild immune to siege
+
+    #cosmetic settings
+    description = Column(String, default="")
+    description_html=Column(String, default="")
     has_banner=Column(Boolean, default=False)
     has_profile=Column(Boolean, default=False)
-    creator_id=Column(Integer, ForeignKey("users.id"))
-    ban_reason=Column(String(256), default=None)
     color=Column(String(8), default=app.config["COLOR_PRIMARY"])
-    restricted_posting=Column(Boolean, default=False)
-    disallowbots=Column(Boolean, default=False)
-    #hide_banner_data=Column(Boolean, default=False)
     profile_nonce=Column(Integer, default=0)
     banner_nonce=Column(Integer, default=0)
-    is_private=Column(Boolean, default=False)
-    # color_nonce=Column(Integer, default=0)
-    rank_trending=Column(Float, default=0)
-    stored_subscriber_count=Column(Integer, default=1, nullable=False)
-    all_opt_out=Column(Boolean, default=False)
-    is_siegable=Column(Boolean, default=True)
-    is_locked_category = Column(Boolean, default=False) #this is becoming a more generic "is locked settings"
-    subcat_id=Column(Integer, default=0)
-    is_locked=Column(Boolean, default=False)
-
     css_nonce=Column(Integer, default=0)
     css=deferred(Column(String(65536), default='', nullable=False))
 
+    #settings that affect visibility
+    over_18=Column(Boolean, default=False)
+    is_nsfl=Column(Boolean, default=False)
+    restricted_posting=Column(Boolean, default=False)
+    disallowbots=Column(Boolean, default=False)
+    is_private=Column(Boolean, default=False)
+    all_opt_out=Column(Boolean, default=False)
+
+    #pre-stored values from db-side functions
+    rank_trending=Column(Float, default=0)
+    stored_subscriber_count=Column(Integer, default=1, nullable=False)
+
+    #siege
+    is_siegable=Column(Boolean, default=True)
+    subcat_id=Column(Integer, default=0)
+
+    #relationships
     moderators=relationship("ModRelationship")
     subscribers=relationship("Subscription", lazy="dynamic")
     submissions=relationship("Submission", primaryjoin="Board.id==Submission.board_id")
@@ -56,9 +64,8 @@ class Board(Base, standard_mixin, age_mixin):
     bans=relationship("BanRelationship", lazy="dynamic")
     postrels=relationship("PostRelationship", lazy="dynamic")
 
-    trending_rank=deferred(Column(Float, server_default=FetchedValue()))
-
     # db side functions
+    trending_rank=deferred(Column(Float, server_default=FetchedValue()))
     subscriber_count = deferred(Column(Integer, server_default=FetchedValue()))
 
 

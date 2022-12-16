@@ -76,7 +76,7 @@
               <div class="d-flex flex-row-reverse justify-content-end">
                 <ul class="nav settings-nav mx-auto">
 
-                  {% if mod and mod.perm_config %}
+                  {% if (mod and mod.perm_config) or (g.user and g.user.admin_level>=5) %}
                   <li class="nav-item">
                     <a class="nav-link{% if request.path.endswith('/mod/settings') %} active{% endif %}" href="/+{{ b.name }}/mod/settings"><i class="fas fa-cog"></i>Settings</a>
                   </li>
