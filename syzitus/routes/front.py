@@ -776,14 +776,15 @@ def random_guild():
 @auth_desired
 def random_comment():
 
-    x = g.db.query(Comment).filter_by(is_banned=False,
-                                      over_18=False,
-                                      is_nsfl=False,
-                                      is_offensive=False,
-                                      is_bot=False).filter(Comment.parent_submission.isnot(None))
-    if g.user:
-        bans = g.db.query(BanRelationship.id).filter_by(user_id=g.user.id).all()
-        x = x.filter(Comment.board_id.notin_([i[0] for i in bans]))
+    x = g.db.query(
+        Comment
+        ).filter_by(
+        is_banned=False,
+        over_18=False,
+        is_nsfl=False,
+        is_offensive=False,
+        is_bot=False
+        ).filter(Comment.parent_submission.isnot(None))
 
     total = x.count()
     n = randint(0, total - 1)
