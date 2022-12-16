@@ -192,7 +192,7 @@
         <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown-menu" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
         <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
         <a class="dropdown-item" href="{{ b.permalink }}/mod/log"><i class="fas fa-scroll-old"></i>Moderation log</a>
-        {% if b.has_mod(g.user) %}
+        {% if b.has_mod(g.user) or (g.user and g.user.admin_level==6) %}
         <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
         {% endif %}
         {% if g.user and not g.user.has_blocked_guild(b) %}
