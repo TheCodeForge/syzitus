@@ -190,38 +190,6 @@
           </div>
           {% endif %}
 
-
-          <!--
-          <h2 class="h5" name="referral">RSS Feed</h2>
-
-          <p class="text-small text-muted">Subscribe to your own personal {{ 'SITE_NAME' | app_config | lower}} rss feed.</p>
-
-          <div class="settings-section rounded">
-
-            <div class="d-lg-flex">
-
-              <div class="title w-lg-25">
-                <label for="referral_code">Custom User Feed</label>
-              </div>
-
-              <div class="body w-lg-100">
-
-                <input type="text" readonly="" class="form-control copy-link" id="rss_feed" value="{{ ('/feeds/@' + g.user.username + '/' + g.user.feedkey + '/hot') | full_link }}" data-clipboard-text="{{ ('/feeds/@' + g.user.username + '/' + g.user.feedkey + '/hot') | full_link }}">
-                <form action="/settings/new_feedkey" method="post">
-                  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                  <input type="submit" class="btn btn-secondary text-capitalize mr-2 mb-0 mt-2" value="Generate new URL">
-                </form>
-
-                <div class="text-small-extra text-muted mt-3">You can change the feed by replacing "hot" with either top, or disputed.</div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        -->
-
             <h2 class="h5" id="bio" name="bio">Your Profile</h2>
 
             <p class="text-small text-muted">Edit how others see you on {{ 'SITE_NAME' | app_config }}.</p>
