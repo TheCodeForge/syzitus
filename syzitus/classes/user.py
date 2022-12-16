@@ -64,7 +64,7 @@ def send_notif(user, text):
 
 class User(Base, standard_mixin, age_mixin):
 
-    __tablename__ = "users"\
+    __tablename__ = "users"
 
     #basic stuff
     id = Column(Integer, primary_key=True)
@@ -80,9 +80,15 @@ class User(Base, standard_mixin, age_mixin):
     bio_html = Column(String, default="")
     real_id = Column(String, default=None)
     referred_by = Column(Integer, default=None)
+    is_deleted = Column(Boolean, default=False)
+    delete_reason = Column(String(500), default='')
+    creation_region=Column(String(2), default=None)
+
+    #ban & admin actions
     is_banned = Column(Integer, default=0)
     unban_utc = Column(Integer, default=0)
     ban_reason = Column(String, default="")
+    ban_evade=Column(Integer, default=0)
 
     #content preferences
     defaultsorting = Column(String, default="hot")
@@ -91,6 +97,7 @@ class User(Base, standard_mixin, age_mixin):
     hide_bot = Column(Boolean, default=False)
     show_nsfl = Column(Boolean, default=False)
     custom_filter_list=Column(String(1000), default="")
+    filter_nsfw = Column(Boolean, default=False)
 
     #security
     login_nonce = Column(Integer, default=0)
@@ -98,7 +105,7 @@ class User(Base, standard_mixin, age_mixin):
     is_private = Column(Boolean, default=False)
     is_nofollow = Column(Boolean, default=False)
 
-    #bio
+    #profile
     title_id = Column(Integer)
     has_profile = Column(Boolean, default=False)
     has_banner = Column(Boolean, default=False)
@@ -106,38 +113,39 @@ class User(Base, standard_mixin, age_mixin):
     is_nsfw = Column(Boolean, default=False)
     profile_nonce = Column(Integer, default=0)
     banner_nonce = Column(Integer, default=0)
-
-    #siege
-    last_siege_utc = Column(Integer, default=0)
-    unban_utc = Column(Integer, default=0)
-    is_deleted = Column(Boolean, default=False)
-    delete_reason = Column(String(500), default='')
-    filter_nsfw = Column(Boolean, default=False)
-    stored_karma = Column(Integer, default=0)
-    stored_subscriber_count=Column(Integer, default=0)
-
-    coin_balance=Column(Integer, default=0)
-    premium_expires_utc=Column(Integer, default=0)
-    negative_balance_cents=Column(Integer, default=0)
-
-    discord_id=Column(String(64), default=None)
-    creation_region=Column(String(2), default=None)
-    ban_evade=Column(Integer, default=0)
-
     profile_upload_ip=deferred(Column(String(255), default=None))
     banner_upload_ip=deferred(Column(String(255), default=None))
     profile_upload_region=deferred(Column(String(2)))
     banner_upload_region=deferred(Column(String(2)))
+    original_username=deferred(Column(String(255)))
+    name_changed_utc=deferred(Column(Integer, default=0))
+
+    #siege
+    last_siege_utc = Column(Integer, default=0)
+
+    #stored values from db-side functions
+    stored_karma = Column(Integer, default=0)
+    stored_subscriber_count=Column(Integer, default=0)
+
+    #premium
+    coin_balance=Column(Integer, default=0)
+    premium_expires_utc=Column(Integer, default=0)
+    negative_balance_cents=Column(Integer, default=0)
+
+    #discord
+    discord_id=Column(String(64), default=None)
+
+
     
     # color=Column(String(6), default="805ad5")
     # secondary_color=Column(String(6), default="ffff00")
     # signature=Column(String(280), default='')
     # signature_html=Column(String(512), default="")
 
-    #stuff to support name changes
-    original_username=deferred(Column(String(255)))
-    name_changed_utc=deferred(Column(Integer, default=0))
 
+    ## === RELATIONSHIPS ===
+
+    #Content
     submissions = relationship(
         "Submission",
         lazy="dynamic",
@@ -146,9 +154,12 @@ class User(Base, standard_mixin, age_mixin):
         "Comment",
         lazy="dynamic",
         primaryjoin="Comment.author_id==User.id")
-
-    _badges = relationship("Badge", lazy="dynamic", backref="user")
     notifications = relationship("Notification")
+
+    #profile
+    _badges = relationship("Badge", lazy="dynamic", backref="user")
+
+    #Guild relationships
     moderates = relationship("ModRelationship")
     banned_from = relationship("BanRelationship",
                                primaryjoin="BanRelationship.user_id==User.id")
@@ -160,6 +171,7 @@ class User(Base, standard_mixin, age_mixin):
         primaryjoin="ContributorRelationship.user_id==User.id")
     board_blocks = relationship("BoardBlock", lazy="dynamic")
 
+    #Inter-user relationships
     following = relationship("Follow", primaryjoin="Follow.user_id==User.id")
     followers = relationship("Follow", primaryjoin="Follow.target_id==User.id")
 
@@ -172,19 +184,9 @@ class User(Base, standard_mixin, age_mixin):
         lazy="dynamic",
         primaryjoin="User.id==UserBlock.target_id")
 
+    #apps
     _applications = relationship("OauthApp", lazy="dynamic")
     authorizations = relationship("ClientAuth", lazy="dynamic")
-    #notification_subscriptions = relationship("PostNotificationSubscriptions", lazy="dynamic")
-
-    # saved_posts=relationship(
-    #     "SaveRelationship",
-    #     lazy="dynamic",
-    #     primaryjoin="User.id==SaveRelationship.user_id")
-
-    # _transactions = relationship(
-    #     "PayPalTxn",
-    #     lazy="dynamic",
-    #     primaryjoin="PayPalTxn.user_id==User.id")
 
     # properties defined as SQL server-side functions
     energy =            deferred(Column(Integer, server_default=FetchedValue()))
