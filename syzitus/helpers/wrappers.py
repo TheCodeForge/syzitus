@@ -341,7 +341,7 @@ def is_guildmaster(*perms):
 
             if g.user.admin_level<6 or perms!=('config',):
                 m=board.has_mod(g.user)
-                if not m::
+                if not m:
                     return jsonify({"error":f"You aren't a guildmaster of +{board.name}"}), 403
 
                 if perms:
