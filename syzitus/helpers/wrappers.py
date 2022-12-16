@@ -339,7 +339,7 @@ def is_guildmaster(*perms):
             if g.user.is_permbanned:
                 return jsonify({"error":f"Permanently suspended users may not perform guildmaster actions."}), 403
 
-            if g.user.admin_level<6 and perms!=('config',):
+            if g.user.admin_level<6 or perms!=('config',):
                 m=board.has_mod(g.user)
                 if not m::
                     return jsonify({"error":f"You aren't a guildmaster of +{board.name}"}), 403
