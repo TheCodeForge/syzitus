@@ -339,11 +339,11 @@
         </div>
 
         {% if g.user.admin_level>=4 %}
-        <div id="settings-lock">
+        <div id="settings-admin">
 
           <h2 class="h5">Lock settings</h2>
 
-          <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
+          <p class="text-small text-muted">These settings can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
 
           <div class="settings-section rounded">
 
@@ -372,13 +372,6 @@
 
           </div>
 
-        </div>
-        <div id="settings-lock">
-
-          <h2 class="h5">Lock guild</h2>
-
-          <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
-
           <div class="settings-section rounded">
 
             <div class="d-lg-flex">
@@ -406,12 +399,6 @@
 
           </div>
 
-        </div>
-        <div id="settings-lock">
-
-          <h2 class="h5">Siege Immunity</h2>
-
-          <p class="text-small text-muted">This setting can only be changed by {{ 'SITE_NAME' | app_config }} administrators.</p>
 
           <div class="settings-section rounded">
 
