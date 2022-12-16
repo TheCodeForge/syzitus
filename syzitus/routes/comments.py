@@ -1,4 +1,4 @@
-from urllib.parse import urlparse
+from urllib.parse import urlparse, ParseResult
 from mistletoe import Document
 from sqlalchemy import func, literal
 from sqlalchemy.orm import contains_eager
