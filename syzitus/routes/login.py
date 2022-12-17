@@ -376,7 +376,6 @@ def sign_up_post():
         created_utc=g.timestamp,
         creation_ip=request.remote_addr,
         referred_by=ref_id or None,
-        tos_agreed_utc=g.timestamp,
         creation_region=request.headers.get("cf-ipcountry"),
         ban_evade =  int(any([x.is_suspended for x in g.db.query(User).filter(User.id.in_(tuple(session.get("history", [])))).all() if x]))
         )
