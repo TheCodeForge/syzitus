@@ -88,7 +88,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": ftarget.permalink_full,
+                    "url": target.permalink_full,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": app.config['SITE_NAME'].lower(),
@@ -110,10 +110,10 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             ]
         }
 
-    #debug(data)
+    debug(data)
     x=requests.post(url, headers=headers, json=data)
-    #debug(x.status_code)
-    #debug(x.content)
+    debug(x.status_code)
+    debug(x.content)
 
 
 @discord_wrap
