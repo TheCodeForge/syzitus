@@ -35,7 +35,7 @@ class standard_mixin():
 
     @property
     def permalink_full(self):
-        return f"http{'s' if app['FORCE_HTTPS'] else ''}://{app['SERVER_NAME']}{self.permalink}"
+        return f"http{'s' if app.config['FORCE_HTTPS'] else ''}://{app.config['SERVER_NAME']}{self.permalink}"
     
 
 
