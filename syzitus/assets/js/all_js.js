@@ -7,8 +7,11 @@ $(document).on('click', 'a[href="javascript:void(0)"]', function(event){event.pr
 
 //capture middleclick on "js" links that still have data-url
 $(document).on('auxclick', 'a[href="javascript:void(0)"][data-url]', function(event){
-  event.preventDefault();
-  window.open($(this).data('url'));
+  //middleclick event which
+  if(event.which==2) {
+    event.preventDefault();
+    window.open($(this).data('url'));
+  }
 })
 
 // Using mouse
