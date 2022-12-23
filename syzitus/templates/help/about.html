@@ -18,14 +18,14 @@
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- {{ "SITE_NAME" | app_config }} CSS -->
-  <link rel="stylesheet" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.60">
+  <link rel="stylesheet" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=3.1.62">
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
   <!-- Code Prettify -->
 
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sunburst"></script>
 
 </head>
 
@@ -207,30 +207,22 @@
 
         <div class="col">
 
-        <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
+        <div class="tab-content text-left" id="v-pills-tabContent">
 
           <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel" aria-labelledby="v-pills-voting-tab">
-          <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
-            {{ "syzitus/classes/votes.py" | source_code }}
-          </pre>
+          <pre class="prettyprint lang-python border-0 px-3 code-demo">{{ "syzitus/classes/votes.py" | source_code }}</pre>
           </div>
 
           <div class="tab-pane fade" id="v-pills-submission" role="tabpanel" aria-labelledby="v-pills-submission-tab">
-          <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
-            {{ "syzitus/classes/submission.py" | source_code }}
-          </pre>
+          <pre class="prettyprint lang-python border-0 px-3 code-demo">{{ "syzitus/classes/submission.py" | source_code }}</pre>
           </div>
 
           <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-          <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
-            {{ "syzitus/classes/user.py" | source_code }}
-          </pre>
+          <pre class="prettyprint lang-python border-0 px-3 code-demo">{{ "syzitus/classes/user.py" | source_code }}</pre>
           </div>
 
           <div class="tab-pane fade" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
-          <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">
-            {{ "syzitus/classes/comment.py" | source_code }}
-          </pre>
+          <pre class="prettyprint lang-python border-0 px-3 code-demo">{{ "syzitus/classes/comment.py" | source_code }}</pre>
           </div>
         </div>
         </div>
