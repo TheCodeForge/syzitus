@@ -119,10 +119,10 @@
         <a class="nav-link" href="/random/post" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="View random post"><i class="fas fa-random"></i></a>
       </li>
       <li class="nav-item d-flex align-items-center justify-content-center mx-1">
-       <a class="btn btn-outline-purple" href="/login?redirect={{ request.path }}">Sign In</a>
+       <a class="btn btn-outline-purple" href="/login?redirect={{ request.path | urlencode }}">Sign In</a>
      </li>
      <li class="nav-item d-flex align-items-center justify-content-center mx-1">
-       <a class="btn btn-purple" href="/signup?redirect={{ request.path }}">Sign Up</a>
+       <a class="btn btn-purple" href="/signup?redirect={{ request.path | urlencode }}">Sign Up</a>
      </li>
      {% endif %}
    </ul>

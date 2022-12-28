@@ -1923,7 +1923,7 @@ $(document).on('click', ".post-toast-url", function(){
   post_toast($(this).data('post-url'))
 })
 
-$(".go-to-login").click(function(){window.location.href="/login?redirect="+window.location.pathname})
+$(".go-to-login").click(function(){window.location.href="/login?redirect="+encodeURI(window.location.pathname)})
 
 $(document). on('click', ".btn-cancel-comment", function(){
   $('.reply-to-'+$(this).data('comment-id')).addClass('d-none')
