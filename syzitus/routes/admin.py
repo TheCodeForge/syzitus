@@ -17,6 +17,12 @@ from syzitus.helpers.get import *
 from syzitus.classes import *
 from syzitus.classes.domains import reasons as REASONS
 from syzitus.classes.badges import BADGE_DEFS
+from syzitus.helpers.aws import delete_file
+from syzitus.helpers.alerts import send_notification
+from syzitus.helpers.markdown import *
+from syzitus.helpers.security import *
+from syzitus.helpers.discord import discord_log_event
+
 #from syzitus.routes.admin_api import user_stat_data
 from syzitus.classes.categories import CATEGORIES
 
@@ -1341,3 +1347,489 @@ def user_by_email(email, v):
     return redirect(user.permalink)
     
     
+@app.post("/admin/domain_nuke/<domain>")
+@admin_level_required(5)
+def admin_domain_nuke(domain):
+
+    domain=domain.lower()
+    domain_regex=re.sub("[^a-z0-9.]","", domain)
+    #escape periods
+    domain_regex=domain_regex.replace(".","\.")
+
+    posts=g.db.query(Submission).join(
+        Submission.submission_aux
+        ).filter(
+        SubmissionAux.url.op('~')(
+            "https?://([^/]*\.)?"+domain_regex+"(/|$)"
+            )
+        ).all()
+
+    for post in posts:
+        post.is_banned=True
+        g.db.add(post)
+
+
+    d=get_domain(domain)
+    if d:
+        reason=d.reason
+    else:
+        reason="none"
+
+    g.db.commit()
+    discord_log_event("Nuke Domain", domain, g.user, reason=reason, admin_action=True)
+
+    return redirect(f"/search?q=domain:{domain}")
+
+
+@app.route("/admin/csam_nuke/<pid>", methods=["POST"])
+@admin_level_required(4)
+def admin_csam_nuke(pid):
+
+    post = get_post(pid)
+
+    post.is_banned = True
+    post.ban_reason = "CSAM [1]"
+    g.db.add(post)
+    ma=ModAction(
+        user_id=1,
+        target_submission_id=post.id,
+        board_id=post.board_id,
+        kind="ban_post",
+        note="CSAM detected"
+        )
+
+    user = post.author
+    user.is_banned = g.user.id
+    g.db.add(user)
+    for alt in user.alts:
+        alt.is_banned = g.user.id
+        g.db.add(alt)
+
+    if post.domain == app.config['S3_BUCKET']:
+
+        x = requests.get(url)
+        # load image into PIL
+        # take phash
+        # add phash to db
+
+        name = urlparse(post.url).path.lstrip('/')
+        delete_file(name)  # this also dumps cloudflare
+
+
+@app.route("/admin/dump_cache", methods=["POST"])
+@admin_level_required(3)
+def admin_dump_cache():
+
+    cache.clear()
+
+    return jsonify({"message": "Internal cache cleared."})
+
+
+
+@app.route("/admin/ban_domain", methods=["POST"])
+@admin_level_required(4)
+def admin_ban_domain():
+
+    domain=request.form.get("domain",'').lstrip().rstrip().lower()
+
+    if not domain:
+        abort(400)
+
+    reason=int(request.form.get("reason",0))
+    if not reason:
+        abort(400)
+
+    if domain==app.config["SERVER_NAME"].lower() or domain==app.config["S3_BUCKET"].lower():
+        return jsonify({"error":f"{app.config['SITE_NAME']} can't ban itself!"}), 422
+
+    d=get_domain(domain)
+    if d:
+        d.is_banned=True
+        d.reason=reason
+    else:
+        d=Domain(
+            domain=domain,
+            is_banned=True,
+            reason=reason,
+            show_thumbnail=False,
+            embed_function=None,
+            embed_template=None
+            )
+
+    g.db.add(d)
+    g.db.commit()
+
+    discord_log_event("Ban Domain", domain, g.user, reason=reason, admin_action=True)
+
+    if request.form.get("from")=="admin":
+        return redirect(d.permalink)
+    else:
+        return redirect(f"/search?domain:{domain}")
+
+
+@app.route("/admin/nuke_user", methods=["POST"])
+@admin_level_required(4)
+def admin_nuke_user():
+
+    user=get_user(request.form.get("user"))
+
+    note='admin action'
+    if user.ban_reason:
+        note+=f" | {user.ban_reason}"
+
+
+    for post in g.db.query(Submission).filter_by(author_id=user.id).all():
+        if post.is_banned:
+            continue
+            
+        post.is_banned=True
+        post.ban_reason=user.ban_reason
+        g.db.add(post)
+
+        ma=ModAction(
+            kind="ban_post",
+            user_id=g.user.id,
+            target_submission_id=post.id,
+            board_id=post.board_id,
+            note=note
+            )
+        g.db.add(ma)
+
+    for comment in g.db.query(Comment).filter_by(author_id=user.id).all():
+        if comment.is_banned:
+            continue
+
+        comment.is_banned=True
+        g.db.add(comment)
+
+        ma=ModAction(
+            kind="ban_comment",
+            user_id=g.user.id,
+            target_comment_id=comment.id,
+            board_id=comment.post.board_id,
+            note=note
+            )
+        g.db.add(ma)
+
+    g.db.commit()
+
+    discord_log_event("Nuke user", user, g.user, reason=user.ban_reason, admin_action=True)
+
+    return redirect(user.permalink)
+
+@app.route("/admin/demod_user", methods=["POST"])
+@admin_level_required(4)
+def admin_demod_user():
+
+    user=get_user(request.form.get("user"))
+
+    for mod in g.db.query(ModRelationship).filter_by(user_id=user.id, accepted=True):
+
+        ma=ModAction(
+            user_id=g.user.id,
+            target_user_id=user.id,
+            board_id=mod.board_id,
+            kind="remove_mod",
+            note="admin_action"
+            )
+        g.db.add(ma)
+
+        g.db.delete(mod)
+
+    g.db.commit()
+
+    discord_log_event("Global De-Mod", user, g.user, admin_action=True)
+
+    return redirect(user.permalink)
+
+    @app.route("/api/ban_user/<user_id>", methods=["POST"])
+@admin_level_required(3)
+def ban_user(user_id):
+
+    user = g.db.query(User).filter_by(id=user_id).first()
+    if not user:
+        abort(404)
+
+    # check for number of days for suspension
+    days = int(request.form.get("days")) if request.form.get('days') else 0
+    reason = request.form.get("reason", "")
+    message = request.form.get("message", "")
+
+
+    user.ban(admin=g.user, reason=reason, message=message)
+
+
+    for x in user.alts:
+        if x.admin_level:
+            continue
+        if not x.is_deleted and not x.is_permbanned:
+            x.ban(admin=g.user, reason=reason)
+
+    return (redirect(user.url), user)
+
+
+@app.route("/api/unban_user/<user_id>", methods=["POST"])
+@admin_level_required(3)
+def unban_user(user_id):
+
+    user = g.db.query(User).filter_by(id=user_id).first()
+
+    if not user:
+        abort(404)
+
+    user.unban()
+
+    return (redirect(user.url), user)
+
+
+@app.route("/api/ban_post/<post_id>", methods=["POST"])
+@admin_level_required(3)
+def ban_post(post_id):
+
+    post = get_post(post_id)
+
+    if not post:
+        abort(400)
+
+    post.is_banned = True
+    post.is_approved = None
+    post.approved_utc = 0
+    post.stickied = False
+    post.is_pinned = False
+
+    ban_reason=request.form.get("reason", "")
+    with CustomRenderer() as renderer:
+        ban_reason = renderer.render(Document(ban_reason))
+    ban_reason = sanitize(ban_reason, linkgen=True)
+
+    post.ban_reason = ban_reason
+
+    g.db.add(post)
+
+    cache.delete_memoized(Board.idlist, post.board)
+
+    ma=ModAction(
+        kind="ban_post",
+        user_id=g.user.id,
+        target_submission_id=post.id,
+        board_id=post.board_id,
+        note="admin action"
+        )
+    g.db.add(ma)
+    g.db.commit()
+
+    return jsonify({"message":f"Post {post.base36id} removed"})
+
+
+@app.route("/api/unban_post/<post_id>", methods=["POST"])
+@admin_level_required(3)
+def unban_post(post_id):
+
+    post = get_post(post_id)
+
+    if not post:
+        abort(400)
+
+    if post.is_banned:
+        ma=ModAction(
+            kind="unban_post",
+            user_id=g.user.id,
+            target_submission_id=post.id,
+            board_id=post.board_id,
+            note="admin action"
+        )
+        g.db.add(ma)
+
+    post.is_banned = False
+    post.is_approved = g.user.id
+    post.approved_utc = g.timestamp
+
+    g.db.add(post)
+    g.db.commit()
+
+    return jsonify({"message":f"Post {post.base36id} approved"})
+
+
+@app.route("/api/distinguish/<post_id>", methods=["POST"])
+@admin_level_required(1)
+def api_distinguish_post(post_id):
+
+    post = get_post(post_id)
+
+    if not post:
+        abort(404)
+
+    if not post.author_id == g.user.id:
+        abort(403)
+
+    if post.distinguish_level:
+        post.distinguish_level = 0
+    else:
+        post.distinguish_level = g.user.admin_level
+
+    g.db.add(post)
+    g.db.commit()
+
+    return (redirect(post.permalink), post)
+
+
+@app.route("/api/sticky/<post_id>", methods=["POST"])
+@admin_level_required(3)
+def api_sticky_post(post_id):
+
+    post = get_post(post_id)
+
+    if not post.stickied:
+        already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
+        if already_stickied:
+            already_stickied.stickied = False
+            g.db.add(already_stickied)
+
+    post.stickied = not post.stickied
+    g.db.add(post)
+    g.db.commit()
+    return redirect(post.permalink)
+
+
+@app.route("/api/ban_comment/<c_id>", methods=["post"])
+@admin_level_required(1)
+def api_ban_comment(c_id):
+
+    comment = get_comment(c_id)
+    if not comment:
+        abort(404)
+
+    comment.is_banned = True
+    comment.is_approved = 0
+    comment.approved_utc = 0
+
+    g.db.add(comment)
+    ma=ModAction(
+        kind="ban_comment",
+        user_id=g.user.id,
+        target_comment_id=comment.id,
+        board_id=comment.post.board_id,
+        note="admin action"
+        )
+    g.db.add(ma)
+    g.db.commit()
+    return "", 204
+
+
+@app.route("/api/unban_comment/<c_id>", methods=["post"])
+@admin_level_required(1)
+def api_unban_comment(c_id):
+
+    comment = get_comment(c_id)
+    if not comment:
+        abort(404)
+
+    if comment.is_banned:
+        ma=ModAction(
+            kind="unban_comment",
+            user_id=g.user.id,
+            target_comment_id=comment.id,
+            board_id=comment.post.board_id,
+            note="admin action"
+            )
+        g.db.add(ma)
+
+    comment.is_banned = False
+    comment.is_approved = g.user.id
+    comment.approved_utc = g.timestamp
+
+    g.db.add(comment)
+    g.db.commit()
+
+    return "", 204
+
+
+@app.route("/api/distinguish_comment/<c_id>", methods=["post"])
+@admin_level_required(1)
+def admin_distinguish_comment(c_id):
+
+    comment = get_comment(c_id)
+
+    if comment.author_id != g.user.id:
+        abort(403)
+
+    comment.distinguish_level = 0 if comment.distinguish_level else g.user.admin_level
+
+    g.db.add(comment)
+    g.db.commit()
+
+    html=render_template(
+                "comments.html",
+                comments=[comment],
+                render_replies=False,
+                is_allowed_to_comment=True
+                )
+
+    html=str(BeautifulSoup(html, features="html.parser").find(id=f"comment-{comment.base36id}-only"))
+
+    return jsonify({"html":html})
+
+
+
+@app.route("/api/ban_guild/<bid>", methods=["POST"])
+@admin_level_required(4)
+def api_ban_guild(bid):
+
+    board = get_board(bid)
+
+    board.is_banned = True
+    board.ban_reason = request.form.get("reason", "")
+
+    g.db.add(board)
+    g.db.commit()
+
+    discord_log_event("Ban Guild", board, g.user, reason=board.ban_reason, admin_action=True)
+
+    return redirect(board.permalink)
+
+
+@app.route("/api/unban_guild/<bid>", methods=["POST"])
+@admin_level_required(4)
+def api_unban_guild(bid):
+
+    board = get_board(bid)
+
+    board.is_banned = False
+    original_ban_reason=board.ban_reason
+    board.ban_reason = ""
+
+    g.db.add(board)
+    g.db.commit()
+
+    discord_log_event("Unban Guild", board, g.user, reason=original_ban_reason, admin_action=True)
+
+    return redirect(board.permalink)
+
+
+@app.route("/api/mod_self/<bid>", methods=["POST"])
+@admin_level_required(4)
+def mod_self_to_guild(bid):
+
+    board = get_board(bid)
+    if not board.has_mod(g.user):
+        mr = ModRelationship(user_id=g.user.id,
+                             board_id=board.id,
+                             accepted=True,
+                             perm_full=True,
+                             perm_access=True,
+                             perm_config=True,
+                             perm_appearance=True,
+                             perm_content=True)
+        g.db.add(mr)
+
+        ma=ModAction(
+            kind="add_mod",
+            user_id=g.user.id,
+            target_user_id=g.user.id,
+            board_id=board.id,
+            note="admin action"
+        )
+        g.db.add(ma)
+        g.db.commit()
+
+    return redirect(f"/+{board.name}/mod/mods")
