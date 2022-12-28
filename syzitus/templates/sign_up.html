@@ -99,7 +99,7 @@
               <input type="hidden" name="time" value="{{ g.timestamp }}">
 
               {% if redirect %}
-              <input type="hidden" name="redirect" value="{{ redirect }}">
+              <input type="hidden" name="redirect" value="{{ redirect | urlencode }}">
               {% endif %}
               {% if ref_user %}
               <input type="hidden" name="referred_by" value="{{ ref_user.id }}">
@@ -147,7 +147,7 @@
 
               <button class="btn btn-primary login w-100 mt-3" id="register_button">Register</button>
 
-              <div class="text-center text-muted text-small mt-2 mb-0">Already have an account? <a href="/login{{ '?redirect='+redirect if redirect else '' }}" class="font-weight-bold toggle-login">Log in</a>
+              <div class="text-center text-muted text-small mt-2 mb-0">Already have an account? <a href="/login{{ '?redirect='+ ( redirect | urlencode ) if redirect else '' }}" class="font-weight-bold toggle-login">Log in</a>
               </div>
 
             </form>

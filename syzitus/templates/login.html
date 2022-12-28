@@ -94,7 +94,7 @@
                             <input type="hidden" name="time" value="{{ g.timestamp }}">
 
                             <input class="form-control" id="username" aria-describedby="usernameHelp"type="text" name="username" required="" autofocus>
-                            <input type="hidden" name="redirect" value="{{ redirect }}">
+                            <input type="hidden" name="redirect" value="{{ redirect | urlencode }}">
 
                             <label for="password" class="mt-3">Password</label>
 
@@ -107,7 +107,7 @@
                             <button class="btn btn-primary login w-100 mt-3" id="login_button">Sign in</button>
 
                             <div class="text-center text-muted text-small mt-5 mb-3">
-                                Don't have an account? <a href="/signup{{ '?redirect='+redirect if redirect else '' }}" class="font-weight-bold toggle-login">Sign up</a>
+                                Don't have an account? <a href="/signup{{ '?redirect='+ ( redirect | urlencode ) if redirect else '' }}" class="font-weight-bold toggle-login">Sign up</a>
                             </div>
 
                         </form>
