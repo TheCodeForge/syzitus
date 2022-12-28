@@ -276,7 +276,7 @@
 
 
               
-                {% if g.user and c.post and (c.is_guildmaster('content') or c.is_guildmaster('access')) %}
+                {% if g.user and c.post and ((c.is_top_level and c.is_guildmaster('content')) or c.is_guildmaster('access')) %}
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header" class="text-muted">Guildmaster Actions</h6>
 
