@@ -11,7 +11,7 @@ from .legal import *
 from .login import *
 from .logo import *
 from .oauth import *
-#from .paypal import *
+from .paypal import gift_comment, gift_post
 from .posts import *
 from .search import *
 from .settings import *
