@@ -1868,6 +1868,7 @@ function postformtoast(x, callback=function(data){}){
       $('#toast-error').toast('show')
       if (x.hasClass('btn')) {
         x.prop('disabled', false)
+        x.text(x.data('text'))
       }
     } 
     else {
@@ -1875,6 +1876,7 @@ function postformtoast(x, callback=function(data){}){
       $('#toast-error').toast('show')
       if (x.hasClass('btn')) {
         x.prop('disabled', false)
+        x.text(x.data('text'))
       }
     }
   };
@@ -1882,6 +1884,8 @@ function postformtoast(x, callback=function(data){}){
   xhr.send(form);
   if (x.hasClass('btn')) {
     x.prop('disabled', true)
+    x.data('text', x.text())
+    x.html('<i class="fas fa-spinner fa-spin"></i>')
   }
 }
 
