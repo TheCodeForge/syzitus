@@ -9,9 +9,10 @@ from imagehash import phash
 from sqlalchemy import func
 from os import remove
 
-from syzitus.classes.images import BadPic
-from syzitus.__main__ import db_session
 from .base36 import hex2bin
+
+from syzitus.classes.images import BadPic
+from syzitus.__main__ import app, db_session
 
 BUCKET = environ.get("S3_BUCKET_NAME",'i.syzitus.com').lstrip().rstrip()
 CF_KEY = environ.get("CLOUDFLARE_KEY",'').lstrip().rstrip()
