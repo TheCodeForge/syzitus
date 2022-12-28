@@ -746,17 +746,6 @@ def admin_category_lock():
 
     return redirect(f"{board.permalink}/mod/log")
 
-
-@app.route("/admin/category", methods=["GET"])
-@admin_level_required(4)
-def admin_category_get():
-
-    return render_template(
-        "admin/category.html", 
-        categories=CATEGORIES,
-        b=get_board(request.args.get("guild"), graceful=True)
-        )
-
 @app.route("/admin/user_data/<username>", methods=["GET"])
 @admin_level_required(5)
 def admin_user_data_get(username, v):
@@ -1542,7 +1531,7 @@ def admin_demod_user():
 
     return redirect(user.permalink)
 
-    @app.route("/api/ban_user/<user_id>", methods=["POST"])
+@app.route("/api/ban_user/<user_id>", methods=["POST"])
 @admin_level_required(3)
 def ban_user(user_id):
 
