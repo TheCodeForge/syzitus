@@ -274,6 +274,23 @@
                 <a class="dropdown-item text-danger post-toast-url" href="javascript:void(0)" data-post-url="/settings/block?username={{ c.author.username }}"><i class="fas fa-user-slash text-danger fa-fw"></i>Block user</a>
                 {% endif %}
 
+
+              
+                {% if g.user and c.post and (c.is_guildmaster('content') or c.is_guildmaster('access') %}
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header" class="text-muted">Guildmaster Actions</h6>
+
+                {% if c.is_top_level and c.is_guildmaster('content') %}
+                <a class="dropdown-item text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 fa-fw text-info"></i>{{ "Unpin" if c.is_pinned else "Pin" }}</a>
+                {% endif %}
+
+                {% if c.post and c.is_guildmaster('access') and g.user.id!=c.author_id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
+                <a class="dropdown-item text-danger post-toast-url" id="exile-comment-{{ c.base36id }}" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a>
+                {% endif %}
+                
+                {% endif %}
+
+
                 {% if g.user and g.user.admin_level %}
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header" class="text-muted">Admin Actions</h6>
@@ -293,19 +310,6 @@
                 <a href="javascript:void(0)" class="dropdown-item" href="{{ c.oauth_app.permalink }}/comments" ><i class="fas fa-code fa-fw"></i>API App</a>
                 {% endif %}
 
-                {% endif %}
-              
-                {% if g.user and c.post and c.is_guildmaster('content') %}
-                <div class="dropdown-divider"></div>
-                <h6 class="dropdown-header" class="text-muted">Guildmaster Actions</h6>
-                {% if c.is_top_level %}
-                <a class="dropdown-item text-info btn-pin-comment" id="pin-comment-{{ c.base36id }}" data-dismiss="modal" data-target="#actionsModal-{{ c.base36id }}" data-board-name="{{ c.board.name }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-thumbtack fa-rotate--45 fa-fw text-info"></i>{{ "Unpin" if c.is_pinned else "Pin" }}</a>
-                {% endif %}
-                {% endif %}
-                {% if g.user and c.post and c.is_guildmaster('access') %}
-                {% if g.user.id!=c.author_id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
-                <a class="dropdown-item text-danger post-toast-url" id="exile-comment-{{ c.base36id }}" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a>
-                {% endif %}
                 {% endif %}
 
               </div>
