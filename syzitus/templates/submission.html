@@ -852,21 +852,22 @@
    {% with comments=p.replies %}
    {% include "comments.html" %}
    {% endwith %}
- </div>
- {% elif not p.replies and not p.deleted_utc %}
- <div id="no-comments" class="comment-section text-center py-7">
-  <span class="fa-stack fa-2x text-muted mb-4">
-    <i class="fas fa-square text-gray-500 opacity-25 fa-stack-2x"></i>
-    <i class="fas text-gray-500 fa-ghost fa-stack-1x text-lg"></i>
-  </span>
-  <h2 class="h5">Be the first to comment!</h2>
-  {% if g.user %}
-  <p class="text-muted">This comment section is a ghost town...</p>
+  </div>
   {% else %}
-  <p class="text-muted">This comment section is a ghost town. <a href="/login?redirect={{ request.path | urlencode}}">Sign in</a></p>
+  <div id="no-comments" class="comment-section text-center py-7">
+    <span class="fa-stack fa-2x text-muted mb-4">
+      <i class="fas fa-square text-gray-500 opacity-25 fa-stack-2x"></i>
+      <i class="fas text-gray-500 fa-ghost fa-stack-1x text-lg"></i>
+    </span>
+    {% if not p.is_banned and not p.deleted_utc %}
+    <h2 class="h5">Be the first to comment!</h2>
+    {% if g.user %}
+    <p class="text-muted">This comment section is a ghost town.</p>
+    {% else %}
+    <p class="text-muted">This comment section is a ghost town. <a href="/login?redirect={{ request.path | urlencode}}">Sign in</a></p>
+    {% endif %}
+  </div>
   {% endif %}
-</div>
-{% endif %}
 
 </div>
 
