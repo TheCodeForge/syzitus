@@ -276,7 +276,7 @@
 
 
               
-                {% if g.user and c.post and (c.is_guildmaster('content') or c.is_guildmaster('access') %}
+                {% if g.user and c.post and (c.is_guildmaster('content') or c.is_guildmaster('access')) %}
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header" class="text-muted">Guildmaster Actions</h6>
 
@@ -287,7 +287,7 @@
                 {% if c.post and c.is_guildmaster('access') and g.user.id!=c.author_id and not c.author.is_deleted and c.original_board_id==c.post.board_id %}
                 <a class="dropdown-item text-danger post-toast-url" id="exile-comment-{{ c.base36id }}" data-post-url="/mod/exile/{{ c.post.board.name }}?username={{ c.author.username }}&toast=1&thing={{ c.fullname }}"><i class="fas fa-user-minus fa-fw text-danger"></i>Exile @{{ c.author.username }}</a>
                 {% endif %}
-                
+
                 {% endif %}
 
 
