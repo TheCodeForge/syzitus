@@ -6,7 +6,7 @@ from syzitus.helpers.security import *
 from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.base36 import *
 from syzitus.helpers.get import *
-from syzitus.__main__ import app
+from syzitus.__main__ import app, debug
 
 CLIENT=PayPalClient()
 
