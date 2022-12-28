@@ -2,7 +2,7 @@
 {% for u in users %}
 
 <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4">
-  <div id="user-{{ u.base36id }}" class="card h-100">
+  <div id="user-{{ u.base36id }}" class="card h-100{% if u.is_permbanned %} banned{% endif %}{% if u.is_deleted %} deleted{% endif %}">
     <div class="position-relative">
       <img src="{{ u.banner_url }}" class="card-img-top user-card-banner" alt="@{{ u.username }} user banner">
       <img src="{{ u.profile_url }}" class="profile-pic-50 border-3 border-white user-listing-profile-img">
