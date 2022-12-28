@@ -39,7 +39,7 @@ def shop_get_price():
 
     coins=int(request.args.get("coins"))
 
-    if not coins>=1:
+    if coins < 1:
         return jsonify({"error": "Must attempt to buy at least one coin"}), 400
 
     code=request.args.get("promo","")
