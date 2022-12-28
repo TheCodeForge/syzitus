@@ -1418,7 +1418,8 @@ $(document).on('click', '.btn-save-new-comment', function(){
 
   $(this).prop('disabled', true)
   $(this).addClass('disabled');
-  $(this).data('text', $(this).text())
+  $(this).width($(this).width()); //pins width at whatever the current value is
+  $(this).data('text', $(this).text());
   $(this).html('<i class="fas fa-spinner fa-spin"></i>')
 
 })
@@ -1888,6 +1889,7 @@ function postformtoast(x, callback=function(data){}){
   xhr.send(form);
   if (x.hasClass('btn')) {
     x.prop('disabled', true)
+    x.width(x.width()); //pins width at whatever the current value is
     x.data('text', x.text())
     x.html('<i class="fas fa-spinner fa-spin"></i>')
   }
