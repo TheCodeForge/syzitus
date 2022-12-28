@@ -1278,7 +1278,7 @@ class User(Base, standard_mixin, age_mixin):
 
     @property
     def is_permbanned(self):
-        return self.is_banned and self.unban_utc==0
+        return self.is_banned and not self.unban_utc
     
 
     @property
