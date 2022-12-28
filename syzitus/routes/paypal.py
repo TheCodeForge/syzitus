@@ -305,10 +305,9 @@ def gift_post_pid(pid):
 @is_not_banned
 @no_negative_balance("toast")
 @user_update_lock
-def gift_comment_pid(cid):
+def gift_comment_cid(cid):
 
     comment=get_comment(cid)
-    debug('target comment acquired')
 
     if comment.author_id==g.user.id:
         return jsonify({"error":"You can't give awards to yourself."}), 403      
@@ -326,7 +325,6 @@ def gift_comment_pid(cid):
         return jsonify({"error":"You can't give awards to banned accounts"}), 403
 
     u=get_user(comment.author.username)
-    debug('target user acquired')
 
     if u.is_blocking:
         return jsonify({"error":"You can't give awards to someone you're blocking."}), 403
