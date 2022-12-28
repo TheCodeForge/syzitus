@@ -1401,6 +1401,7 @@ $(document).on('click', '.btn-save-new-comment', function(){
       $('#toast-error').toast('dispose');
       $('#toast-success').toast('show')
       $('#toast-success .toast-text').text("Comment posted!");
+      $('#no-comments').addClass('d-none')
     }
     else {
       btn.prop('disabled', false);
