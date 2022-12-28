@@ -5,7 +5,7 @@ from .boards import Board
 from .board_relationships import ModRelationship, BanRelationship, ContributorRelationship, PostRelationship, BoardBlock
 from .categories import CATEGORIES, SUBCAT_DATA
 from .clients import OauthApp, ClientAuth
-from .comment import Comment, CommentAux
+from .comment import Comment, CommentAux, Notification
 from .custom_errors import PaymentRequired, DatabaseOverload
 from .domains import Domain, BadLink
 from .flags import Flag, CommentFlag, Report
