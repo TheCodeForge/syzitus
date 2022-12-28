@@ -1278,7 +1278,7 @@ class User(Base, standard_mixin, age_mixin):
 
     @property
     def is_permbanned(self):
-        return self.is_banned and self.unban_urc==0
+        return self.is_banned and self.unban_utc==0
     
 
     @property
@@ -1492,7 +1492,7 @@ class User(Base, standard_mixin, age_mixin):
     def badges_function(self):
         self.refresh_selfset_badges()
         return self._badges.all()
-        
+
     badges = property(badges_function)
 
     @property
