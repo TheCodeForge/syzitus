@@ -1405,6 +1405,7 @@ $(document).on('click', '.btn-save-new-comment', function(){
     else {
       btn.prop('disabled', false);
       btn.removeClass('disabled')
+      btn.text(btn.data('text'))
       var commentError = document.getElementById("comment-error-text");
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
@@ -1416,6 +1417,8 @@ $(document).on('click', '.btn-save-new-comment', function(){
 
   $(this).prop('disabled', true)
   $(this).addClass('disabled');
+  $(this).data('text', $(this).text())
+  $(this).html('<i class="fas fa-spinner fa-spin"></i>')
 
 })
 
