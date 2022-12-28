@@ -1488,11 +1488,12 @@ class User(Base, standard_mixin, age_mixin):
     def can_change_name(self):
         return self.name_changed_utc < g.timestamp - 60*60*24*app.config['COOLDOWN_DAYS_CHANGE_USERNAME'] and self.coin_balance>=app.config['COINS_REQUIRED_CHANGE_USERNAME']
 
-    @property
     @cache.memoize(60*60*24)
-    def badges(self):
+    def badges_function(self):
         self.refresh_selfset_badges()
         return self._badges.all()
+        
+    badges = property(badges_function)
 
     @property
     def is_following(self):
