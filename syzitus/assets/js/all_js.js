@@ -1396,12 +1396,16 @@ $(document).on('click', '.btn-save-new-comment', function(){
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
-      $('#comment-form-space-'+btn.data('parent-fullname')).html(JSON.parse(xhr.response)["html"]);
+      data=JSON.parse(xhr.response)
+      $('#comment-form-space-'+btn.data('parent-fullname')).html(data["html"]);
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
       $('#toast-success').toast('show')
       $('#toast-success .toast-text').text("Comment posted!");
       $('#no-comments').addClass('d-none')
+      if (data['html'].includes('class="prettyprint"')) {
+        PR.prettyPrint();
+      }
     }
     else {
       btn.prop('disabled', false);
