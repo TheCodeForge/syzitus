@@ -279,11 +279,11 @@
 {% else %}
 <p class="text-success font-weight-bold"><i class="fas fa-gavel fa-fw"></i>Not banned</p>
 
-<a href="javascript:void(0)" class="btn btn-warning btn-warning-ban-ip">Ban IP: {{ ip }}</a>
+<a href="javascript:void(0)" class="btn btn-warning btn-warning-ban-ip w-100">Ban IP: {{ ip }}</a>
 <form action="/admin/ban_ip" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="addr" value="{{ ip }}">
-  <input id="ip-ban-submit" type="submit" class="btn btn-danger mt-2 d-none" value="Confirm ban"><!--disabled-->
+  <input id="ip-ban-confirm" type="submit" class="btn btn-danger mt-2 d-none" value="Confirm ban"><!--disabled-->
 </form>
 {% endif %}
 {% endif %}
