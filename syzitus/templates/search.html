@@ -283,7 +283,6 @@
 <form action="/admin/ban_ip" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="addr" value="{{ ip }}">
-
   <label for="ip-ban-reason">Ban Reason:</label>
   <input id="ip-ban-reason" type="text" name="reason" required>
   <input id="ip-ban-confirm" type="submit" class="btn btn-danger mt-2 d-none" value="Confirm ban"><!--disabled-->
