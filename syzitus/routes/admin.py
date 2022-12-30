@@ -1824,7 +1824,7 @@ def mod_self_to_guild(bid):
     return redirect(f"/+{board.name}/mod/mods")
 
 
-@app.post("admin/ban_ip")
+@app.post("/admin/ban_ip")
 @admin_level_required(5)
 def admin_ban_ip():
 
