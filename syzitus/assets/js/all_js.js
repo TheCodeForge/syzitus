@@ -1516,13 +1516,17 @@ $(document).on('click', '.btn-save-edit-comment', function() {
   xhr.withCredentials=true;
   xhr.onload=function(){
     if (xhr.status==200) {
+      var data=JSON.parse(xhr.response);
       commentForm=document.getElementById('comment-text-'+id);
-      commentForm.innerHTML=JSON.parse(xhr.response)["html"];
+      commentForm.innerHTML=data["html"];
       document.getElementById('cancel-edit-'+id).click()
       $('#toast-success').toast('dispose');
       $('#toast-error').toast('dispose');
       $('#toast-success').toast('show');
       $('#toast-success .toast-text').text("Comment edit saved")
+      if (data['html'].includes('class="prettyprint"')) {
+        PR.prettyPrint();
+      }
     }
     else {
       $('#toast-success').toast('dispose');
