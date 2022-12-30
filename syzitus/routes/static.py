@@ -353,8 +353,3 @@ def docs():
 
     return render_template("docs.html", docs=fulldocs, v=None)
 
-
-@app.get("/favicon.ico")
-@cf_cache
-def get_favicon_ico():
-    return send_file("./assets/images/icons/favicon.png")

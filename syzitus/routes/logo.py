@@ -313,3 +313,9 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
     tempname=f"logo_splash_{width}_{height}.png"
     output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
     return send_file(tempname, mimetype="image/png")
+
+
+@app.get("/favicon.ico")
+@cf_cache
+def get_favicon_ico():
+    return get_assets_images_splash("splash", 48, 48)
