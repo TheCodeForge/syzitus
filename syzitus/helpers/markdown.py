@@ -66,13 +66,14 @@ class Spoiler(SpanToken):
 code_language_start_regex=re.compile('^```\w+$')
 
 class CodeBlockLanguage(BlockToken):
-    pattern=re.compile("```(\w+)\n(.+)\n```")
+    pattern=re.compile("```(\w+)\n(.+)")
     parse_inner=False
 
     def __init__(self, match_obj):
         self.target=(match_obj.group(1), match_obj.group(1))
 
-    def start(self, line):
+    @staticmethod
+    def start(line):
 
         return bool(re.match(code_language_start_regex, line))
 
