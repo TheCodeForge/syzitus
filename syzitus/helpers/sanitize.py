@@ -246,9 +246,9 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
             tag.attrs['class']='spoiler' if 'spoiler' in tag.attrs.get('class','') else ''
 
         #similar for pre elements
-        for tag in soup.find_all("pre"):
-            if tag.attrs.get('class') and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
-                tag.attrs['class']=""
+        # for tag in soup.find_all("pre"):
+        #     if tag.attrs.get('class') and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
+        #         tag.attrs['class']=""
 
         #table format
         for tag in soup.find_all("table"):
