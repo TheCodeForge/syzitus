@@ -17,7 +17,8 @@ valid_params=[
     'author',
     'domain',
     'guild',
-    'url'
+    'url',
+    'ip'
 ]
 
 def searchparse(text):
@@ -102,6 +103,15 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
                 "https?://([^/]*\.)?"+domain+"(/|$)"
                 )
             )
+
+    if 'ip' in criteria and g.user and g.user.admin_level>=5:
+        ipaddr=criteria['ip']
+        ipaddr=ipaddr.replace(".","\.")
+        posts=posts.filter(
+            Submission.creation_ip.op("~")(ipaddr)
+            )
+    elif 'ip' in criteria:
+        abort(403)
 
 
     if not (g.user and g.user.over_18):
@@ -333,6 +343,13 @@ def search(search_type="posts"):
             domain=None
             domain_obj=None
 
+        if g.user and g.user.admin_level>=5 and 'ip' in criteria:
+            ip=criteria['ip']
+            ip_ban=get_ip(ip)
+        else:
+            ip=None
+            ip_ban=None
+
         return {"html":lambda:render_template("search.html",
                                query=query,
                                total=total,
@@ -343,6 +360,8 @@ def search(search_type="posts"):
                                next_exists=next_exists,
                                domain=domain,
                                domain_obj=domain_obj,
+                               ip=ip,
+                               ip_ban=ip_ban,
                                reasons=REASONS
                                ),
                 "api":lambda:jsonify({"data":[x.json for x in posts]})
