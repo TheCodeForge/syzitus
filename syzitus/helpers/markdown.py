@@ -63,29 +63,28 @@ class Spoiler(SpanToken):
         self.target=match_obj.group(2)
 
 
-code_language_start_regex=re.compile('^```\w+$')
+# code_language_start_regex=re.compile('^```\w+$')
 
-class CodeBlockLanguage(BlockToken):
-    pattern=re.compile("```(\w+)\n(.+)")
-    parse_inner=False
+# class CodeBlockLanguage(BlockToken):
+#     pattern=re.compile("```(\w+)\n(.+)")
+#     parse_inner=False
 
-    def __init__(self, match_obj):
-        self.target=(match_obj.group(1), match_obj.group(1))
+#     def __init__(self, match_obj):
+#         self.target=(match_obj.group(1), match_obj.group(1))
 
-    @staticmethod
-    def start(line):
+#     @staticmethod
+#     def start(line):
+#         return bool(re.match(code_language_start_regex, line))
 
-        return bool(re.match(code_language_start_regex, line))
-
-    #this is copied from mistletoe source code with \n replaced with ```
-    @staticmethod
-    def read(lines):
-        line_buffer = [next(lines)]
-        for line in lines:
-            if line == '```':
-                break
-            line_buffer.append(line)
-        return line_buffer
+#     #this is copied from mistletoe source code with \n replaced with ```
+#     @staticmethod
+#     def read(lines):
+#         line_buffer = [next(lines)]
+#         for line in lines:
+#             if line == '```':
+#                 break
+#             line_buffer.append(line)
+#         return line_buffer
 
 
 
@@ -104,8 +103,8 @@ class CustomRenderer(HTMLRenderer):
         super().__init__(UserMention,
                          BoardMention,
                          Emoji,
-                         Spoiler,
-                         CodeBlockLanguage
+                         Spoiler #,
+                         #CodeBlockLanguage
                          )
 
         for i in kwargs:
@@ -170,12 +169,12 @@ class CustomRenderer(HTMLRenderer):
 
         return f'<span class="spoiler">{token.target}</span>'
 
-    def render_code_block_language(self, token):
+    # def render_code_block_language(self, token):
 
-        language=token.target[0]
-        code=token.target[1]
+    #     language=token.target[0]
+    #     code=token.target[1]
 
-        return f'<pre class="prettyprint lang-{language.lower()}>{code}</pre>">'
+    #     return f'<pre class="prettyprint lang-{language.lower()}>{code}</pre>">'
     
 def preprocess(text):
 
