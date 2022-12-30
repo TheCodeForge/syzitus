@@ -250,7 +250,7 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
         for tag in soup.find_all("pre"):
             printify=False
             for child in tag.children:
-                if child.attrs.get('class') and child.attrs['class'][0].startswith('language'):
+                if child.attrs.get('class') and len(child.attrs['class'])==1 and child.attrs['class'][0].startswith('language-'):
                     printify=True
                     child.attrs['class']=f"lang-{child.attrs['class'][0].split('-')[1]}"
             if printify:
