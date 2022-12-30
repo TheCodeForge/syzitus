@@ -1870,6 +1870,7 @@ function postformtoast(x, callback=function(data){}){
       if (data['message']!=undefined) {
         $('#toast-success .toast-text').text(data['message']);
         $('#toast-success').toast('show');
+        x.text(x.data('text'))
       }
       callback(xhr);
     } 
@@ -1881,6 +1882,7 @@ function postformtoast(x, callback=function(data){}){
       $('#toast-error').toast('show')
       if (x.hasClass('btn')) {
         x.prop('disabled', false)
+        x.removeClass('disabled')
         x.text(x.data('text'))
       }
     } 
@@ -1889,6 +1891,7 @@ function postformtoast(x, callback=function(data){}){
       $('#toast-error').toast('show')
       if (x.hasClass('btn')) {
         x.prop('disabled', false)
+        x.removeClass('disabled')
         x.text(x.data('text'))
       }
     }
@@ -1899,6 +1902,7 @@ function postformtoast(x, callback=function(data){}){
     x.prop('disabled', true)
     x.width(x.width()); //pins width at whatever the current value is
     x.data('text', x.text())
+    x.addClass('disabled')
     x.html('<i class="fas fa-spinner fa-spin"></i>')
   }
 }
