@@ -279,14 +279,14 @@
 {% else %}
 <p class="text-success font-weight-bold"><i class="fas fa-gavel fa-fw"></i>Not banned</p>
 
-<form action="/admin/ban_ip" method="post">
+<form id="admin-ban-ip-form" action="/admin/ban_ip" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="addr" value="{{ ip }}">
   <label for="ip-ban-reason">Ban Reason</label>
   <input id="ip-ban-reason" type="text" name="reason" class="form-control mb-2" placeholder="eg. spam" required>
-  <a href="javascript:void(0)" class="btn btn-warning btn-warning-ban-ip w-100" form="x">Ban IP: {{ ip }}</a>
-  <input id="ip-ban-confirm" type="submit" class="btn btn-danger mt-2 d-none" value="Confirm ban"><!--disabled-->
 </form>
+<a href="javascript:void(0)" class="btn btn-warning btn-warning-ban-ip w-100">Ban IP: {{ ip }}</a>
+<a id="ip-ban-confirm" href="javascript:void(0)" class="btn btn-danger mt-2 d-none toast-form-submit" data-form="admin-ban-ip-form">Confirm ban"</a>
 {% endif %}
 {% endif %}
 
