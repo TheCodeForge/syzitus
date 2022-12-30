@@ -90,7 +90,11 @@
   {% endif %}
 
   <!-- Font Awesome -->
-  <link href="/assets/fontawesome/css/all.min.css" rel="stylesheet"> <!--load all styles -->
+  <link href="/assets/fontawesome/css/all.min.css" rel="stylesheet">
+
+  <!-- Code prettify -->
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sunburst"></script>
 
   {% if g.user %}
   <link id="formkey_element" data-formkey="{{ g.user.formkey }}">

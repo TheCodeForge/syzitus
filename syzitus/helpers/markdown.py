@@ -1,6 +1,7 @@
 from .get import *
 
 from mistletoe.span_token import SpanToken
+from mistletoe.block_token import BlockToken
 from mistletoe.html_renderer import HTMLRenderer
 import os.path
 from re import compile as re_compile, sub as re_sub
@@ -61,6 +62,13 @@ class Spoiler(SpanToken):
 
         self.target=match_obj.group(2)
 
+
+class CodeBlockLanguage(BlockToken):
+    pattern=re_compile("```(\w+)\n(.+)\n```")
+    parse_inner=False
+
+    def __init__(self, match_obj):
+        self.target=(match_obj.group(1), match_obj.group(1))
 
 
 
@@ -146,20 +154,12 @@ class CustomRenderer(HTMLRenderer):
 
         return f'<span class="spoiler">{token.target}</span>'
 
-    # def render_op_mention(self, token):
+    def render_code_block_language(self, token):
 
-    #     space = token.target[0]
-    #     target = token.target[1]
+        language=token.target[0]
+        code=token.target[1]
 
-    #     print(self.__dict__)
-
-    #     if "post_id" not in self.__dict__:
-    #         return "[no op found]"
-
-    #     post = get_submission(self.post_id)
-    #     user = post.author
-    #     return f'{space}<a href="{user.permalink}" class="d-inline-block"><img src="/@{user.username}/pic/profile" class="profile-pic-20 mr-1">@{user.username}</a>'
-
+        return f'<pre class="prettyprint lang-{language.lower()}>{code}</pre>">'
     
 def preprocess(text):
 

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
 from functools import partial
-from re import match as re_match
+import re
 
 from .get import *
 # import os.path
@@ -91,13 +91,17 @@ _allowed_attributes = {
     'a': ['href', 'title', "rel", "data-original-name"],
     'i': [],
     'span': ['class', 'data-toggle', 'title'],
-    'img': ['src', 'class']
+    'img': ['src', 'class'],
+    'pre': ['class']
     }
 
 _allowed_protocols = [
     'http', 
     'https'
     ]
+
+
+prettify_class_regex=re.compile("prettyprint lang-\w+")
 
 # filter to make all links show domain on hover
 
@@ -221,7 +225,7 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
         #disguised link preventer
         for tag in soup.find_all("a"):
 
-            if re_match("https?://\S+", str(tag.string)):
+            if re.match("https?://\S+", str(tag.string)):
                 try:
                     tag.string = tag["href"]
                 except:
@@ -240,6 +244,11 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
         #same goes for span
         for tag in soup.find_all("span"):
             tag.attrs['class']='spoiler' if 'spoiler' in tag.attrs.get('class','') else ''
+
+        #similar for pre elements
+        for tag in soup.find_all("pre"):
+            if tag.attrs['class'] and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
+                tag.attrs['class']=""
 
         #table format
         for tag in soup.find_all("table"):
