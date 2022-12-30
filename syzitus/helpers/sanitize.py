@@ -92,7 +92,8 @@ _allowed_attributes = {
     'i': [],
     'span': ['class', 'data-toggle', 'title'],
     'img': ['src', 'class'],
-    'pre': ['class']
+    'pre': ['class'],
+    'code': ['class']
     }
 
 _allowed_protocols = [
