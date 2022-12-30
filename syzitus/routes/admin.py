@@ -1837,7 +1837,8 @@ def admin_ban_ip():
 
     new_ipban=IP(
         addr=ip,
-        reason=request.form.get("reason")
+        reason=request.form.get("reason"),
+        banned_by=g.user.id
         )
 
     g.db.add(new_ipban)
