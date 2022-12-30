@@ -1822,3 +1822,24 @@ def mod_self_to_guild(bid):
         g.db.commit()
 
     return redirect(f"/+{board.name}/mod/mods")
+
+
+@app.post("admin/ban_ip")
+@admin_level_required(5)
+def admin_ban_ip():
+
+    ip=request.form.get("addr")
+
+    existing_ban=get_ip(ip)
+
+    if existing_ban:
+        return jsonify({"error":f"IP address {ip} already banned"}), 409
+
+    new_ipban=IP(
+        addr=ip,
+        reason=request.form.get("reason")
+        )
+
+    g.db.add(new_ipban)
+    g.db.commit()
+    return jsonify({"message":f"IP address {ip} banned"})
