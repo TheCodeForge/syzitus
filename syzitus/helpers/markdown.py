@@ -88,8 +88,8 @@ class CustomRenderer(HTMLRenderer):
                          BoardMention,
                          #ChatMention,
                          Emoji,
-                         Spoiler #,
-                         #OpMention
+                         Spoiler,
+                         CodeBlockLanguage
                          )
 
         for i in kwargs:
