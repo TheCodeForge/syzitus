@@ -4,13 +4,13 @@ from mistletoe.span_token import SpanToken
 from mistletoe.block_token import BlockToken
 from mistletoe.html_renderer import HTMLRenderer
 import os.path
-from re import compile as re_compile, sub as re_sub
+import re
 
 from flask import g
 
 #preprocess re
 
-enter_re=re_compile("(\n\r?\w+){3,}")
+enter_re=re.compile("(\n\r?\w+){3,}")
 
 
 
@@ -19,7 +19,7 @@ enter_re=re_compile("(\n\r?\w+){3,}")
 
 class UserMention(SpanToken):
 
-    pattern = re_compile("(^|\s|\n)@(\w{3,25})")
+    pattern = re.compile("(^|\s|\n)@(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -28,7 +28,7 @@ class UserMention(SpanToken):
 
 class BoardMention(SpanToken):
 
-    pattern = re_compile("(^|\s|\n)\+(\w{3,25})")
+    pattern = re.compile("(^|\s|\n)\+(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -37,7 +37,7 @@ class BoardMention(SpanToken):
 
 class ChatMention(SpanToken):
 
-    pattern = re_compile("(^|\s|\n)#(\w{3,25})")
+    pattern = re.compile("(^|\s|\n)#(\w{3,25})")
     parse_inner = False
 
     def __init__(self, match_obj):
@@ -46,7 +46,7 @@ class ChatMention(SpanToken):
         
 class Emoji(SpanToken):
     
-    pattern=re_compile(":([A-Za-z0-9_-]+):")
+    pattern=re.compile(":([A-Za-z0-9_-]+):")
     parse_inner=False
     
     def __init__(self, match_obj):
@@ -55,7 +55,7 @@ class Emoji(SpanToken):
 
 class Spoiler(SpanToken):
 
-    pattern=re_compile("(>!|<s>|\|\|)(.+?)(\|\||</s>|!<)")
+    pattern=re.compile("(>!|<s>|\|\|)(.+?)(\|\||</s>|!<)")
     parse_inner=True
 
     def __init__(self, match_obj):
@@ -63,18 +63,34 @@ class Spoiler(SpanToken):
         self.target=match_obj.group(2)
 
 
+code_language_start_regex=re.compile('^```\w+$')
+
 class CodeBlockLanguage(BlockToken):
-    pattern=re_compile("```(\w+)\n(.+)\n```")
+    pattern=re.compile("```(\w+)\n(.+)\n```")
     parse_inner=False
 
     def __init__(self, match_obj):
         self.target=(match_obj.group(1), match_obj.group(1))
 
+    def start(self, line):
+
+        return bool(re.match(code_language_start_regex, line))
+
+    #this is copied from mistletoe source code with \n replaced with ```
+    @staticmethod
+    def read(lines):
+        line_buffer = [next(lines)]
+        for line in lines:
+            if line == '```':
+                break
+            line_buffer.append(line)
+        return line_buffer
+
 
 
 # class OpMention(SpanToken):
 
-#     pattern = re_compile("(^|\W|\s)@([Oo][Pp])\b")
+#     pattern = re.compile("(^|\W|\s)@([Oo][Pp])\b")
 #     parse_inner = False
 
 #     def __init__(self, match_obj):
@@ -86,7 +102,6 @@ class CustomRenderer(HTMLRenderer):
     def __init__(self, **kwargs):
         super().__init__(UserMention,
                          BoardMention,
-                         #ChatMention,
                          Emoji,
                          Spoiler,
                          CodeBlockLanguage
@@ -165,9 +180,9 @@ def preprocess(text):
 
     text=text.lstrip().rstrip()
     
-    text=re_sub(enter_re, "\n\n", text)
+    text=re.sub(enter_re, "\n\n", text)
 
-    text=re_sub("(\u200b|\u200c|\u200d)",'', text)
+    text=re.sub("(\u200b|\u200c|\u200d)",'', text)
     
     return text
     
