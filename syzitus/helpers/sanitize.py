@@ -247,9 +247,14 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
             tag.attrs['class']='spoiler' if 'spoiler' in tag.attrs.get('class','') else ''
 
         #similar for pre elements
-        # for tag in soup.find_all("pre"):
-        #     if tag.attrs.get('class') and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
-        #         tag.attrs['class']=""
+        for tag in soup.find_all("pre"):
+            printify=False
+            for child in tag.children:
+                if child.attrs.get('class') and child.attrs['class'].startswith('language-'):
+                    printify=True
+                    child.attrs['class']=child.attrs['class'].replace('language-','lang-')
+            if printify:
+                tag.attrs['class']="prettyprint"
 
         #table format
         for tag in soup.find_all("table"):
