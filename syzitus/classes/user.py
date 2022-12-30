@@ -7,6 +7,7 @@ from os import environ
 from secrets import token_hex
 from pyotp import TOTP
 from mistletoe import markdown
+import threading
 
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.security import generate_hash, validate_hash
@@ -1230,9 +1231,11 @@ class User(Base, standard_mixin, age_mixin):
             # Takes care of all functions needed for account termination
             self.unban_utc = 0
             if self.has_banner:
-                self.del_banner()
+                thread1=threading.Thread(target=self.del_banner)
+                thread1.start()
             if self.has_profile:
-                self.del_profile()
+                thread2=threading.Thread(target=self.del_profile)
+                thread2.start()
 
             add_role(self, "banned")
             delete_role(self, "member")
@@ -1251,6 +1254,7 @@ class User(Base, standard_mixin, age_mixin):
                 g.db.add(application)
 
         g.db.add(self)
+        g.db.commit()
         
         discord_ban_action = f"{days} Day Ban" if days else "Perm Ban"
         discord_log_event(discord_ban_action, self, admin, reason=reason, admin_action=True)
