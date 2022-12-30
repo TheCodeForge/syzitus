@@ -78,6 +78,11 @@
   <link rel="apple-touch-startup-image" sizes="2737x2048" href="/logo/splash/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}/2737/2048" />
   {% endblock %}
 
+  <!-- Code prettify - before custom css so it can be overridden -->
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sunburst"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/lang-css.js"></script>
+
   <!-- Ruqqus CSS -->
   
   {% if b and not request.path.startswith("/mod") %}
@@ -91,11 +96,6 @@
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.min.css" rel="stylesheet">
-
-  <!-- Code prettify -->
-
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sunburst"></script>
-  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/lang-css.js"></script>
 
   {% if g.user %}
   <link id="formkey_element" data-formkey="{{ g.user.formkey }}">
