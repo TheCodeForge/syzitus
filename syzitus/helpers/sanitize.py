@@ -247,7 +247,7 @@ def sanitize(text, bio=False, linkgen=False, noimages=False):
 
         #similar for pre elements
         for tag in soup.find_all("pre"):
-            if tag.attrs['class'] and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
+            if tag.attrs.get('class') and not re.fullmatch(prettify_class_regex, tag.attrs['class']):
                 tag.attrs['class']=""
 
         #table format
