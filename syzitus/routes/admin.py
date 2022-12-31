@@ -310,7 +310,7 @@ def participation_stats():
     archive_cutoff = g.timestamp - 60*60*24*180
 
     data = {"valid_users": g.db.query(User).filter_by(is_deleted=False).filter(User.created_utc > cutoff, or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).count(),
-            "private_users": g.db.query(User).filter_by(is_deleted=False, is_private=False).filter(User.created_utc > cutoff, User.is_banned > 0, or_(User.unban_utc > now, User.unban_utc == 0)).count(),
+            "private_users": g.db.query(User).filter_by(is_deleted=False, is_private=False).filter(User.created_utc > cutoff, User.is_banned > 0, or_(User.unban_utc > g.timestamp, User.unban_utc == 0)).count(),
             "total_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0).count(),
             "auto_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0, User.is_banned == 1).count(),
             "manual_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0, User.is_banned != 1).count(),
@@ -373,14 +373,14 @@ def money_stats():
     revenue=str(intake-loss)
 
     data={
-        "cents_received_last_24h":g.db.query(func.sum(PayPalTxn.usd_cents)).filter(PayPalTxn.status==3, PayPalTxn.created_utc>now-60*60*24).scalar(),
-        "cents_received_last_week":g.db.query(func.sum(PayPalTxn.usd_cents)).filter(PayPalTxn.status==3, PayPalTxn.created_utc>now-60*60*24*7).scalar(),
-        "sales_count_last_24h":g.db.query(PayPalTxn).filter(PayPalTxn.status==3, PayPalTxn.created_utc>now-60*60*24).count(),
-        "sales_count_last_week":g.db.query(PayPalTxn).filter(PayPalTxn.status==3, PayPalTxn.created_utc>now-60*60*24*7).count(),
+        "cents_received_last_24h":g.db.query(func.sum(PayPalTxn.usd_cents)).filter(PayPalTxn.status==3, PayPalTxn.created_utc>g.timestamp-60*60*24).scalar(),
+        "cents_received_last_week":g.db.query(func.sum(PayPalTxn.usd_cents)).filter(PayPalTxn.status==3, PayPalTxn.created_utc>g.timestamp-60*60*24*7).scalar(),
+        "sales_count_last_24h":g.db.query(PayPalTxn).filter(PayPalTxn.status==3, PayPalTxn.created_utc>g.timestamp-60*60*24).count(),
+        "sales_count_last_week":g.db.query(PayPalTxn).filter(PayPalTxn.status==3, PayPalTxn.created_utc>g.timestamp-60*60*24*7).count(),
         "receivables_outstanding_cents": g.db.query(func.sum(User.negative_balance_cents)).filter(User.is_deleted==False, or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).scalar(),
         "cents_written_off":g.db.query(func.sum(User.negative_balance_cents)).filter(or_(User.is_deleted==True, User.unban_utc > 0)).scalar(),
-        "coins_redeemed_last_24_hrs": g.db.query(User).filter(User.premium_expires_utc>now+60*60*24*6, User.premium_expires_utc < now+60*60*24*7).count(),
-        "coins_redeemed_last_week": g.db.query(User).filter(User.premium_expires_utc>now, User.premium_expires_utc < now+60*60*24*7).count(),
+        "coins_redeemed_last_24_hrs": g.db.query(User).filter(User.premium_expires_utc>g.timestamp+60*60*24*6, User.premium_expires_utc < now+60*60*24*7).count(),
+        "coins_redeemed_last_week": g.db.query(User).filter(User.premium_expires_utc>g.timestamp, User.premium_expires_utc < now+60*60*24*7).count(),
         "coins_in_circulation": g.db.query(func.sum(User.coin_balance)).filter(User.is_deleted==False, or_(User.is_banned==0, and_(User.is_banned>0, User.unban_utc>0))).scalar(),
         "coins_vanished": g.db.query(func.sum(User.coin_balance)).filter(or_(User.is_deleted==True, and_(User.is_banned>0, User.unban_utc==0))).scalar(),
         "receivables_outstanding_cents": g.db.query(func.sum(User.negative_balance_cents)).filter(User.is_deleted==False, or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).scalar(),
@@ -873,8 +873,8 @@ def admin_siege_count():
     can_siege=0
     total=0
     for uid in uids:
-        posts=sum([x[0] for x in g.db.query(Submission.score_top).options(lazyload('*')).filter_by(author_id=uid).filter(Submission.created_utc>now-60*60*24*recent).all()])
-        comments=sum([x[0] for x in g.db.query(Comment.score_top).options(lazyload('*')).filter_by(author_id=uid).filter(   Comment.created_utc>now-60*60*24*recent).all()])
+        posts=sum([x[0] for x in g.db.query(Submission.score_top).options(lazyload('*')).filter_by(author_id=uid).filter(Submission.created_utc>g.timestamp-60*60*24*recent).all()])
+        comments=sum([x[0] for x in g.db.query(Comment.score_top).options(lazyload('*')).filter_by(author_id=uid).filter(   Comment.created_utc>g.timestamp-60*60*24*recent).all()])
         rep=posts+comments
         if rep>=cutoff:
             can_siege+=1
