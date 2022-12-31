@@ -314,7 +314,7 @@ def participation_stats():
             "listed_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=False).count(),
             "private_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=True).count(),
             "banned_guilds": g.db.query(Board).filter_by(is_banned=True).count(),
-            "settings_locked_guilds": g.db.query(Board).filter_by(is_locked_category=True).count(),
+            "settings_locked_guilds": g.db.query(Board).filter_by(is_banned=False, is_locked_category=True).count(),
             "post_votes": g.db.query(Vote).count(),
             "post_voting_users": g.db.query(Vote.user_id).distinct().count(),
             "comment_votes": g.db.query(CommentVote).count(),
