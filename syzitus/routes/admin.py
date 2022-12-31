@@ -287,8 +287,24 @@ def users_list():
 @admin_level_required(2)
 def participation_stats():
 
-    now = g.timestamp
-    cutoff=now-60*60*24*180
+    if request.args.get("ytd")==1:
+        now = g.timestamp
+        midnight_year_start = struct_time(
+            (
+                now.tm_year,
+                1,
+                1,
+                0,
+                0,
+                0,
+                now.tm_wday,
+                now.tm_yday,
+                0
+                )
+            )
+        midnight_year_start = calendar_timegm(midnight_year_start)
+    else:
+        cutoff=0
 
     data = {"valid_users": g.db.query(User).filter_by(is_deleted=False).filter(or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).count(),
             "private_users": g.db.query(User).filter_by(is_deleted=False, is_private=False).filter(User.is_banned > 0, or_(User.unban_utc > now, User.unban_utc == 0)).count(),
@@ -332,7 +348,7 @@ def participation_stats():
 @admin_level_required(2)
 def money_stats():
 
-    now = g.timestamp
+    now = time.gmtime(g.timestamp)
     midnight_year_start = struct_time(
         (
             now.tm_year,
