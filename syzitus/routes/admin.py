@@ -319,7 +319,7 @@ def participation_stats():
             "total_posts": g.db.query(Submission).filter(Submission.created_utc > cutoff).count(),
             "active_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0, Submission.created_utc > archive_cutoff).count(),
             "archived_posts":g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0, Submission.created_utc < archive_cutoff).count(),
-            "posting_users": g.db.query(Submission.author_id).filter_by(Submission.created_utc > cutoff).distinct().count(),
+            "posting_users": g.db.query(Submission.author_id).filter(Submission.created_utc > cutoff).distinct().count(),
             "listed_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0).count(),
             "removed_posts": g.db.query(Submission).filter_by(is_banned=True).filter(Submission.created_utc > cutoff).count(),
             "deleted_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc > 0).count(),
