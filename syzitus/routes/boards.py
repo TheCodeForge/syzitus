@@ -1094,7 +1094,7 @@ def mod_bid_settings_nsfw(bid, board):
 @app.route("/mod/<bid>/settings/is_nsfl", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
-def mod_bid_settings_nsfw(bid, board):
+def mod_bid_settings_nsfl(bid, board):
 
     if board.is_locked_category and not g.user.admin_level<3:
         return jsonfiy({"error": "This setting has been locked."}), 403
