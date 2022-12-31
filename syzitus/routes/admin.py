@@ -287,7 +287,7 @@ def users_list():
 @admin_level_required(2)
 def participation_stats():
 
-    if type(request.args.get("ytd"))==int:
+    if request.args.get('ytd'):
         now = time.gmtime(g.timestamp)
         midnight_year_start = time.struct_time(
             (
