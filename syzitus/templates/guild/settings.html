@@ -211,7 +211,7 @@
                 <div class="custom-control custom-switch">
                   <form id="guild-nsfl-form" action="/mod/{{ b.base36id }}/settings/nsfl">
                     <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guild-nsfl" name="is_nsfl" data-form="guild-nsfl-form" {% if b.is_nsfl %} checked{% endif %}>
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guild-nsfl" name="is_nsfl" data-form="guild-nsfl-form" {% if b.is_nsfl %} checked{% endif %} {% if b.is_locked_category %}disabled{% endif %}>
                     <label class="custom-control-label" for="guild-nsfl"></label>
                   </form>
                 </div>
