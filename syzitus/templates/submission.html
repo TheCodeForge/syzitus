@@ -353,7 +353,7 @@
           {% endif %}
 
           {% if g.user and (g.user.id==p.author_id or g.user.admin_level>=3 or p.is_guildmaster('content')) %}
-          {% if not p.board.over_18 %}
+          {% if not p.over_18 or not p.board.over_18 %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
           {% endif %}
 
