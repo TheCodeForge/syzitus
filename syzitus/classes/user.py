@@ -1263,6 +1263,12 @@ class User(Base, standard_mixin, age_mixin):
                 application.is_banned=True
                 g.db.add(application)
 
+
+        self.has_profile = False
+        self.profile_nonce+=1
+        self.has_banner = False
+        self.banner_nonce+=1
+        
         g.db.add(self)
         g.db.commit()
         
