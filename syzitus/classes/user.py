@@ -1231,10 +1231,10 @@ class User(Base, standard_mixin, age_mixin):
             # Takes care of all functions needed for account termination
             self.unban_utc = 0
             if self.has_banner:
-                thread1=threading.Thread(target=self.del_banner)
+                thread1=threading.Thread(target=self.del_banner, args=[self])
                 thread1.start()
             if self.has_profile:
-                thread2=threading.Thread(target=self.del_profile)
+                thread2=threading.Thread(target=self.del_profile, args=[self])
                 thread2.start()
 
             add_role(self, "banned")
