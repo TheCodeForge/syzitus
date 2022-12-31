@@ -288,11 +288,12 @@ def users_list():
 @admin_level_required(2)
 def participation_stats():
 
-    if request.args.get('ytd'):
+    if 'year' in request.args:
+        year_offset = int(request.args['year'])
         now = time.gmtime(g.timestamp)
         midnight_year_start = time.struct_time(
             (
-                now.tm_year,
+                now.tm_year + year_offset,
                 1,
                 1,
                 0,
@@ -303,43 +304,59 @@ def participation_stats():
                 0
                 )
             )
-        cutoff = calendar_timegm(midnight_year_start)
+        cutoff_start = calendar_timegm(midnight_year_start)
+
+        midnight_year_end = time.struct_time(
+            (
+                now.tm_year + year_offset + 1,
+                1,
+                1,
+                0,
+                0,
+                0,
+                now.tm_wday,
+                now.tm_yday,
+                0
+                )
+            )
+        cutoff_end = calendar_timegm(midnight_year_end)
     else:
-        cutoff=0
+        cutoff_start = 0
+        cutoff_end = g.timestamp
 
     archive_cutoff = g.timestamp - 60*60*24*180
 
-    data = {"valid_users": g.db.query(User).filter_by(is_deleted=False).filter(User.created_utc > cutoff, or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).count(),
-            "private_users": g.db.query(User).filter_by(is_deleted=False, is_private=False).filter(User.created_utc > cutoff, User.is_banned > 0, or_(User.unban_utc > g.timestamp, User.unban_utc == 0)).count(),
-            "total_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0).count(),
-            "auto_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0, User.is_banned == 1).count(),
-            "manual_banned_users": g.db.query(User).filter(User.created_utc > cutoff, User.is_banned > 0, User.unban_utc == 0, User.is_banned != 1).count(),
-            "deleted_users": g.db.query(User).filter_by(is_deleted=True).filter(User.created_utc > cutoff).count(),
-            "locked_negative_users": g.db.query(User).filter(User.created_utc > cutoff, User.negative_balance_cents>0).count(),
-            "total_posts": g.db.query(Submission).filter(Submission.created_utc > cutoff).count(),
-            "active_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0, Submission.created_utc > archive_cutoff).count(),
-            "archived_posts":g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0, Submission.created_utc < archive_cutoff).count(),
-            "posting_users": g.db.query(Submission.author_id).filter(Submission.created_utc > cutoff).distinct().count(),
-            "listed_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc == 0).count(),
-            "removed_posts": g.db.query(Submission).filter_by(is_banned=True).filter(Submission.created_utc > cutoff).count(),
-            "deleted_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff, Submission.deleted_utc > 0).count(),
-            "total_comments": g.db.query(Comment).filter(Comment.created_utc > cutoff).count(),
-            "active_comments": g.db.query(Comment).join(Comment.post).filter(Comment.created_utc > cutoff, Comment.is_banned==False, Comment.deleted_utc==0, Submission.created_utc>archive_cutoff).count(),
-            "archived_comments": g.db.query(Comment).join(Comment.post).filter(Comment.created_utc > cutoff, Comment.is_banned==False, Comment.deleted_utc==0, Submission.created_utc<archive_cutoff).count(),
-            "commenting_users": g.db.query(Comment.author_id).filter(Comment.created_utc > cutoff).distinct().count(),
-            "removed_comments": g.db.query(Comment).filter_by(is_banned=True).filter(Comment.created_utc > cutoff).count(),
-            "deleted_comments": g.db.query(Comment).filter(Comment.created_utc > cutoff, Comment.deleted_utc>0).count(),
-            "total_guilds": g.db.query(Board).filter(Board.created_utc>cutoff).count(),
-            "listed_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=False).filter(Board.created_utc>cutoff).count(),
-            "private_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=True).filter(Board.created_utc>cutoff).count(),
-            "banned_guilds": g.db.query(Board).filter_by(is_banned=True).filter(Board.created_utc>cutoff).count(),
-            "guilds_removed_from_all": g.db.query(Board).filter_by(is_banned=False, all_opt_out=True, is_locked_category=True).filter(Board.created_utc>cutoff).count(),
-            "guilds_locked_nsfw": g.db.query(Board).filter_by(is_banned=False, over_18=True, is_locked_category=True).filter(Board.created_utc>cutoff).count(),
-            "total_guilds_locked_settings": g.db.query(Board).filter_by(is_banned=False, is_locked_category=True).filter(Board.created_utc>cutoff).count(),
-            "post_votes": g.db.query(Vote).filter(Vote.created_utc>cutoff).count(),
-            "post_voting_users": g.db.query(Vote.user_id).filter(Vote.created_utc>cutoff).distinct().count(),
-            "comment_votes": g.db.query(CommentVote).filter(CommentVote.created_utc>cutoff).count(),
-            "comment_voting_users": g.db.query(CommentVote.user_id).filter(CommentVote.created_utc>cutoff).distinct().count()
+    data = {"valid_users": g.db.query(User).filter_by(is_deleted=False).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, or_(User.is_banned == 0, and_(User.is_banned > 0, User.unban_utc > 0))).count(),
+            "private_users": g.db.query(User).filter_by(is_deleted=False, is_private=False).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, User.is_banned > 0, or_(User.unban_utc > g.timestamp, User.unban_utc == 0)).count(),
+            "total_banned_users": g.db.query(User).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, User.is_banned > 0, User.unban_utc == 0).count(),
+            "auto_banned_users": g.db.query(User).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, User.is_banned > 0, User.unban_utc == 0, User.is_banned == 1).count(),
+            "manual_banned_users": g.db.query(User).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, User.is_banned > 0, User.unban_utc == 0, User.is_banned != 1).count(),
+            "deleted_users": g.db.query(User).filter_by(is_deleted=True).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end).count(),
+            "locked_negative_users": g.db.query(User).filter(User.created_utc > cutoff_start, User.created_utc < cutoff_end, User.negative_balance_cents>0).count(),
+            "total_posts": g.db.query(Submission).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end).count(),
+            "active_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end, Submission.deleted_utc == 0, Submission.created_utc > archive_cutoff).count(),
+            "archived_posts":g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end, Submission.deleted_utc == 0, Submission.created_utc < archive_cutoff).count(),
+            "posting_users": g.db.query(Submission.author_id).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end).distinct().count(),
+            "listed_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end, Submission.deleted_utc == 0).count(),
+            "removed_posts": g.db.query(Submission).filter_by(is_banned=True).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end).count(),
+            "deleted_posts": g.db.query(Submission).filter_by(is_banned=False).filter(Submission.created_utc > cutoff_start, Submission.created_utc < cutoff_end, Submission.deleted_utc > 0).count(),
+            "total_comments": g.db.query(Comment).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end).count(),
+            "active_comments": g.db.query(Comment).join(Comment.post).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end, Comment.is_banned==False, Comment.deleted_utc==0, Submission.created_utc>archive_cutoff).count(),
+            "archived_comments": g.db.query(Comment).join(Comment.post).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end, Comment.is_banned==False, Comment.deleted_utc==0, Submission.created_utc<archive_cutoff).count(),
+            "commenting_users": g.db.query(Comment.author_id).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end).distinct().count(),
+            "removed_comments": g.db.query(Comment).filter_by(is_banned=True).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end).count(),
+            "deleted_comments": g.db.query(Comment).filter(Comment.created_utc > cutoff_start, Comment.created_utc < cutoff_end, Comment.deleted_utc>0).count(),
+            "total_guilds": g.db.query(Board).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "listed_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=False).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "private_guilds": g.db.query(Board).filter_by(is_banned=False, is_private=True).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "banned_guilds": g.db.query(Board).filter_by(is_banned=True).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "guilds_removed_from_all": g.db.query(Board).filter_by(is_banned=False, all_opt_out=True, is_locked_category=True).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "guilds_locked_nsfw": g.db.query(Board).filter_by(is_banned=False, over_18=True, is_locked_category=True).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "total_guilds_locked_settings": g.db.query(Board).filter_by(is_banned=False, is_locked_category=True).filter(Board.created_utc > cutoff_start, Board.created_utc < cutoff_end).count(),
+            "post_votes": g.db.query(Vote).filter(Vote.created_utc > cutoff_start, Vote.created_utc < cutoff_end).count(),
+            "post_voting_users": g.db.query(Vote.user_id).filter(Vote.created_utc > cutoff_start, Vote.created_utc < cutoff_end).distinct().count(),
+            "comment_votes": g.db.query(CommentVote).filter(CommentVote.created_utc > cutoff_start, CommentVote.created_utc < cutoff_end).count(),
+            "comment_voting_users": g.db.query(CommentVote.user_id).filter(CommentVote.created_utc > cutoff_start, CommentVote.created_utc < cutoff_end).distinct().count()
             }
 
     #data = {x: f"{data[x]:,}" for x in data}
