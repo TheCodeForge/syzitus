@@ -1067,7 +1067,7 @@ def mod_is_banned_board_username(bid, username, board):
 @is_guildmaster("config")
 def mod_bid_settings_nsfw(bid, board):
 
-    if board.is_locked_category:
+    if board.is_locked_category and not g.user.admin_level<3:
         return jsonfiy({"error": "This setting has been locked."}), 403
 
     # nsfw
@@ -1091,13 +1091,41 @@ def mod_bid_settings_nsfw(bid, board):
 
     return jsonify({"message": f"Settings updated for +{board.name}"})
 
+@app.route("/mod/<bid>/settings/is_nsfl", methods=["POST"])
+@auth_required
+@is_guildmaster("config")
+def mod_bid_settings_nsfw(bid, board):
+
+    if board.is_locked_category and not g.user.admin_level<3:
+        return jsonfiy({"error": "This setting has been locked."}), 403
+
+    # nsfw
+    board.is_nsfl = bool(request.form.get("is_nsfl", False))
+
+    g.db.add(board)
+
+    note=f"is_nsfl={board.is_nsfl}"
+
+    if not board.has_mod(g.user):
+        note+=" | admin action"
+
+    ma=ModAction(
+        kind="update_settings",
+        user_id=g.user.id,
+        board_id=board.id,
+        note=note
+        )
+    g.db.add(ma)
+    g.db.commit()
+
+    return jsonify({"message": f"Settings updated for +{board.name}"})
 
 @app.route("/mod/<bid>/settings/opt_out", methods=["POST"])
 @auth_required
 @is_guildmaster("config")
 def mod_bid_settings_optout(bid, board):
 
-    if board.is_locked_category:
+    if board.is_locked_category and g.user.admin_level<3:
         return jsonfiy({"error": "This setting has been locked."}), 403
 
     # nsfw
@@ -2103,7 +2131,7 @@ def change_guild_category(board, bid):
     if category not in SUBCAT_DATA:
         return jsonify({"error": f"Invalid category id"}), 400
 
-    if board.is_locked_category and not g.user.admin_level:
+    if board.is_locked_category and g.user.admin_level<3:
         return jsonify({"error": "This setting has been locked."}), 403
 
     board.subcat_id=category
