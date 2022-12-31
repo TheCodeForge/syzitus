@@ -167,9 +167,9 @@
 
         </div>
 
-        <div id="nsfw">
+        <div id="mature">
 
-          <h2 class="h5">Age-Restricted Content</h2>
+          <h2 class="h5">Mature Content</h2>
 
           <p class="text-small text-muted">Designate whether your guild contains mature content.</p>
 
@@ -191,14 +191,38 @@
                   </form>
                 </div>
 
-                <span class="text-small-extra text-muted">Enable if your guild contains NSFW content suitable only for 18+ users.</span>
+                <span class="text-small-extra text-muted">Enable if your guild is for NSFW content suitable only for 18+ users.</span>
 
               </div>
 
             </div>
 
           </div>
+          <div class="settings-section rounded">
 
+            <div class="d-lg-flex">
+
+              <div class="title w-lg-25">
+                <label for="guild-nsfl">NSFL Content</label>
+              </div>
+
+              <div class="body w-lg-100">
+
+                <div class="custom-control custom-switch">
+                  <form id="guild-nsfl-form" action="/mod/{{ b.base36id }}/settings/nsfl">
+                    <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+                    <input type="checkbox" class="custom-control-input toast-form-change-submit" id="guild-nsfl" name="is_nsfl" data-form="guild-nsfl-form" {% if b.is_nsfl %} checked{% endif %} {% if b.is_locked_category %}disabled{% endif %}>
+                    <label class="custom-control-label" for="guild-nsfl"></label>
+                  </form>
+                </div>
+
+                <span class="text-small-extra text-muted">Enable if your guild is for grotesque or disturbing content that may not be suitable for some viewers.</span>
+
+              </div>
+
+            </div>
+
+          </div>
         </div>
 
         <div id="restricted">
