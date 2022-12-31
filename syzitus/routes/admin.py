@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-from time import struct_time
+import time
 from calendar import timegm as calendar_timegm
 from sqlalchemy import func, or_
 from sqlalchemy.orm import lazyload, contains_eager
@@ -288,8 +288,8 @@ def users_list():
 def participation_stats():
 
     if request.args.get("ytd")==1:
-        now = g.timestamp
-        midnight_year_start = struct_time(
+        now = time.gmtime(g.timestamp)
+        midnight_year_start = time.struct_time(
             (
                 now.tm_year,
                 1,
@@ -349,7 +349,7 @@ def participation_stats():
 def money_stats():
 
     now = time.gmtime(g.timestamp)
-    midnight_year_start = struct_time(
+    midnight_year_start = time.struct_time(
         (
             now.tm_year,
             1,
