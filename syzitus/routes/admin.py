@@ -303,7 +303,7 @@ def participation_stats():
                 0
                 )
             )
-        midnight_year_start = calendar_timegm(midnight_year_start)
+        cutoff = calendar_timegm(midnight_year_start)
     else:
         cutoff=0
 
