@@ -357,7 +357,7 @@
           <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfw/{{ p.base36id }}"><i class="far fa-eye-evil text-center text-muted mr-3"></i>Toggle NSFW</button>
           {% endif %}
 
-          {% if not p.board.is_nsfl %}
+          {% if not p.is_nsfl or not p.board.is_nsfl %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted post-url-reload" data-post-url="/api/toggle_post_nsfl/{{ p.base36id }}"><i class="far fa-skull text-center text-muted mr-3"></i>Toggle NSFL</button>
           {% endif %}
 
