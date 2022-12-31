@@ -546,9 +546,9 @@ def subcat(name):
 def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
     # cutoff=g.timestamp-(60*60*24*30)
 
-    guilds = g.db.query(Board).filter_by(is_banned=False).filter(
-        Board.subcat_id != 108
-    )
+    guilds = g.db.query(Board).filter_by(
+        is_banned=False,
+        all_opt_out=False)
 
     if not nsfw:
         guilds = guilds.filter_by(over_18=False)
