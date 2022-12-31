@@ -28,7 +28,7 @@ from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
 
-from syzitus.__main__ import Base, cache, app, g
+from syzitus.__main__ import Base, cache, app, g, db_session
 
 
 #this is repeated here to avoid import circle
@@ -1027,21 +1027,31 @@ class User(Base, standard_mixin, age_mixin):
         g.db.add(self)
         g.db.commit()
 
-    def del_profile(self):
+    def del_profile(self, db=None):
 
         aws.delete_file(name=f"uid/{self.base36id}/profile-{self.profile_nonce}.png")
         self.has_profile = False
         self.profile_nonce+=1
-        g.db.add(self)
-        g.db.commit()
+        if db:
+            db.add(self)
+            db.commit()
+            db.close()
+        else:
+            g.db.add(self)
+            g.db.commit()
 
-    def del_banner(self):
+    def del_banner(self, db=None):
 
         aws.delete_file(name=f"uid/{self.base36id}/banner-{self.banner_nonce}.png")
         self.has_banner = False
         self.banner_nonce+=1
-        g.db.add(self)
-        g.db.commit()
+        if db:
+            db.add(self)
+            db.commit()
+            db.close()
+        else:
+            g.db.add(self)
+            g.db.commit()
 
     @property
     def banner_url(self):
@@ -1231,10 +1241,10 @@ class User(Base, standard_mixin, age_mixin):
             # Takes care of all functions needed for account termination
             self.unban_utc = 0
             if self.has_banner:
-                thread1=threading.Thread(target=self.del_banner, args=[self])
+                thread1=threading.Thread(target=self.del_banner, kwargs={'db': db_session()})
                 thread1.start()
             if self.has_profile:
-                thread2=threading.Thread(target=self.del_profile, args=[self])
+                thread2=threading.Thread(target=self.del_profile, kwargs={'db': db_session()})
                 thread2.start()
 
             add_role(self, "banned")
