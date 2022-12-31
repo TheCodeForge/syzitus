@@ -1,5 +1,4 @@
 from urllib.parse import urlparse
-import time
 from calendar import timegm as calendar_timegm
 from sqlalchemy import func, or_
 from sqlalchemy.orm import lazyload, contains_eager
@@ -25,6 +24,8 @@ from syzitus.helpers.discord import discord_log_event
 
 #from syzitus.routes.admin_api import user_stat_data
 from syzitus.classes.categories import CATEGORIES
+
+import time
 
 import syzitus.helpers.aws as aws
 from syzitus.__main__ import app, cache
