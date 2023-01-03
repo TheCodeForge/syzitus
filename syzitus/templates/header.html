@@ -30,7 +30,9 @@
 
           {% if g.user and g.user.mods_anything %}
           <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-            <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools"><i class="fas fa-crown{% if g.user.has_report_queue %} text-warning{% endif %}"></i></a>
+            <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools">
+              <i class="fas fa-crown fa-fw{% if g.user.has_report_queue %} text-warning{% endif %}"></i>
+            </a>
           </li>
           {% endif %}
 
@@ -41,7 +43,7 @@
           <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
             <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications">
               <span class="fa-layers fa-fw">
-                <i class="fas fa-bell text-danger"></i>
+                <i class="fas fa-envelope text-danger"></i>
                 <span class="fa-layers-counter">{{ g.user.notifications_count }}</span>
               </span>
             </a>
@@ -50,7 +52,7 @@
           {% else %}
 
           <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
-            <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-bell"></i></a>
+            <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-envelope"></i></a>
           </li>
 
           {% endif %}
