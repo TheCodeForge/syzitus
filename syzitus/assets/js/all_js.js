@@ -2166,3 +2166,7 @@ $('.btn-reroll-app-secret').click(function(){
 $('.btn-warning-ban-ip').click(function(){
   $('#ip-ban-confirm').toggleClass('d-none')
 })
+
+$('.toggle-target-vis').click(function(){
+  $('#'+$(this).data('toggle-target')).toggleClass('d-none')
+})
