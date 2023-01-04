@@ -1424,7 +1424,7 @@ $(document).on('click', '.btn-save-new-comment', function(){
   $(this).addClass('disabled');
   $(this).width($(this).width()); //pins width at whatever the current value is
   $(this).data('text', $(this).text());
-  $(this).html('<i class="fas fa-spinner fa-spin"></i>')
+  $(this).html('<i class="fas fa-circle-notch fa-spin"></i>')
 
 })
 
@@ -1903,7 +1903,7 @@ function postformtoast(x, callback=function(data){}){
     x.width(x.width()); //pins width at whatever the current value is
     x.data('text', x.text())
     x.addClass('disabled')
-    x.html('<i class="fas fa-spinner fa-spin"></i>')
+    x.html('<i class="fas fa-circle-notch fa-spin"></i>')
   }
 }
 
