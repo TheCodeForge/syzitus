@@ -1584,7 +1584,7 @@ def ban_user(user_id):
     message = request.form.get("message", "")
 
 
-    user.ban(admin=g.user, reason=reason, message=message)
+    user.ban(admin=g.user, days=days, reason=reason, message=message)
 
 
     for x in user.alts:
