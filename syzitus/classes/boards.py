@@ -651,7 +651,7 @@ class Board(Base, standard_mixin, age_mixin):
 
         now=g.timestamp
 
-        return self.stored_subscriber_count//10 + min(180, (now-self.created_utc)//(60*60*24))
+        return self.stored_subscriber_count//10 + min(180, (now-self.created_utc)//(60*60*24*7))
 
     @property
     def chat_url(self):
