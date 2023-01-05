@@ -89,7 +89,7 @@ URL path parameters:
         t = g.timestamp
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
-                               lo_formkey=make_logged_out_formkey(t),
+                               lo_formkey=make_logged_out_formkey(),
                                board=post.board
 
                                ),
@@ -144,7 +144,7 @@ Optional query parameters:
         t = g.timestamp
         return {"html":lambda:render_template("errors/nsfw.html",
                                t=t,
-                               lo_formkey=make_logged_out_formkey(t),
+                               lo_formkey=make_logged_out_formkey(),
                                board=post.board
 
                                ),
