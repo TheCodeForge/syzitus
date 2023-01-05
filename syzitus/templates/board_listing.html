@@ -2,7 +2,7 @@
 
 <div class="col col-md-6 col-lg-4 col-xl-3 d-none d-md-block mb-4">
 
-	<div id="board-{{ b.base36id }}" class="card h-100{% if board.is_banned %} banned{% endif %}">
+	<div id="board-{{ b.base36id }}" class="card h-100{% if b.is_banned %} banned{% endif %}">
 		<div class="card-body">
 			<div class="d-flex flex-wrap align-items-center mb-2">
 				<img src="{{ b.profile_url }}" class="profile-pic-40 mr-2">
