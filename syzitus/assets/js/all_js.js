@@ -1872,6 +1872,11 @@ function postformtoast(x, callback=function(data){}){
         $('#toast-success').toast('show');
         x.text(x.data('text'))
       }
+      if (x.hasClass('btn')) {
+        x.prop('disabled', false)
+        x.removeClass('disabled')
+        x.text(x.data('text'))
+      }
       callback(xhr);
     } 
     else if (xhr.status >= 300 && xhr.status < 400 ) {
