@@ -650,8 +650,19 @@ class Board(Base, standard_mixin, age_mixin):
     def siege_rep_requirement(self):
 
         now=g.timestamp
+        posts_in_last_60_days = g.db.query(Submission).options(lazyload('*')).filter(
+            Submission.board_id==self.id,
+            Submission.created_utc>now-60*60*24*60,
+            Submission.deleted_utc==0,
+            Submission.is_banned==True
+            ).count()
 
-        return self.stored_subscriber_count//10 + min(180, (now-self.created_utc)//(60*60*24))
+        # return 0 for dead guilds
+        if not posts_in_last_60_days:
+            return 0
+
+
+        return min(self.stored_subscriber_count//10) + min(180, (now-self.created_utc)//(60*60*24*7))
 
     @property
     def chat_url(self):
