@@ -21,7 +21,7 @@ def api_flag_post():
             Flag.created_utc >= post.edited_utc).first()
 
         if existing:
-            return "", 409
+            return jsonify({"error": "You've already reported this."}), 409
 
         flag = Flag(post_id=post.id,
                     user_id=g.user.id,
@@ -34,14 +34,14 @@ def api_flag_post():
             Report.created_utc >= post.edited_utc).first()
 
         if existing:
-            return "", 409
+            return jsonify({"error": "You've already reported this."}), 409
 
         flag = Report(post_id=post.id,
                       user_id=g.user.id,
                       created_utc=g.timestamp
                       )
     else:
-        return "", 422
+        return jsonify({"error": "You need to pick a report type."}), 409
 
     g.db.add(flag)
 
@@ -61,7 +61,7 @@ def api_flag_comment():
         CommentFlag.created_utc >= comment.edited_utc).first()
 
     if existing:
-        return "", 409
+        return jsonify({"error": "You've already reported this."}), 409
 
     flag = CommentFlag(comment_id=comment.id,
                        user_id=g.user.id,
