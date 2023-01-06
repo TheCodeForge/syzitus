@@ -397,7 +397,7 @@ $('.btn-report-post').click(function() {
 
   $('#report-post-to-guild-dropdown-option').text('This post is off-topic for +' + $(this).data('target-board'));
 
-  if (board=='general') {
+  if ($(this).data('target-board')=='general') {
     $('#report-post-to-guild-dropdown-option').prop('disabled', true);
   }
   else {
