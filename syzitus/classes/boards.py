@@ -654,7 +654,7 @@ class Board(Base, standard_mixin, age_mixin):
             Submission.board_id==self.id,
             Submission.created_utc>now-60*60*24*60,
             Submission.deleted_utc==0,
-            Submission.is_banned=True
+            Submission.is_banned==True
             ).count()
 
         # return 0 for dead guilds

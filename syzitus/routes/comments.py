@@ -93,8 +93,7 @@ Optional query parameters:
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfw.html",
                                                 t=t,
-                                                lo_formkey=make_logged_out_formkey(
-                                                    t),
+                                                lo_formkey=make_logged_out_formkey(),
                                                 board=comment.board
                                                 ),
                 'api': lambda: {'error': f'This content is not suitable for some users and situations.'}
@@ -106,8 +105,7 @@ Optional query parameters:
         t = int(time.time())
         return {'html': lambda: render_template("errors/nsfl.html",
                                                 t=t,
-                                                lo_formkey=make_logged_out_formkey(
-                                                    t),
+                                                lo_formkey=make_logged_out_formkey(),
                                                 board=comment.board
                                                 ),
 
