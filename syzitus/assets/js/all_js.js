@@ -369,6 +369,8 @@ $('.btn-report-comment').click(function() {
 
   $("#report-post-form-id").val($(this).data('target-id'))
 
+});
+
 
 $('#reportCommentModal').on('hidden.bs.modal', function () {
 
