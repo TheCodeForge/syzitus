@@ -44,6 +44,7 @@ def api_flag_post():
         return jsonify({"error": "You need to pick a report type."}), 409
 
     g.db.add(flag)
+    g.db.commit()
 
     return jsonify({"message": "Your report has been received."})
 
@@ -69,5 +70,6 @@ def api_flag_comment():
                        )
 
     g.db.add(flag)
+    g.db.commit()
 
     return jsonify({"message": "Your report has been received."})
