@@ -335,7 +335,8 @@
         <ul class="list-group post-actions">
           {% if g.user and not g.user.id==p.author_id and not p.author.is_deleted %}
           <button class="btn btn-link btn-block btn-lg text-left text-warning btn-tip-modal-trigger" data-dismiss="modal" data-toggle="modal" data-target="#tipModal" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"><i class="far fa-star text-center text-warning mr-3"></i>Tip</button>
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}" class="d-block btn-report-post"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
+
+          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" class="d-block btn-report-post"><i class="far fa-flag text-center text-muted mr-3"></i>Flag</button>
           {% endif %}
           {% if g.user and g.user.id==p.author_id %}
           <button class="btn btn-link btn-block btn-lg text-left text-muted btn-edit-post" data-dismiss="modal" data-target-id="{{ p.base36id }}"><i class="far fa-edit text-center text-muted mr-3"></i>Edit</button>
@@ -577,12 +578,18 @@
 
               <li class="list-inline-item"><a href="{{ p.permalink }}"><i class="fas fa-comment-dots"></i>{{ p.comment_count }}</a></li>
 
-              <li class="list-inline-item"><a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i><span>Copy link</span></a></li>
+              <li class="list-inline-item">
+                <a href="javascript:void(0)" role="button" class="copy-link" data-clipboard-text="{{ p.permalink | full_link }}"><i class="fas fa-copy"></i><span>Copy link</span></a>
+              </li>
 
               {% if g.user and not g.user.id==p.author_id %}
-              <li class="list-inline-item"><a class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i><span>Tip</span></a></li>
+              <li class="list-inline-item">
+                <a href="javascript:void(0)" class="btn-tip-modal-trigger" data-target-id="{{ p.base36id }}" data-target-kind="post" data-target-author="{{ p.author.username }}" data-target-author-profile-url="{{ p.author.profile_url }}" data-tip-url="/gift_post/{{ p.base36id }}?coins=1"data-toggle="modal" data-target="#tipModal"><i class="fas fa-star"></i><span>Tip</span></a>
+              </li>
 
-              <li class="list-inline-item"><a class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}" data-report-url="/api/flag/post/{{ p.base36id }}"><i class="fas fa-flag"></i><span>Flag</span></a></li>
+              <li class="list-inline-item">
+                <a href="javascript:void(0)" class="btn-report-post" data-toggle="modal" data-dismiss="modal" data-target="#reportPostModal" data-target-id="{{ p.base36id}}" data-target-author="{{ '@'+p.author.username if not p.author.is_deleted else '[deleted account]' }}" data-target-board="{{ p.board.name }}"><i class="fas fa-flag"></i><span>Flag</span></a>
+              </li>
               {% endif %}
 
               {% if g.user and g.user.id==p.author_id %}

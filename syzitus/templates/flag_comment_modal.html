@@ -10,7 +10,8 @@
       </div>
       <!-- Before report is made, show this -->
       <div class="" id="reportCommentFormBefore">
-        <form>
+        <form id="report-comment-form" action="/api/flag/comment">
+          <input id="report-comment-form-id" type="hidden" name="comment_id">
           <div class="modal-body">
             <div class="h6">We're sorry something here is wrong.</div>
             <small class="form-text text-muted">Please select a reason for flagging below.</small>
@@ -26,7 +27,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-            <button id="reportCommentButton" class="btn btn-danger">Report comment</button>
+            <button id="reportCommentButton" class="btn btn-danger toast-form-submit" data-form="report-comment-form">Report comment</button>
           </div>
         </form>
       </div>

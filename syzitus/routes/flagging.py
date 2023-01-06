@@ -5,9 +5,11 @@ from flask import g, session, abort, render_template, jsonify
 from syzitus.__main__ import app
 
 
-@app.route("/api/flag/post/<pid>", methods=["POST"])
+@app.route("/api/flag/post", methods=["POST"])
 @is_not_banned
-def api_flag_post(pid):
+def api_flag_post():
+
+    pid=request.form.get("post_id")
 
     post = get_post(pid)
 
@@ -46,9 +48,11 @@ def api_flag_post(pid):
     return jsonify({"message": "Your report has been received."})
 
 
-@app.route("/api/flag/comment/<cid>", methods=["POST"])
+@app.route("/api/flag/comment", methods=["POST"])
 @is_not_banned
-def api_flag_comment(cid):
+def api_flag_comment():
+
+    cid=request.form.get("comment_id")
 
     comment = get_comment(cid)
 

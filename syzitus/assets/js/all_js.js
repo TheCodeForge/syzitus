@@ -361,30 +361,14 @@ $('#deleteCommentButton').click(function() {
   }
 )
 
-//Email verification text
-
 //flagging
 // Flag Comment
 $('.btn-report-comment').click(function() {
 
   $("#comment-author").text($(this).data('target-author'));
 
-  //offtopic.disabled=true;
+  $("#report-post-form-id").val($(this).data('target-id'))
 
-  $("#reportCommentButton").data('report-url', '/api/flag/comment/'+$(this).data('comment-id'))
-  })
-
-$("#reportCommentButton").click(function() {
-
-  this.innerHTML='<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Reporting comment';
-  this.disabled = true;
-  post($(this).data('report-url'),
-    callback = function() {
-      $("#reportCommentFormBefore").addClass('d-none');
-      $("#reportCommentFormAfter").removeClass('d-none');
-    }
-  )
-})
 
 $('#reportCommentModal').on('hidden.bs.modal', function () {
 
@@ -421,12 +405,8 @@ $('.btn-report-post').click(function() {
   $('#report-type-dropdown').val('reason_not_selected');
 
   $("#reportPostButton").prop('disabled',true)
-  $("#reportPostButton").data('report-url', $(this).data('report-url'))
+  $("#report-post-form-id").val($(this).data('target-id'))
   })
-
-$('#reportPostButton').click(function() {
-  post_toast($(this).data('report-url'))
-})
 
 $('#reportPostModal').on('hidden.bs.modal', function () {
 
