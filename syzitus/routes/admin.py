@@ -1646,6 +1646,16 @@ def ban_post(post_id):
     g.db.add(ma)
     g.db.commit()
 
+    # #notify users who reported it
+    # users=g.db.query(User).filter(
+    #     User.id.in_(
+    #         select(Flag.user_id).filter_by(Flag.submission_id==post.id)
+    #         )
+    #     )
+
+    # for user in users:
+    #     send_notification(f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+
     return jsonify({"message":f"Post {post.base36id} removed"})
 
 
