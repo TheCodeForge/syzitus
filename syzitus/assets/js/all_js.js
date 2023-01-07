@@ -188,7 +188,7 @@ $('.btn-remove-comment').click(function () {
     $('.btn-approve-comment-'+$(this).data('comment-id')).removeClass("d-none")
     
   }
-  post_toast(url, callback)
+  post_toast(url, callback=callback)
 })
 
 
@@ -202,7 +202,7 @@ $('.btn-approve-comment').click(function () {
     $('.btn-approve-comment-'+$(this).data('comment-id')).addClass("d-none")
   }
 
-  post_toast(url, callback)
+  post_toast(url, callback=callback)
 })
 
 
