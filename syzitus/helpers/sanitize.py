@@ -111,7 +111,8 @@ TLDS =sorted(
         set(
             TLDS + 
             """
-            bio fit ink joy
+            app bar best bio club fit guru ink joy life link live lol 
+            menu monster news ngo ong pics quest shop site space wiki
             """.split())
         ), 
     reverse=True
