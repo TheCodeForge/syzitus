@@ -241,8 +241,10 @@
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-mod-comment" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i><span class="btn-mod-comment-text-{{ c.base36id }}">{{ "Approve" if c.is_banned else "Remove" }}</span></a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-approve-comment btn-approve-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i>Approve</a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-remove-comment btn-remove-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i>Remove</a></li>
           {% endif %}
+
           <li class="list-inline-item d-none d-md-inline-block">
             <div class="dropdown show">
               <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true"
@@ -453,7 +455,6 @@
 
             <li class="list-group-item"><a href="{{ c.permalink }}"{% if c.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-fw fa-link"></i>Permalink</a></li>
             <li class="list-group-item"><a href="{{ c.permalink }}?context=3"{% if c.author.is_private %} rel="nofollow"{% endif %}><i class="fas fa-fw fa-dna"></i>Context</a></li>
-            <!-- <li class="list-group-item d-none"><a href="javascript:void(0)" class="d-block"><i class="fas fa-fw fa-save"></i>Save</a></li> -->
 
             {% if g.user and not g.user.id==c.author_id %}
             <li class="list-group-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}" class="d-block btn-report-comment"><i class="fas fa-fw fa-flag"></i>Flag</a></li>
