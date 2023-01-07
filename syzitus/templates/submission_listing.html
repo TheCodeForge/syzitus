@@ -123,7 +123,7 @@
           {% if p.is_bot %}{% include "tags/bot.html" %}{% endif %}
           {% if p.is_blocking %}{% include "tags/blocking.html" %}{% endif %}
           {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
-          {% if g.user and g.user.admin_level >=3 and p.active_flags %} · <span class="text-danger">{{ p.active_flags }} Flags</span>{% endif %}{% if "/mod/queue" in request.path and p.active_reports %} · <span class="text-danger">{{ p.active_reports }} Reports</span>{% endif %}
+          {% if g.user and g.user.admin_level >=3 and p.active_flags %} · <span class="text-danger">{{ p.active_flags }} Flag{{ 's' if p.active_flags>1 else '' }}</span>{% endif %}{% if "/mod/queue" in request.path and p.active_reports %} · <span class="text-danger">{{ p.active_reports }} Reports</span>{% endif %}
         </div>
       </div>
 
@@ -144,7 +144,7 @@
         {% if p.is_blocking %}{% include "tags/blocking.html" %}>{% endif %}
         {% if p.is_blocked %}{% include "tags/blocked.html" %}{% endif %}
         {% if p.is_repost %} · {% include "tags/repost.html" %}{% endif %}
-        {% if g.user and g.user.admin_level >=3 and p.active_flags %}<span class="text-danger">{{ p.active_flags }} Flags</span>{% endif %}
+        {% if g.user and g.user.admin_level >=3 and p.active_flags %}<span class="text-danger">{{ p.active_flags }} Flag{{ 's' if p.active_flags>1 else '' }}</span>{% endif %}
         {% if "/mod/queue" in request.path and p.active_reports %} · <span class="text-danger">{{ p.active_reports }} Reports</span>{% endif %}
 
       </div>
