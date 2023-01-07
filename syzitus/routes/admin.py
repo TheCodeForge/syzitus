@@ -1710,7 +1710,7 @@ def unban_post(post_id):
         )
 
     for user in users:
-        send_notification(user, f"You had previously reported the post linked below. After review, it was determined that it did not violate the {app.config['SITE_NAME']} [terms of service](/help/terms) or [content rules](/help/rules).\n\n[{post.title}]({post.permalink})\n\nThank you for your assistance in keeping {app.config['SITE_NAME']} safe.")
+        send_notification(user, f"You had previously reported the post linked below. After review, it was determined that it did not violate the {app.config['SITE_NAME']} [terms of service](/help/terms) or [content rules](/help/rules).\n\n{post.permalink_full}\n\nThank you for your assistance in keeping {app.config['SITE_NAME']} safe.")
 
     for flag in g.db.query(Flag).filter_by(post_id=post.id, resolution_notif_sent=False).all():
         flag.resolution_notif_sent=True
@@ -1827,6 +1827,24 @@ def api_unban_comment(c_id):
     comment.approved_utc = g.timestamp
 
     g.db.add(comment)
+    g.db.commit()
+
+
+    #notify users who reported it
+    users=g.db.query(User).filter(
+        User.id.in_(
+            select(CommentFlag.user_id).filter_by(
+                comment_id=comment.id,
+                resolution_notif_sent=False)
+            )
+        )
+
+    for user in users:
+        send_notification(user, f"You had previously reported the comment linked below. After review, it was determined that it did not violate the {app.config['SITE_NAME']} [terms of service](/help/terms) or [content rules](/help/rules).\n\n{comment.permalink_full}\n\nThank you for your assistance in keeping {app.config['SITE_NAME']} safe.")
+
+    for flag in g.db.query(Flag).filter_by(post_id=post.id, resolution_notif_sent=False).all():
+        flag.resolution_notif_sent=True
+        g.db.add(flag)
     g.db.commit()
 
     return "", 204
