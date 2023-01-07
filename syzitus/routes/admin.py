@@ -1843,7 +1843,7 @@ def api_unban_comment(c_id):
     for user in users:
         send_notification(user, f"You had previously reported the comment linked below. After review, it was determined that it did not violate the {app.config['SITE_NAME']} [terms of service](/help/terms) or [content rules](/help/rules).\n\n{comment.permalink_full}\n\nThank you for your assistance in keeping {app.config['SITE_NAME']} safe.")
 
-    for flag in g.db.query(Flag).filter_by(post_id=post.id, resolution_notif_sent=False).all():
+    for flag in g.db.query(CommentFlag).filter_by(comment_id=comment.id, resolution_notif_sent=False).all():
         flag.resolution_notif_sent=True
         g.db.add(flag)
     g.db.commit()
