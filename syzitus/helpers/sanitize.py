@@ -148,11 +148,6 @@ def a_modify(attrs, new=False):
 
     return attrs
 
-
-
-
-
-
 _clean_wo_links = Cleaner(
     tags=_allowed_tags,
     attributes=_allowed_attributes,
