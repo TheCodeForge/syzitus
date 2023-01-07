@@ -305,9 +305,9 @@
 
                 {% if g.user.admin_level>=3 %}
 
-                <a href="javascript:void(0)" class="dropdown-item text-success btn-approve-comment btn-approve-comment-{{ c.base36id }} {% if not c.is_banned %} d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-check fa-fw"></i>Approve</a>
+                <a href="javascript:void(0)" class="dropdown-item text-success btn-approve-comment btn-approve-comment-{{ c.base36id }} {% if not c.is_banned %} d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-check fa-fw text-success"></i>Approve</a>
 
-                <a href="javascript:void(0)" class="dropdown-item text-danger btn-remove-comment btn-remove-comment-{{ c.base36id }} {% if c.is_banned %} d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i>Remove</a>
+                <a href="javascript:void(0)" class="dropdown-item text-danger btn-remove-comment btn-remove-comment-{{ c.base36id }} {% if c.is_banned %} d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw text-danger"></i>Remove</a>
                 {% if c.author.is_deleted %}
                 <a class="dropdown-item text-info" href="{{ c.author.permalink }}"><i class="fas fa-user text-info"></i>@{{ c.author.username }}</a>
                 {% endif %}
@@ -471,8 +471,8 @@
               <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-distinguish-comment" id="distinguish-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-dismiss="modal"><i class="fas fa-shield-quartered fa-fw text-danger"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
             {% endif %}
             {% if g.user.admin_level>=3 %}
-              <li class="list-group-item text-success"><a href="javascript:void(0)" class="d-block btn-approve-comment btn-approve-comment-{{ c.base36id }} {% if not c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-check"></i>Approve</a></li>
-              <li class="list-group-item text-danger"><a href="javascript:void(0)" class="d-block btn-remove-comment btn-remove-comment-{{ c.base36id }} {% if c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-times"></i>Remove</a></li>
+              <li class="list-group-item text-success"><a href="javascript:void(0)" class="d-block btn-approve-comment btn-approve-comment-{{ c.base36id }} {% if not c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-check text-success"></i>Approve</a></li>
+              <li class="list-group-item text-danger"><a href="javascript:void(0)" class="d-block btn-remove-comment text-danger btn-remove-comment-{{ c.base36id }} {% if c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-times text-danger"></i>Remove</a></li>
             {% endif %}
             {% if g.user.admin_level >=4 and c.oauth_app %}
               <li class="list-group-item"><a class="d-block" href="{{ c.oauth_app.permalink }}/comments"><i class="fas fa-fw fa-code"></i>API App</a></li>
