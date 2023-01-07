@@ -13,7 +13,7 @@
           </span>
         </form>
       </div>
-      {% if g.user %}
+      {% if g.user and not g.user.is_suspended %}
       <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
       {% else %}
       <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
@@ -55,9 +55,11 @@
 
           {% endif %}
 
+          {% if not g.user.is_suspended %}
           <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
             <a class="nav-link" href="/submit{{ '?guild='+b.name if b else '' }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Create post"><i class="fas fa-feather-alt"></i></a>
           </li>
+          {% endif %}
 
           <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
             <div class="dropdown">
