@@ -178,23 +178,30 @@ $(document).on('click', ".btn-edit-post", function(){
 )
 
 //comment modding
-$('.btn-mod-comment').click(function () {
+$('.btn-remove-comment').click(function () {
 
   var url;
-
-  if ($("#comment-"+$(this).data('comment-id')+"-only").hasClass("banned")) {
-    url="/api/unban_comment/"+$(this).data('comment-id');
-    callback=function(xhr){
-      $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
-      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Approve")
-    }
-  } else {
-    url="/api/ban_comment/"+$(this).data('comment-id');
-    callback=function(xhr){
-      $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
-      $('.btn-mod-comment-text-'+$(this).data('comment-id')).text("Remove")
-    }
+  url="/api/ban_comment/"+$(this).data('comment-id');
+  callback=function(xhr){
+    $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
+    $('.btn-remove-comment-'+$(this).data('comment-id')).addClass("d-none")
+    $('.btn-approve-comment-'+$(this).data('comment-id')).removeClass("d-none")
+    
   }
+  post_toast(url, callback)
+})
+
+
+//comment modding
+$('.btn-approve-comment').click(function () {
+
+  var url="/api/unban_comment/"+$(this).data('comment-id');
+  callback=function(xhr){
+    $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
+    $('.btn-remove-comment-'+$(this).data('comment-id')).removeClass("d-none")
+    $('.btn-approve-comment-'+$(this).data('comment-id')).addClass("d-none")
+  }
+
   post_toast(url, callback)
 })
 
