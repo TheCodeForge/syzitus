@@ -1,4 +1,5 @@
 from bleach import Cleaner
+from bleach.linkifier import build_url_re, TLDS
 from bs4 import BeautifulSoup
 from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
@@ -104,6 +105,19 @@ _allowed_protocols = [
 
 prettify_class_regex=re.compile("prettyprint lang-\w+")
 
+
+TLDS =sorted(
+    list(
+        set(
+            TLDS + 
+            """
+            fit ink joy
+            """.split())
+        ), 
+    reverse=True
+    )
+URL_REGEX = build_url_re(tlds=TLDS)
+
 # filter to make all links show domain on hover
 
 
@@ -120,12 +134,14 @@ def a_modify(attrs, new=False):
 
             # Force https for all external links in comments
             # (Ruqqus already forces its own https)
-            new_url = ParseResult(scheme="https",
-                                  netloc=parsed_url.netloc,
-                                  path=parsed_url.path,
-                                  params=parsed_url.params,
-                                  query=parsed_url.query,
-                                  fragment=parsed_url.fragment)
+            new_url = ParseResult(
+                scheme="https",
+                netloc=parsed_url.netloc,
+                path=parsed_url.path,
+                params=parsed_url.params,
+                query=parsed_url.query,
+                fragment=parsed_url.fragment
+                )
 
             attrs[(None, "href")] = urlunparse(new_url)
 
@@ -136,47 +152,55 @@ def a_modify(attrs, new=False):
 
 
 
-_clean_wo_links = Cleaner(tags=_allowed_tags,
-                                 attributes=_allowed_attributes,
-                                 protocols=_allowed_protocols,
-                                 )
-_clean_w_links = Cleaner(tags=_allowed_tags_with_links,
-                                attributes=_allowed_attributes,
-                                protocols=_allowed_protocols,
-                                filters=[partial(LinkifyFilter,
-                                                 skip_tags=["pre"],
-                                                 parse_email=False,
-                                                 callbacks=[a_modify]
-                                                 )
-                                         ]
-                                )
+_clean_wo_links = Cleaner(
+    tags=_allowed_tags,
+    attributes=_allowed_attributes,
+    protocols=_allowed_protocols
+    )
 
-_clean_bio = Cleaner(tags=_allowed_tags_in_bio,
-                            attributes=_allowed_attributes,
-                            protocols=_allowed_protocols,
-                            filters=[partial(LinkifyFilter,
-                                             skip_tags=["pre"],
-                                             parse_email=False,
-                                             callbacks=[a_modify]
-                                             )
-                                     ]
-                            )
+_clean_w_links = Cleaner(
+    tags=_allowed_tags_with_links,
+    attributes=_allowed_attributes,
+    protocols=_allowed_protocols,
+    filters=[partial(
+        LinkifyFilter,
+        skip_tags=["pre"],
+        parse_email=False,
+        callbacks=[a_modify],
+        url_re=URL_REGEX
+        )]
+    )
+
+_clean_bio = Cleaner(
+    tags=_allowed_tags_in_bio,
+    attributes=_allowed_attributes,
+    protocols=_allowed_protocols,
+    filters=[partial(
+        LinkifyFilter,
+        skip_tags=["pre"],
+        parse_email=False,
+        callbacks=[a_modify],
+        url_re=URL_REGEX
+        )]
+    )
 
 
 def sanitize(text, bio=False, linkgen=False, noimages=False):
 
     text = text.replace("\ufeff", "")
     if noimages:
-        text = bleach.Cleaner(tags=no_images,
-                              attributes=_allowed_attributes,
-                              protocols=_allowed_protocols,
-                              filters=[partial(LinkifyFilter,
-                                               skip_tags=["pre"],
-                                               parse_email=False,
-                                               callbacks=[a_modify]
-                                               )
-                                       ]
-                              ).clean(text)
+        text = bleach.Cleaner(
+            tags=no_images,
+            attributes=_allowed_attributes,
+            protocols=_allowed_protocols,
+            filters=[partial(
+                LinkifyFilter,
+                skip_tags=["pre"],
+                parse_email=False,
+                callbacks=[a_modify],
+                url_re=URL_REGEX
+                )]
+            ).clean(text)
 
     if linkgen:
         if bio:
