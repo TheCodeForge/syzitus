@@ -171,18 +171,18 @@ ACTIONTYPES={
         "color": "bg-muted",
         "title": 'un-exiled user {self.target_user.username}'
     },
-    "chatban_user":{
-        "str":'chatbanned user {self.target_link}',
-        "icon":"fa-comments-alt",
-        "color": "bg-danger",
-        "title": 'chatbanned user {self.target_user.username}'
-    },
-    "unchatban_user":{
-        "str":'un-chatbanned user {self.target_link}',
-        "icon": "fa-comments-alt",
-        "color": "bg-muted",
-        "title": 'un-chatbanned user {self.target_user.username}'
-    },
+    # "chatban_user":{
+    #     "str":'chatbanned user {self.target_link}',
+    #     "icon":"fa-comments-alt",
+    #     "color": "bg-danger",
+    #     "title": 'chatbanned user {self.target_user.username}'
+    # },
+    # "unchatban_user":{
+    #     "str":'un-chatbanned user {self.target_link}',
+    #     "icon": "fa-comments-alt",
+    #     "color": "bg-muted",
+    #     "title": 'un-chatbanned user {self.target_user.username}'
+    # },
     "contrib_user":{
         "str":'added contributor {self.target_link}',
         "icon": "fa-user-check",
@@ -220,13 +220,13 @@ ACTIONTYPES={
         "title": 'un-heralded their post {self.target_post.title}'
     },
     "pin_comment":{
-        "str":'pinned a {self.target_link}',
+        "str":'pinned {self.target_link}',
         "icon":"fa-thumbtack fa-rotate--45",
         "color": "bg-info",
         "title": 'pinned a comment'
     },
     "unpin_comment":{
-        "str":'un-pinned a {self.target_link}',
+        "str":'un-pinned {self.target_link}',
         "icon":"fa-thumbtack fa-rotate--45",
         "color": "bg-muted",
         "title": 'un-pinned a comment'
@@ -346,7 +346,7 @@ ACTIONTYPES={
         "title": "changed permissions on {self.target_user.username}"
     },
     "change_invite":{
-        "str": 'changed  permissions on guildmaster invitation to {self.target_link}',
+        "str": 'changed permissions on guildmaster invitation to {self.target_link}',
         "icon":"fa-user-cog",
         "color": "bg-muted",
         "title": "changed permissions on invitation to {self.target_user.username}"
