@@ -15,6 +15,12 @@ def api_flag_post():
 
     kind = request.form.get("report_type")
 
+    if post.is_banned:
+        return jsonify({"error": "This post has already been removed."}), 409
+
+    elif post.is_deleted:
+        return jsonify({"error": "This post has been deleted."}), 409
+
     if kind == "admin":
         existing = g.db.query(Flag).filter_by(
             user_id=g.user.id, post_id=post.id).filter(
@@ -56,6 +62,12 @@ def api_flag_comment():
     cid=request.form.get("comment_id")
 
     comment = get_comment(cid)
+
+    if comment.is_banned:
+        return jsonify({"error": "This comment has already been removed."}), 409
+
+    elif comment.is_deleted:
+        return jsonify({"error": "This comment has been deleted."}), 409
 
     existing = g.db.query(CommentFlag).filter_by(
         user_id=g.user.id, comment_id=comment.id).filter(
