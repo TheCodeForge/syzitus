@@ -367,7 +367,7 @@ $('.btn-report-comment').click(function() {
 
   $("#comment-author").text($(this).data('target-author'));
 
-  $("#report-post-form-id").val($(this).data('target-id'))
+  $("#report-comment-form-id").val($(this).data('comment-id'))
 
 });
 
@@ -407,7 +407,7 @@ $('.btn-report-post').click(function() {
   $('#report-type-dropdown').val('reason_not_selected');
 
   $("#reportPostButton").prop('disabled',true)
-  $("#report-post-form-id").val($(this).data('target-id'))
+  $("#report-post-form-id").val($(this).data('post-id'))
   })
 
 $('#reportPostModal').on('hidden.bs.modal', function () {
