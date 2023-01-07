@@ -470,9 +470,9 @@
             {% if g.user.admin_level>=1 and g.user.id==c.author_id %}
               <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-distinguish-comment" id="distinguish-{{ c.base36id }}" data-comment-id="{{ c.base36id }}" data-dismiss="modal"><i class="fas fa-shield-quartered fa-fw text-danger"></i>{{ 'Undistinguish' if c.distinguish_level else 'Distinguish' }}</a></li>
             {% endif %}
-            {% if g.user.admin_level>=3 and request.path.startswith('/admin/') %}
-              <li class="list-group-item text-success"><a href="javascript:void(0)" class="d-block btn-approve-comment btn-approve-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-check"></i>Approve</a></li>
-              <li class="list-group-item text-danger"><a href="javascript:void(0)" class="d-block btn-remove-comment btn-remove-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-times"></i>Remove</a></li>
+            {% if g.user.admin_level>=3 %}
+              <li class="list-group-item text-success"><a href="javascript:void(0)" class="d-block btn-approve-comment btn-approve-comment-{{ c.base36id }} {% if not c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-check"></i>Approve</a></li>
+              <li class="list-group-item text-danger"><a href="javascript:void(0)" class="d-block btn-remove-comment btn-remove-comment-{{ c.base36id }} {% if c.is_banned and not request.path.startswith('/admin/') %}d-none{% endif %}" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-comment-times"></i>Remove</a></li>
             {% endif %}
             {% if g.user.admin_level >=4 and c.oauth_app %}
               <li class="list-group-item"><a class="d-block" href="{{ c.oauth_app.permalink }}/comments"><i class="fas fa-fw fa-code"></i>API App</a></li>
