@@ -37,13 +37,17 @@ def flagged_posts():
 
     page = max(1, int(request.args.get("page", 1)))
 
-    posts = g.db.query(Submission).filter_by(
-        is_approved=0,
-        purged_utc=0,
-        is_banned=False
-    ).join(Submission.flags
-           ).options(contains_eager(Submission.flags)
-                     ).order_by(Submission.id.desc()).offset(25 * (page - 1)).limit(26)
+    posts = g.db.query(Submission).filter(
+        Submission.is_appoved.in_(0, None),
+        Submission.purged_utc==0,
+        Submission.is_banned==False
+    ).join(
+        Submission.flags
+    ).options(
+        contains_eager(Submission.flags)
+    ).order_by(
+        Submission.id.desc()
+    ).offset(25 * (page - 1)).limit(26)
 
     listing = [p.id for p in posts]
     next_exists = (len(listing) == 26)
@@ -1646,15 +1650,19 @@ def ban_post(post_id):
     g.db.add(ma)
     g.db.commit()
 
-    # #notify users who reported it
-    # users=g.db.query(User).filter(
-    #     User.id.in_(
-    #         select(Flag.user_id).filter_by(Flag.submission_id==post.id)
-    #         )
-    #     )
+    #notify users who reported it
+    users=g.db.query(User).filter(
+        User.id.in_(
+            select(Flag.user_id).filter_by(post_id=post.id)
+            )
+        )
 
-    # for user in users:
-    #     send_notification(f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+    for user in users:
+        send_notification(f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+
+    for flag in g.db.query(Flag).filter_by(post_id=post.id).all():
+        g.db.delete(flag)
+    g.db.commit()
 
     return jsonify({"message":f"Post {post.base36id} removed"})
 
