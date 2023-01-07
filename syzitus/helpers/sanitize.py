@@ -111,7 +111,7 @@ TLDS =sorted(
         set(
             TLDS + 
             """
-            fit ink joy
+            bio fit ink joy
             """.split())
         ), 
     reverse=True
