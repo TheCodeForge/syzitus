@@ -395,6 +395,9 @@ URL path parameters:
     if post.author_id != g.user.id:
         abort(403)
 
+    if post.is_banned or post.is_deleted:
+        abort(403)
+
     if post.gm_distinguish:
         post.gm_distinguish = None
     else:
@@ -432,6 +435,9 @@ URL path parameters:
         abort(400)
 
     if comment.author_id != g.user.id:
+        abort(403)
+
+    if comment.is_banned or comment.is_deleted:
         abort(403)
 
     if comment.gm_distinguish:
