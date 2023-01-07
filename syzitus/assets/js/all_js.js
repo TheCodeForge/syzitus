@@ -183,6 +183,7 @@ $('.btn-remove-comment').click(function () {
   var url;
   url="/api/ban_comment/"+$(this).data('comment-id');
   callback=function(xhr){
+    console.log('remove callback')
     $("#comment-"+$(this).data('comment-id')+"-only").addClass("banned");
     $('.btn-remove-comment-'+$(this).data('comment-id')).addClass("d-none")
     $('.btn-approve-comment-'+$(this).data('comment-id')).removeClass("d-none")
@@ -197,6 +198,7 @@ $('.btn-approve-comment').click(function () {
 
   var url="/api/unban_comment/"+$(this).data('comment-id');
   callback=function(xhr){
+    console.log('approve callback')
     $("#comment-"+$(this).data('comment-id')+"-only").removeClass("banned");
     $('.btn-remove-comment-'+$(this).data('comment-id')).removeClass("d-none")
     $('.btn-approve-comment-'+$(this).data('comment-id')).addClass("d-none")
