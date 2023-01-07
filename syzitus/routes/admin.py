@@ -1656,15 +1656,18 @@ def ban_post(post_id):
     #notify users who reported it
     users=g.db.query(User).filter(
         User.id.in_(
-            select(Flag.user_id).filter_by(post_id=post.id)
+            select(Flag.user_id).filter_by(
+                post_id=post.id,
+                resolution_notif_sent=False)
             )
         )
 
     for user in users:
-        send_notification(f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+        send_notification(user, f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
 
-    for flag in g.db.query(Flag).filter_by(post_id=post.id).all():
-        g.db.delete(flag)
+    for flag in g.db.query(Flag).filter_by(post_id=post.id, resolution_notif_sent=False).all():
+        flag.resolution_notif_sent=True
+        g.db.add(flag)
     g.db.commit()
 
     return jsonify({"message":f"Post {post.base36id} removed"})
@@ -1762,6 +1765,24 @@ def api_ban_comment(c_id):
         )
     g.db.add(ma)
     g.db.commit()
+
+    #notify users who reported it
+    users=g.db.query(User).filter(
+        User.id.in_(
+            select(CommentFlag.user_id).filter_by(
+                comment_id=comment.id,
+                resolution_notif_sent=False)
+            )
+        )
+
+    for user in users:
+        send_notification(user, f"A comment you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+
+    for flag in g.db.query(CommentFlag).filter_by(comment_id=comment.id, resolution_notif_sent=False).all():
+        flag.resolution_notif_sent=True
+        g.db.add(flag)
+    g.db.commit()
+
     return "", 204
 
 

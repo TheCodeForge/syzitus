@@ -13,7 +13,7 @@ class Flag(Base, standard_mixin):
     post_id = Column(Integer, ForeignKey("submissions.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
     created_utc = Column(Integer)
-    resolution_notif_sent=Column(Boolean, default=False)
+    resolution_notif_sent=Column(Boolean, default=False, nullable=False)
 
     def __repr__(self):
 
@@ -28,7 +28,7 @@ class CommentFlag(Base, standard_mixin):
     user_id = Column(Integer, ForeignKey("users.id"))
     comment_id = Column(Integer, ForeignKey("comments.id"))
     created_utc = Column(Integer)
-    resolution_notif_sent=Column(Boolean, default=False)
+    resolution_notif_sent=Column(Boolean, default=False, nullable=False)
 
     def __repr__(self):
 
