@@ -14,11 +14,9 @@ from syzitus.__main__ import app, debug
 @auth_required
 def join_discord():
 
-    now=int(time.time())
+    state=generate_hash(f"{g.timestamp}+{g.user.id}+discord")
 
-    state=generate_hash(f"{now}+{g.user.id}+discord")
-
-    state=f"{now}.{state}"
+    state=f"{g.timestamp}.{state}"
 
     return redirect(f"https://discord.com/api/oauth2/authorize?client_id={app.config['DISCORD_CLIENT_ID']}&redirect_uri=https%3A%2F%2F{app.config['SERVER_NAME']}%2Fdiscord_redirect&response_type=code&scope=identify%20guilds.join&state={state}")
 
@@ -28,14 +26,13 @@ def discord_redirect():
 
 
     #validate state
-    now=int(time.time())
     state=request.args.get('state','').split('.')
 
     timestamp=state[0]
 
     state=state[1]
 
-    if int(timestamp) < now-600:
+    if int(timestamp) < g.timestamp-600:
         abort(400)
 
     if not validate_hash(f"{timestamp}+{g.user.id}+discord", state):
