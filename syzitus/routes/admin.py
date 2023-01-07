@@ -1802,7 +1802,7 @@ def api_ban_comment(c_id):
         g.db.add(flag)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message":f"Comment {comment.base36id} remove"})
 
 
 @app.route("/api/unban_comment/<c_id>", methods=["post"])
@@ -1848,7 +1848,7 @@ def api_unban_comment(c_id):
         g.db.add(flag)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message":f"Comment {comment.base36id} approved"})
 
 
 @app.route("/api/distinguish_comment/<c_id>", methods=["post"])
