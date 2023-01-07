@@ -8,6 +8,7 @@ from PIL import Image as IMAGE
 from gevent import spawn as gevent_spawn, joinall as gevent_joinall
 from jinja2.exceptions import TemplateNotFound
 from flask import g, session, abort, render_template, jsonify, redirect
+import mistletoe
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.alerts import send_notification
@@ -1634,7 +1635,7 @@ def ban_post(post_id):
 
     ban_reason=request.form.get("reason", "")
     with CustomRenderer() as renderer:
-        ban_reason = renderer.render(Document(ban_reason))
+        ban_reason = renderer.render(mistletoe.Document(ban_reason))
     ban_reason = sanitize(ban_reason, linkgen=True)
 
     post.ban_reason = ban_reason
