@@ -38,7 +38,7 @@ def flagged_posts():
     page = max(1, int(request.args.get("page", 1)))
 
     posts = g.db.query(Submission).filter(
-        Submission.is_approved.in_(0, None),
+        Submission.is_approved.in_((0, None)),
         Submission.purged_utc==0,
         Submission.is_banned==False
     ).join(
