@@ -379,6 +379,9 @@ class Board(Base, standard_mixin, age_mixin):
         if self.has_ban(user):
             return False
 
+        if user.is_suspended:
+            return False
+
         if self.has_contributor(user) or self.has_mod(user):
             return True
 
@@ -396,6 +399,9 @@ class Board(Base, standard_mixin, age_mixin):
             return True
 
         if self.has_ban(user):
+            return False
+
+        if user.is_suspended:
             return False
 
         if self.has_contributor(user) or self.has_mod(user):
