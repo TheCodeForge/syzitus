@@ -241,8 +241,8 @@
           {% endif %}
 
           {% if g.user and g.user.admin_level>=3 and request.path.startswith ('/admin') %}
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-approve-comment btn-approve-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i>Approve</a></li>
-            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-remove-comment btn-remove-comment-{{ c.base36id }}" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw"></i>Remove</a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-approve-comment btn-approve-comment-{{ c.base36id }} text-success" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw text-success"></i>Approve</a></li>
+            <li class="list-inline-item text-muted d-none d-md-inline-block"><a href="javascript:void(0)" class="btn-remove-comment btn-remove-comment-{{ c.base36id }} text-danger" data-comment-id="{{ c.base36id }}"><i class="fas fa-comment-times fa-fw text-danger"></i>Remove</a></li>
           {% endif %}
 
           <li class="list-inline-item d-none d-md-inline-block">
