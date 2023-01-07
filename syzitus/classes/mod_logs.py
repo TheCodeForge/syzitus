@@ -322,10 +322,10 @@ ACTIONTYPES={
         "title": "removed post {self.target_post.title}"
     },
     "unban_post":{
-        "str": 'reinstated post {self.target_link}',
+        "str": 'approved post {self.target_link}',
         "icon":"fa-feather-alt",
         "color": "bg-muted",
-        "title": "reinstated post {self.target_post.title}"
+        "title": "approved post {self.target_post.title}"
     },
     "ban_comment":{
         "str": 'removed {self.target_link}',
@@ -334,10 +334,10 @@ ACTIONTYPES={
         "title": "removed comment"
     },
     "unban_comment":{
-        "str": 'reinstated {self.target_link}',
+        "str": 'approved {self.target_link}',
         "icon":"fa-comment",
         "color": "bg-muted",
-        "title": "reinstated comment"
+        "title": "approved comment"
     },
     "change_perms":{
         "str": 'changed permissions on guildmaster {self.target_link}',
