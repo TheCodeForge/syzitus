@@ -196,25 +196,25 @@ ACTIONTYPES={
         "title": 'removed user {self.target_user.username}'
     },
     "herald_comment":{
-        "str":'heralded their {self.target_link}',
+        "str":'heralded {self.target_link}',
         "icon": "fa-crown",
         "color": "bg-warning",
         "title": 'heralded their comment'
     },
     "herald_post":{
-        "str":'heralded their post {self.target_link}',
+        "str":'heralded post {self.target_link}',
         "icon": "fa-crown",
         "color": "bg-warning",
         "title": 'heralded their post {self.target_post.title}'
     },
     "unherald_comment":{
-        "str":'un-heralded their {self.target_link}',
+        "str":'un-heralded {self.target_link}',
         "icon": "fa-crown",
         "color": "bg-muted",
         "title": 'un-heralded their comment'
         },
     "unherald_post":{
-        "str":'un-heralded their post {self.target_link}',
+        "str":'un-heralded post {self.target_link}',
         "icon": "fa-crown",
         "color": "bg-muted",
         "title": 'un-heralded their post {self.target_post.title}'
