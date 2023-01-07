@@ -293,7 +293,7 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
                 self.tree_comments(comment=comment)
 
         # return template
-        is_allowed_to_comment = self.board.can_comment(
+        is_allowed_to_comment = g.user and not g.user.is_suspended and self.board.can_comment(
             g.user) and not self.is_archived
         
     #    if request.args.get("sort", "Hot") != "new":
