@@ -29,12 +29,14 @@ def notifications():
     page = int(request.args.get('page', 1))
     all_ = request.args.get('all', False)
 
-    cids = g.user.notification_commentlisting(page=page,
-                                         all_=request.path=="/notifications/all",
-                                         mentions_only=request.path=="/notifications/mentions",
-                                         replies_only=request.path=="/notifications/replies",
-                                         system_only=request.path=="/notifications/system"
-                                         )
+    cids = g.user.notification_commentlisting(
+        page=page,
+        all_=request.path=="/notifications/all",
+        mentions_only=request.path=="/notifications/mentions",
+        replies_only=request.path=="/notifications/replies",
+        system_only=request.path=="/notifications/system"
+        )
+    
     next_exists = (len(cids) == 26)
     cids = cids[0:25]
 
