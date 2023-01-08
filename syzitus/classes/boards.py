@@ -608,7 +608,7 @@ class Board(Base, standard_mixin, age_mixin):
         if g.user and g.user.hide_offensive:
             comments = comments.filter_by(is_offensive=False)
 			
-        if g.user and g.user.hide_bot and not self.has_mod(v, "content"):
+        if g.user and g.user.hide_bot and not self.has_mod(g.user, "content"):
             comments = comments.filter_by(is_bot=False)
 
         if g.user and not self.has_mod(g.user) and g.user.admin_level <= 3:
