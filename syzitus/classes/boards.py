@@ -173,7 +173,7 @@ class Board(Base, standard_mixin, age_mixin):
                 )
             )
 			
-        if g.user and g.user.hide_bot and not self.has_mod(v, "content"):
+        if g.user and g.user.hide_bot and not self.has_mod(g.user, "content"):
             posts = posts.filter_by(is_bot=False)
 
         if g.user and not g.user.show_nsfl:

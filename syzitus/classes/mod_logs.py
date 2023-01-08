@@ -156,7 +156,7 @@ ACTIONTYPES={
     "yank_post":{
         "str":'yanked post {self.target_link}',
         "icon":"fa-hand-lizard",
-        "color": "bg-muted",
+        "color": "bg-success",
         "title": 'yanked post {self.target_post.title}'
     },
     "exile_user":{
