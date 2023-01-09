@@ -1952,8 +1952,8 @@ $(document).on('click', '.btn-reply-comment', function(){
 })
 
 $('.btn-file-input').change(function(){
-  $('#filename-show-reply-'+$(this).data('btn-id')).text(
-    $('#file-upload-reply-'+$(this).data('parent-fullname'))[0].files[0].name
+  $($(this).data('btn-id')).text(
+    $(this)[0].files[0].name
     );
 })
 
