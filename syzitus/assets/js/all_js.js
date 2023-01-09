@@ -1953,7 +1953,7 @@ $(document).on('click', '.btn-reply-comment', function(){
 
 $('.btn-file-input').change(function(){
   $('#'+$(this).data('btn-id')).text(
-    $(this)[0].files[0].name
+    '  '+$(this)[0].files[0].name
     );
 })
 
