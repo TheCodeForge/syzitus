@@ -408,7 +408,7 @@ Optional file data:
             threshold *= 2
 
         if len(similar_comments) > threshold:
-            text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
+            text = f"Your {app.config['SITE_NAME']} account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
             send_notification(g.user, text)
 
             g.user.ban(reason="Spamming.",
@@ -497,7 +497,7 @@ Optional file data:
     g.db.flush()
 
 
-    if g.user.has_premium:
+    if g.user.can_submit_image:
         if request.files.get("file"):
             file=request.files["file"]
             if not file.content_type.startswith('image/'):
@@ -705,7 +705,7 @@ Required form data:
         threshold *= 2
 
     if len(similar_comments) > threshold:
-        text = "Your Ruqqus account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
+        text = f"Your {app.config['SITE_NAME']} account has been suspended for 1 day for the following reason:\n\n> Too much spam!"
         send_notification(g.user, text)
 
         g.user.ban(reason="Spamming.",
