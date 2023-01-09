@@ -247,7 +247,7 @@
 {% include "tip_modal.html" %}
 {% endif %}
 
-{% if g.user and not g.user.is_suspended and (p or request.path='/notification') and ('FEATURE_ENABLE_GIFS'|app_config) %}
+{% if g.user and not g.user.is_suspended and (p or request.path.startswith('/notifications/')) and ('FEATURE_ENABLE_GIFS'|app_config) %}
 {% include "gif_modal.html" %}
 {% endif %}
 
