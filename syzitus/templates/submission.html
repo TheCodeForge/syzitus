@@ -804,10 +804,11 @@
           </label> 
           {% endif %}
 
-
-          <label class="format btn btn-secondary m-0 mr-1 {% if g.user.has_premium %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
-                <div><i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span></div>
-                <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" hidden>
+          <label class="format btn btn-secondary m-0 mr-1 {% if g.user.can_upload_comment_image %}d-inline-block{% else %}d-none{% endif %}" for="file-upload-reply-{{ p.fullname }}">
+            <div>
+              <i class="far fa-image"></i><span id="filename-show-reply-{{ p.base36id }}"></span>
+            </div>
+            <input id="file-upload-reply-{{ p.fullname }}" type="file" name="file" accept="image/*" class="btn-file-input" data-parent-fullname="{{ p.fullname }}" data-btn-id="filename-show-reply-{{ p.base36id }}" hidden>
           </label>
 
           {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
