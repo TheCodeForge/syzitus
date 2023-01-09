@@ -481,7 +481,6 @@ Optional file data:
     # create comment
     c = Comment(author_id=author_id,
                 parent_submission=parent_submission,
-                #parent_fullname=parent.fullname,
                 parent_comment_id=parent_comment_id,
                 level=level,
                 over_18=post.over_18,
