@@ -497,7 +497,7 @@ Optional file data:
     g.db.flush()
 
 
-    if g.user.can_submit_image:
+    if g.user.can_upload_comment_image:
         if request.files.get("file"):
             file=request.files["file"]
             if not file.content_type.startswith('image/'):
