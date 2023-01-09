@@ -322,7 +322,7 @@ Optional file data:
     body = request.form.get("body", "")[0:10000]
     body = body.lstrip().rstrip()
 
-    if not body and not (g.user.has_premium and request.files.get('file')):
+    if not body and not (g.user.can_upload_comment_image and request.files.get('file')):
         return jsonify({"error":"You need to actually write something!"}), 400
     
     if parent_post.board.disallowbots and request.headers.get("X-User-Type")=="Bot":
