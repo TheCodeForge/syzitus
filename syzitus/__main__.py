@@ -332,6 +332,7 @@ def before_request():
     g.ip=None
     g.ua=None
     g.is_archive=False
+    g.is_tor=request.headers.get("cf-ipcountry")=="T1"
 
     ip_ban= get_ip(request.remote_addr)
 

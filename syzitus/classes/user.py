@@ -599,14 +599,7 @@ class User(Base, standard_mixin, age_mixin):
 
     @property
     @cache.memoize()
-    def true_score(self):
-
-        #self.stored_karma=max((self.karma + self.comment_karma), -5)
-
-        #g.db.add(self)
-        #g.db.commit()
-        #return self.stored_karma
-   
+    def true_score(self):   
         
         value= max((self.karma + self.comment_karma), -5)
         return value
@@ -1109,15 +1102,15 @@ class User(Base, standard_mixin, age_mixin):
         # Has premium
         # Has 1000 Rep, or 500 for older accounts
         # if connecting through Tor, must have verified email
-        return (self.has_premium or self.true_score >= app.config['UPLOAD_IMAGE_REP']) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
+        return (self.has_premium or self.true_score >= app.config['UPLOAD_IMAGE_REP']) and not g.is_tor
 
     @property
     def can_upload_avatar(self):
-        return (self.has_premium or self.true_score >= app.config["PROFILE_UPLOAD_REP"]) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
+        return (self.has_premium or self.true_score >= app.config["PROFILE_UPLOAD_REP"]) and not g.is_tor
 
     @property
     def can_upload_banner(self):
-        return (self.has_premium or self.true_score >= app.config["BANNER_UPLOAD_REP"]) and (self.is_activated or request.headers.get("cf-ipcountry")!="T1")
+        return (self.has_premium or self.true_score >= app.config["BANNER_UPLOAD_REP"]) and not g.is_tor
 
     @property
     def json_raw(self):

@@ -69,7 +69,7 @@
               <small class="form-text text-muted">To post an image, use a direct image link such as i.imgur.com</small>
             </div>
 
-            <div id="submit-image-div" {% if not g.user.can_submit_image %} class="d-none"{% endif %}>
+            <div id="submit-image-div">
 
               {% if g.user.can_submit_image %}
               <div id="image-upload-block">
@@ -90,10 +90,13 @@
 
                 <label class="btn btn-secondary m-0 disabled" for="file-upload">
                   <div id="filename-show">Select Image</div>
-                  <input id="file-upload" type="file" accept="image/*" hidden disabled>
                 </label>
 
-                <small class="form-text text-muted">You can upload images directly at 500 Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</small>
+                {% if g.tor %}
+                <small class="form-text text-muted">Image uploads are not permitted while connected through Tor.</small>
+                {% else %}
+                <small class="form-text text-muted">You can upload images directly at {{ 'UPLOAD_IMAGE_REP' | app_config }} Rep, or earlier with <a href="/settings/premium" target="_blank">premium</a>.</small>
+                {% endif %}
               </div>
               {% endif %}
             </div>

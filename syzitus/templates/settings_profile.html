@@ -36,10 +36,10 @@
                   </label>
                 </form>
 
+                {% elif g.tor %}
+                <div class="text-muted">Image uploads are not permitted while connected through Tor.</div>
                 {% else %}
-
-                <div class="text-muted">You can add a custom avatar after earning {{ "PROFILE_UPLOAD_REP" | app_config}} Rep.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</div>
-
+                <div class="text-muted">You can add a custom avatar after earning {{ "PROFILE_UPLOAD_REP" | app_config}} Rep.</div>
                 {% endif %}
 
               </div>
@@ -91,9 +91,12 @@
                   </label>
                 </form>
 
+                {% elif g.tor %}
+                <div class="text-muted">Image uploads are not permitted while connected through Tor.</div>
+
                 {% else %}
 
-                <div class="text-muted">You can add a custom banner after earning {{ "BANNER_UPLOAD_REP" | app_config }} Rep.{% if request.headers.get("cf-ipcountry")=="T1" and not g.user.is_activated %} Additionally, you must have a verified email address to upload images via Tor.{% endif %}</div>
+                <div class="text-muted">You can add a custom banner after earning {{ "BANNER_UPLOAD_REP" | app_config }} Rep.</div>
 
                 {% endif %}
 
