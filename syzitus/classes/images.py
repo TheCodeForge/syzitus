@@ -1,6 +1,7 @@
 import time
 from sqlalchemy import Column, BigInteger, String, Integer, Index
 from sqlalchemy.orm import relationship
+import random
 from flask import g
 
 from syzitus.helpers.base36 import *
@@ -69,10 +70,10 @@ IMG_DATA=[
     {'number': 1, 'state': 'WY', 'text': 'Jackson Hole Valley, Wyoming'}
 ]
 
-#IMAGES=[Image(**x) for x in IMG_DATA]
+IMAGES=[Image(**x) for x in IMG_DATA]
 
 def random_image():
-    return Image(**IMG_DATA[g.timestamp % len(IMG_DATA) + 1])
+    return random.choice(IMAGES)
 
 
 
