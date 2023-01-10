@@ -500,10 +500,10 @@ class User(Base, standard_mixin, age_mixin):
             comments = comments.filter(Submission.is_nsfl == False)
 
         if not (g.user and g.user.admin_level >= 3):
-            comments = comments.filter(Comment.deleted_utc == 0)
-
-        if not (g.user and g.user.admin_level >= 3):
-            comments = comments.filter(Comment.is_banned == False)
+            comments = comments.filter(
+                Comment.deleted_utc == 0,
+                Comment.is_banned == False
+                )
 
         if g.user and g.user.admin_level >= 4:
             pass
