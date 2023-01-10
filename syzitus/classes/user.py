@@ -429,7 +429,7 @@ class User(Base, standard_mixin, age_mixin):
         if not g.user or (g.user and g.user.admin_level<3):
             submissions = submissions.filter_by(deleted_utc=0)
 
-        if not (g.user and (g.user.admin_level >= 3 or g.user.id == self.id)):
+        if not (g.user and g.user.admin_level >= 3):
             submissions = submissions.filter_by(is_banned=False).join(Submission.board).filter(Board.is_banned==False)
 
         if g.user and g.user.admin_level >= 4:
@@ -452,6 +452,7 @@ class User(Base, standard_mixin, age_mixin):
             )
         else:
             submissions = submissions.filter(Submission.post_public == True)
+
         if sort == "hot":
             submissions = submissions.order_by(Submission.score_best.desc())
         elif sort == "new":
