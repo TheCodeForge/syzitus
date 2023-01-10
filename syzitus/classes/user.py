@@ -426,11 +426,8 @@ class User(Base, standard_mixin, age_mixin):
         if g.user and g.user.hide_bot:
             submissions = submissions.filter_by(is_bot=False)
 
-        if not g.user or (g.user and g.user.admin_level<3):
-            submissions = submissions.filter_by(deleted_utc=0)
-
         if not (g.user and g.user.admin_level >= 3):
-            submissions = submissions.filter_by(is_banned=False).join(Submission.board).filter(Board.is_banned==False)
+            submissions = submissions.filter_by(deleted_utc=0, is_banned=False).join(Submission.board).filter(Board.is_banned==False)
 
         if g.user and g.user.admin_level >= 4:
             pass
