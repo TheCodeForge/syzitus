@@ -1954,7 +1954,7 @@ $(document).on('click', '.btn-reply-comment', function(){
 $('.btn-file-input').change(function(){
   var name=+$(this)[0].files[0].name
   if (name.length>15) {
-    name=name.slice(name.length-14)
+    name='...'+name.slice(name.length-14)
   }
   $('#'+$(this).data('btn-id')).text(name);
 })
