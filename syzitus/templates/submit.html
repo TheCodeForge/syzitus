@@ -258,7 +258,13 @@
   $('#file-upload').on('change', function(e){
     f=document.getElementById('file-upload');
     $('#urlblock').addClass('d-none');
-    $('#filename-show').text($('#file-upload')[0].files[0].name);
+
+    var name=$('#file-upload')[0].files[0].name;
+    if (name.length>15) {
+      name='...'+name.slice(name.length-14)
+    }
+
+    $('#filename-show').text(name);
 
     var fileReader = new FileReader();
     fileReader.readAsDataURL(f.files[0]);
