@@ -195,7 +195,7 @@
           {% if p.is_guildmaster('content') %}
           <li class="list-inline-item"><a class="text-danger kick-button-listing" href="javascript:void(0)" data-boardname="{{ p.board.name }}" data-pid="{{ p.base36id }}"><i class="fas fa-sign-out fa-flip-horizontal text-danger"></i>Kick</a></li>
           {% if not p.is_banned and p.report_count %}
-          <li class="list-inline-item"><a class="text-success" href="javascript:void(0)" class="gm-approve-post" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
+          <li class="list-inline-item"><a class="text-success gm-approve-post" href="javascript:void(0)" data-board-name="{{ p.board.name }}" data-post-id="{{ p.base36id }}"><i class="fas fa-check text-success"></i>Approve</a></li>
           {% endif %}
           {% endif %}
           {% if g.user.admin_level >=1 %}
