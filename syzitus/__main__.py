@@ -39,7 +39,9 @@ _version = "3.2.20"
 app = Flask(__name__,
             template_folder='./templates'
             )
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=3)
+
+app.config["PROXYFIX_X_FOR"]=int(environ.get("PROXYFIX", 3).lstrip().rstrip())
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=app.config["PROXYFIX_X_FOR"])
 app.url_map.strict_slashes = False
 
 app.config["SITE_NAME"]=environ.get("SITE_NAME", "Syzitus").lstrip().rstrip()
