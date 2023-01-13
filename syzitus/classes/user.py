@@ -269,7 +269,7 @@ class User(Base, standard_mixin, age_mixin):
 
         hashstr= generate_hash(hashstr)
 
-        removal_code = base36encode(int(hashstr,16) % 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+        removal_code = base36encode(int(hashstr,16) % int('z'*25, 36))
 
         #should be 25char long, left pad if needed
         while len(removal_code)<25:

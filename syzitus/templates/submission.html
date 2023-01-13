@@ -46,15 +46,6 @@
   </div>
 </div>
 
-
-{% if False %}
-<div class="sidebar-section sidebar-chat">
-  <a href="{{ b.chat_url }}" target="_blank"><div class="title"><i class="fas fa-comments-alt mr-2"></i>Guild Chat (<i class="far fa-user fa-sm mr-1"></i><span class="board-chat-count">{{ b.chat_count }}</span>)</div></a>
-  <div class="body">
-    {% include "chat/chat_client.html" %}
-  </div>
-</div>
-{% endif %}
 {% endblock %}
 
 {% if g.user %}

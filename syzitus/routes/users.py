@@ -5,7 +5,7 @@ from pyotp import TOTP
 from qrcode import QRCode
 from qrcode.constants import ERROR_CORRECT_L
 from io import BytesIO
-from flask import g, session, abort, render_template, jsonify, redirect
+from flask import g, session, abort, render_template, jsonify, redirect, send_file
 # import gevent
 
 from syzitus.helpers.wrappers import *
