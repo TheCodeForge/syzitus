@@ -398,7 +398,7 @@ def before_request():
         g.system="ios/chrome"
     elif "Version/" in ua:
         g.system="android/webview"
-    elif "Mobile Safari/" in ua:
+    elif "iPhone" in ua:
         g.system="android/chrome"
     elif "Safari/" in ua:
         g.system="ios/safari"
