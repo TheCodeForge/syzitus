@@ -1,1 +1,1 @@
-web: newrelic-admin run-program gunicorn syzitus.__main__:app -k gevent --worker-connections 25
+web: newrelic-admin run-program gunicorn syzitus.__main__:app -k gevent
