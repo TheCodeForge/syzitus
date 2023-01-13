@@ -39,7 +39,7 @@ _version = "3.2.20"
 app = Flask(__name__,
             template_folder='./templates'
             )
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=2)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=3)
 app.url_map.strict_slashes = False
 
 app.config["SITE_NAME"]=environ.get("SITE_NAME", "Syzitus").lstrip().rstrip()
