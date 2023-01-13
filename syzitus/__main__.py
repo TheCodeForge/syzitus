@@ -241,7 +241,7 @@ limiter = Limiter(
     default_limits=["60/minute"],
     headers_enabled=True,
     strategy="fixed-window",
-    storage_uri="memory://"#,
+    storage_uri=app.config["RATELIMIT_STORAGE_URL"]#,
     #on_breach=ban_ip
 )
 
