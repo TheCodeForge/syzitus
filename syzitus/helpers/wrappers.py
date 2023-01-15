@@ -558,7 +558,7 @@ def cf_cache(f):
             resp=make_response(resp)
 
         if not g.user:
-            resp.headers.add("Cache-Control", "public, max-age=2592000")
+            resp.headers.add("Cache-Control", "public, max-age=2592000, s-maxage=2592000")
 
         return resp
 
