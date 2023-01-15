@@ -210,8 +210,6 @@ def auth_desired(f):
             resp.headers.add(
                 "Access-Control-Allow-Origin",
                 app.config["SERVER_NAME"])
-        else:
-            resp.headers.add("Cache-Control", "public")
         return resp
 
     wrapper.__name__ = f.__name__
