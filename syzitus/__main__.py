@@ -416,9 +416,6 @@ def after_request(response):
     except:
         debug(["<detached>", request.path, request.url_rule])
 
-
-    if "Cache-Control" not in response.headers:
-        response.headers.add("Cache-Control", "no-cache")
         
     response.headers.add('Access-Control-Allow-Headers',
                          "Origin, X-Requested-With, Content-Type, Accept, x-auth")
