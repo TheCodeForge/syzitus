@@ -19,7 +19,7 @@ from .front import frontlist
 from syzitus.__main__ import app, cache
 
 
-valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}+$")
+valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 valid_password_regex = re_compile("^.{8,100}$")
 
 

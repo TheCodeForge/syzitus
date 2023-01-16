@@ -16,7 +16,7 @@ from secrets import token_hex
 from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug
 
-valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}+$")
+valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 valid_password_regex = re_compile("^.{8,100}+$")
 valid_email_regex    = re_compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
