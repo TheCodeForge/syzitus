@@ -450,7 +450,7 @@ def after_request(response):
     return response
 
 @app.teardown_request
-def teardown_request():
+def teardown_request(resp):
 
     try:
         g.db.close()
