@@ -346,6 +346,9 @@ def before_request():
     elif ip_ban and "archive" in ip_ban.reason:
         g.ip=ip_ban
         g.is_archive=True
+    elif ip_ban and ip_ban.reason=="malicious scraper honeypot" and session.get("user_id"):
+        pass
+
     elif ip_ban:
         abort(418)
 
