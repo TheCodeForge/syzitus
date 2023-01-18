@@ -444,9 +444,17 @@ def after_request(response):
     #             name="Account Signup", link=link))
     #     thread.start()
 
-    g.db.close()
-
     return response
+
+@app.teardown_request
+def teardown_request():
+
+    try:
+        g.db.close()
+    except:
+        pass
+
+    return True
 
 
 @app.route("/<path:path>", subdomain="www")
