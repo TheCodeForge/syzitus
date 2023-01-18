@@ -121,7 +121,7 @@ def get_logo_jumbotron(color):
     bytesout=BytesIO()
     output.save(bytesout, format="PNG")
     bytesout.seek(0)
-    return send_file(tempname, mimetype="image/png")
+    return send_file(bytesout, mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cf_cache
