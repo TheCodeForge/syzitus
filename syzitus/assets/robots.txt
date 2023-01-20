@@ -18,6 +18,7 @@ User-Agent: MJ12bot
 User-Agent: PetalBot
 User-Agent: SEMrushBot
 User-Agent: SBSearch
+User-Agent: SeznamBot
 User-Agent: SiteSnagger
 User-Agent: TeleportPro
 User-Agent: TurnitinBot
