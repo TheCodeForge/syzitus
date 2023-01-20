@@ -645,7 +645,7 @@ Optional file data:
         board_id=board.id,
         original_board_id=board.id,
         over_18=bool(request.form.get("over_18",False)) or board.over_18,
-        is_nsfl=board.is_nsfl,
+        is_nsfl=bool(request.form.get("is_nsfl",False)) or board.is_nsfl,
         post_public=not board.is_private,
         repost_id=repost.id if repost else None,
         is_offensive=is_offensive,
