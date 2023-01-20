@@ -202,10 +202,13 @@ URL path parameters:
     if request.path!=post.votes_permalink:
         abort(404)
 
+    if post.board.is_banned:
+        return render_template("board_banned.html", b=post.board)
+
     if not post.board.can_view(g.user):
         abort(403)
 
-    if post.is_banned or post.is_deleted or post.board.is_banned:
+    if post.is_banned or post.is_deleted:
         abort(410)
 
     ups=g.db.query(User).join(Vote).filter(
@@ -265,10 +268,13 @@ URL path parameters:
     if request.path!=comment.votes_permalink:
         abort(404)
 
+    if post.board.is_banned:
+        return render_template("board_banned.html", b=post.board)
+
     if not comment.board.can_view(g.user):
         abort(403)
 
-    if comment.is_banned or comment.is_deleted or comment.board.is_banned:
+    if comment.is_banned or comment.is_deleted:
         abort(410)
 
     ups = g.db.query(User).join(CommentVote).filter(
