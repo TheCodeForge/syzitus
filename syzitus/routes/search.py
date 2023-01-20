@@ -127,6 +127,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
         posts = posts.filter(
             Submission.deleted_utc == 0,
             Submission.is_banned == False,
+            Board.is_banned == False
             )
 
     if g.user and g.user.admin_level >= 4:
