@@ -2,6 +2,7 @@ from flask import g, session, abort, render_template, jsonify, send_file, redire
 import PIL
 from PIL import ImageFont, ImageDraw
 from werkzeug.security import safe_join
+from io import BytesIO
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.markdown import *
@@ -117,9 +118,10 @@ def get_logo_jumbotron(color):
                     )
                 )
 
-    tempname=f"logo_jumbotron_{color}.png"
-    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
-    return send_file(tempname, mimetype="image/png")
+    bytesout=BytesIO()
+    output.save(bytesout, format="PNG")
+    bytesout.seek(0)
+    return send_file(bytesout, mimetype="image/png")
 
 @app.get(app.config["IMG_URL_LOGO_MAIN"])
 @cf_cache
@@ -175,9 +177,10 @@ def get_logo_main():
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    tempname="logo_main.png"
-    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
-    return send_file(tempname, mimetype="image/png")
+    bytesout=BytesIO()
+    output.save(bytesout, format="PNG")
+    bytesout.seek(0)
+    return send_file(bytesout, mimetype="image/png")
 
 
 @app.get(app.config["IMG_URL_LOGO_WHITE"])
@@ -227,9 +230,10 @@ def get_logo_white():
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
 
-    tempname="logo_white.png"
-    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
-    return send_file(tempname, mimetype="image/png")
+    bytesout=BytesIO()
+    output.save(bytesout, format="PNG")
+    bytesout.seek(0)
+    return send_file(bytesout, mimetype="image/png")
 
 @app.get(f"/logo/<kind>/{app.config['COLOR_PRIMARY'].lower()}/{app.config['SITE_NAME'][0].lower()}/<width>/<height>")
 @cf_cache
@@ -310,9 +314,10 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
     output=PIL.Image.alpha_composite(base_layer, text_layer)
 
-    tempname=f"logo_splash_{width}_{height}.png"
-    output.save(f"{app.config['RUQQUSPATH']}/{tempname}", format="PNG")
-    return send_file(tempname, mimetype="image/png")
+    bytesout=BytesIO()
+    output.save(bytesout, format="PNG")
+    bytesout.seek(0)
+    return send_file(bytesout, mimetype="image/png")
 
 
 @app.get("/favicon.ico")
