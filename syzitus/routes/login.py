@@ -1,8 +1,8 @@
 from flask import g, session, abort, render_template, jsonify, request, redirect
-from gevent import sleep
 from re import compile as re_compile, match as re_match, fullmatch as re_fullmatch
 from random import uniform
 from urllib.parse import urlencode
+import time
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
@@ -84,11 +84,11 @@ def login_post():
         account = get_user(username, graceful=True)
 
     if not account:
-        sleep(uniform(0, 2))
+        time.sleep(uniform(0, 2))
         return render_template("login.html", failed=True, i=random_image())
 
     if account.is_deleted:
-        sleep(uniform(0, 2))
+        time.sleep(uniform(0, 2))
         return render_template("login.html", failed=True, i=random_image())
 
     # test password
@@ -96,7 +96,7 @@ def login_post():
     if request.form.get("password"):
 
         if not account.verifyPass(request.form.get("password")):
-            sleep(uniform(0, 2))
+            time.sleep(uniform(0, 2))
             return render_template("login.html", failed=True, i=random_image())
 
         if account.mfa_secret:
