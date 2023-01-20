@@ -12,7 +12,7 @@ from syzitus.__main__ import app, cache
 
 
 
-query_regex=re_compile('(\w+):(\S+|".+")')
+query_regex=re_compile('(\w+):(".+"|\S+)')
 valid_params=[
     'author',
     'domain',
@@ -31,15 +31,12 @@ def searchparse(text):
         if x in valid_params:
             text = text.replace(f"{x}:{criteria[x]}", "")
 
-    text=text.lstrip().rstrip()
+            text=text.lstrip().rstrip()
 
     if text:
         criteria['q']=text.lstrip('"').rstrip('"')
 
-
-
     return criteria
-
 
 
 @cache.memoize()
