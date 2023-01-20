@@ -57,7 +57,10 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
         posts=posts.filter(*words)
 
     if 'text' in criteria:
-        posts=posts.filter(SubmissionAux.body.ilike('%'+criteria['text']+'%'))
+        words=criteria['text'].split()
+        words=[SubmissionAux.body.ilike('%'+x+'%') for x in words]
+        words=tuple(words)
+        posts=posts.filter(*words)
         
     if 'author' in criteria:
         posts=posts.filter(
