@@ -6,6 +6,7 @@ Disallow: /submit
 Disallow: /settings
 Disallow: /me
 Disallow: /discord
+Disallow: /search
 
 User-Agent: AHC
 User-Agent: AhrefsBot
