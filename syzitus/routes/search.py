@@ -12,7 +12,7 @@ from syzitus.__main__ import app, cache
 
 
 
-query_regex=re_compile("(\w+):(\S+)")
+query_regex=re_compile('(\w+):(\S+|".+")')
 valid_params=[
     'author',
     'domain',
@@ -34,7 +34,9 @@ def searchparse(text):
     text=text.lstrip().rstrip()
 
     if text:
-        criteria['q']=text
+        criteria['q']=text.lstrip('"').rstrip('"')
+
+
 
     return criteria
 
@@ -58,6 +60,9 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
         words=[SubmissionAux.title.ilike('%'+x+'%') for x in words]
         words=tuple(words)
         posts=posts.filter(*words)
+
+    if 'text' in criteria:
+        posts=posts.filter(SubmissionAux.body.ilike('%'+criteria['text']+'%'))
         
     if 'author' in criteria:
         posts=posts.filter(

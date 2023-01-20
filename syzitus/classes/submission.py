@@ -50,6 +50,13 @@ class SubmissionAux(Base):
             postgresql_ops={
                 'title':'gin_trgm_ops'
                 }
+            ),
+        Index(
+            "submissions_aux_body_trgm_idx", "body",
+            postgresql_using="gin",
+            postgresql_ops={
+                'body':'gin_trgm_ops'
+                }
             )
         )
 
