@@ -25,16 +25,14 @@ def searchparse(text):
 
     #takes test in filter:term format and returns data
 
-    criteria = {x[0]:x[1] for x in query_regex.findall(text)}
+    criteria = {x[0]:x[1].lstrip('"').rstrip('"') for x in query_regex.findall(text)}
 
     for x in criteria:
         if x in valid_params:
             text = text.replace(f"{x}:{criteria[x]}", "")
 
-            text=text.lstrip().rstrip()
-
     if text:
-        criteria['q']=text.lstrip('"').rstrip('"')
+        criteria['q']=text.lstrip().rstrip()
 
     return criteria
 
