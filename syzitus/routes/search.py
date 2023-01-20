@@ -65,7 +65,7 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
                 User.is_private==False,
                 User.is_deleted==False,
                 or_(
-                    User.banned_utc==0,
+                    User.is_banned==0,
                     and_(
                         User.is_banned>0,
                         User.unban_utc<g.timestamp
