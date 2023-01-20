@@ -123,13 +123,20 @@
             <input class="form-control" name="board" value="{{ b.name if b else request.args.get('guild','') }}" required>
 
             {% if g.user.over_18 %}
-            <label for="over_18" class="text-danger mt-3">NSFW?</label>
+            <label for="nsfwCheck" class="text-danger mt-3">NSFW?</label>
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="nsfwCheck" name="over_18"{% if b and b.over_18 %} checked disabled {% endif %}>
               <label class="custom-control-label" for="nsfwCheck">This post contains adult material.</label>
             </div>
             {% endif %}
 
+            {% if g.user.show_nsfl %}
+            <label for="nsflCheck" class="text-black mt-3">NSFL?</label>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="nsflCheck" name="is_nsfl"{% if b and b.is_nsfl %} checked disabled {% endif %}>
+              <label class="custom-control-label" for="nsflCheck">This post contains may be gruesome or disturbing.</label>
+            </div>
+            {% endif %}
 
             {% if g.user.admin_level and ( "GROWTH_HACK" | app_config ) %}
             <!--admin growth hack-->
