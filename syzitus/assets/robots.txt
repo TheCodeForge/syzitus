@@ -6,6 +6,7 @@ Disallow: /submit
 Disallow: /settings
 Disallow: /me
 Disallow: /discord
+Disallow: /search
 
 User-Agent: AHC
 User-Agent: AhrefsBot
@@ -17,6 +18,7 @@ User-Agent: MJ12bot
 User-Agent: PetalBot
 User-Agent: SEMrushBot
 User-Agent: SBSearch
+User-Agent: SeznamBot
 User-Agent: SiteSnagger
 User-Agent: TeleportPro
 User-Agent: TurnitinBot
