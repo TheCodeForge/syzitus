@@ -1,5 +1,5 @@
-import gevent.monkey
-gevent.monkey.patch_all()
+#import gevent.monkey
+#gevent.monkey.patch_all()
 
 #import eventlet
 #eventlet.monkey_patch()

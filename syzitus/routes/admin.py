@@ -5,7 +5,7 @@ from sqlalchemy.orm import lazyload, contains_eager
 from imagehash import phash
 from os import remove
 from PIL import Image as IMAGE
-from gevent import spawn as gevent_spawn, joinall as gevent_joinall
+import threading
 from jinja2.exceptions import TemplateNotFound
 from flask import g, session, abort, render_template, jsonify, redirect
 import mistletoe
@@ -950,11 +950,14 @@ def admin_purge_guild_images(boardname):
     threads=[]
     for post in posts.all():
         i+=1
-        threads.append(gevent_spawn(del_function, post))
+        threads.append(threading.Thread(target=del_function, args=(post,)))
         post.has_thumb=False
         g.db.add(post)
 
-    gevent_joinall(threads)
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
 
     g.db.commit()
 
