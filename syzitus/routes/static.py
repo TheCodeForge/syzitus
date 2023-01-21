@@ -1,6 +1,6 @@
 from jinja2.exceptions import TemplateNotFound
 from pyotp import random_base32 as pyotp_random_base32
-from sass import compile as sass_compile
+import sass
 from mistletoe import markdown as mistletoe_markdown
 from flask import g, session, abort, render_template, jsonify, make_response, request, send_file, Response, redirect
 from werkzeug.security import safe_join
@@ -44,7 +44,7 @@ def main_css(color, file, n=None):
     output = output.replace("{downvote}", downvote_color)
 
     #compile the regular css
-    output=sass_compile(string=output)
+    output=sass.compile(string=output)
 
     #add title classes
 

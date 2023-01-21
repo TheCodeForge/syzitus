@@ -4,11 +4,10 @@ from sqlalchemy import func, literal
 from sqlalchemy.orm import aliased, contains_eager, lazyload, joinedload
 from bs4 import BeautifulSoup
 from secrets import token_urlsafe
-from threading import Thread as threading_Thread
+import threading
 from requests import get as requests_get
 from re import compile as re_compile
 from bleach import clean as bleach_clean
-from gevent import spawn as gevent_spawn
 from flask import g, session, abort, render_template, jsonify, redirect, request
 
 from syzitus.helpers.wrappers import *
@@ -721,7 +720,7 @@ Optional file data:
             db.close()
 
             
-        csam_thread=threading_Thread(target=check_csam_url, 
+        csam_thread=threading.Thread(target=check_csam_url, 
                                      args=(f"https://{BUCKET}/{name}", 
                                            g.user, 
                                            del_function
@@ -733,10 +732,11 @@ Optional file data:
 
     # spin off thumbnail generation and csam detection as  new threads
     if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
-        new_thread = gevent_spawn(
-            thumbnail_thread,
-            new_post.base36id
+        new_thread = threading.Thread(
+            target=thumbnail_thread,
+            args=(new_post.base36id,)
         )
+        new_thread.start()
 
     # expire the relevant caches: front page new, board new
     cache.delete_memoized(frontlist)
