@@ -508,23 +508,34 @@ class User(Base, standard_mixin, age_mixin):
             m = select(ModRelationship).filter_by(user_id=g.user.id, invite_rescinded=False)
             c = select(ContributorRelationship).filter_by(user_id=g.user.id)
 
-            comments = comments.join(m,
-                                     m.c.board_id == Submission.board_id,
-                                     isouter=True
-                                     ).join(c,
-                                            c.c.board_id == Submission.board_id,
-                                            isouter=True
-                                            ).join(Board, Board.id == Submission.board_id)
-            comments = comments.filter(or_(Comment.author_id == g.user.id,
-                                           Submission.post_public == True,
-                                           Board.is_private == False,
-                                           m.c.board_id != None,
-                                           c.c.board_id != None),
-                                      Board.is_banned==False
-                                      )
+            comments = comments.join(
+                m, m.c.board_id == Submission.board_id, isouter=True
+                ).join(
+                c, c.c.board_id == Submission.board_id, isouter=True
+                ).join(
+                Board, Board.id == Submission.board_id
+                )
+                
+            comments = comments.filter(
+                or_(
+                    Comment.author_id == g.user.id,
+                    Submission.post_public == True,
+                    Board.is_private == False,
+                    m.c.board_id != None,
+                    c.c.board_id != None),
+                Board.is_banned==False
+                )
         else:
-            comments = comments.join(Board, Board.id == Submission.board_id).filter(
-                or_(Submission.post_public == True, Board.is_private == False), Board.is_banned==False)
+            comments = comments.join(
+                Board, 
+                Board.id == Submission.board_id
+                ).filter(
+                    or_(
+                        Submission.post_public == True, 
+                        Board.is_private == False
+                        ), 
+                    Board.is_banned==False
+                    )
 
         comments = comments.options(contains_eager(Comment.post))
 
