@@ -268,7 +268,7 @@ URL path parameters:
     if request.path!=comment.votes_permalink:
         abort(404)
 
-    if post.board.is_banned:
+    if comment.board.is_banned:
         return render_template("board_banned.html", b=post.board)
 
     if not comment.board.can_view(g.user):
