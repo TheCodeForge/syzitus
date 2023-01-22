@@ -1,19 +1,13 @@
-#import gevent.monkey
-#gevent.monkey.patch_all()
-
-#import eventlet
-#eventlet.monkey_patch()
-
-#import psycogreen.gevent
-#psycogreen.gevent.patch_psycopg()
+import gevent.monkey
+gevent.monkey.patch_all()
 
 from os import environ, path
 from secrets import token_hex
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
-#from flask_compress import Compress
-#from flask_minify import Minify
+from flask_compress import Compress
+from flask_minify import Minify
 from collections import deque
 from psycopg2.errors import UndefinedColumn
 from sys import getsizeof
@@ -27,7 +21,6 @@ from sqlalchemy.pool import QueuePool
 #import threading
 #import random
 from redis import Redis
-#import gevent
 
 from redis import BlockingConnectionPool, ConnectionPool
 
@@ -206,10 +199,10 @@ app.config['BYPASS_CATEGORIES']=bool(int(environ.get("BYPASS_CATEGORIES", 0)))
 
 Markdown(app)
 cache = Cache(app)
-#Compress(app)
+Compress(app)
 
-# if bool(int(environ.get("MINIFY",0))):
-#     Minify(app)
+if bool(int(environ.get("MINIFY",0))):
+    Minify(app)
 
 # class CorsMatch(str):
 
