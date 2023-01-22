@@ -789,10 +789,14 @@ def mod_take_pid(pid, board):
 
 
         if recent_yank:
+            min_left = 60 - (g.timestamp - recent_yank.created_utc)//60
+            if min_left==0:
+                min_left="<1"
+            time_left = f"({minutes_remaining} minute{'s' if min_left >=2 else ''} to go)"
             if recent_yank.user_id==g.user.id:
-                return jsonify({'error':f"You've yanked a post recently. You need to wait 1 hour between yanks."}), 401
+                return jsonify({'error':f"You've yanked a post recently. You need to wait 1 hour between yanks. {time_left}"}), 401
             else:
-                return jsonify({'error':f"+{board.name} has yanked a post recently. The Guild needs to wait 1 hour between yanks."}), 401
+                return jsonify({'error':f"+{board.name} has yanked a post recently. +{board.name} needs to wait 1 hour between yanks. {time_left}"}), 401
 
 
     if board.is_banned:
