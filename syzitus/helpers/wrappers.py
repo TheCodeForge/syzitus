@@ -543,6 +543,18 @@ def no_sanctions(f):
     wrapper.__doc__ = f.__doc__
     return wrapper
 
+def no_archive(f):
+
+    def wrapper(*args, **kwargs):
+
+        if g.is_archive:
+            return render_template("errors/archive.html")
+
+        return f(*args, **kwargs)
+
+    wrapper.__name__=f.__name__
+    wrapper.__doc__ = f.__doc__
+    return wrapper
 
 def cf_cache(f):
 
