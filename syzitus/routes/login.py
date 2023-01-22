@@ -85,11 +85,11 @@ def login_post():
 
     if not account:
         time.sleep(uniform(0, 2))
-        return render_template("login.html", failed=True, i=random_image())
+        return render_template("login.html", failed=True, i=random_image()), 401
 
     if account.is_deleted:
         time.sleep(uniform(0, 2))
-        return render_template("login.html", failed=True, i=random_image())
+        return render_template("login.html", failed=True, i=random_image()), 401
 
     # test password
 
@@ -97,7 +97,7 @@ def login_post():
 
         if not account.verifyPass(request.form.get("password")):
             time.sleep(uniform(0, 2))
-            return render_template("login.html", failed=True, i=random_image())
+            return render_template("login.html", failed=True, i=random_image()), 401
 
         if account.mfa_secret:
             now = g.timestamp
