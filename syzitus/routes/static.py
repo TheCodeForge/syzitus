@@ -87,6 +87,7 @@ def robots_txt():
 
 
 @app.route("/slurs.txt", methods=["GET"])
+@no_archive
 def slurs():
 
     text='\n'.join(
@@ -269,7 +270,7 @@ def info_image_hosts():
 
     sites = [x.domain for x in sites]
 
-    text = "\n".join(sites)
+    text = "The following sites are whitelisted as image hosts:\n\n" + "\n".join(sites)
 
     resp = make_response(text)
     resp.mimetype = "text/plain"

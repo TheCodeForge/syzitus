@@ -74,6 +74,7 @@ def redditor_moment_redirect(username):
 @app.route("/@<username>", methods=["GET"])
 @app.get("/api/v2/users/<username>/submissions")
 @auth_desired
+@no_archive
 @api("read")
 def u_username(username):
     """
@@ -94,11 +95,6 @@ Optional query parameters:
 
     u = get_user(username)
 
-    # check for wrong cases
-
-    #if username != u.username:
-        #return redirect(request.path.replace(username, u.username))
-
     if u.reserved:
         return {'html': lambda: render_template("userpage_reserved.html",
                                                 u=u),
@@ -116,9 +112,6 @@ Optional query parameters:
                                                 u=u),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
-
-    if g.is_archive and u.is_private:
-        return render_template("errors/archive.html")
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
@@ -164,6 +157,7 @@ Optional query parameters:
 @app.route("/@<username>/comments", methods=["GET"])
 @app.get("/api/v2/users/<username>/comments")
 @auth_desired
+@no_archive
 @api("read")
 def u_username_comments(username, v=None):
     """
@@ -208,9 +202,6 @@ Optional query parameters:
                                                 u=u),
                 'api': lambda: {"error": "That user deactivated their account."}
                 }
-
-    if g.is_archive and u.is_private:
-        return render_template("errors/archive.html")
 
     if u.is_private and not (g.user and (g.user.admin_level >=3 or g.user.id==u.id)):
         return {'html': lambda: render_template("userpage_private.html",
@@ -296,6 +287,11 @@ URL path parameters:
     # check for existing follow
     if g.db.query(Follow).filter_by(user_id=g.user.id, target_id=target.id).first():
         return jsonify({"error": f"You're already following @{target.username}"}), 409
+
+    if target.is_blocking:
+        return jsonify({"error": "You're blocking this user."}), 401
+    elif target.is_blocked:
+        return jsonify({"error": "This user is blocking you."}), 403
 
     new_follow = Follow(user_id=g.user.id,
                         target_id=target.id)

@@ -431,6 +431,7 @@ def get_forgot():
 
 
 @app.route("/forgot", methods=["POST"])
+@no_archive
 def post_forgot():
 
     username = request.form.get("username").lstrip('@')
@@ -462,6 +463,7 @@ def post_forgot():
 
 
 @app.route("/reset", methods=["GET"])
+@no_archive
 def get_reset():
 
     user_id = request.args.get("id")

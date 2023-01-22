@@ -1391,6 +1391,7 @@ def board_about_appearance(guildname, board):
 @app.route("/api/v1/<guildname>/mod/mods", methods=["GET"])
 @app.get("/api/v2/guilds/<guildname>/mods")
 @auth_desired
+@no_archive
 @api("read")
 def board_about_mods(guildname):
     """
