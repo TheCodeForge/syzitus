@@ -5,6 +5,7 @@ from threading import Thread as threading_Thread
 from bs4 import BeautifulSoup 
 import cssutils
 from sqlalchemy import select
+from sqlalchemy.orm import contains_eager
 from flask import g, session, abort, render_template, jsonify, make_response, redirect
 
 from syzitus.helpers.wrappers import *
