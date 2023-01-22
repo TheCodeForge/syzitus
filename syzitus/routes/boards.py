@@ -2175,6 +2175,7 @@ def change_guild_category(board, bid):
 @app.route("/api/v1/mod_log/<guildname>", methods=["GET"])
 @app.get("/api/v2/guilds/<guildname>/modlogs")
 @auth_desired
+@no_archive
 @api("read")
 def board_mod_log(guildname):
     """
@@ -2227,6 +2228,7 @@ Optional query parameters
 @app.route("/+<guildname>/mod/log/<id>", methods=["GET"])
 @app.get("/api/v2/guilds/<guildname>/modlogs/<id>")
 @auth_desired
+@no_archive
 @api("read")
 def mod_log_item(guildname, id):
     """
