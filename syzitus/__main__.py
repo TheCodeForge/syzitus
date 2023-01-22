@@ -462,24 +462,24 @@ def www_redirect(path):
 
 
 #Code to run on setup - fresh recalculation of front page listings
-try:
-    debug("recomputing front page...")
-    db=db_session()
-    for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(100):
-        post.score_hot = post.rank_hot
-        post.score_disputed = post.rank_fiery
-        post.score_top = post.score
-        post.score_activity=post.rank_activity
-        post.score_best = post.rank_best
-        db.add(post)
+# try:
+#     debug("recomputing front page...")
+#     db=db_session()
+#     for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(100):
+#         post.score_hot = post.rank_hot
+#         post.score_disputed = post.rank_fiery
+#         post.score_top = post.score
+#         post.score_activity=post.rank_activity
+#         post.score_best = post.rank_best
+#         db.add(post)
 
-    db.commit()
-    db.close()
-    debug("...done.")
-except UndefinedColumn:
-    pass
-except ProgrammingError:
-    pass
+#     db.commit()
+#     db.close()
+#     debug("...done.")
+# except UndefinedColumn:
+#     pass
+# except ProgrammingError:
+#     pass
 
 
 # #this function came from stackoverflow
