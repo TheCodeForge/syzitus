@@ -13,7 +13,7 @@ from .votes import CommentVote
 from .flags import CommentFlag
 from .badwords import BadWord
 
-from syzitus.__main__ import Base, cache
+from syzitus.__main__ import Base, cache, debug
 
 
 class CommentAux(Base):
@@ -224,14 +224,18 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     @property
     def any_descendants_live(self):
 
+        debug(f"evaluating descendents for comment {self.base36id}")
         if self.replies == []:
+            debug(f"{self.base36id} - no replies, return false")
             return False
 
         for child in self.replies:
             if not child.is_banned and not child.is_deleted:
+                debug(f"{self.base36id} - found live reply {child.base36id}, return true")
                 return True
 
         else:
+            debug(f"{self.base36id} - inconclusive, evaluating children")
             return any([x.any_descendants_live for x in self.replies])
 
     def rendered_comment(self, v=None, render_replies=True,
