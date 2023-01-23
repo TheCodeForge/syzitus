@@ -663,11 +663,9 @@ class Board(Base, standard_mixin, age_mixin):
             Submission.is_banned==False
             ).count()
 
-        # return 0 for dead guilds
-        if not posts_in_last_60_days:
-            return 0
-
-
+        # # return 0 for dead guilds
+        # if not posts_in_last_60_days:
+        #     return 0
         return min(self.stored_subscriber_count//10, posts_in_last_60_days)
 
     @property
