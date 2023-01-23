@@ -227,8 +227,9 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
         if self.replies == []:
             return False
 
-        if any([not x.is_banned and not x.is_deleted for x in self.replies]):
-            return True
+        for child in self.replies:
+            if not child.is_banned and not child.is_deleted:
+                return True
 
         else:
             return any([x.any_descendants_live for x in self.replies])
