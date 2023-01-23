@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="border-right py-3 px-3">
-        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black" >Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
+        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black overflow-visible">Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
       </div>
       <div class="border-right p-3">
         Member{{ 's' if b.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ b.stored_subscriber_count }}</span>
