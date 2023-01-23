@@ -298,7 +298,7 @@ def participation_stats():
 
     if 'year' in request.args:
         now = time.gmtime(g.timestamp)
-        target_year = int(request.args['year'], now.tm_year)
+        target_year = int(request.args['year'])
         midnight_year_start = time.struct_time(
             (
                 target_year,
@@ -316,7 +316,7 @@ def participation_stats():
 
         midnight_year_end = time.struct_time(
             (
-                target_year+1 + 1,
+                target_year + 1,
                 1,
                 1,
                 0,
