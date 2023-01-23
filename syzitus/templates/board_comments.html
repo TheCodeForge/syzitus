@@ -13,10 +13,10 @@
 <!-- Desktop -->
 <div class="row d-none d-md-block">
   <div class="col px-0">
-    <img src="{{ b.banner_url }}" style="width: 100%; height: 250px; object-fit: cover;">
+    <img src="{{ b.banner_url }}" class="jumbotron-guild">
   </div>
 </div>
-<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top" style="overflow: visible;">
+<div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top">
   <div class="col">
     <div class="d-flex align-items-center">
       <div class="d-flex align-items-center border-right py-2 pr-3">
@@ -42,19 +42,17 @@
         </div>
       </div>
       <div class="border-right py-3 px-3">
-        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black" style="text-decoration: none;">Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
+        <a href="{{ b.permalink+'/mod/mods' }}" class="text-black" >Guildmasters<span class="text-primary"> {{ b.mods_count }}</span></a>
       </div>
       <div class="border-right p-3">
         Member{{ 's' if b.stored_subscriber_count != 1 else '' }}<span class="text-primary"> {{ b.stored_subscriber_count }}</span>
       </div>
       <div class="d-flex align-items-center p-3">
         <div class="dropdown dropdown-actions">
-          <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;
-          ">
+          <a href="javascript:void(0)" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="far fa-ellipsis-h text-base text-black"></i>
         </a>
-        <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end"
-        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
+        <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
         <button class="dropdown-item" data-toggle="modal" data-target="#guildDetailsModal"><i class="fas fa-info-circle"></i>Guild details</button>
         {% if b.has_mod(g.user) %}
         <a class="dropdown-item" href="{{ b.permalink }}/mod/settings"><i class="fas fa-cog"></i>Guild settings</a>
