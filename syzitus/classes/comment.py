@@ -238,40 +238,6 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
             debug(f"{self.base36id} - inconclusive, evaluating children")
             return any([x.any_descendants_live for x in self.replies])
 
-    def rendered_comment(self, v=None, render_replies=True,
-                         standalone=False, level=1, **kwargs):
-
-        kwargs["post_base36id"] = kwargs.get(
-            "post_base36id", self.post.base36id if self.post else None)
-
-        if self.is_banned or self.deleted_utc > 0:
-            if v and v.admin_level > 1:
-                return render_template("single_comment.html",
-                                       v=v,
-                                       c=self,
-                                       render_replies=render_replies,
-                                       standalone=standalone,
-                                       level=level,
-                                       **kwargs)
-
-            elif self.any_descendants_live:
-                return render_template("single_comment_removed.html",
-                                       c=self,
-                                       render_replies=render_replies,
-                                       standalone=standalone,
-                                       level=level,
-                                       **kwargs)
-            else:
-                return ""
-
-        return render_template("single_comment.html",
-                               v=v,
-                               c=self,
-                               render_replies=render_replies,
-                               standalone=standalone,
-                               level=level,
-                               **kwargs)
-
     @property
     def active_flags(self):
         if self.is_approved:
