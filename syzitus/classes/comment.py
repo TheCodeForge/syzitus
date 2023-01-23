@@ -229,10 +229,8 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
             debug(f"{self.base36id} - no replies, return false")
             return False
 
-        for child in self.replies:
-            if not child.is_banned and not child.is_deleted:
-                debug(f"{self.base36id} - found live reply {child.base36id}, return true")
-                return True
+        if any([not x.is_banned and not x.is_deleted for x in self.replies]):
+            return True
 
         else:
             debug(f"{self.base36id} - inconclusive, evaluating children")
