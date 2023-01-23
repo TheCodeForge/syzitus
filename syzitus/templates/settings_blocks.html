@@ -93,7 +93,7 @@
 <!-- Guildmaster Exile User Modal -->
 <div class="modal fade" id="guildmasterExileModal" tabindex="-1" role="dialog" aria-labelledby="guildmasterExileModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <form action="/settings/block" id="exile-form" method="post" onsubmit="return false;">
+    <form action="/settings/block" id="userblock-form" method="post" onsubmit="return false;">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Block Users</h5>
@@ -108,7 +108,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="exileUserButton" onclick="block_user()">Block user</button>
+          <button type="button" class="btn btn-primary toast-form-submit" data-form="userblock-form">Block user</button>
         </div>
       </div>
     </form>
