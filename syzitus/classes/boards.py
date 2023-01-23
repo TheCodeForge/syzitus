@@ -660,7 +660,7 @@ class Board(Base, standard_mixin, age_mixin):
             Submission.board_id==self.id,
             Submission.created_utc>now-60*60*24*60,
             Submission.deleted_utc==0,
-            Submission.is_banned==True
+            Submission.is_banned==False
             ).count()
 
         # return 0 for dead guilds
@@ -668,7 +668,7 @@ class Board(Base, standard_mixin, age_mixin):
             return 0
 
 
-        return min(self.stored_subscriber_count//10) + min(180, (now-self.created_utc)//(60*60*24*7))
+        return min(self.stored_subscriber_count//10, posts_in_last_60_days) + min(180, (now-self.created_utc)//(60*60*24*7))
 
     @property
     def chat_url(self):
