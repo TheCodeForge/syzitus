@@ -98,8 +98,8 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     upvotes = Column(Integer, default=1, nullable=False)
     downvotes = Column(Integer, default=0, nullable=False)
 
-    parent_comment = relationship("Comment", remote_side=[id])
-    child_comments = relationship("Comment", remote_side=[parent_comment_id])
+    parent_comment = relationship("Comment", remote_side=[id], viewonly=True)
+    child_comments = relationship("Comment", remote_side=[parent_comment_id], viewonly=True)
 
     awards = relationship("AwardRelationship", lazy="joined")
 
