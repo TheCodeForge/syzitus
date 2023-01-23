@@ -297,11 +297,11 @@ def users_list():
 def participation_stats():
 
     if 'year' in request.args:
-        year_offset = int(request.args['year'])
         now = time.gmtime(g.timestamp)
+        target_year = int(request.args['year'], now.tm_year)
         midnight_year_start = time.struct_time(
             (
-                now.tm_year + year_offset,
+                target_year,
                 1,
                 1,
                 0,
@@ -316,7 +316,7 @@ def participation_stats():
 
         midnight_year_end = time.struct_time(
             (
-                now.tm_year + year_offset + 1,
+                target_year+1 + 1,
                 1,
                 1,
                 0,
