@@ -224,16 +224,13 @@ class Comment(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     @property
     def any_descendants_live(self):
 
-        debug(f"evaluating descendents for comment {self.base36id}")
         if self.replies == []:
-            debug(f"{self.base36id} - no replies, return false")
             return False
 
         if any([not x.is_banned and not x.is_deleted for x in self.replies]):
             return True
 
         else:
-            debug(f"{self.base36id} - inconclusive, evaluating children")
             return any([x.any_descendants_live for x in self.replies])
 
     @property
