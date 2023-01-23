@@ -668,7 +668,7 @@ class Board(Base, standard_mixin, age_mixin):
             return 0
 
 
-        return min(self.stored_subscriber_count//10, posts_in_last_60_days) + min(180, (now-self.created_utc)//(60*60*24*7))
+        return min(self.stored_subscriber_count//10, posts_in_last_60_days)
 
     @property
     def chat_url(self):
