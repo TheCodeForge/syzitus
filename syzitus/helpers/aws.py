@@ -163,7 +163,7 @@ def check_csam(post):
     if parsed_url.netloc != BUCKET:
         return
 
-    headers = {"User-Agent": "syzitus webserver"}
+    headers = {"User-Agent": f"{app.config['SITE_NAME']} webserver"}
     for i in range(10):
         x = requests.get(post.url, headers=headers)
 
@@ -271,7 +271,7 @@ def check_csam_url(url, v, delete_content_function):
     tempname=f"test_from_url_{parsed_url.path}"
     tempname=tempname.replace('/','_')
 
-    with open(tempname, "wb") as file:
+    with open(tempname, "wb+") as file:
         for chunk in x.iter_content(1024):
             file.write(chunk)
 
