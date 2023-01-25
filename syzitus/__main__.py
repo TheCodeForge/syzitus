@@ -408,9 +408,9 @@ def before_request():
 def after_request(response):
 
     try:
-        debug([g.get('user'), request.path, request.url_rule])
+        debug([g.get('user'), request.method, request.path, request.url_rule])
     except:
-        debug(["<detached>", request.path, request.url_rule])
+        debug(["<detached>", request.method, request.path, request.url_rule])
 
         
     response.headers.add('Access-Control-Allow-Headers',
