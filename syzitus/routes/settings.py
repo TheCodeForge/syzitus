@@ -1,9 +1,9 @@
 from flask import g, session, abort, render_template, jsonify, redirect
 from sqlalchemy import func
-from threading import Thread as threading_Thread
+import threading
 from mistletoe import Document
 import pyotp
-from re import compile as re_compile, match as re_match
+import re
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
@@ -19,8 +19,8 @@ from .front import frontlist
 from syzitus.__main__ import app, cache, db_session
 
 
-valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
-valid_password_regex = re_compile("^.{8,100}$")
+valid_username_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
+valid_password_regex = re.compile("^.{8,100}$")
 
 
 @app.route("/settings/profile", methods=["POST"])
@@ -186,7 +186,7 @@ def settings_security_post():
             return redirect("/settings/security?error=" +
                             escape("Passwords do not match."))
 
-        if not re_match(valid_password_regex, request.form.get("new_password")):
+        if not re.match(valid_password_regex, request.form.get("new_password")):
             #print(f"signup fail - {username } - invalid password")
             return redirect("/settings/security?error=" + 
                             escape("Password must be between 8 and 100 characters."))
@@ -324,7 +324,7 @@ def settings_images_profile():
     g.user.set_profile(request.files["profile"])
 
     # anti csam
-    new_thread = threading_Thread(
+    new_thread = threading.Thread(
         target=check_csam_url,
         args=(
             g.user.profile_url,
@@ -344,7 +344,7 @@ def settings_images_banner():
     g.user.set_banner(request.files["banner"])
 
     # anti csam
-    new_thread = threading_Thread(
+    new_thread = threading.Thread(
         target=check_csam_url,
         args=(
             g.user.banner_url,
@@ -658,7 +658,7 @@ def settings_name_change():
         return jsonify({"error":f"Username changes cost {app.config['COINS_REQUIRED_CHANGE_USERNAME']} coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
 
     #verify acceptability
-    if not re_match(valid_username_regex, new_name):
+    if not re.match(valid_username_regex, new_name):
         return jsonify({"error":"That isn't a valid username."}), 400
 
     #verify availability
