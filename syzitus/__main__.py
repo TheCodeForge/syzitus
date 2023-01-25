@@ -1,6 +1,8 @@
 import gevent.monkey
 gevent.monkey.patch_all()
 
+import gc
+
 from os import environ, path
 from secrets import token_hex
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
@@ -429,17 +431,6 @@ def after_request(response):
     if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
         response.headers.add("X-Frame-Options", "deny")
 
-
-
-    # signups - hit discord webhook
-    # if request.method == "POST" and response.status_code in [
-    #         301, 302] and request.path == "/signup":
-    #     link = f'https://{app.config["SERVER_NAME"]}/@{request.form.get("username")}'
-    #     thread = threading.Thread(
-    #         target=lambda: log_event(
-    #             name="Account Signup", link=link))
-    #     thread.start()
-
     return response
 
 @app.teardown_request
@@ -459,34 +450,5 @@ def www_redirect(path):
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
 
-
-
-#Code to run on setup - fresh recalculation of front page listings
-# try:
-#     debug("recomputing front page...")
-#     db=db_session()
-#     for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(100):
-#         post.score_hot = post.rank_hot
-#         post.score_disputed = post.rank_fiery
-#         post.score_top = post.score
-#         post.score_activity=post.rank_activity
-#         post.score_best = post.rank_best
-#         db.add(post)
-
-#     db.commit()
-#     db.close()
-#     debug("...done.")
-# except UndefinedColumn:
-#     pass
-# except ProgrammingError:
-#     pass
-
-
-# #this function came from stackoverflow
-# import resource
-# def using(point=""):
-#     usage=resource.getrusage(resource.RUSAGE_SELF)
-#     return f"{point}: usertime={usage[0]} systime={usage[1]} mem={usage[2]/1024.0} MB"
-
-# with app.test_request_context('/'):
-#     debug(using("Fully loaded"))
+gc.enable()
+gc.set_debug(gc.DEBUG_LEAK)
