@@ -451,3 +451,4 @@ def www_redirect(path):
 
 
 gc.enable()
+gc.set_debug(gc.DEBUG_STATS)
