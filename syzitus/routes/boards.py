@@ -1789,12 +1789,14 @@ def mod_board_images_profile(bid, board):
     board.set_profile(request.files["profile"])
 
     # anti csam
-    new_thread = threading_Thread(target=check_csam_url,
-                                  args=(board.profile_url,
-                                        g.user,
-                                        lambda: board.del_profile()
-                                        )
-                                  )
+    new_thread = threading_Thread(
+        target=check_csam_url,
+        args=(
+            board.profile_url,
+            g.user,
+            board.del_profile
+            )
+        )
     new_thread.start()
 
     ma=ModAction(
@@ -1821,12 +1823,14 @@ def mod_board_images_banner(bid, board):
     board.set_banner(request.files["banner"])
 
     # anti csam
-    new_thread = threading_Thread(target=check_csam_url,
-                                  args=(board.banner_url,
-                                        g.user,
-                                        lambda: board.del_banner()
-                                        )
-                                  )
+    new_thread = threading_Thread(
+        target=check_csam_url,
+        args=(
+            board.banner_url,
+            g.user,
+            board.del_banner
+            )
+        )
     new_thread.start()
 
     ma=ModAction(

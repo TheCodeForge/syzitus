@@ -16,7 +16,7 @@ from syzitus.helpers.aws import *
 from syzitus.mail import *
 from .front import frontlist
 
-from syzitus.__main__ import app, cache
+from syzitus.__main__ import app, cache, db_session
 
 
 valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
@@ -324,11 +324,14 @@ def settings_images_profile():
     g.user.set_profile(request.files["profile"])
 
     # anti csam
-    new_thread = threading_Thread(target=check_csam_url,
-                                  args=(g.user.profile_url,
-                                        lambda: board.del_profile()
-                                        )
-                                  )
+    new_thread = threading_Thread(
+        target=check_csam_url,
+        args=(
+            g.user.profile_url,
+            g.user,
+            g.user.del_profile
+            )
+        )
     new_thread.start()
 
     return jsonify({"redirect":"/settings/profile?msg=Profile picture updated"}), 302
@@ -341,11 +344,14 @@ def settings_images_banner():
     g.user.set_banner(request.files["banner"])
 
     # anti csam
-    new_thread = threading_Thread(target=check_csam_url,
-                                  args=(g.user.banner_url,
-                                        lambda: board.del_banner()
-                                        )
-                                  )
+    new_thread = threading_Thread(
+        target=check_csam_url,
+        args=(
+            g.user.banner_url,
+            g.user
+            g.user.del_banner
+            )
+        )
     new_thread.start()
 
     return jsonify({"redirect":"/settings/profile?msg=Banner picture updated"}), 302
