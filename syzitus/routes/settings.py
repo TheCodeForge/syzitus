@@ -348,7 +348,7 @@ def settings_images_banner():
         target=check_csam_url,
         args=(
             g.user.banner_url,
-            g.user
+            g.user,
             g.user.del_banner
             )
         )
