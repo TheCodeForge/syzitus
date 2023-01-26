@@ -103,10 +103,7 @@ def settings_profile_post():
         #seo profile spam
         sus_tags=BeatuifulSOup(bio_html).find('a')
         if g.timestamp-g.user.created_utc < 60*60*24 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
-            for tag in sus_tags:
-                if tag.attrs['href'].startswith(("http","//")):
-                    g.user.ban(reason="seo spam")
-                    break
+            g.user.ban(reason="seo spam")
         
         return jsonify({"message":"Your bio has been updated."})
 
