@@ -410,7 +410,7 @@ class User(Base, standard_mixin, age_mixin):
         else:
             abort(422)
 
-        return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
+        return [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
     @cache.memoize()
     def userpagelisting(self, page=1, sort="new", t="all"):
