@@ -296,7 +296,7 @@ class User(Base, standard_mixin, age_mixin):
     @cache.memoize()
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
-        posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
+        posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(is_banned=False,
                                                                            deleted_utc=0,
                                                                            stickied=False
                                                                            )
