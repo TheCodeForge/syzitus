@@ -235,7 +235,7 @@ app.config["RATELIMIT_HEADERS_ENABLED"]=True
 limiter = Limiter(
     lambda: request.remote_addr,
     app=app,
-    default_limits=["60/minute"],
+    default_limits="60/minute",
     headers_enabled=True,
     strategy="fixed-window",
     storage_uri=app.config["RATELIMIT_STORAGE_URI"]#,
