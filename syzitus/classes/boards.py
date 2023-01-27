@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, FetchedValue, Float, Index, and_, or_, select
-from sqlalchemy.orm import relationship, deferred, lazyload
+from sqlalchemy.orm import relationship, deferred, lazyload, load_only
 from flask import g, abort, request
 
 from syzitus.helpers.lazy import lazy
@@ -603,7 +603,7 @@ class Board(Base, standard_mixin, age_mixin):
 
         posts = posts.subquery()
 
-        comments = g.db.query(Comment).options(lazyload('*'))
+        comments = g.db.query(Comment).options(load_only(Comment.id))
 
         if g.user and g.user.hide_offensive:
             comments = comments.filter_by(is_offensive=False)

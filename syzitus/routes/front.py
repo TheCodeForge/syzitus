@@ -1,6 +1,6 @@
 from flask import g, session, abort, render_template, jsonify, make_response, redirect
 from sqlalchemy import select, and_, or_
-from sqlalchemy.orm import lazyload, contains_eager, Load
+from sqlalchemy.orm import lazyload, contains_eager, Load, load_only
 from random import randint
 
 from syzitus.helpers.wrappers import *
@@ -129,7 +129,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     posts = g.db.query(
         Submission
         ).options(
-            lazyload('*'),
+            load_only(Submission.id),
             Load(Board).lazyload('*')
         ).filter_by(
             is_banned=False,
