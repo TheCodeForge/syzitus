@@ -225,7 +225,7 @@ if bool(int(environ.get("MINIFY",0))):
 #         return False
 
 # app.config["CACHE_REDIS_URL"]
-app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL").lstrip().rstrip() if environ.get("REDIS_URL") else 'memory://'
+app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL", 'memory://').lstrip().rstrip()
 app.config["RATELIMIT_KEY_PREFIX"] = "flask_limiting_"
 app.config["RATELIMIT_ENABLED"] = True
 app.config["RATELIMIT_DEFAULTS_DEDUCT_WHEN"]=lambda x:True
@@ -280,13 +280,13 @@ Base = declarative_base()
 
 #set the shared redis cache for misc stuff
 
-r=Redis(
-    host=app.config["CACHE_REDIS_URL"].split("://")[1], 
-    decode_responses=True,
-    ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
-    ssl_cert_reqs=None,
-    connection_pool = redispool
-    ) if app.config["CACHE_REDIS_URL"] else None
+# r=Redis(
+#     host=app.config["CACHE_REDIS_URL"].split("://")[1], 
+#     decode_responses=True,
+#     ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
+#     ssl_cert_reqs=None,
+#     connection_pool = redispool
+#     ) if app.config["CACHE_REDIS_URL"] else None
 
 #debug function
 
