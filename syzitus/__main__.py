@@ -225,7 +225,7 @@ if bool(int(environ.get("MINIFY",0))):
 #         return False
 
 # app.config["CACHE_REDIS_URL"]
-app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL", 'memory://').lstrip().rstrip()
+app.config["RATELIMIT_STORAGE_URI"] = environ.get("REDIS_URL", 'memory://').lstrip().rstrip()
 app.config["RATELIMIT_KEY_PREFIX"] = "flask_limiting_"
 app.config["RATELIMIT_ENABLED"] = True
 app.config["RATELIMIT_DEFAULTS_DEDUCT_WHEN"]=lambda x:True
@@ -238,7 +238,7 @@ limiter = Limiter(
     default_limits=["60/minute"],
     headers_enabled=True,
     strategy="fixed-window",
-    storage_uri=app.config["RATELIMIT_STORAGE_URL"]#,
+    storage_uri=app.config["RATELIMIT_STORAGE_URI"]#,
     #on_breach=ban_ip
 )
 
