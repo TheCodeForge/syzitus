@@ -129,7 +129,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     posts = g.db.query(
         Submission
         ).options(
-            lazyload('*'),
+            load_only(Submission.id),
             Load(Board).lazyload('*')
         ).filter_by(
             is_banned=False,
