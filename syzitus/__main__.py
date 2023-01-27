@@ -1,6 +1,8 @@
 import gevent.monkey
 gevent.monkey.patch_all()
 
+#import gc
+
 from os import environ, path
 from secrets import token_hex
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
@@ -223,9 +225,9 @@ if bool(int(environ.get("MINIFY",0))):
 #         return False
 
 # app.config["CACHE_REDIS_URL"]
-app.config["RATELIMIT_STORAGE_URL"] = environ.get("REDIS_URL").lstrip().rstrip() if environ.get("REDIS_URL") else 'memory://'
+app.config["RATELIMIT_STORAGE_URI"] = environ.get("REDIS_URL", 'memory://').lstrip().rstrip()
 app.config["RATELIMIT_KEY_PREFIX"] = "flask_limiting_"
-app.config["RATELIMIT_ENABLED"] = True
+app.config["RATELIMIT_ENABLED"] = not bool(int(environ.get("DISABLE_RATELIMIT", 0)))
 app.config["RATELIMIT_DEFAULTS_DEDUCT_WHEN"]=lambda x:True
 app.config["RATELIMIT_DEFAULTS_EXEMPT_WHEN"]=lambda:False
 app.config["RATELIMIT_HEADERS_ENABLED"]=True
@@ -233,10 +235,10 @@ app.config["RATELIMIT_HEADERS_ENABLED"]=True
 limiter = Limiter(
     lambda: request.remote_addr,
     app=app,
-    default_limits=["60/minute"],
+    application_limits=["60/minute"],
     headers_enabled=True,
     strategy="fixed-window",
-    storage_uri=app.config["RATELIMIT_STORAGE_URL"]#,
+    storage_uri=app.config["RATELIMIT_STORAGE_URI"]#,
     #on_breach=ban_ip
 )
 
@@ -278,13 +280,13 @@ Base = declarative_base()
 
 #set the shared redis cache for misc stuff
 
-r=Redis(
-    host=app.config["CACHE_REDIS_URL"].split("://")[1], 
-    decode_responses=True,
-    ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
-    ssl_cert_reqs=None,
-    connection_pool = redispool
-    ) if app.config["CACHE_REDIS_URL"] else None
+# r=Redis(
+#     host=app.config["CACHE_REDIS_URL"].split("://")[1], 
+#     decode_responses=True,
+#     ssl = app.config["CACHE_REDIS_URL"].startswith('rediss://'),
+#     ssl_cert_reqs=None,
+#     connection_pool = redispool
+#     ) if app.config["CACHE_REDIS_URL"] else None
 
 #debug function
 
@@ -408,9 +410,9 @@ def before_request():
 def after_request(response):
 
     try:
-        debug([g.get('user'), request.path, request.url_rule])
+        debug([g.get('user'), request.method, request.path, request.url_rule])
     except:
-        debug(["<detached>", request.path, request.url_rule])
+        debug(["<detached>", request.method, request.path, request.url_rule])
 
         
     response.headers.add('Access-Control-Allow-Headers',
@@ -428,17 +430,6 @@ def after_request(response):
 
     if not request.path.startswith(("/embed/", "/assets/js/", "/assets/css/", "/logo/")):
         response.headers.add("X-Frame-Options", "deny")
-
-
-
-    # signups - hit discord webhook
-    # if request.method == "POST" and response.status_code in [
-    #         301, 302] and request.path == "/signup":
-    #     link = f'https://{app.config["SERVER_NAME"]}/@{request.form.get("username")}'
-    #     thread = threading.Thread(
-    #         target=lambda: log_event(
-    #             name="Account Signup", link=link))
-    #     thread.start()
 
     return response
 
@@ -459,34 +450,5 @@ def www_redirect(path):
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
 
-
-
-#Code to run on setup - fresh recalculation of front page listings
-# try:
-#     debug("recomputing front page...")
-#     db=db_session()
-#     for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_hot.desc()).limit(100):
-#         post.score_hot = post.rank_hot
-#         post.score_disputed = post.rank_fiery
-#         post.score_top = post.score
-#         post.score_activity=post.rank_activity
-#         post.score_best = post.rank_best
-#         db.add(post)
-
-#     db.commit()
-#     db.close()
-#     debug("...done.")
-# except UndefinedColumn:
-#     pass
-# except ProgrammingError:
-#     pass
-
-
-# #this function came from stackoverflow
-# import resource
-# def using(point=""):
-#     usage=resource.getrusage(resource.RUSAGE_SELF)
-#     return f"{point}: usertime={usage[0]} systime={usage[1]} mem={usage[2]/1024.0} MB"
-
-# with app.test_request_context('/'):
-#     debug(using("Fully loaded"))
+#gc.enable()
+#gc.set_debug(gc.DEBUG_STATS)

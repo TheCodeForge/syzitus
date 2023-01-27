@@ -6,7 +6,7 @@ from syzitus.helpers.wrappers import *
 from syzitus.helpers.session import *
 from syzitus.classes.custom_errors import *
 
-from syzitus.__main__ import app, r, cache
+from syzitus.__main__ import app, cache
 
 # Errors
 
@@ -141,28 +141,28 @@ def error_429(e):
     ip=request.remote_addr
 
     #get recent violations
-    if r:
-        count_429s = r.get(f"429_count_{ip}")
-        if not count_429s:
-            count_429s=0
-        else:
-            count_429s=int(count_429s)
+    # if r:
+    #     count_429s = r.get(f"429_count_{ip}")
+    #     if not count_429s:
+    #         count_429s=0
+    #     else:
+    #         count_429s=int(count_429s)
 
-        count_429s+=1
+    #     count_429s+=1
 
-        r.set(f"429_count_{ip}", count_429s)
-        r.expire(f"429_count_{ip}", 60)
+    #     r.set(f"429_count_{ip}", count_429s)
+    #     r.expire(f"429_count_{ip}", 60)
 
-        #if you exceed 30x 429 without a 60s break, you get IP banned for 1 hr:
-        if count_429s>=30:
-            try:
-                print("triggering IP ban", request.remote_addr, session.get("user_id"), session.get("history"))
-            except:
-                pass
+    #     #if you exceed 30x 429 without a 60s break, you get IP banned for 1 hr:
+    #     if count_429s>=30:
+    #         try:
+    #             print("triggering IP ban", request.remote_addr, session.get("user_id"), session.get("history"))
+    #         except:
+    #             pass
             
-            r.set(f"ban_ip_{ip}", g.timestamp)
-            r.expire(f"ban_ip_{ip}", 3600)
-            return "", 429
+    #         r.set(f"ban_ip_{ip}", g.timestamp)
+    #         r.expire(f"ban_ip_{ip}", 3600)
+    #         return "", 429
 
 
 
