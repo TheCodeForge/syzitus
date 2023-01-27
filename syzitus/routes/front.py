@@ -550,7 +550,7 @@ def subcat(name):
 def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
     # cutoff=g.timestamp-(60*60*24*30)
 
-    guilds = g.db.query(Board).filter_by(
+    guilds = g.db.query(Board).options(load_only(Board.id)).filter_by(
         is_banned=False,
         all_opt_out=False)
 
