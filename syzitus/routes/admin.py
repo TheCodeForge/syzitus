@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 from calendar import timegm as calendar_timegm
 from sqlalchemy import func, or_
-from sqlalchemy.orm import lazyload, contains_eager
+from sqlalchemy.orm import lazyload, contains_eager, load_only
 from imagehash import phash
 from os import remove
 from PIL import Image as IMAGE
