@@ -127,7 +127,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
         abort(400)
 
     posts = g.db.query(
-        Submission
+        Submission.id
         ).options(
             lazyload('*'),
             Load(Board).lazyload('*')
@@ -270,7 +270,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     else:
         abort(400)
 
-    return [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
+    return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
     
 
 @app.route("/", methods=["GET"])
