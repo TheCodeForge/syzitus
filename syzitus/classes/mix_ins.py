@@ -186,8 +186,8 @@ class fuzzing_mixin:
         if self.upvotes <= 10 or self.is_archived:
             return self.upvotes
 
-        lower = int(self.upvotes * 0.99)
-        upper = int(self.upvotes * 1.01) + 1
+        lower = int(self.upvotes * 0.99) - 1
+        upper = int(self.upvotes * 1.01) + 2
 
         return randint(lower, upper)
 
@@ -196,7 +196,7 @@ class fuzzing_mixin:
         if self.downvotes <= 10 or self.is_archived:
             return self.downvotes
 
-        lower = int(self.downvotes * 0.99)
-        upper = int(self.downvotes * 1.01) + 1
+        lower = int(self.downvotes * 0.99) - 1
+        upper = int(self.downvotes * 1.01) + 2
 
         return randint(lower, upper)
