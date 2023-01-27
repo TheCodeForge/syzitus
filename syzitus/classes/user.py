@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g, session, abort, request
 from time import strftime, gmtime
 from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select
-from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load
+from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load, load_only
 from os import environ
 from secrets import token_hex
 from pyotp import TOTP
@@ -415,7 +415,7 @@ class User(Base, standard_mixin, age_mixin):
     def userpagelisting(self, page=1, sort="new", t="all"):
 
         submissions = g.db.query(Submission.id).options(
-            lazyload('*')).filter_by(author_id=self.id)
+            load_only(Submission.id)).filter_by(author_id=self.id)
 
         if not (g.user and g.user.over_18):
             submissions = submissions.filter_by(over_18=False)
@@ -482,7 +482,7 @@ class User(Base, standard_mixin, age_mixin):
     @cache.memoize()
     def commentlisting(self, page=1, sort="new", t="all"):
         comments = self.comments.options(
-            lazyload('*')).filter(Comment.parent_submission is not None).join(Comment.post)
+            load_only(Comment.id)).filter(Comment.parent_submission is not None).join(Comment.post)
 
         if not (g.user and g.user.over_18):
             comments = comments.filter(Submission.over_18 == False)
