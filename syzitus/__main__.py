@@ -1,7 +1,7 @@
 import gevent.monkey
 gevent.monkey.patch_all()
 
-import gc
+#import gc
 
 from os import environ, path
 from secrets import token_hex
@@ -450,5 +450,5 @@ def www_redirect(path):
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
 
-gc.enable()
+#gc.enable()
 #gc.set_debug(gc.DEBUG_STATS)
