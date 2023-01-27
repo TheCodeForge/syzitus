@@ -414,7 +414,7 @@ class User(Base, standard_mixin, age_mixin):
     @cache.memoize()
     def userpagelisting(self, page=1, sort="new", t="all"):
 
-        submissions = g.db.query(Submission.id).options(
+        submissions = g.db.query(Submission).options(
             load_only(Submission.id)).filter_by(author_id=self.id)
 
         if not (g.user and g.user.over_18):
@@ -476,7 +476,7 @@ class User(Base, standard_mixin, age_mixin):
             cutoff = 0
         submissions = submissions.filter(Submission.created_utc >= cutoff)
 
-        listing = [x[0] for x in submissions.offset(25 * (page - 1)).limit(26)]
+        listing = [x.id for x in submissions.offset(25 * (page - 1)).limit(26)]
         return listing
 
     @cache.memoize()
