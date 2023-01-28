@@ -472,11 +472,9 @@ def get_reset():
     timestamp = int(request.args.get("time",0))
     token = request.args.get("token")
 
-    now = g.timestamp
-
     user = g.db.query(User).filter_by(id=user_id).first()
 
-    if (now - timestamp > 600) or not user or not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
+    if (g.timestamp - timestamp > 600) or not user or not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
         return render_template(
             "message.html",
             icon="fa-link-slash",
@@ -484,13 +482,13 @@ def get_reset():
             error="That password reset link is invalid or has expired."
             ), 401
 
-    reset_token = generate_hash(f"{user.id}+{timestamp}+reset+{user.login_nonce}")
+    reset_token = generate_hash(f"{user.id}+{g.timestamp}+reset+{user.login_nonce}")
 
     return render_template(
         "reset_password.html",
         v=user,
         token=reset_token,
-        time=timestamp,
+        time=g.timestamp,
         i=random_image(),
         formkey=make_logged_out_formkey()
         )
