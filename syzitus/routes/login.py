@@ -459,7 +459,7 @@ def post_forgot():
                                        v=user)
                   )
     else:
-        debug(f'unsuccessful forgot password request for "{username}"')
+        debug(f'unsuccessful forgot password request for {username} / {email}')
 
     return render_template("forgot_password.html",
                            msg="If the username and email matches an account, you will be sent a password reset email. You have ten minutes to complete the password reset process.",
