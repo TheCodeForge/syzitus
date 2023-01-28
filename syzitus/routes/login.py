@@ -533,6 +533,7 @@ def post_reset():
 
     user.passhash = hash_password(password)
     g.db.add(user)
+    g.db.commit()
 
     return render_template(
         "message.html",
