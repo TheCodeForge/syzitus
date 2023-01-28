@@ -691,8 +691,6 @@ Optional file data:
         name = f'post/{new_post.base36id}/{token_urlsafe(8)}'
         upload_file(name, file)
 
-        # thumb_name=f'posts/{new_post.base36id}/thumb.png'
-        #upload_file(name, file, resize=(375,227))
 
         # update post data
         new_post.url = f'https://{BUCKET}/{name}'
@@ -730,8 +728,8 @@ Optional file data:
     
     g.db.commit()
 
-    # spin off thumbnail generation and csam detection as  new threads
-    if (new_post.url or request.files.get('file')) and (g.user.is_activated or request.headers.get('cf-ipcountry')!="T1"):
+    # spin off thumbnail generation a new threads
+    if (new_post.url or request.files.get('file')):
         new_thread = threading.Thread(
             target=thumbnail_thread,
             args=(new_post.base36id,)
@@ -740,7 +738,6 @@ Optional file data:
 
     # expire the relevant caches: front page new, board new
     cache.delete_memoized(frontlist)
-    g.db.commit()
     cache.delete_memoized(Board.idlist, board, sort="new")
     
     
