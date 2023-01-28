@@ -450,12 +450,16 @@ def post_forgot():
         token = generate_hash(f"{user.id}+{now}+forgot+{user.login_nonce}")
         url = f"https://{app.config['SERVER_NAME']}/reset?id={user.id}&time={now}&token={token}"
 
+        debug(f"successful forgot password request on @{user.name}")
+
         send_mail(to_address=user.email,
                   subject=f"{app.config['SITE_NAME']} - Password Reset Request",
                   html=render_template("email/password_reset.html",
                                        action_url=url,
                                        v=user)
                   )
+    else:
+        debug(f'unsuccessful forgot password request for "{username}"')
 
     return render_template("forgot_password.html",
                            msg="If the username and email matches an account, you will be sent a password reset email. You have ten minutes to complete the password reset process.",
