@@ -473,27 +473,25 @@ def get_reset():
 
     now = g.timestamp
 
-    if now - timestamp > 600:
-        return render_template("message.html", 
-            title="Password reset link expired",
-            error="That password reset link has expired.")
-
     user = g.db.query(User).filter_by(id=user_id).first()
 
-    if not user:
-        abort(404)
-
-    if not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
-        abort(401)
+    if (now - timestamp > 600) or not user or not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
+        return render_template(
+            "message.html",
+            icon="fa-link-slash",
+            title="Invalid or expired",
+            error="That password reset link is invalid or has expired."
+            ), 401
 
     reset_token = generate_hash(f"{user.id}+{timestamp}+reset+{user.login_nonce}")
 
-    return render_template("reset_password.html",
-                           v=user,
-                           token=reset_token,
-                           time=timestamp,
-                           i=random_image()
-                           )
+    return render_template(
+        "reset_password.html",
+        v=user,
+        token=reset_token,
+        time=timestamp,
+        i=random_image()
+        )
 
 
 @app.route("/reset", methods=["POST"])
@@ -512,9 +510,11 @@ def post_reset():
     now = g.timestamp
 
     if now - timestamp > 600:
-        return render_template("message.html",
-                               title="Password reset expired",
-                               error="That password reset form has expired.")
+        return render_template(
+            "message.html",
+            title="Password reset expired",
+            error="That password reset form has expired."
+            )
 
     user = g.db.query(User).filter_by(id=user_id).first()
 
@@ -524,17 +524,23 @@ def post_reset():
         abort(404)
 
     if not password == confirm_password:
-        return render_template("reset_password.html",
-                               token=token,
-                               time=timestamp,
-                               error="Passwords didn't match.")
+        return render_template(
+            "reset_password.html",
+            token=token,
+            time=timestamp,
+            error="Passwords didn't match."
+            )
 
     user.passhash = hash_password(password)
     g.db.add(user)
 
-    return render_template("message_success.html",
-                           title="Password reset successful!",
-                           message="Login normally to access your account.")
+    return render_template(
+        "message.html",
+        title="Password reset successful!",
+        message="Login normally to access your account.",
+        link="/login",
+        link_text="Log in"
+        )
 
 
 @app.get("/<path:path>.php")
