@@ -437,14 +437,11 @@ def post_forgot():
     username = request.form.get("username").lstrip('@')
     email = request.form.get("email",'').lstrip().rstrip()
 
+    user=get_user(username)
+
     email=email.replace("_","\_")
 
-    user = g.db.query(User).filter(
-        User.username.ilike(username),
-        User.email.ilike(email),
-        User.is_deleted == False).first()
-
-    if user:
+    if user and user.email.lower()==email.lower() and not user.is_deleted:
         # generate url
         now = g.timestamp
         token = generate_hash(f"{user.id}+{now}+forgot+{user.login_nonce}")
