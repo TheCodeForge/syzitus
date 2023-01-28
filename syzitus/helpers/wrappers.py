@@ -134,7 +134,7 @@ def validate_csrf_token():
             debug('logged out user, invalid token')
             abort(403)
 
-    debug("successful csrf")
+    debug(f"successful csrf, user {g.user} on {request.path}")
 
 def check_ban_evade():
 
