@@ -347,7 +347,6 @@ def before_request():
     elif ip_ban:
         abort(418)
 
-
     session.permanent = True
 
     useragent=request.headers.get("User-Agent", "NoAgent")

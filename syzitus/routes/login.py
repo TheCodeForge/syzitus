@@ -9,6 +9,7 @@ from syzitus.helpers.wrappers import *
 from syzitus.helpers.security import generate_hash, validate_hash, hash_password, safe_compare
 from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.get import *
+from syzitus.helpers.session import make_logged_out_formkey
 from syzitus.mail import send_verification_email
 from secrets import token_hex
 
@@ -490,7 +491,8 @@ def get_reset():
         v=user,
         token=reset_token,
         time=timestamp,
-        i=random_image()
+        i=random_image(),
+        formkey=make_logged_out_formkey()
         )
 
 
