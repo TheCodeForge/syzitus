@@ -709,7 +709,7 @@ $('#username-register').on('input', function () {
   var xhr = new XMLHttpRequest();
   xhr.open("post", url);
   xhr.withCredentials=true;
-  xhr.onload=function(xhr){
+  xhr.onload=function(){
     var data = JSON.parse(xhr.response);
     if (data[name]==true){
       $('#usernameHelp').removeClass('d-none');
