@@ -723,10 +723,7 @@ $('#username-register').on('input', function () {
     }
     $('#usernameHelp').text(data['message']);
     }
-
-  }
   xhr.send();
-
 });
 
 // Search Icon
