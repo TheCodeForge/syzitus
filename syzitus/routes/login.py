@@ -1,5 +1,5 @@
 from flask import g, session, abort, render_template, jsonify, request, redirect
-from re import compile as re_compile, match as re_match, fullmatch as re_fullmatch
+import re
 from random import uniform
 from urllib.parse import urlencode
 import time
@@ -17,9 +17,9 @@ from secrets import token_hex
 from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug
 
-valid_username_regex = re_compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
-valid_password_regex = re_compile("^.{8,100}+$")
-valid_email_regex    = re_compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
+valid_username_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
+valid_password_regex = re.compile("^.{8,100}+$")
+valid_email_regex    = re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
 # login form
 
@@ -34,7 +34,7 @@ def api_is_available(name):
         return jsonify({name:False, "message": f"@{name} is too short."})
     elif len(name)>25:
         return jsonify({name:False, "message": f"@{name} is too long."})
-    elif not re.match(valid_username_regex, name):
+    elif not re.fullmatch(valid_username_regex, name):
         return jsonify({name:False, "message": f"That name is not valid."})
         
     x=get_user(name, graceful=True)
@@ -300,15 +300,15 @@ def sign_up_post():
         return new_signup("Passwords did not match. Please try again.")
 
     # check username/pass conditions
-    if not re_fullmatch(valid_username_regex, username):
+    if not re.fullmatch(valid_username_regex, username):
         debug(f"signup fail - {username } - mismatched passwords")
         return new_signup("Invalid username")
 
-    if not re_fullmatch(valid_password_regex, request.form.get("password")):
+    if not re.fullmatch(valid_password_regex, request.form.get("password")):
         debug(f"signup fail - {username } - invalid password")
         return new_signup("Password must be between 8 and 100 characters.")
 
-    # if not re_match(valid_email_regex, request.form.get("email")):
+    # if not re.match(valid_email_regex, request.form.get("email")):
     #    return new_signup("That's not a valid email.")
 
     # Check for existing acocunts
