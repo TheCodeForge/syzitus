@@ -8,7 +8,7 @@ from syzitus.helpers.get import *
 
 from syzitus.__main__ import app, cache
 from syzitus.classes.submission import Submission
-from syzitus.classes.categories import CATEGORIES
+from syzitus.classes.categories import CATEGORIES, SUBCAT_DATA
 
 
 @app.route("/post/", methods=["GET"])
@@ -418,7 +418,10 @@ Optional query parameters:
 
     if new_cats:
         #print('overwrite cats')
-        new_cats=[int(x) for x in new_cats.split(',')]
+        if new_cats=="all":
+            new_cats=[x for x in SUBCAT_DATA.keys()]
+        else:
+            new_cats=[int(x) for x in new_cats.split(',')]
         session['catids']=new_cats
         cats=new_cats
         session.modified=True
