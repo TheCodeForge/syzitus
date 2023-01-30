@@ -23,6 +23,27 @@ valid_email_regex    = re_compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-
 
 # login form
 
+@app.route("/api/is_available/<name>", methods=["GET"])
+@auth_desired
+@api("read")
+def api_is_available(name):
+
+    name=name.lstrip().rstrip()
+
+    if len(name)<3:
+        return jsonify({name:False, "message": f"@{name} is too short."})
+    elif len(name)>25:
+        return jsonify({name:False, "message": f"@{name} is too long."})
+    elif not re.match(valid_username_regex, name):
+        return jsonify({name:False, "message": f"That name is not valid."})
+        
+    x=get_user(name, graceful=True)
+
+    if x:
+        return jsonify({name: False, "message": f"@{name} is already taken."})
+    else:
+        return jsonify({name: True, "message": f"@{name} is available!"})
+
 
 @app.route("/login", methods=["GET"])
 @no_cors

@@ -451,7 +451,7 @@ def www_redirect(path):
 
 debug("Recomputing front page...")
 db=db_session()
-for post in db.query(syzitus.classes.Submission).order_by(syzitus.classes.Submission.score_top.desc()).limit(100).all():
+for post in db.query(syzitus.classes.Submission).options(lazyload('*')).order_by(syzitus.classes.Submission.score_top.desc()).limit(100).all():
     post.update_scores()
     db.add(post)
 db.commit()

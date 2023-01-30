@@ -41,24 +41,6 @@ def mfa_qr(secret):
     return send_file(mem, mimetype="image/png", as_attachment=False)
 
 
-@app.route("/api/is_available/<name>", methods=["GET"])
-@auth_desired
-@api("read")
-def api_is_available(name):
-
-    name=name.lstrip().rstrip()
-
-    if len(name)<3 or len(name)>25:
-        return jsonify({name:False})
-        
-    x=get_user(name, graceful=True)
-
-    if x:
-        return jsonify({name: False})
-    else:
-        return jsonify({name: True})
-
-
 @app.route("/uid/<uid>", methods=["GET"])
 def user_uid(uid):
     return redirect(get_account(uid).permalink)
