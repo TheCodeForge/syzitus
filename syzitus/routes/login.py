@@ -23,7 +23,7 @@ valid_email_regex    = re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-
 
 # login form
 
-@app.route("/api/is_available/<name>", methods=["GET"])
+@app.get("/api/is_available/<name>")
 @auth_desired
 @api("read")
 def api_is_available(name):

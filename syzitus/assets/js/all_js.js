@@ -707,7 +707,7 @@ $('#username-register').on('input', function () {
   var url = '/api/is_available/' + name;
 
   var xhr = new XMLHttpRequest();
-  xhr.open("post", url);
+  xhr.open("get", url);
   xhr.withCredentials=true;
   xhr.onload=function(){
     var data = JSON.parse(xhr.response);
