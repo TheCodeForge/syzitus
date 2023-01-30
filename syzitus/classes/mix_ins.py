@@ -148,7 +148,7 @@ class age_mixin:
 class score_mixin:
 
     @property
-    #@cache.memoize(timeout=60)
+    @cache.memoize(timeout=60)
     def score_percent(self):
         # try:
         # return int((self.ups/(self.ups+self.downs))*100)
@@ -158,7 +158,7 @@ class score_mixin:
         return 101
 
     @property
-    #@cache.memoize(timeout=60)
+    @cache.memoize(timeout=60)
     def score(self):
         return int(self.score_top) or 0
 
@@ -166,7 +166,7 @@ class score_mixin:
 class fuzzing_mixin:
 
     @property
-    #@cache.memoize(timeout=60)
+    @cache.memoize(timeout=60)
     def score_fuzzed(self):
 
         real = self.score_top if self.score_top else self.score
@@ -186,8 +186,8 @@ class fuzzing_mixin:
         if self.upvotes <= 10 or self.is_archived:
             return self.upvotes
 
-        lower = int(self.upvotes * 0.99)
-        upper = int(self.upvotes * 1.01) + 1
+        lower = int(self.upvotes * 0.99) - 1
+        upper = int(self.upvotes * 1.01) + 2
 
         return randint(lower, upper)
 
@@ -196,7 +196,7 @@ class fuzzing_mixin:
         if self.downvotes <= 10 or self.is_archived:
             return self.downvotes
 
-        lower = int(self.downvotes * 0.99)
-        upper = int(self.downvotes * 1.01) + 1
+        lower = int(self.downvotes * 0.99) - 1
+        upper = int(self.downvotes * 1.01) + 2
 
         return randint(lower, upper)

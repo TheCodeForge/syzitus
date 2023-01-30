@@ -215,7 +215,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
         
     if (g.user and g.user.hide_offensive) or not g.user:
         posts=posts.filter(
-            Board.subcat_id.notin_([44, 108]) 
+            Board.subcat_id.notin_([56]) 
             )
 
     posts=posts.filter(Submission.board_id!=1)
@@ -304,23 +304,24 @@ Optional query parameters:
         ignore_pinned = bool(request.args.get("ignore_pinned", False))
 
         
-        ids=g.user.idlist(sort=sort,
-                     page=page,
-                     only=only,
-                     t=t,
-                     filter_words=g.user.filter_words,
+        ids=g.user.idlist(
+            sort=sort,
+            page=page,
+            only=only,
+            t=t,
+            filter_words=g.user.filter_words,
 
-                     # these arguments don't really do much but they exist for
-                     # cache memoization differentiation
-                     allow_nsfw=g.user.over_18,
-                     hide_offensive=g.user.hide_offensive,
-                     hide_bot=g.user.hide_bot,
+            # these arguments don't really do much but they exist for
+            # cache memoization differentiation
+            allow_nsfw=g.user.over_18,
+            hide_offensive=g.user.hide_offensive,
+            hide_bot=g.user.hide_bot,
 
-                     #greater/less than
-                     gt=int(request.args.get("utc_greater_than",0)),
-                     lt=int(request.args.get("utc_less_than",0)),
+            #greater/less than
+            gt=int(request.args.get("utc_greater_than",0)),
+            lt=int(request.args.get("utc_less_than",0)),
 
-                     )
+            )
 
         next_exists=(len(ids)==26)
         ids=ids[0:25]
@@ -430,18 +431,19 @@ Optional query parameters:
 
     #print(cats)
 
-    ids = frontlist(sort=sort,
-                    page=page,
-                    nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
-                    nsfl=(g.user and g.user.show_nsfl),
-                    t=t,
-                    hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
-                    hide_bot=(g.user and g.user.hide_bot),
-                    gt=int(request.args.get("utc_greater_than", 0)),
-                    lt=int(request.args.get("utc_less_than", 0)),
-                    filter_words=g.user.filter_words if g.user else [],
-                    categories=[] if request.path.startswith("/api/") else cats
-                    )
+    ids = frontlist(
+        sort=sort,
+        page=page,
+        nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
+        nsfl=(g.user and g.user.show_nsfl),
+        t=t,
+        hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
+        hide_bot=(g.user and g.user.hide_bot),
+        gt=int(request.args.get("utc_greater_than", 0)),
+        lt=int(request.args.get("utc_less_than", 0)),
+        filter_words=g.user.filter_words if g.user else [],
+        categories=[] if request.path.startswith("/api/") else cats
+        )
 
     # check existence of next page
     next_exists = (len(ids) == 26)
@@ -548,7 +550,7 @@ def subcat(name):
 def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
     # cutoff=g.timestamp-(60*60*24*30)
 
-    guilds = g.db.query(Board).filter_by(
+    guilds = g.db.query(Board).options(load_only(Board.id)).filter_by(
         is_banned=False,
         all_opt_out=False)
 

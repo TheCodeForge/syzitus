@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 from calendar import timegm as calendar_timegm
 from sqlalchemy import func, or_
-from sqlalchemy.orm import lazyload, contains_eager
+from sqlalchemy.orm import lazyload, contains_eager, load_only
 from imagehash import phash
 from os import remove
 from PIL import Image as IMAGE
@@ -38,7 +38,7 @@ def flagged_posts():
 
     page = max(1, int(request.args.get("page", 1)))
 
-    posts = g.db.query(Submission).filter(
+    posts = g.db.query(Submission).options(load_only(Submission.id)).filter(
         or_(
             Submission.is_approved.is_(None),
             Submission.is_approved==0
@@ -68,7 +68,8 @@ def flagged_posts():
 def admin_all_posts():
 
     page = int(request.args.get('page', 1))
-    post_ids = g.db.query(Submission).order_by(Submission.id.desc()).offset(25*(page-1)).limit(26)
+    post_ids = g.db.query(Submission).options(load_only(Submission.id)
+        ).order_by(Submission.id.desc()).offset(25*(page-1)).limit(26)
 
     post_ids = [x.id for x in post_ids]
     next_exists = (len(post_ids) == 26)
@@ -90,9 +91,10 @@ def image_posts_listing():
 
     page = int(request.args.get('page', 1))
 
-    post_ids = g.db.query(Submission).filter_by(domain_ref=1).order_by(Submission.id.desc()
-                                                                    ).offset(25 * (page - 1)
-                                                                             ).limit(26)
+    post_ids = g.db.query(Submission).options(load_only(Submission.id)
+        ).filter_by(domain_ref=1).order_by(Submission.id.desc()
+        ).offset(25 * (page - 1)
+        ).limit(26)
 
     post_ids = [x.id for x in post_ids]
     next_exists = (len(post_ids) == 26)
@@ -123,8 +125,10 @@ def flagged_comments():
         is_banned=False
         ).filter(
         Comment.parent_submission != None
-    ).join(Comment.flags).options(contains_eager(Comment.flags)
-                                  ).order_by(Comment.id.desc()).offset(25 * (page - 1)).limit(26).all()
+    ).join(Comment.flags).options(
+    load_only(Comment.id),
+    contains_eager(Comment.flags)
+    ).order_by(Comment.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
     listing = [p.id for p in posts]
     next_exists = (len(listing) == 26)
@@ -146,6 +150,7 @@ def admin_all_comments():
 
     posts = g.db.query(
         Comment
+        ).options(load_only(Comment.id)
         ).filter(
         Comment.parent_submission != None
         ).order_by(

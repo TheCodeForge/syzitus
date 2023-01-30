@@ -2,7 +2,7 @@ from urllib.parse import quote
 from re import compile as re_compile, sub as re_sub
 from flask import g, session, abort, render_template, jsonify, redirect
 from sqlalchemy import select
-from sqlalchemy.orm import contains_eager, lazyload, joinedload
+from sqlalchemy.orm import contains_eager, lazyload, joinedload, load_only
 
 from syzitus.classes import *
 from syzitus.helpers.wrappers import *
@@ -41,7 +41,7 @@ def searchparse(text):
 def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
     posts = g.db.query(Submission).options(
-                lazyload('*')
+                lazyload('*'), load_only(Submission.id)
             ).join(
                 Submission.submission_aux,
             ).join(
@@ -200,9 +200,8 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
         posts = posts.order_by(Submission.score_top.desc())
 
     total = posts.count()
-    posts = [x for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
-    return total, [x.id for x in posts]
+    return total, [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
 
 @app.route("/search", methods=["GET"])

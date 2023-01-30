@@ -296,10 +296,11 @@ class User(Base, standard_mixin, age_mixin):
     @cache.memoize()
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
-        posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
-                                                                           deleted_utc=0,
-                                                                           stickied=False
-                                                                           )
+        posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
+            is_banned=False,
+            deleted_utc=0,
+            stickied=False
+            )
 
         if not self.over_18:
             posts = posts.filter_by(over_18=False)
@@ -409,12 +410,12 @@ class User(Base, standard_mixin, age_mixin):
         else:
             abort(422)
 
-        return [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
+        return [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
 
     @cache.memoize()
     def userpagelisting(self, page=1, sort="new", t="all"):
 
-        submissions = g.db.query(Submission.id).options(
+        submissions = g.db.query(Submission).options(
             load_only(Submission.id)).filter_by(author_id=self.id)
 
         if not (g.user and g.user.over_18):
@@ -422,9 +423,6 @@ class User(Base, standard_mixin, age_mixin):
 
         if g.user and g.user.hide_offensive and g.user.id!=self.id:
             submissions = submissions.filter_by(is_offensive=False)
-
-        if g.user and g.user.hide_bot:
-            submissions = submissions.filter_by(is_bot=False)
 
         if not (g.user and g.user.admin_level >= 3):
             submissions = submissions.filter_by(deleted_utc=0, is_banned=False).join(Submission.board).filter(Board.is_banned==False)
@@ -476,7 +474,7 @@ class User(Base, standard_mixin, age_mixin):
             cutoff = 0
         submissions = submissions.filter(Submission.created_utc >= cutoff)
 
-        listing = [x[0] for x in submissions.offset(25 * (page - 1)).limit(26)]
+        listing = [x.id for x in submissions.offset(25 * (page - 1)).limit(26)]
         return listing
 
     @cache.memoize()
@@ -489,9 +487,6 @@ class User(Base, standard_mixin, age_mixin):
 
         if g.user and g.user.hide_offensive and g.user.id != self.id:
             comments = comments.filter(Comment.is_offensive == False)
-
-        if g.user and g.user.hide_bot:
-            comments = comments.filter(Comment.is_bot == False)
 
         if g.user and not g.user.show_nsfl:
             comments = comments.filter(Submission.is_nsfl == False)

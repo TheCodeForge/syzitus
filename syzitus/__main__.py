@@ -35,7 +35,7 @@ app = Flask(__name__,
             template_folder='./templates'
             )
 
-app.config["PROXYFIX_X_FOR"]=int(environ.get("PROXYFIX", "3").lstrip().rstrip())
+app.config["PROXYFIX_X_FOR"]=int(environ.get("PROXYFIX", "2").lstrip().rstrip())
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=app.config["PROXYFIX_X_FOR"])
 app.url_map.strict_slashes = False
 
@@ -346,7 +346,6 @@ def before_request():
 
     elif ip_ban:
         abort(418)
-
 
     session.permanent = True
 

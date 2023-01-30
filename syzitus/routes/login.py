@@ -9,6 +9,7 @@ from syzitus.helpers.wrappers import *
 from syzitus.helpers.security import generate_hash, validate_hash, hash_password, safe_compare
 from syzitus.helpers.alerts import send_notification
 from syzitus.helpers.get import *
+from syzitus.helpers.session import make_logged_out_formkey
 from syzitus.mail import send_verification_email
 from secrets import token_hex
 
@@ -437,25 +438,26 @@ def post_forgot():
     username = request.form.get("username").lstrip('@')
     email = request.form.get("email",'').lstrip().rstrip()
 
+    user=get_user(username)
+
     email=email.replace("_","\_")
 
-    user = g.db.query(User).filter(
-        User.username.ilike(username),
-        User.email.ilike(email),
-        User.is_deleted == False).first()
-
-    if user:
+    if user and user.email.lower()==email.lower() and not user.is_deleted:
         # generate url
         now = g.timestamp
         token = generate_hash(f"{user.id}+{now}+forgot+{user.login_nonce}")
         url = f"https://{app.config['SERVER_NAME']}/reset?id={user.id}&time={now}&token={token}"
 
+        debug(f"successful forgot password request on @{user.username}")
+
         send_mail(to_address=user.email,
-                  subject="Ruqqus - Password Reset Request",
+                  subject=f"{app.config['SITE_NAME']} - Password Reset Request",
                   html=render_template("email/password_reset.html",
                                        action_url=url,
                                        v=user)
                   )
+    else:
+        debug(f'unsuccessful forgot password request for {username} / {email}')
 
     return render_template("forgot_password.html",
                            msg="If the username and email matches an account, you will be sent a password reset email. You have ten minutes to complete the password reset process.",
@@ -470,29 +472,26 @@ def get_reset():
     timestamp = int(request.args.get("time",0))
     token = request.args.get("token")
 
-    now = g.timestamp
-
-    if now - timestamp > 600:
-        return render_template("message.html", 
-            title="Password reset link expired",
-            error="That password reset link has expired.")
-
     user = g.db.query(User).filter_by(id=user_id).first()
 
-    if not user:
-        abort(404)
+    if (g.timestamp - timestamp > 600) or not user or not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
+        return render_template(
+            "message.html",
+            icon="fa-link-slash",
+            title="Invalid or expired",
+            error="That password reset link is invalid or has expired."
+            ), 401
 
-    if not validate_hash(f"{user_id}+{timestamp}+forgot+{user.login_nonce}", token):
-        abort(401)
+    reset_token = generate_hash(f"{user.id}+{g.timestamp}+reset+{user.login_nonce}")
 
-    reset_token = generate_hash(f"{user.id}+{timestamp}+reset+{user.login_nonce}")
-
-    return render_template("reset_password.html",
-                           v=user,
-                           token=reset_token,
-                           time=timestamp,
-                           i=random_image()
-                           )
+    return render_template(
+        "reset_password.html",
+        v=user,
+        token=reset_token,
+        time=g.timestamp,
+        i=random_image(),
+        formkey=make_logged_out_formkey()
+        )
 
 
 @app.route("/reset", methods=["POST"])
@@ -511,9 +510,11 @@ def post_reset():
     now = g.timestamp
 
     if now - timestamp > 600:
-        return render_template("message.html",
-                               title="Password reset expired",
-                               error="That password reset form has expired.")
+        return render_template(
+            "message.html",
+            title="Password reset expired",
+            error="That password reset form has expired."
+            )
 
     user = g.db.query(User).filter_by(id=user_id).first()
 
@@ -523,17 +524,24 @@ def post_reset():
         abort(404)
 
     if not password == confirm_password:
-        return render_template("reset_password.html",
-                               token=token,
-                               time=timestamp,
-                               error="Passwords didn't match.")
+        return render_template(
+            "reset_password.html",
+            token=token,
+            time=timestamp,
+            error="Passwords didn't match."
+            )
 
     user.passhash = hash_password(password)
     g.db.add(user)
+    g.db.commit()
 
-    return render_template("message_success.html",
-                           title="Password reset successful!",
-                           message="Login normally to access your account.")
+    return render_template(
+        "message.html",
+        title="Password reset successful!",
+        message="Login normally to access your account.",
+        link="/login",
+        link_text="Log in"
+        )
 
 
 @app.get("/<path:path>.php")
