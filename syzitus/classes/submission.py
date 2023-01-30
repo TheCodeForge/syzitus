@@ -696,6 +696,14 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     @property
     def outside_embed_url(self):
         return f"/embed/post/{self.base36id}"
+
+    def update_scores(self):
+
+        self.score_hot = self.rank_hot
+        self.score_disputed = self.rank_fiery
+        self.score_top = self.score
+        self.score_activity=self.rank_activity
+        self.score_best = self.rank_best
     
 # class SaveRelationship(Base, Stndrd):
 
