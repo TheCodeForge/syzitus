@@ -1473,8 +1473,12 @@ def board_edit_css(bid, board):
         
         if isinstance(rule, cssutils.css.CSSStyleRule):
             
-            for property in rule.style.children():
-                for pv in property.propertyValue:
+            for prop in rule.style.children():
+
+                if isinstance(prop, cssutils.css.CSSCOmment):
+                    continue
+
+                for pv in prop.propertyValue:
                     if isinstance(pv, cssutils.css.URIValue):
                         domain = urlparse(pv.uri).netloc
 
