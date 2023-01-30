@@ -1475,7 +1475,7 @@ def board_edit_css(bid, board):
             
             for prop in rule.style.children():
 
-                if isinstance(prop, cssutils.css.CSSCOmment):
+                if isinstance(prop, cssutils.css.CSSComment):
                     continue
 
                 for pv in prop.propertyValue:
