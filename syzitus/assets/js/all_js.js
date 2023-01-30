@@ -696,11 +696,23 @@ $('#password-register').on('input', function () {
 $('#username-register').on('input', function () {
 
   var name = $("#username-register").val();
-  var id = document.getElementById("usernameHelpRegister");
-  var successID = document.getElementById("usernameHelpSuccess");
 
   if(name.length==0) {
     $('#usernameHelp').addClass('d-none');
+    return;
+  }
+  else if (name.length <3) {
+    $('#usernameHelp').removeClass('d-none');
+    $('#usernameHelp').addClass('text-danger');
+    $('#usernameHelp').removeClass('text-success');
+    $('#usernameHelp').text("@"+name+" is too short.");
+    return;
+  }
+  else if (name.length >25) {
+    $('#usernameHelp').removeClass('d-none');
+    $('#usernameHelp').addClass('text-danger');
+    $('#usernameHelp').removeClass('text-success');
+    $('#usernameHelp').text("@"+name+" is too long.");
     return;
   }
 
