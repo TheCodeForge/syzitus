@@ -2,7 +2,7 @@
 
 ![Lines of code](https://img.shields.io/tokei/lines/github/thecodeforge/syzitus) ![GitHub repo size](https://img.shields.io/github/repo-size/thecodeforge/syzitus)
 
-![GitHub issues](https://img.shields.io/github/issues/thecodeforge/syzitus) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/thecodeforge/syzitus)
+![GitHub issues](https://img.shields.io/github/issues-raw/thecodeforge/syzitus) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/thecodeforge/syzitus)
 
 ![GitHub](https://img.shields.io/github/license/thecodeforge/syzitus)
 
