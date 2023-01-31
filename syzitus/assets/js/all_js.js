@@ -723,6 +723,10 @@ $('#username-register').on('input', function () {
   xhr.withCredentials=true;
   xhr.onload=function(){
     var data = JSON.parse(xhr.response);
+    //only the response for the name currently in the box gets processed
+    if (name != $('#username-register').val()) {
+      return
+    }
     if (data[name]==true){
       $('#usernameHelp').removeClass('d-none');
       $('#usernameHelp').addClass('text-success');
