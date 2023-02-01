@@ -32,15 +32,14 @@ def get_user(username, graceful=False, lock_for_update=False):
             aliased(Follow, alias=follow)
             )
 
-            if lock_for_update:
+        if lock_for_update:
                 items=items.with_for_update()
-
-
-            items=items.filter(
-                or_(
-                    User.username.ilike(username),
-                    User.original_username.ilike(username)
-                )
+                
+        items=items.filter(
+            or_(
+                User.username.ilike(username),
+                User.original_username.ilike(username)
+            )
             ).join(
             isblocking,
             isblocking.c.target_id==User.id,
@@ -67,9 +66,7 @@ def get_user(username, graceful=False, lock_for_update=False):
         user._is_following = items[3]
 
     else:
-        user = g.db.query(
-        User
-        )
+        user = g.db.query(User)
 
         if lock_for_update:
             user=user.with_for_update()
