@@ -9,7 +9,7 @@ from syzitus.__main__ import debug
 from re import search as re_search
 
 
-def get_user(username, graceful=False):
+def get_user(username, graceful=False, lock_for_update=False):
 
     username = username.replace('\\', '')
     username = username.replace('_', '\_')
@@ -30,10 +30,18 @@ def get_user(username, graceful=False):
             aliased(UserBlock, alias=isblocking),
             aliased(UserBlock, alias=isblocked),
             aliased(Follow, alias=follow)
-            ).filter(or_(
-                User.username.ilike(username),
-                User.original_username.ilike(username)
-            )).join(
+            )
+
+            if lock_for_update:
+                items=items.with_for_update()
+
+
+            items=items.filter(
+                or_(
+                    User.username.ilike(username),
+                    User.original_username.ilike(username)
+                )
+            ).join(
             isblocking,
             isblocking.c.target_id==User.id,
             isouter=True
@@ -61,7 +69,12 @@ def get_user(username, graceful=False):
     else:
         user = g.db.query(
         User
-        ).filter(
+        )
+
+        if lock_for_update:
+            user=user.with_for_update()
+
+        user=user.filter(
         or_(
             User.username.ilike(username),
             User.original_username.ilike(username)

@@ -1970,3 +1970,20 @@ def admin_ban_ip():
     g.db.add(new_ipban)
     g.db.commit()
     return jsonify({"message":f"IP address {ip} banned"})
+
+@app.post("/admin/give_coins")
+@admin_level_required(6)
+def admin_give_coins():
+
+    target_user = get_user(request.form.get('target_username',''), lock_for_update=True)
+
+    coin_count=max(int(request.form.get("coin_count",0)), 0)
+
+    target_user.coin_balance += coin_count
+
+    g.db.add(target_user)
+    g.db.commit()
+
+    return jsonify({"message":f"Minted {coin_count} Coins for @{target_user.username}"})
+
+
