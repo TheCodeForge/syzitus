@@ -1984,6 +1984,8 @@ def admin_give_coins():
     g.db.add(target_user)
     g.db.commit()
 
-    return jsonify({"message":f"Minted {coin_count} Coins for @{target_user.username}"})
+    user=get_user(request.form.get('target_username',''))
 
+    send_notification(user, f"{coin_count} Coins have been added to your account by {app.config['SITE_NAME']} staff.")
 
+    return redirect(user.permalink)

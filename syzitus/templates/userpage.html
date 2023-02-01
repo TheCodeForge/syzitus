@@ -317,6 +317,13 @@
   <a href="javascript:void(0)" class="btn btn-warning w-100 toggle-target-vis" data-toggle-target="btn-confirm-ban-user">Ban user</a>
   <input id="btn-confirm-ban-user" type="submit" class="btn btn-danger d-none" value="Confirm ban user">
 </form>
+<form action="admin/give_coins" method="post">
+  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+  <input type="hidden" name="target_username" value="{{ u.username }}">
+  <input class="form-control" name="coin_count" placeholder="Award coins">
+  <a href="javascript:void(0)" class="btn btn-success w-100 toggle-target-vis" data-toggle-target="btn-confirm-award-coins">Give Coins</a>
+  <input id="btn-confirm-award-coins" type="submit" class="btn btn-warning d-none" value="Confirm Give Coins">
+</form>
 {% endif %}
 {% endif %}
 {% if u.is_suspended %}
