@@ -1978,6 +1978,8 @@ def admin_give_coins():
     target_user = get_user(request.form.get('target_username',''), lock_for_update=True)
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
+    if not coin_count:
+        abort()
 
     target_user.coin_balance += coin_count
 
@@ -1986,6 +1988,6 @@ def admin_give_coins():
 
     user=get_user(request.form.get('target_username',''))
 
-    send_notification(user, f"{coin_count} Coins have been added to your account by {app.config['SITE_NAME']} staff.")
+    send_notification(user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
 
     return redirect(user.permalink)
