@@ -1979,7 +1979,7 @@ def admin_give_coins():
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
     if not coin_count:
-        abort()
+        abort(400)
 
     target_user.coin_balance += coin_count
 
