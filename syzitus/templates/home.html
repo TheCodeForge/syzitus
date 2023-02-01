@@ -80,15 +80,11 @@
       <div class="card-body">
         {% if g.user %}
         <a href="/submit">
-          <input type="text" class="form-control"
-          placeholder="Share something with the {{ 'SITE_NAME' | app_config }} community..." aria-label="Username"
-          aria-describedby="basic-addon1">
+          <input type="text" class="form-control" placeholder="Share something with the {{ 'SITE_NAME' | app_config }} community...">
         </a>
         {% else %}
         <a href="/signup">
-          <input type="text" class="form-control"
-          placeholder="Share something with the {{ 'SITE_NAME' | app_config }} community..." aria-label="Username"
-          aria-describedby="basic-addon1">
+          <input type="text" class="form-control" placeholder="Share something with the {{ 'SITE_NAME' | app_config }} community...">
         </a>
         {% endif %}
       </div>
