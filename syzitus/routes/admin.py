@@ -29,7 +29,7 @@ from syzitus.classes.categories import CATEGORIES
 import time
 
 import syzitus.helpers.aws as aws
-from syzitus.__main__ import app, cache
+from syzitus.__main__ import app, cache, debug
 
 
 @app.route("/admin/flagged/posts", methods=["GET"])
