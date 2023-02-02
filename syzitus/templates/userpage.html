@@ -322,7 +322,7 @@
 {% if not u.is_suspended and g.user.admin_level>=6 %}
 <form id="give-coins-form" action="admin/give_coins" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-  <input type="hidden" name="target_username" value="{{ u.username }}">
+  <input type="hidden" name="target_user_id" value="{{ u.base36id }}">
   <input class="form-control mt-3" name="coin_count" placeholder="Award coins">
   <a href="javascript:void(0)" class="btn btn-success w-100 toggle-target-vis" data-toggle-target="btn-confirm-award-coins">Give Coins</a>
 </form>

@@ -1975,7 +1975,9 @@ def admin_ban_ip():
 @admin_level_required(6)
 def admin_give_coins():
 
-    target_user=g.db.query(User).with_for_update().filter_by(id=get_user(request.form.get('target_username','')).id).first()
+    target_user=g.db.query(User).with_for_update().filter_by(id=base36decode(request.form.get("target_user_id"))).first()
+    if not target_user:
+        return jsonify({"error":f"User ID {request.form.get('target_user_id')} not found"}), 404
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
     if not coin_count:
