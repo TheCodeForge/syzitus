@@ -1979,7 +1979,7 @@ def admin_give_coins():
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
     if not coin_count:
-        abort(400)
+        return jsonify({"error":"Cannot give zero coins"}), 400
 
     target_user.coin_balance += coin_count
 
@@ -1990,4 +1990,4 @@ def admin_give_coins():
 
     send_notification(user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
 
-    return redirect(user.permalink)
+    return jsonify({"message":f"{coin_count} Coins given to @{user.username}"})
