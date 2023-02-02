@@ -1976,7 +1976,7 @@ def admin_ban_ip():
 def admin_give_coins():
 
     target_user = get_user(request.form.get('target_username',''))
-    target_user=g.db.query(target_user.username).with_for_update().first()
+    target_user=g.db.query(User).with_for_update().filter_by(id=target_user.id).first()
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
     if not coin_count:
