@@ -1975,7 +1975,8 @@ def admin_ban_ip():
 @admin_level_required(6)
 def admin_give_coins():
 
-    target_user = get_user(request.form.get('target_username',''), lock_for_update=True)
+    target_user = get_user(request.form.get('target_username',''))
+    target_user=g.db.query(target_user.username).with_for_update().first()
 
     coin_count=max(int(request.form.get("coin_count",0)), 0)
     if not coin_count:
