@@ -323,7 +323,7 @@
 <form id="give-coins-form" action="admin/give_coins" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="target_username" value="{{ u.username }}">
-  <input class="form-control" name="coin_count" placeholder="Award coins">
+  <input class="form-control mt-3" name="coin_count" placeholder="Award coins">
   <a href="javascript:void(0)" class="btn btn-success w-100 toggle-target-vis" data-toggle-target="btn-confirm-award-coins">Give Coins</a>
 </form>
 <a id="btn-confirm-award-coins" type="submit" class="btn btn-warning d-none toast-form-submit w-100" data-form="give-coins-form"><i class="fas fa-fw fa-coin"></i>Confirm Give Coins</a>
@@ -333,7 +333,7 @@
 <p>Reason: {{ u.ban_reason }}</p>
 {% endif %}
 {% if g.user.admin_level >=4 %}
-<p>Alts:</p>
+<p class="mt-3">Alts:</p>
 <ul>
   {% for account in u.alts %}
   <li><a href="{{ account.permalink }}">@{{ account.username }}</a>{% if account._is_manual %} [m]{% endif %}</li>
@@ -341,7 +341,7 @@
 </ul>
 {% endif %}
 
-<a href="javascript:void(0)" class="btn btn-warning w-100 btn-demod-user">De-Mod User</a>
+<a href="javascript:void(0)" class="btn btn-warning w-100 toggle-target-vis mt-3" data-toggle-target="demod-user">De-Mod User</a>
 <form action="/admin/demod_user" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="user" value="{{ u.username }}">
