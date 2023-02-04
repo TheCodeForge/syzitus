@@ -29,7 +29,7 @@ from syzitus.classes.categories import CATEGORIES
 import time
 
 import syzitus.helpers.aws as aws
-from syzitus.__main__ import app, cache
+from syzitus.__main__ import app, cache, debug
 
 
 @app.route("/admin/flagged/posts", methods=["GET"])
@@ -1991,5 +1991,7 @@ def admin_give_coins():
     user=get_user(request.form.get('target_username',''))
 
     send_notification(user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
+
+    debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{user.original_username}")
 
     return jsonify({"message":f"{coin_count} Coins given to @{user.username}"})
