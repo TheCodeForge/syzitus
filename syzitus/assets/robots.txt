@@ -1,5 +1,4 @@
 User-Agent: *
-Crawl-delay: 5
 Disallow: /api/*
 Disallow: /mod/*
 Disallow: /submit
@@ -14,6 +13,7 @@ User-Agent: AwarioSmartBot
 User-Agent: CCBot
 User-Agent: DotBot
 User-Agent: Huaweisymantecspider
+User-Agent: IonCrawl
 User-Agent: MJ12bot
 User-Agent: PetalBot
 User-Agent: SEMrushBot
