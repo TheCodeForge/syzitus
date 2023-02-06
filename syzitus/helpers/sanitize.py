@@ -113,7 +113,7 @@ TLDS =sorted(
             """
             app bar best bio blogs club codes dev fit fun 
             game guru ink joy life link live lol menu monster 
-            news ngo ong pics quest shop site space wiki
+            network news ngo ong pics quest shop site space wiki
             """.split())
         ), 
     reverse=True
