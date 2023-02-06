@@ -24,3 +24,7 @@ class Agent(Base):
     mock = Column(String(256), default="")
     status_code = Column(Integer, default=418)
     instaban = Column(Boolean, default=False)
+
+    @property
+    def permalink(self):
+        return f"/admin/useragent?kwd={kwd}"

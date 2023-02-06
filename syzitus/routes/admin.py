@@ -1995,3 +1995,23 @@ def admin_give_coins():
     debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{user.original_username}")
 
     return jsonify({"message":f"{coin_count} Coins given to @{user.username}"})
+
+
+@app.get("/admin/useragent")
+@admin_level_required(5)
+def admin_useragent_kwd():
+
+    kwd=request.args.get("kwd")
+
+    ua_ban = g.db.query(Agent).filter(
+        or_(
+            Agent.kwd.in_(useragent.split()),
+            Agent.kwd==useragent
+            )
+        ).first()
+
+    return render_template(
+        "admin/useragent.html",
+        kwd=kwd,
+        ban=ua_ban
+        )

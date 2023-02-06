@@ -1,0 +1,69 @@
+{% extends "admin/admin_default.html" %}
+
+{% block sidebarblock %}{% endblock %}
+{% block sidebarLeftblock %}{% endblock %}
+
+{% block title %}
+<title>{{ "SITE_NAME" | app_config }} - Useragent Management</title>
+{% endblock %}
+
+{% block content %}
+<h2>{{ kwd }}</h2>
+
+{% if ban %}
+<h3>banned</h3>
+<table class="table table-striped mb-5">
+<thead class="bg-primary text-white">
+  <tr>
+    <th>Key</th>
+    <th>Value</th>
+  </tr>
+</thead>
+{% for entry in ban.__dict__ %}
+  <tr>
+    <td>{{ entry }}</td>
+    <td>{{ ban.__dict__[entry] }}</td>
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+<h3>not banned</h3>
+<form action="/admin/useragent" method="post">
+  <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+  <input type="hidden" name="kwd" value="{{ kwd }}">
+  <select name="reason">
+    <option value="archive">Archive</option>
+    <option value="censorship">Censorship</option>
+    <option value="generic ua">Generic Useragent</option>
+  </select>
+  <label for="mocktextinput">Mock text</label>
+  <input class="form-control" id="mocktextinput" name="mock" placeholder="mock text">
+  <label for="mocktextinput">Return status</label>
+  <select name="status">
+    <option value="200">200 Success</option>
+    <option value="400">400 Bad Request</option>
+    <option value="418">418 I'm A Teapot</option>
+  </select>
+</form>
+{% endif %}
+
+
+<h1>Users</h1>
+<div class="col {% block customPadding %}custom-gutters{% endblock %}" id="main-content-col">
+{% include "user_listing.html" %}
+</div>
+
+<h2>Posts</h2>
+<div class="row no-gutters mt-md-3">
+<div class="col-12">
+<div class="posts" id="posts">
+{% include "submission_listing.html" %}
+</div>
+</div>
+</div>
+
+<h2>Comments</h2>
+{% include "comments.html" %}
+
+
+{% endblock %}
