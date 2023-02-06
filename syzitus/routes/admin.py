@@ -2007,7 +2007,7 @@ def admin_useragent_kwd():
         ua_ban = g.db.query(Agent).filter(
             or_(
                 Agent.kwd.in_(kwd.split()),
-                Agent.kwd==useragent
+                Agent.kwd==kwd
                 )
             ).first()
     else:
