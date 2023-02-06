@@ -153,3 +153,23 @@ def event_faction_score(x):
         )
 
     return int(post_karma+comment_karma)
+
+@app.template_filter("dict")
+def show_thing_dict(thing):
+
+    output='<table class="table table-striped mb-5"><thead class="bg-primary text-white"><tr><th>Key</th><th>Value</th></tr></thead>'
+
+    disallowed_keys=[
+        '_sa_instance_state',
+        'passhash'
+    ]
+
+    for key in sorted(thing.__dict__.keys()):
+        if key in disallowed_keys:
+            continue
+
+        output += f"<tr><td>{{ key }}</td><td>{{ thing.__dict__[key] }}</td></tr>"
+
+    output += "</table>"
+
+    return output
