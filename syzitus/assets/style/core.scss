@@ -4004,3 +4004,14 @@ body.light .d-light-none {
 body.dark .d-dark-none {
     display: none;
 }
+
+/*list fix*/
+ol>li {
+    list-style-type: decimal;
+}
+ol>li::before {
+    display:none;
+}
+ol>li::marker {
+    display: inline-block
+}
