@@ -114,6 +114,32 @@
               </span>
             </a>
           </li>
+          {% if g.user and g.user.admin_level>=3 %}
+          <li class="guild-recommendations-item">
+            <a href="/admin/all">
+              <span class="fa-stack">
+                <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
+                <i class="fa-stack-1x fas fa-infinity fa-inverse d-inline-block text-white"></i>
+              </span>
+            </a>
+          </li>
+          <li class="guild-recommendations-item">
+            <a href="/admin/all/comments">
+              <span class="fa-stack">
+                <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
+                <i class="fa-stack-1x fas fa-comments fa-inverse d-inline-block text-white"></i>
+            </span>
+            </a>
+          </li>
+          <li class="guild-recommendations-item">
+            <a href="/admin/users">
+              <span class="fa-stack">
+                <i class="fa-2x fas fa-circle text-primary fa-stack-2x"></i>
+                <i class="fa-stack-1x fas fa-users fa-inverse d-inline-block text-white"></i>
+              </span>
+            </a>
+          </li>
+          {% endif %}
         </ul>
       </div>
 
