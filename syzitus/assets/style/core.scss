@@ -257,15 +257,7 @@ ul.no-bullets {
 }
 
 ol > li {
-    list-style-type: none;
-    counter-increment: count;
     margin-bottom: .75rem;
-}
-
-ol > li::before {
-    content: counter(count) ".";
-    font-weight: $font-weight-bold;
-    margin-right: 0.5rem;
 }
 
 .footer .list-inline-item:not(:last-child) {
