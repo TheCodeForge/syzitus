@@ -8,7 +8,10 @@
 {% endblock %}
 
 {% block content %}
-<h2>{{ kwd }}</h2>
+<form method="get">
+  <input class="form-control w-100" name="kwd" placeholder="Useragent">
+</form>
+<h2 class="mt-4">{{ kwd }}</h2>
 
 {% if ban %}
 <h3>banned</h3>
