@@ -35,7 +35,7 @@
 <form action="/admin/useragent" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="kwd" value="{{ kwd }}">
-  <select name="reason">
+  <select name="reason" class="form-control">
     <option value="archive">Archive</option>
     <option value="censorship">Censorship</option>
     <option value="generic ua">Generic Useragent</option>
@@ -43,7 +43,7 @@
   <label for="mocktextinput">Mock text</label>
   <input class="form-control" id="mocktextinput" name="mock" placeholder="mock text">
   <label for="mocktextinput">Return status</label>
-  <select name="status">
+  <select name="status" class="form-control">
     <option value="200">200 Success</option>
     <option value="400">400 Bad Request</option>
     <option value="418">418 I'm A Teapot</option>
