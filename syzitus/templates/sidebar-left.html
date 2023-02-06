@@ -117,112 +117,112 @@
         </ul>
       </div>
 
-            {% if g.user and g.user.subscribed_to_anything %}
-            <div class="mb-4">
-              <div class="sidebar-collapsed-hidden">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div class="text-small font-weight-bold text-muted text-uppercase">My guilds</div>
-                  <span><a href="/browse" class="btn btn-link text-small-extra font-weight-normal text-primary px-0">Discover guilds</a></span>
+      {% if g.user and g.user.subscribed_to_anything %}
+      <div class="mb-4">
+        <div class="sidebar-collapsed-hidden">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="text-small font-weight-bold text-muted text-uppercase">My guilds</div>
+            <span><a href="/browse" class="btn btn-link text-small-extra font-weight-normal text-primary px-0">Discover guilds</a></span>
+          </div>
+        </div>
+        <div class="sidebar-collapsed-visible">
+          <span class="fa-stack">
+            <i class="fas fa-chess-rook text-muted mb-3"></i>
+          </span>
+        </div>
+        <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+          {% for board in g.user.boards_subscribed[0:10] %}
+          <li class="guild-recommendations-item">
+            <a href="{{ board.permalink }}">
+              <div class="d-flex">
+                <div>
+                  <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 ml-1 mr-2">
+                </div>
+                <div class="my-auto">
+                  <div class="text-black font-weight-normal">+{{ board.name }}</div>
                 </div>
               </div>
-              <div class="sidebar-collapsed-visible">
-                <span class="fa-stack">
-                  <i class="fas fa-chess-rook text-muted mb-3"></i>
-                </span>
-              </div>
-              <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
-                {% for board in g.user.boards_subscribed[0:10] %}
-                <li class="guild-recommendations-item">
-                  <a href="{{ board.permalink }}">
-                    <div class="d-flex">
-                      <div>
-                        <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 ml-1 mr-2">
-                      </div>
-                      <div class="my-auto">
-                        <div class="text-black font-weight-normal">+{{ board.name }}</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
-              <a class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden" href="/mine">View more</a>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <a class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden" href="/mine">View more</a>
               <!-- Show this list when sidebar is collapsed -->
-              <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
-                {% for board in g.user.boards_subscribed[0:10] %}
-                <li class="guild-recommendations-item">
-                  <a href="{{ board.permalink }}">
-                    <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-
-            {% elif g.user and not g.user.subscribed_to_anything %}
-            <div class="sidebar-collapsed-hidden">
-              <div class="mb-3">
-                <div class="text-small font-weight-bold text-muted text-uppercase">My guilds</div>
-              </div>
-              <p>You are not a member of any guilds. Guilds you participate in will be displayed here.</p>
-              <a href="/browse" class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden">Discover guilds</a>
-            </div>
-            {% endif %}
-
-            {% if g.user and g.user.mods_anything %}
-            <div class="sidebar-collapsed-hidden">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <div class="text-small font-weight-bold text-muted text-uppercase">Guildmaster of</div>
-                <span><a href="/mod/queue" class="btn btn-link text-small-extra font-weight-normal px-0">Mod Queue</a></span>
-              </div>
-            </div>
-            <div class="sidebar-collapsed-visible">
-              
-              <span class="fa-stack">
-                <i class="fas fa-crown text-warning mb-3"></i>
-              </span>
-            </div>
-            <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
-              {% for board in g.user.boards_modded %}
-              <li class="guild-recommendations-item">
-                <a href="{{ board.permalink }}">
-                  <div class="d-flex">
-                    <div>
-                      <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 mr-2">
-                    </div>
-                    <div class="my-auto">
-                      <div class="text-black font-weight-normal">+{{ board.name }}</div>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-            <!-- Show this list when sidebar is collapsed -->
-            <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
-              {% for board in g.user.boards_modded[0:10] %}
-              <li class="guild-recommendations-item">
-                <a href="{{ board.permalink }}">
-                  <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
-                </a>
-              </li>
-              {% endfor %}
-            </ul>
-            {% endif %}
-          </div>
-        </div>
-
-        {% if not g.user %}
-        <div class="sidebar-section sidebar-guild-recommendations bg-gray-100 sidebar-collapsed-hidden">
-          <div class="body">
-            <div class="my-3">
-              <i class="fad fa-telescope text-primary fa-3x"></i>
-            </div>
-            <h5>Discover amazing communities across <span class="text-purple">{{ "SITE_NAME" | app_config }}</span>.</h5>
-            <p class="text-small">Create a {{ "SITE_NAME" | app_config }} account and join your favorite communities, no email address required.</p>
-            <a href="/signup" class="btn btn-primary btn-block">Sign up</a>
-          </div>
-        </div>
-        {% endif %}
-
+        <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+          {% for board in g.user.boards_subscribed[0:10] %}
+          <li class="guild-recommendations-item">
+            <a href="{{ board.permalink }}">
+              <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
       </div>
+
+      {% elif g.user and not g.user.subscribed_to_anything %}
+      <div class="sidebar-collapsed-hidden">
+        <div class="mb-3">
+          <div class="text-small font-weight-bold text-muted text-uppercase">My guilds</div>
+        </div>
+        <p>You are not a member of any guilds. Guilds you participate in will be displayed here.</p>
+        <a href="/browse" class="btn btn-outline-gray-300 text-muted btn-block btn-sm text-small sidebar-collapsed-hidden">Discover guilds</a>
+      </div>
+      {% endif %}
+
+      {% if g.user and g.user.mods_anything %}
+      <div class="sidebar-collapsed-hidden">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="text-small font-weight-bold text-muted text-uppercase">Guildmaster of</div>
+          <span><a href="/mod/queue" class="btn btn-link text-small-extra font-weight-normal px-0">Mod Queue</a></span>
+        </div>
+      </div>
+      <div class="sidebar-collapsed-visible">
+              
+        <span class="fa-stack">
+          <i class="fas fa-crown text-warning mb-3"></i>
+        </span>
+      </div>
+      <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+        {% for board in g.user.boards_modded %}
+        <li class="guild-recommendations-item">
+          <a href="{{ board.permalink }}">
+            <div class="d-flex">
+              <div>
+                <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 mr-2">
+              </div>
+              <div class="my-auto">
+                <div class="text-black font-weight-normal">+{{ board.name }}</div>
+              </div>
+            </div>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      <!-- Show this list when sidebar is collapsed -->
+      <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+        {% for board in g.user.boards_modded[0:10] %}
+        <li class="guild-recommendations-item">
+          <a href="{{ board.permalink }}">
+            <img src="{{ board.profile_url }}" class="profile-pic profile-pic-28 transition-square">
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if not g.user %}
+  <div class="sidebar-section sidebar-guild-recommendations bg-gray-100 sidebar-collapsed-hidden">
+    <div class="body">
+      <div class="my-3">
+        <i class="fad fa-telescope text-primary fa-3x"></i>
+      </div>
+      <h5>Discover amazing communities across <span class="text-purple">{{ "SITE_NAME" | app_config }}</span>.</h5>
+      <p class="text-small">Create a {{ "SITE_NAME" | app_config }} account and join your favorite communities, no email address required.</p>
+      <a href="/signup" class="btn btn-primary btn-block">Sign up</a>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
