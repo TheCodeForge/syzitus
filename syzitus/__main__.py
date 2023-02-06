@@ -355,7 +355,7 @@ def before_request():
         syzitus.classes.Agent).filter(
             or_(
                 syzitus.classes.Agent.kwd.in_(useragent.split()),
-                syzitus.classes.Agent.kwd==useragent
+                syzitus.classes.Agent.kwd.ilike(useragent)
                 )
             ).first()
 
