@@ -35,16 +35,18 @@
 <form action="/admin/useragent" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="kwd" value="{{ kwd }}">
-  <select name="reason" class="form-control">
+  <select name="reason" class="form-control" required>
+    <option selected disabled>Select One</option>
     <option value="archive">Archive</option>
     <option value="censorship">Censorship</option>
     <option value="generic ua">Generic Useragent</option>
     <option value="seo scraper">SEO</option>
   </select>
   <label for="mocktextinput">Mock text</label>
-  <input class="form-control" id="mocktextinput" name="mock" placeholder="mock text">
+  <input class="form-control" id="mocktextinput" name="mock" placeholder="mock text" required>
   <label for="mocktextinput">Return status</label>
-  <select name="status" class="form-control">
+  <select name="status" class="form-control" required>
+    <option selected required>Select One</option>
     <option value="200">200 Success</option>
     <option value="400">400 Bad Request</option>
     <option value="418">418 I'm A Teapot</option>
