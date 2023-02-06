@@ -2003,15 +2003,27 @@ def admin_useragent_kwd():
 
     kwd=request.args.get("kwd")
 
-    ua_ban = g.db.query(Agent).filter(
-        or_(
-            Agent.kwd.in_(useragent.split()),
-            Agent.kwd==useragent
-            )
-        ).first()
+    if kwd:
+        ua_ban = g.db.query(Agent).filter(
+            or_(
+                Agent.kwd.in_(useragent.split()),
+                Agent.kwd==useragent
+                )
+            ).first()
+    else:
+        ua_ban=None
 
     return render_template(
         "admin/useragent.html",
         kwd=kwd,
         ban=ua_ban
+        )
+
+@app.post("/admin/useragent")
+@admin_level_required(5)
+def post_admin_useragent_kwd():
+
+    new_ban=Agent(
+        kwd=request.form.get("kwd"),
+
         )
