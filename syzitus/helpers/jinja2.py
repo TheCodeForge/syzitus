@@ -168,7 +168,7 @@ def show_thing_dict(thing):
         if key in disallowed_keys:
             continue
 
-        output += f"<tr><td>{{ key }}</td><td>{{ thing.__dict__[key] }}</td></tr>"
+        output += f"<tr><td>{key}</td><td>{thing.__dict__[key]}</td></tr>"
 
     output += "</table>"
 
