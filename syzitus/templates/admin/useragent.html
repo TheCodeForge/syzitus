@@ -15,7 +15,20 @@
 
 {% if ban %}
 <h3>banned</h3>
-{{ ban | dict | safe }}
+<table class="table table-striped mb-5">
+<thead class="bg-primary text-white">
+  <tr>
+    <th>Key</th>
+    <th>Value</th>
+  </tr>
+</thead>
+{% for entry in ban.__dict__ if not entry.startswith('_') %}
+  <tr>
+    <td>{{ entry }}</td>
+    <td>{{ ban.__dict__[entry] }}</td>
+  </tr>
+{% endfor %}
+</table>
 {% else %}
 <h3>not banned</h3>
 {% if kwd %}
@@ -39,5 +52,6 @@
 </form>
 {% endif %}
 {% endif %}
+
 
 {% endblock %}
