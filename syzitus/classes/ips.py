@@ -27,4 +27,4 @@ class Agent(Base):
 
     @property
     def permalink(self):
-        return f"/admin/useragent?kwd={kwd}"
+        return f"/admin/useragent?kwd={self.kwd}"
