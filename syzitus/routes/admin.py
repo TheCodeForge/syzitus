@@ -2024,6 +2024,13 @@ def admin_useragent_kwd():
 def post_admin_useragent_kwd():
 
     new_ban=Agent(
-        kwd=request.form.get("kwd"),
-
+        kwd=        request.form.get("kwd"),
+        reason=     request.form.get("reason"),
+        mock=       request.form.get("mock"),
+        status_code=request.form.get("status"),
+        banned_by=  g.user.id
         )
+
+    g.db.add(new_ban)
+    g.db.commit()
+    return redirect(new_ban.permalink)
