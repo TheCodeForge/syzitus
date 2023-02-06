@@ -1235,24 +1235,6 @@ color: $dark;
     display: none;
 }
 
-.sidebar-left .collapsed-toggle::before {
-    cursor: pointer;
-    font-size: 1rem;
-    color: $muted;
-    font-family: "Font Awesome 5 Pro";
-    font-weight: 900;
-    content: "\f348";
-}
-
-.sidebar-left.sidebar-collapsed .collapsed-toggle::before {
-    cursor: pointer;
-    font-size: 1rem;
-    color: $black;
-    font-family: "Font Awesome 5 Pro";
-    font-weight: 900;
-    content: "\f347";
-}
-
 @media (max-width: 1199.98px) {
     .sidebar-left .sidebar-collapsed-hidden {
         display: none;
