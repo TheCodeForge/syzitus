@@ -31,6 +31,7 @@
 </table>
 {% else %}
 <h3>not banned</h3>
+{% if kwd %}
 <form action="/admin/useragent" method="post">
   <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
   <input type="hidden" name="kwd" value="{{ kwd }}">
@@ -48,6 +49,7 @@
     <option value="418">418 I'm A Teapot</option>
   </select>
 </form>
+{% endif %}
 {% endif %}
 
 
