@@ -2105,7 +2105,7 @@ $('.copy-outside-embed').click(function(){
   }
 )
 
-$('#btn-toggle-sidebar-collapse').click(function(){
+$('.toggle-sidebar-collapse').click(function(){
   post(
     '/settings/toggle_collapse',
     callback=function(){
