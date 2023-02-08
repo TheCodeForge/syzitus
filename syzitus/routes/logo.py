@@ -324,3 +324,9 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 @cf_cache
 def get_favicon_ico():
     return get_assets_images_splash("splash", 48, 48)
+
+@app.get("/apple-touch-icon.png")
+@app.get("/apple-touch-icon-precomposed.png")
+@cf_cache
+def get_apple_touch_icon_png():
+    return get_assets_images_splash('splash', 192, 192)
