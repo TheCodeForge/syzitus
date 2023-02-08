@@ -9,6 +9,7 @@ from imagehash import phash
 from sqlalchemy import func
 from os import remove
 from io import BytesIO
+from flask import g
 
 from .base36 import hex2bin
 
