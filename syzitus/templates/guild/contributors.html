@@ -6,114 +6,114 @@
 
 <div class="row">
 
-	<div class="col">
+  <div class="col">
 
-		{% if error %}
-		<div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
-			<i class="fas fa-exclamation-circle my-auto"></i>
-			<span>
-				{{ error }}
-			</span>
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true"><i class="far fa-times"></i></span>
-			</button>
-		</div>
-		{% endif %}
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show my-3" role="alert">
+      <i class="fas fa-exclamation-circle my-auto"></i>
+      <span>
+        {{ error }}
+      </span>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true"><i class="far fa-times"></i></span>
+      </button>
+    </div>
+    {% endif %}
 
-	</div>
+  </div>
 
 </div>
 
 
 <div class="row">
 
-	<div class="col">
+  <div class="col">
 
-		<div class="d-md-flex justify-content-between mb-3">
+    <div class="d-md-flex justify-content-between mb-3">
 
-			<div>
-				<h2 class="h5" name="guild_name">Approved contributors for +{{ b.name }}</h2>
-				<p class="text-small text-muted mb-md-0">The following users are approved to post in +{{ b.name }}.</p>
-			</div>
-			<div class="mt-auto">
-				<button class="btn btn-primary" data-toggle="modal" data-target="#guildmasterApproveModal"><i class="far fa-plus mr-2"></i>Add user</button>
-			</div>
-		</div>
+      <div>
+        <h2 class="h5" name="guild_name">Approved contributors for +{{ b.name }}</h2>
+        <p class="text-small text-muted mb-md-0">The following users are approved to post in +{{ b.name }}.</p>
+      </div>
+      <div class="mt-auto">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#guildmasterApproveModal"><i class="far fa-plus mr-2"></i>Add user</button>
+      </div>
+    </div>
 
-		<!-- disable search for now
-		<form action="/+{{ b.name }}/mod/approved" method="get">
-			<input class="form-input" name="user" type="text" value="{{ request.args.get('user','') }}">
-			<input type="submit" class="btn btn-primary" value="Find Users">
-		</form>
-	-->
+    <!-- disable search for now
+    <form action="/+{{ b.name }}/mod/approved" method="get">
+      <input class="form-input" name="user" type="text" value="{{ request.args.get('user','') }}">
+      <input type="submit" class="btn btn-primary" value="Find Users">
+    </form>
+  -->
 
-	{% if contributors %}
-	<div class="card mb-5">
-		<table class="table table-hover rounded mb-0">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">User</th>
-					<th scope="col">Approved by</th>
-					<th scope="col">Approved since</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody class="text-muted">
-				{% for contrib in contributors %}
-					<tr>
-						<td>
-							<a href="{{ contrib.user.permalink }}">
-								<img src="{{ contrib.user.profile_url }}" class="profile-pic-20 align-top mr-2">@{{ contrib.user.username }}</a>
-						</td>
-						<td>
-							<a href="{{ contrib.approving_mod.permalink }}">
-								<img src="{{ contrib.approving_mod.profile_url }}" class="profile-pic-20 align-top mr-2">@{{ contrib.approving_mod.username }}</a>
-						</td>
-						<td>{{ contrib.created_date }}</td>
+  {% if contributors %}
+  <div class="card mb-5">
+    <table class="table table-hover rounded mb-0">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">User</th>
+          <th scope="col">Approved by</th>
+          <th scope="col">Approved since</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody class="text-muted">
+        {% for contrib in contributors %}
+          <tr>
+            <td>
+              <a href="{{ contrib.user.permalink }}">
+                <img src="{{ contrib.user.profile_url }}" class="profile-pic-20 align-top mr-2">@{{ contrib.user.username }}</a>
+            </td>
+            <td>
+              <a href="{{ contrib.approving_mod.permalink }}">
+                <img src="{{ contrib.approving_mod.profile_url }}" class="profile-pic-20 align-top mr-2">@{{ contrib.approving_mod.username }}</a>
+            </td>
+            <td>{{ contrib.created_date }}</td>
 
-						<td>
-							<div class="dropdown float-right dropdown-actions">
-								<a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
-									<i class="fas fa-ellipsis-h text-muted"></i>
-								</a>
-								<div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2" aria-labelledby="dropdownMoreLink" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(21px, 18px, 0px);">
-									<a class="dropdown-item" href="javascript:void(0)" onclick="post('/mod/unapprove/{{ b.base36id }}?username={{ contrib.user.username }}&formkey={{ g.user.formkey }}', callback=function(){window.location.reload(true)})"><i class="fas fa-check"></i>Unapprove</a>
-								</div>
-							</div>
-						</td>
-					</tr>
-					{% else %}
-					<td>There are no approved users</td>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		<nav aria-label="Page navigation" class="mb-5">
-		  <ul class="pagination pagination-sm mb-0">
-		    {% if page>1 %}
-		    <li class="page-item">
-		      <small><a class="page-link" href="?page={{ page-1 }}" tabindex="-1">Prev</a></small>
-		    </li>
-		    {% else %}
-		    <li class="page-item disabled"><span class="page-link">Prev</span></li>
-		    {% endif %}
-		    {% if next_exists %}
-		    <li class="page-item">
-		      <small><a class="page-link" href="?page={{ page+1 }}">Next</a></small>
-		    </li>
-		    {% else %}
-		    <li class="page-item disabled"><span class="page-link">Next</span></li>
-		    {% endif %}
-		  </ul>
-		</nav>
-		{% else %}
-		<div class="text-center border-md rounded py-7">
-			<i class="fad fa-ghost text-gray-500 mb-3" style="font-size: 3.5rem;"></i>
-			<p class="font-weight-bold text-gray-500 mb-0">No users approved for posting in +{{ b.name }}</p>
-		</div>
-		{% endif %}
+            <td>
+              <div class="dropdown float-right dropdown-actions">
+                <a href="#" role="button" id="dropdownMoreLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="line-height: 0;">
+                  <i class="fas fa-ellipsis-h text-muted"></i>
+                </a>
+                <div class="dropdown-menu border-0 shadow dropdown-menu-right mt-2 navbar-dropdown" aria-labelledby="dropdownMoreLink" x-placement="bottom-end">
+                  <a class="dropdown-item post-toast-url-reload" href="javascript:void(0)" data-post-url="/mod/unapprove/{{ b.base36id }}?username={{ contrib.user.username }}&formkey={{ g.user.formkey }}"><i class="fas fa-check"></i>Unapprove</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% else %}
+          <td>There are no approved users</td>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <nav aria-label="Page navigation" class="mb-5">
+      <ul class="pagination pagination-sm mb-0">
+        {% if page>1 %}
+        <li class="page-item">
+          <small><a class="page-link" href="?page={{ page-1 }}" tabindex="-1">Prev</a></small>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Prev</span></li>
+        {% endif %}
+        {% if next_exists %}
+        <li class="page-item">
+          <small><a class="page-link" href="?page={{ page+1 }}">Next</a></small>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% else %}
+    <div class="text-center border-md rounded py-7">
+      <i class="fad fa-ghost text-gray-500 mb-3" style="font-size: 3.5rem;"></i>
+      <p class="font-weight-bold text-gray-500 mb-0">No users approved for posting in +{{ b.name }}</p>
+    </div>
+    {% endif %}
 
-	</div>
+  </div>
 
 </div>
 
@@ -122,36 +122,38 @@
 {% block approveModal %}
 <!-- Guildmaster Approve User Modal -->
 <div class="modal fade" id="guildmasterApproveModal" tabindex="-1" role="dialog" aria-labelledby="guildmasterApproveModalTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<form action="/mod/approve/{{ b.name }}" id="approve-form" method="post" onsubmit="return false;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">Approve user for +{{ b.name }}</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true"><i class="far fa-times"></i></span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<p>Users approved from a guild will receive a notification shortly after you approve them.</p>
-					<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-					<input type="text" name="username" placeholder="enter username" id="approve-username" class="form-control" maxlength=25 required>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" id="approveUserButton" onclick="approve_from_guild('{{ b.base36id }}')">Approve user</button>
-				</div>
-			</div>
-		</form>
-	</div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form action="/mod/approve/{{ b.name }}" id="approve-form" method="post" onsubmit="return false;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Approve user for +{{ b.name }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"><i class="far fa-times"></i></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Users approved from a guild will receive a notification shortly after you approve them.</p>
+          <form id="add-approved-user-form" method="post" action="/mod/approve/{{ b.base36id }}">
+            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+            <input type="text" name="username" placeholder="enter username" id="approve-username" class="form-control" maxlength=25 required>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary toast-form-submit" data-form="add-approved-user-form" id="approveUserButton">Approve user</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
 
 {% block errorToasts %}
 
 <div class="toast error" id="toast-approve-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-	<div class="toast-body text-center">
-		<i class="fas fa-exclamation-circle text-danger mr-2"></i><span id="toast-error-message">Error. Please try again.</span>
-	</div>
+  <div class="toast-body text-center">
+    <i class="fas fa-exclamation-circle text-danger mr-2"></i><span id="toast-error-message">Error. Please try again.</span>
+  </div>
 </div>
 
 {% endblock %}
