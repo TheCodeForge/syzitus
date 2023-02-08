@@ -123,27 +123,25 @@
 <!-- Guildmaster Approve User Modal -->
 <div class="modal fade" id="guildmasterApproveModal" tabindex="-1" role="dialog" aria-labelledby="guildmasterApproveModalTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <form action="/mod/approve/{{ b.name }}" id="approve-form" method="post" onsubmit="return false;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Approve user for +{{ b.name }}</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true"><i class="far fa-times"></i></span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>Users approved from a guild will receive a notification shortly after you approve them.</p>
-          <form id="add-approved-user-form" method="post" action="/mod/approve/{{ b.base36id }}">
-            <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
-            <input type="text" name="username" placeholder="enter username" id="approve-username" class="form-control" maxlength=25 required>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary toast-form-submit" data-form="add-approved-user-form" id="approveUserButton">Approve user</button>
-        </div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Approve user for +{{ b.name }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><i class="far fa-times"></i></span>
+        </button>
       </div>
-    </form>
+      <div class="modal-body">
+        <p>Users approved from a guild will receive a notification shortly after you approve them.</p>
+        <form id="add-approved-user-form" method="post" action="/mod/approve/{{ b.base36id }}">
+          <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
+          <input type="text" name="username" placeholder="enter username" id="approve-username" class="form-control" maxlength=25 required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link text-muted" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary toast-form-submit" data-form="add-approved-user-form" id="approveUserButton">Approve user</button>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
