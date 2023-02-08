@@ -27,9 +27,11 @@ S3 = AWSClient("s3",
                       "AWS_SECRET_ACCESS_KEY",'').lstrip().rstrip()
                   )
 
-def check_phash(db, file):
+def check_phash(file, db=None):
+
 
     i=Image.open(file)
+    db=g.get('db', db)
 
     return db.query(BadPic).filter(
         func.levenshtein(
@@ -205,7 +207,7 @@ def check_csam(post):
         for chunk in x.iter_content(1024):
             file.write(chunk)
 
-    h=check_phash(db, tempname)
+    h=check_phash(tempname, db=db)
     if h:
 
         now=int(time.time())
@@ -277,7 +279,7 @@ def check_csam_url(url, v, delete_content_function):
         for chunk in x.iter_content(1024):
             file.write(chunk)
 
-    h=check_phash(db, tempname)
+    h=check_phash(tempname, db=db)
 
     if h:
 
