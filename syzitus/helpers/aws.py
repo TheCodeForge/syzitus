@@ -8,6 +8,7 @@ from PIL import Image
 from imagehash import phash
 from sqlalchemy import func
 from os import remove
+from io import BytesIO
 
 from .base36 import hex2bin
 
@@ -26,12 +27,14 @@ S3 = AWSClient("s3",
                       "AWS_SECRET_ACCESS_KEY",'').lstrip().rstrip()
                   )
 
-def check_phash(db, name):
+def check_phash(db, file):
+
+    i=Image.open(file)
 
     return db.query(BadPic).filter(
         func.levenshtein(
             BadPic.phash,
-            hex2bin(str(phash(Image.open(f"{app.config['RUQQUSPATH']}/{name}"))))
+            hex2bin(str(phash(i)))
             ) < 10
         ).first()
 
@@ -276,6 +279,7 @@ def check_csam_url(url, v, delete_content_function):
             file.write(chunk)
 
     h=check_phash(db, tempname)
+
     if h:
 
         now=int(time.time())
