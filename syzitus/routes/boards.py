@@ -1994,7 +1994,7 @@ Required form data:
 
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message":f"@{user.username} added as an approved contributor."})
 
 
 @app.route("/mod/unapprove/<bid>", methods=["POST"])
@@ -2017,7 +2017,7 @@ Required form data:
 
     x = board.has_contributor(user)
     if not x:
-        abort(409)
+        jsonify({"error":f"That user already isn't a contributor."}), 409
 
     if not x.board_id==board.id:
         abort(400)
@@ -2035,7 +2035,7 @@ Required form data:
     g.db.add(ma)
     g.db.commit()
 
-    return "", 204
+    return jsonify({"message":f"@{user.username} removed as an approved contributor."})
 
 
 @app.get("/+<guild>/pic/profile")
