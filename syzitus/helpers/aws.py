@@ -255,21 +255,21 @@ def check_csam_url(url, v, delete_content_function):
 
     db=db_session()
 
-    if x.status_code == 451:
-        v.ban_reason="Sexualizing Minors"
-        v.is_banned=1
-        db.add(v)
-        for alt in v.alts_threaded(db):
-            alt.ban_reason="Sexualizing Minors"
-            alt.is_banned=1
-            db.add(alt)
+    # if x.status_code == 451:
+    #     v.ban_reason="Sexualizing Minors"
+    #     v.is_banned=1
+    #     db.add(v)
+    #     for alt in v.alts_threaded(db):
+    #         alt.ban_reason="Sexualizing Minors"
+    #         alt.is_banned=1
+    #         db.add(alt)
 
-        delete_content_function()
+    #     delete_content_function()
 
-        db.commit()
-        db.close()
-        delete_file(parsed_url.path.lstrip('/'))
-        return
+    #     db.commit()
+    #     db.close()
+    #     delete_file(parsed_url.path.lstrip('/'))
+    #     return
 
     tempname=f"test_from_url_{parsed_url.path}"
     tempname=tempname.replace('/','_')
@@ -283,17 +283,8 @@ def check_csam_url(url, v, delete_content_function):
     if h:
 
         now=int(time.time())
-        unban=now+60*60*24*h.ban_time if h.ban_time else 0
-        # ban user and alts
-        v.ban_reason=h.ban_reason
-        v.is_banned=1
-        v.unban_utc = unban
-        db.add(v)
-        for alt in v.alts_threaded(db):
-            alt.ban_reason=h.ban_reason
-            alt.is_banned=1
-            alt.unban_utc = unban
-            db.add(alt)
+        ban_days=h.ban_time or 0
+        v.ban(self, reason=h.ban_reason, days=ban_days)
 
         delete_content_function()
 
