@@ -132,7 +132,7 @@
       </div>
       <div class="modal-body">
         <p>Users approved from a guild will receive a notification shortly after you approve them.</p>
-        <form id="add-approved-user-form" method="post" action="/mod/approve/{{ b.base36id }}">
+        <form id="add-approved-user-form" method="post" action="/mod/approve/{{ b.name }}">
           <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
           <input type="text" name="username" placeholder="enter username" id="approve-username" class="form-control" maxlength=25 required>
         </form>
