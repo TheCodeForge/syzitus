@@ -501,6 +501,13 @@ Optional file data:
             file=request.files["file"]
             if not file.content_type.startswith('image/'):
                 return jsonify({"error": "That wasn't an image!"}), 400
+
+            #badpic detection
+            h=check_phash(file)
+            if h:
+                c.is_banned=True
+                g.user.ban(days=0, reason=f"csam image match {h.id}")
+                return jsonify({"error":"Unable to accept that image"})
             
             name = f'comment/{c.base36id}/{token_urlsafe(8)}'
             upload_file(name, file)
@@ -511,20 +518,20 @@ Optional file data:
                 body_md = renderer.render(Document(body))
             body_html = sanitize(body_md, linkgen=True)
             
-            #csam detection
-            def del_function():
-                delete_file(name)
-                c.is_banned=True
-                g.db.add(c)
-                g.db.commit()
+            # #csam detection
+            # def del_function():
+            #     delete_file(name)
+            #     c.is_banned=True
+            #     g.db.add(c)
+            #     g.db.commit()
                 
-            csam_thread=threading_Thread(target=check_csam_url, 
-                                         args=(f"https://{BUCKET}/{name}", 
-                                               g.user, 
-                                               del_function
-                                              )
-                                        )
-            csam_thread.start()
+            # csam_thread=threading_Thread(target=check_csam_url, 
+            #                              args=(f"https://{BUCKET}/{name}", 
+            #                                    g.user, 
+            #                                    del_function
+            #                                   )
+            #                             )
+            # csam_thread.start()
 
 
 

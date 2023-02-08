@@ -693,6 +693,7 @@ Optional file data:
         if h:
             new_post.is_banned=True
             g.user.ban(days=0, reason=f"csam image match {h.id}")
+            return jsonify({"error":"Unable to accept that image"})
         
 
         name = f'post/{new_post.base36id}/{token_urlsafe(8)}'
