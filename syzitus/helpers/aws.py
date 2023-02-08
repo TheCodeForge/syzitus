@@ -151,7 +151,6 @@ def delete_file(name):
 
     x = requests.post(url, headers=headers, json=data)
 
-
 def check_csam(post):
 
     # Relies on Cloudflare's photodna implementation
@@ -177,27 +176,27 @@ def check_csam(post):
 
     db=db_session()
 
-    if x.status_code == 451:
+    # if x.status_code == 451:
 
-        # ban user and alts
-        post.author.ban_reason="Sexualizing Minors"
-        post.author.is_banned=1
-        db.add(v)
-        for alt in post.author.alts_threaded(db):
-            alt.ban_reason="Sexualizing Minors"
-            alt.is_banned=1
-            db.add(alt)
+    #     # ban user and alts
+    #     post.author.ban_reason="Sexualizing Minors"
+    #     post.author.is_banned=1
+    #     db.add(v)
+    #     for alt in post.author.alts_threaded(db):
+    #         alt.ban_reason="Sexualizing Minors"
+    #         alt.is_banned=1
+    #         db.add(alt)
 
-        # remove content
-        post.is_banned = True
-        db.add(post)
+    #     # remove content
+    #     post.is_banned = True
+    #     db.add(post)
 
-        db.commit()
+    #     db.commit()
 
-        # nuke aws
-        delete_file(parsed_url.path.lstrip('/'))
-        db.close()
-        return
+    #     # nuke aws
+    #     delete_file(parsed_url.path.lstrip('/'))
+    #     db.close()
+    #     return
 
     #check phash
     tempname = f"test_post_{post.base36id}"

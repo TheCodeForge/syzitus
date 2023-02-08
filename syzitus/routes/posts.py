@@ -688,6 +688,13 @@ Optional file data:
             g.db.rollback()
             return jsonify({"error": "Image files only"}), 400
 
+        #badpic detection
+        h=check_phash(file)
+        if h:
+            new_post.is_banned=True
+            g.user.ban(days=0, reason=f"csam image match {h.id}")
+        
+
         name = f'post/{new_post.base36id}/{token_urlsafe(8)}'
         upload_file(name, file)
 
@@ -695,36 +702,12 @@ Optional file data:
         # update post data
         new_post.url = f'https://{BUCKET}/{name}'
         new_post.is_image = True
-        new_post.domain_ref = 1  # id of i.ruqqus.com domain
+        new_post.domain_ref = 1  # id of image hosting domain
         g.db.add(new_post)
         g.db.add(new_post.submission_aux)
         g.db.commit()
 
-        #csam detection
-        def del_function():
-            db=db_session()
-            delete_file(name)
-            new_post.is_banned=True
-            db.add(new_post)
-            db.commit()
-            ma=ModAction(
-                kind="ban_post",
-                user_id=1,
-                note="banned image",
-                target_submission_id=new_post.id
-                )
-            db.add(ma)
-            db.commit()
-            db.close()
 
-            
-        csam_thread=threading.Thread(target=check_csam_url, 
-                                     args=(f"https://{BUCKET}/{name}", 
-                                           g.user, 
-                                           del_function
-                                          )
-                                    )
-        csam_thread.start()
     
     g.db.commit()
 
