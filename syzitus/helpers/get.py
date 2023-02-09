@@ -370,7 +370,17 @@ def get_posts(pids, sort="hot", v=None):
         #     p._is_exiled_for=post[1] or 0
         #     output.append(p)
 
-    return sorted(output, key=lambda x: pids.index(x.id))
+    output= sorted(output, key=lambda x: pids.index(x.id))
+
+    any_updated=False
+    for post in output:
+        if g.timestamp-post.scores_last_updated_utc >= 86400: #24hrs
+            post.update_scores
+            any_updated=True
+            g.db.add(post)
+
+    if any_updated:
+        g.db.commit()
 
 
 def get_post_with_comments(pid, sort_type="top", v=None):
