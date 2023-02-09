@@ -92,11 +92,7 @@ URL path parameters:
     g.db.add(post)
     g.db.flush()
 
-    post.score_hot = post.rank_hot
-    post.score_disputed = post.rank_fiery
-    post.score_top = post.score
-    # post.score_activity=post.rank_activity
-    post.score_best = post.rank_best
+    post.update_scores()
 
     g.db.add(post)
 
