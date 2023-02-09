@@ -21,7 +21,7 @@ class CommentAux(Base):
     __tablename__ = "comments_aux"
 
     key_id = Column(Integer, primary_key=True)
-    id = Column(Integer, ForeignKey("comments.id"), index=True)
+    id = Column(Integer, ForeignKey("comments.id"), index=True, unique=True)
     body = Column(String(10000), default=None)
     body_html = Column(String(20000))
     ban_reason = Column(String(256), default='')
