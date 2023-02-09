@@ -382,6 +382,8 @@ def get_posts(pids, sort="hot", v=None):
     if any_updated:
         g.db.commit()
 
+    return output
+
 
 def get_post_with_comments(pid, sort_type="top", v=None):
 
