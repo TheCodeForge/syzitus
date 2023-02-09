@@ -330,3 +330,12 @@ def get_favicon_ico():
 @cf_cache
 def get_apple_touch_icon_png():
     return get_assets_images_splash('splash', 192, 192)
+
+@app.get("/apple-touch-icon-<width>x<height>-precomposed.png")
+@app.get("/apple-touch-icon-<width>x<height>.png")
+@cf_cache
+def get apple_touch_icon_sized_png(width, height):
+
+    width=int(width)
+    height=int(height)
+    return get_assets_images_splash('splash', width, height)
