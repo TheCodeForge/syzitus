@@ -374,7 +374,7 @@ def get_posts(pids, sort="hot", v=None):
 
     any_updated=False
     for post in output:
-        if g.timestamp-post.scores_last_updated_utc >= 86400: #24hrs
+        if g.timestamp-post.scores_last_updated_utc >= 3600: # 1hr
             post.update_scores()
             any_updated=True
             g.db.add(post)
