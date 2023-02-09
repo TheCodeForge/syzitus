@@ -26,7 +26,7 @@ class SubmissionAux(Base):
 
     # we don't care about this ID
     key_id = Column(BigInteger, primary_key=True)
-    id = Column(BigInteger, ForeignKey("submissions.id"), index=True)
+    id = Column(BigInteger, ForeignKey("submissions.id"), index=True, unique=True)
     title = Column(String(500), default=None)
     url = Column(String(2048), default=None)
     body = Column(String(10000), default="")
