@@ -5,6 +5,7 @@ from bleach.linkifier import LinkifyFilter
 from urllib.parse import urlparse, ParseResult, urlunparse
 from functools import partial
 import re
+from os import environ
 
 from .get import *
 # import os.path
@@ -131,7 +132,7 @@ def a_modify(attrs, new=False):
 
         domain = parsed_url.netloc
         attrs[(None, "target")] = "_blank"
-        if domain and not domain.endswith((app.config["SERVER_NAME"], app.config.get("SHORT_DOMAIN","=="))): #use == in lieu of "None" for short domain to force mismatch
+        if domain and not domain.endswith((environ.get("SERVER_NAME", "=="), app.config.get("SHORT_DOMAIN","=="))): #use == in lieu of "None" for short domain to force mismatch
             attrs[(None, "rel")] = "nofollow noopener"
 
             # Force https for all external links in comments
