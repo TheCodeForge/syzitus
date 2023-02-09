@@ -162,6 +162,8 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     rank_activity = deferred(Column(Float, server_default=FetchedValue()))
     rank_best = deferred(Column(Float, server_default=FetchedValue()))
 
+    scores_last_updated_utc=Column(Integer, default=0)
+
 
     # ordered indexes on scores
     __table_args__=(
