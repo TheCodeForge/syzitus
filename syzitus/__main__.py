@@ -393,14 +393,12 @@ def before_request():
     ua=request.headers.get("User-Agent","")
     if "CriOS/" in ua:
         g.system="ios/chrome"
+    elif "iPhone" in ua:
+        g.system="ios/safari"
     elif "Version/" in ua:
         g.system="android/webview"
     elif "Mobile Safari/" in ua:
         g.system="android/chrome"
-    elif "iPhone" in ua:
-        g.system="ios/safari"
-    elif "Mobile/" in ua:
-        g.system="ios/webview"
     else:
         g.system="other/other"
 
