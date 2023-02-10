@@ -585,5 +585,6 @@ def malicious_scraper_honeypot(path=None):
 
         g.db.add(new_ipban)
         g.db.commit()
+        return "This is a honeypot page for malicious scrapers. As you are logged in, you will not be purged."
 
-    return "Tech-heresy detected. Commencing purge.", 404
+    return "Tech-heresy detected. May your soul be purified in the cleansing fire of the Omnissiah's wrath.", 404
