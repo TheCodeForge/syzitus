@@ -415,16 +415,13 @@ def get_post_with_comments(pid, sort_type="top", v=None):
             joinedload(Comment.author),
             joinedload(Comment.distinguished_board),
             joinedload(Comment.awards),
-            Load(User).lazyload('*'),
             joinedload(Comment.post),
-            Load(Submission).lazyload('*'),
-            Load(Submission).joinedload(Submission.submission_aux),
-            Load(Submission).joinedload(Submission.board),
+            joinedload(Comment.post).joinedload(Submission.submission_aux),
+            joinedload(Comment.post).joinedload(Submission.board),
+            joinedload(Comment.distinguished_board),
             Load(CommentVote).lazyload('*'),
             Load(UserBlock).lazyload('*'),
-            Load(ModAction).lazyload('*'),
-            Load(Board).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            Load(ModAction).lazyload('*')
         ).filter(
             Comment.parent_submission == post.id,
             Comment.level <= 6
@@ -491,16 +488,11 @@ def get_post_with_comments(pid, sort_type="top", v=None):
             Load(User).lazyload('*'),
             Load(User),
             joinedload(Comment.post),
-            Load(Submission).lazyload('*'),
-            Load(Submission).joinedload(Submission.submission_aux),
-            Load(Submission).joinedload(Submission.board),
-            Load(CommentVote).lazyload('*'),
-            Load(UserBlock).lazyload('*'),
+            joinedload(Comment.post).joinedload(Submission.submission_aux),
+            joinedload(Comment.post).joinedload(Submission.board),
             Load(ModAction).lazyload('*'),
             joinedload(Comment.distinguished_board),
             joinedload(Comment.awards),
-            Load(Board).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
         ).filter(
             Comment.parent_submission == post.id,
             Comment.level <= 6
