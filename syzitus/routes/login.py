@@ -571,7 +571,7 @@ def post_reset():
 @app.get("/wp-<path:path>")
 @app.get("/honeypot")
 @auth_desired
-def malicious_scraper_honeypot(path):
+def malicious_scraper_honeypot(path=None):
 
     #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
 
