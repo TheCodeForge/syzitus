@@ -702,7 +702,6 @@ def get_comments(cids, sort_type=None, load_parent=False, **kwargs):
             Load(ModRelationship).lazyload('*'),
             joinedload(Comment.distinguished_board),
             joinedload(Comment.awards),
-            Load(Comment.distinguished_board).lazyload('*'),
         ).filter(
             Comment.id.in_(cids)
         )
@@ -776,7 +775,6 @@ def get_comments(cids, sort_type=None, load_parent=False, **kwargs):
             Load(ModRelationship).lazyload('*'),
             joinedload(Comment.distinguished_board),
             joinedload(Comment.awards),
-            Load(Comment.distinguished_board).lazyload('*'),
         ).filter(
             Comment.id.in_(cids)
         ).join(
