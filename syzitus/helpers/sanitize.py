@@ -132,7 +132,7 @@ def a_modify(attrs, new=False):
 
         domain = parsed_url.netloc
         attrs[(None, "target")] = "_blank"
-        if domain and not domain.endswith((environ.get("SERVER_NAME", "=="), app.config.get("SHORT_DOMAIN","=="))): #use == in lieu of "None" for short domain to force mismatch
+        if domain and not domain.endswith((environ.get("SERVER_NAME", "=="), environ.get("SHORT_DOMAIN","=="))): #use == in lieu of "None" for short domain to force mismatch
             attrs[(None, "rel")] = "nofollow noopener"
 
             # Force https for all external links in comments
