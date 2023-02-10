@@ -31,8 +31,8 @@
 {% if g.user %}
         <div class="col px-0">
             <a href="/mine/guilds" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/mine' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/mine' %}fas{% else %}far{% endif %} fa-chess-rook text-lg d-block"></i>
+                <div class="text-center {% if request.path=='/mine/guilds' %}text-purple{% else %}text-muted{% endif %}">
+                    <i class="{% if request.path=='/mine/guilds' %}fas{% else %}far{% endif %} fa-chess-rook text-lg d-block"></i>
                     <div class="text-small">Guilds</div>
                 </div>
             </a>
