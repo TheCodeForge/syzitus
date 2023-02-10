@@ -28,7 +28,7 @@ from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
 
-from syzitus.__main__ import Base, cache, app, g, db_session
+from syzitus.__main__ import Base, cache, app, g, db_session, debug
 
 
 #this is repeated here to avoid import circle
