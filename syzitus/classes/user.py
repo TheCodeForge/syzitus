@@ -708,9 +708,11 @@ class User(Base, standard_mixin, age_mixin):
     def notification_commentlisting(self, page=1, all_=False, replies_only=False, mentions_only=False, system_only=False):
 
 
-        notifications = g.db.query(Notification).options(
-            lazyload('*'),
-            joinedload(Notification.comment).lazyload('*')
+        notifications = g.db.query(Notification
+            # ).options(
+            # lazyload('*'),
+            # joinedload(Notification.comment).lazyload('*'),
+            # joinedload(Notification.comment).joinedload(Comment.comment_aux)
             ).join(
             Notification.comment
             ).filter(
