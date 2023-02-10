@@ -28,7 +28,7 @@ from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
 
-from syzitus.__main__ import Base, cache, app, g, db_session
+from syzitus.__main__ import Base, cache, app, g, db_session, debug
 
 
 #this is repeated here to avoid import circle
@@ -708,10 +708,11 @@ class User(Base, standard_mixin, age_mixin):
     def notification_commentlisting(self, page=1, all_=False, replies_only=False, mentions_only=False, system_only=False):
 
 
-        notifications = g.db.query(Notification).options(
-            lazyload('*'),
-            joinedload(Notification.comment).lazyload('*'),
-            joinedload(Notification.comment).joinedload(Comment.comment_aux)
+        notifications = g.db.query(Notification
+            # ).options(
+            # lazyload('*'),
+            # joinedload(Notification.comment).lazyload('*'),
+            # joinedload(Notification.comment).joinedload(Comment.comment_aux)
             ).join(
             Notification.comment
             ).filter(
@@ -758,7 +759,7 @@ class User(Base, standard_mixin, age_mixin):
         )
 
         notifications = notifications.order_by(
-            Notification.id.desc()).offset(25 * (page - 1)).limit(26)
+            Notification.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
         output = []
         for x in notifications[0:25]:

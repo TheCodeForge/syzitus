@@ -13,7 +13,7 @@ from io import BytesIO
 from .base36 import hex2bin
 
 from syzitus.classes.images import BadPic
-from syzitus.__main__ import app, db_session
+from syzitus.__main__ import app, db_session, debug
 
 BUCKET = environ.get("S3_BUCKET_NAME",'i.syzitus.com').lstrip().rstrip()
 CF_KEY = environ.get("CLOUDFLARE_KEY",'').lstrip().rstrip()
@@ -154,144 +154,13 @@ def delete_file(name):
 
 def check_csam(post):
 
-    # Relies on Cloudflare's photodna implementation
-    # 451 returned by CF = positive match
-
-    # ignore non-link posts
-    if not post.url:
-        return
-
-    parsed_url = urlparse(post.url)
-
-    if parsed_url.netloc != BUCKET:
-        return
-
-    headers = {"User-Agent": f"{app.config['SITE_NAME']} webserver"}
-    for i in range(10):
-        x = requests.get(post.url, headers=headers)
-
-        if x.status_code in [200, 451]:
-            break
-        else:
-            time.sleep(20)
-
-    db=db_session()
-
-    if x.status_code == 451:
-
-        # ban user and alts
-        post.author.ban_reason="Sexualizing Minors"
-        post.author.is_banned=1
-        db.add(v)
-        for alt in post.author.alts_threaded(db):
-            alt.ban_reason="Sexualizing Minors"
-            alt.is_banned=1
-            db.add(alt)
-
-        # remove content
-        post.is_banned = True
-        db.add(post)
-
-        db.commit()
-
-        # nuke aws
-        delete_file(parsed_url.path.lstrip('/'))
-        db.close()
-        return
-
-    #check phash
-    tempname = f"test_post_{post.base36id}"
-
-    with open(tempname, "wb") as file:
-        for chunk in x.iter_content(1024):
-            file.write(chunk)
-
-    h=check_phash(db, tempname)
-    if h:
-
-        now=int(time.time())
-        unban=now+60*60*24*h.ban_time if h.ban_time else 0
-        # ban user and alts
-        post.author.ban_reason=h.ban_reason
-        post.author.is_banned=1
-        post.author.unban_utc = unban
-        db.add(v)
-        for alt in post.author.alts_threaded(db):
-            alt.ban_reason=h.ban_reason
-            alt.is_banned=1
-            alt.unban_utc = unban
-            db.add(alt)
-
-        # remove content
-        post.is_banned = True
-        db.add(post)
-
-        db.commit()
-
-        # nuke aws
-        delete_file(parsed_url.path.lstrip('/'))
-
-    remove(tempname)
-    db.close()
+   debug("obsolete call to check_csam")
+   return
 
 
 
 
 def check_csam_url(url, v, delete_content_function):
 
-    parsed_url = urlparse(url)
-
-    if parsed_url.netloc != BUCKET:
-        return
-
-    headers = {"User-Agent": "syzitus webserver"}
-    for i in range(10):
-        x = requests.get(url, headers=headers)
-
-        if x.status_code in [200, 451]:
-            break
-        else:
-            time.sleep(20)
-
-    db=db_session()
-
-    # if x.status_code == 451:
-    #     v.ban_reason="Sexualizing Minors"
-    #     v.is_banned=1
-    #     db.add(v)
-    #     for alt in v.alts_threaded(db):
-    #         alt.ban_reason="Sexualizing Minors"
-    #         alt.is_banned=1
-    #         db.add(alt)
-
-    #     delete_content_function()
-
-    #     db.commit()
-    #     db.close()
-    #     delete_file(parsed_url.path.lstrip('/'))
-    #     return
-
-    tempname=f"test_from_url_{parsed_url.path}"
-    tempname=tempname.replace('/','_')
-
-    with open(tempname, "wb+") as file:
-        for chunk in x.iter_content(1024):
-            file.write(chunk)
-
-    h=check_phash(db, tempname)
-
-    if h:
-
-        now=int(time.time())
-        ban_days=h.ban_time or 0
-        v.ban(self, reason=h.ban_reason, days=ban_days)
-
-        delete_content_function()
-
-        db.commit()
-
-        # nuke aws
-        delete_file(parsed_url.path.lstrip('/'))
-
-    remove(tempname)
-    db.close()
+    debug("obsolete call to check_csam_url")
+    return
