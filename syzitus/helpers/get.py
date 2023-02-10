@@ -147,11 +147,9 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
             # aliased(ModAction, alias=exile)
         ).options(
             lazyload('*'),
-            joinedload(Submission.submission_aux),
             joinedload(Submission.author),
             Load(User).lazyload('*'),
             joinedload(Submission.author),
-            Load(Board).lazyload('*'),
             joinedload(Submission.board),
             joinedload(Submission.original_board),
             Load(UserBlock).lazyload('*'),
@@ -163,6 +161,8 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
         
         if no_text:
             items=items.options(lazyload(Submission.submission_aux))
+        else:
+            items=items.options(joinedload(Submission.submission_aux))
 
         if g.user.admin_level>=4:
             items=items.options(joinedload(Submission.oauth_app))
