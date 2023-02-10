@@ -565,7 +565,6 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
             aliased(ModAction, alias=exile)
         ).options(
             lazyload('*'),
-            joinedload(Comment.comment_aux),
             joinedload(Comment.author),
             joinedload(Comment.post),
             joinedload(Comment.post).joinedload(Submission.submission_aux),
@@ -573,13 +572,13 @@ def get_comment(cid, graceful=False, no_text=False, **kwargs):
             Load(CommentVote).lazyload('*'),
             Load(ModAction).lazyload('*'),
             joinedload(Comment.distinguished_board),
-            joinedload(Comment.awards),
-            Load(Board).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            joinedload(Comment.awards)
         )
         
         if no_text:
             items=items.options(lazyload(Comment.comment_aux))
+        else:
+            items=items.options(joinedload(Comment.comment_aux))
 
         if g.user.admin_level >=4:
             items=items.options(joinedload(Comment.oauth_app))
