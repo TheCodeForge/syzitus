@@ -769,6 +769,8 @@ class User(Base, standard_mixin, age_mixin):
 
         g.db.commit()
 
+        debug(output)
+
         return output
 
     def notification_postlisting(self, all_=False, page=1):
