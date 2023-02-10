@@ -569,6 +569,7 @@ def post_reset():
 @app.get("/<path:path>.aspx")
 @app.get("/<path:path>.xml")
 @app.get("/wp-<path:path>")
+@app.get("/honeypot")
 @auth_desired
 def malicious_scraper_honeypot(path):
 
