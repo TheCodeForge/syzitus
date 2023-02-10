@@ -575,16 +575,17 @@ def malicious_scraper_honeypot(path=None):
 
     #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
 
-    if not g.user:
-        new_ipban = IP(
-            addr=request.remote_addr,
-            unban_utc=0,
-            banned_by=1,
-            reason="malicious scraper honeypot"
-            )
-
-        g.db.add(new_ipban)
-        g.db.commit()
+    if  g.user:
         return "This is a honeypot page for malicious scrapers. As you are logged in, you will not be purged."
 
+    new_ipban = IP(
+        addr=request.remote_addr,
+        unban_utc=0,
+        banned_by=1,
+        reason="malicious scraper honeypot"
+        )
+
+    g.db.add(new_ipban)
+    g.db.commit()
     return "Tech-heresy detected. May your soul be purified in the cleansing fire of the Omnissiah's wrath.", 404
+
