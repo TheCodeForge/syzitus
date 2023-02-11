@@ -2206,11 +2206,10 @@ Optional query parameters
             }
 
     actions=g.db.query(ModAction).options(
-        joinedload(ModAction.target_post).lazyload('*'),
-        Load(Submission).joinedload(Submission.submission_aux),
-        joinedload(ModAction.target_comment).lazyload('*'),
-        joinedload(ModAction.target_user).lazyload('*'),
-        joinedload(ModAction.user).lazyload('*'),
+        joinedload(ModAction.target_post).joinedload(Submission.submission_aux),
+        joinedload(ModAction.target_comment).joinedload(Comment.comment_aux),
+        joinedload(ModAction.target_user),
+        joinedload(ModAction.user),
         joinedload(ModAction.board)
         ).filter_by(
         board_id=board.id
