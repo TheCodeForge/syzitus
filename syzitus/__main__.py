@@ -61,15 +61,15 @@ app.config["ADMIN_EMAIL"]=environ.get("ADMIN_EMAIL","").lstrip().rstrip()
 SERVER_NAME = environ.get("SERVER_NAME", environ.get("domain", "syzitus.com")).lstrip().rstrip()
 # ONION_NAME = environ.get("ONION_NAME", "")
 
-class DomainMatcher(str):
+# class DomainMatcher(str):
 
-    def __init__(self, *names):
+#     def __init__(self, *names):
 
-        self.names = list(names)
+#         self.names = list(names)
 
-    def __eq__(self, other):
+#     def __eq__(self, other):
 
-        return other in self.names
+#         return other in self.names
 
 app.config["SERVER_NAME"] = SERVER_NAME #DomainMatcher(SERVER_NAME, ONION_NAME)
 
