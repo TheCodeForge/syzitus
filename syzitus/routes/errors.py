@@ -57,6 +57,7 @@ def error_403(e):
 
 
 @app.errorhandler(404)
+@auth_desired
 @error_wrapper
 @api()
 def error_404(e):
