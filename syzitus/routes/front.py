@@ -722,7 +722,7 @@ Optional query parameters:
 def random_post():
 
     x = g.db.query(Submission).options(
-        lazyload('board')).filter_by(
+        lazyload('*')).filter_by(
         is_banned=False,
         ).filter(Submission.deleted_utc == 0)
 
@@ -746,7 +746,15 @@ def random_post():
         bans = select(
             BanRelationship.board_id).filter_by(
             user_id=g.user.id)
-        x = x.filter(Submission.board_id.notin_(bans))
+
+        blocked  =select(UserBlock.user_id).filter_by(target_id=g.user.id)
+        blocking =select(UserBlock.target_id).filter_by(user_id=g.user.id)
+
+        x = x.filter(
+            Submission.board_id.notin_(bans),
+            Submission.author_id.notin_(blocked),
+            Submission.author_id.notin_(blocking)
+            )
 
     x=x.join(Submission.board).filter(Board.is_banned==False)
 
