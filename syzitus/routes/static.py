@@ -66,7 +66,9 @@ def static_service(path):
     try:
         resp = make_response(send_file(safe_join('./assets', path)))
     except FileNotFoundError:
-           abort(404)
+        abort(404)
+    except IsADirectoryError:
+        abort(404)
 
     if request.path.endswith('.css'):
         resp.headers.add("Content-Type", "text/css")
