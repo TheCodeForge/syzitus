@@ -340,9 +340,8 @@ def sign_up_post():
 
     if existing_account or (email and g.db.query(
             User).filter(User.email.ilike(email)).first()):
-        # debug(f"signup fail - {username } - email already exists")
         return new_signup(
-            "An account with that username or email already exists.")
+            "THat email address is already in use.")
 
 
     # ip ratelimit
