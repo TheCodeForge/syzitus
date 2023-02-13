@@ -33,7 +33,7 @@ def validate_username(name):
         return False, f"@{name} is too long."
 
     if not re.fullmatch(valid_username_regex, name):
-        return False, "That name is not valid. Names may include only letters, numbers, and (except for the first character) underscore (_)."
+        return False, "That name is not valid. Names may include only letters, numbers, and (except for the first character) underscore."
 
     x=get_user(name, graceful=True)
     if x:
@@ -305,6 +305,10 @@ def sign_up_post():
         return new_signup("Passwords did not match. Please try again.")
 
     # check username/pass conditions
+    available, message = validate_username(username)
+    if not available:
+        return new_signup(message)
+
     if not re.fullmatch(valid_username_regex, username):
         debug(f"signup fail - {username } - mismatched passwords")
         return new_signup("Invalid username")
@@ -313,10 +317,10 @@ def sign_up_post():
         debug(f"signup fail - {username } - invalid password")
         return new_signup("Password must be between 8 and 100 characters.")
 
-    # if not re.match(valid_email_regex, request.form.get("email")):
-    #    return new_signup("That's not a valid email.")
+    if request.form.get("email") and not re.match(valid_email_regex, request.form.get("email")):
+       return new_signup("That's not a valid email.")
 
-    # Check for existing acocunts
+    # Check for existing accounts
     email = request.form.get("email")
     email = email.lstrip().rstrip()
     if not email:
@@ -352,7 +356,7 @@ def sign_up_post():
     if app.config.get("HCAPTCHA_SITEKEY"):
         token = request.form.get("h-captcha-response")
         if not token:
-            return new_signup("Unable to verify captcha [1].")
+            return new_signup("HCaptcha challenge not completed.")
 
         data = {"secret": app.config["HCAPTCHA_SECRET"],
                 "response": token,
@@ -363,7 +367,7 @@ def sign_up_post():
 
         if not x.json()["success"]:
             debug(x.json())
-            return new_signup("Unable to verify captcha [2].")
+            return new_signup("HCaptcha verification failed.")
 
     elif app.config.get("CLOUDFLARE_TURNSTILE_KEY"):
         token = request.form.get("cf-turnstile-response")
