@@ -101,7 +101,7 @@ def settings_profile_post():
         g.db.commit()
         
         #seo profile spam
-        sus_tags=BeatuifulSoup(bio_html).find('a')
+        sus_tags=BeautifulSoup(bio_html).find('a')
         if g.timestamp-g.user.created_utc < 60*60*24*2 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
             g.user.ban(reason="seo spam")
         
