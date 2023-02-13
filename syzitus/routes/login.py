@@ -21,6 +21,12 @@ valid_username_regex = re.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,24}+$")
 valid_password_regex = re.compile("^.{8,100}+$")
 valid_email_regex    = re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
+banned_names=[
+    "admin",
+    "staff",
+    app.config["SITE_NAME"]
+]
+
 # login form
 
 def validate_username(name):
@@ -34,6 +40,10 @@ def validate_username(name):
 
     if not re.fullmatch(valid_username_regex, name):
         return False, "That name is not valid. Names may include only letters, numbers, and (except for the first character) underscore."
+
+    for word in banned_names:
+        if word.lower() in name.lower():
+            return False, f'Names with "{word}" are not allowed.'
 
     x=get_user(name, graceful=True)
     if x:
