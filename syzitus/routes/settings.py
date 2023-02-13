@@ -15,6 +15,7 @@ from syzitus.helpers.discord import remove_user, set_nick
 from syzitus.helpers.aws import *
 from syzitus.mail import *
 from .front import frontlist
+from .login import validate_username
 
 from syzitus.__main__ import app, cache, db_session
 
@@ -103,7 +104,7 @@ def settings_profile_post():
         sus_tags=BeautifulSoup(bio_html).find('a')
         if g.timestamp-g.user.created_utc < 60*60*24*2 and not g.user.post_count and not g.user.comment_count and BeautifulSoup(bio_html).find('a'):
             g.user.ban(reason="seo spam")
-            
+
         g.db.commit()
         
         return jsonify({"message":"Your bio has been updated."})
@@ -655,24 +656,10 @@ def settings_name_change():
     if g.user.coin_balance < app.config["COINS_REQUIRED_CHANGE_USERNAME"]:
         return jsonify({"error":f"Username changes cost {app.config['COINS_REQUIRED_CHANGE_USERNAME']} coins. You only have a balance of {g.user.coin_balance} Coins"}), 402
 
-    #verify acceptability
-    if not re.match(valid_username_regex, new_name):
-        return jsonify({"error":"That isn't a valid username."}), 400
+    available, message = validate_username(new_name)
 
-    #verify availability
-    name=new_name.replace('_','\_')
-
-    x= g.db.query(User).options(
-        lazyload('*')
-        ).filter(
-        or_(
-            User.username.ilike(name),
-            User.original_username.ilike(name)
-            )
-        ).first()
-
-    if x and x.id != g.user.id:
-        return jsonify({"error":f"The username `{name}` is already in use."}), 403
+    if not available:
+        return jsonify({"error":message}), 400
 
     #all reqs passed
 

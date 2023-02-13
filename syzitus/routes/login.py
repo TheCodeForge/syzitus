@@ -23,26 +23,31 @@ valid_email_regex    = re.compile("(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-
 
 # login form
 
+def validate_username(name):
+
+    name=name.lstrip().rstrip()
+
+    if len(name)<3:
+        return False, f"@{name} is too short."
+    if len(name)>25:
+        return False, f"@{name} is too long."
+
+    if not re.fullmatch(valid_username_regex, name):
+        return False, "That name is not valid. Names may include only letters, numbers, and (except for the first character) underscore (_)."
+
+    x=get_user(name, graceful=True)
+    if x:
+        return False, f"The name @{name} is already in use"
+
+    return True, f"@{name} is available!"
+
 @app.get("/api/is_available/<name>")
 @auth_desired
 @api("read")
 def api_is_available(name):
 
-    name=name.lstrip().rstrip()
-
-    if len(name)<3:
-        return jsonify({name:False, "message": f"@{name} is too short."})
-    elif len(name)>25:
-        return jsonify({name:False, "message": f"@{name} is too long."})
-    elif not re.fullmatch(valid_username_regex, name):
-        return jsonify({name:False, "message": f"That name is not valid."})
-        
-    x=get_user(name, graceful=True)
-
-    if x:
-        return jsonify({name: False, "message": f"@{name} is already taken."})
-    else:
-        return jsonify({name: True, "message": f"@{name} is available!"})
+    available, message = validate_username(name)
+    return jsonify({name: available, "message": message})
 
 
 @app.route("/login", methods=["GET"])
