@@ -47,7 +47,7 @@ def validate_username(name):
 
     x=get_user(name, graceful=True)
     if x:
-        return False, f"The name @{name} is already in use"
+        return False, f"The name @{name} is already in use."
 
     return True, f"@{name} is available!"
 
