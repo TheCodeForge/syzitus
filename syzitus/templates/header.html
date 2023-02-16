@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-md navbar-light border-bottom fixed-top" id="navbar">
   <div class="container-fluid">
-    <div class="flex-grow-1"><a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}<span class="text-small-extra text-uppercase text-gray-400"> Alpha</span></a></div>
+    <div class="flex-grow-1"><a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}<span class="text-small-extra text-uppercase text-gray-400"> Beta</span></a></div>
       <div class="flex-grow-1 d-fl d-none d-md-block">
         <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
           <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q" value="{{ query }}">
