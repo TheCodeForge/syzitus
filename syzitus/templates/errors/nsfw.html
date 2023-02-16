@@ -4,10 +4,10 @@
 <title>NSFW</title>
 {% endblock %}
 
-{% block icon %}<i class="fad fa-eye-evil text-danger"></i>{% endblock %}
+{% block icon %}<i class="fas fa-eye-evil text-danger"></i>{% endblock %}
 {% block pagetitle %}Are you over 18?{% endblock %}
 {% block pagebody %}
-<p class="text-muted mb-5">This content is rated NSFW (Not Safe for Work). You must be 18 or older to continue. Are you sure you want to proceed?</p>
+<p class="text-muted mb-5">This content is tagged NSFW ("Not Safe for Work"). You must be 18 or older to continue. Are you sure you want to proceed?</p>
 {% endblock %}
 
 {% block continue %}
@@ -16,14 +16,14 @@
     <form action="/allow_nsfw_logged_in/{{ board.base36id }}" method="post">
       <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
       <input type="hidden" name="redir" value="{{ request.path }}">
-      <input type="submit" class="btn btn-black mr-2" value="Yes">
+      <input type="submit" class="btn btn-danger text-white mr-2" value="Yes">
     </form>
   {% else %}
     <form action="/allow_nsfw_logged_out/{{ board.base36id }}" method="post">
       <input type="hidden" name="formkey" value="{{ g.timestamp | formkey }}">
       <input type="hidden" name="redir" value="{{ request.path }}">
       <input type="hidden" name="time" value="{{ t }}">
-      <input type="submit" class="btn btn-black mr-2" value="Yes">
+      <input type="submit" class="btn btn-danger text-white mr-2" value="Yes">
     </form>
   {% endif %}
   <div><a href="/" class="btn btn-secondary">No</a></div>
