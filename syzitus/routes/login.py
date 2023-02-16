@@ -594,7 +594,7 @@ def malicious_scraper_honeypot(path=None):
 
     #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
 
-    if  g.user:
+    if g.user:
         return "This is a honeypot page for malicious scrapers. As you are logged in, you will not be purged."
 
     new_ipban = IP(
