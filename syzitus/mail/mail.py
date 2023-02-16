@@ -41,8 +41,7 @@ def send_mail(to_address, subject, html, plaintext=None, files={},
 
 def send_verification_email(user, email=None):
 
-    if not email:
-        email = user.email
+    email = email or user.email
 
     url = f"https://{app.config['SERVER_NAME']}/activate"
     now = g.timestamp
@@ -53,8 +52,10 @@ def send_verification_email(user, email=None):
     link = url + params
 
     send_mail(to_address=email,
-              html=render_template("email/email_verify.html",
-                                   action_url=link),
+              html=render_template(
+                "email/email_verify.html",
+                action_url=link
+                ),
               subject=f"Verify your {app.config['SITE_NAME']} account email."
               )
 
