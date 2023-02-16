@@ -44,10 +44,9 @@ def send_verification_email(user, email=None):
     email = email or user.email
 
     url = f"https://{app.config['SERVER_NAME']}/activate"
-    now = g.timestamp
 
-    token = generate_hash(f"{email}+{user.id}+{now}")
-    params = f"?email={quote(email)}&id={user.id}&time={now}&token={token}"
+    token = generate_hash(f"{email}+{user.id}+{g.timestamp}")
+    params = f"?email={quote(email)}&id={user.id}&time={g.timestamp}&token={token}"
 
     link = url + params
 
