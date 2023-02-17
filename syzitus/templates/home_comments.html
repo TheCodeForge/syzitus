@@ -4,7 +4,6 @@
 {% block sortnav %}{% endblock %}
 
 {% block desktopBanner %}
-
 <div class="row border-bottom bg-white sticky d-none d-md-block guild-border-top" style="overflow: visible;">
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
@@ -15,27 +14,20 @@
     </div>
   </div>
 </div>
-
 {% endblock %}
+
 {% block content %}
+<div class="row no-gutters {% if listing %}mt-md-3{% elif not listing %}my-md-3{% endif %}">
 
-<!-- View toggle visible only on large devices or larger -->
+  <div class="col-12">
 
+    <div class="posts" id="posts">
 
+      {% include "comments.html" %}
 
-    <div class="row no-gutters {% if listing %}mt-md-3{% elif not listing %}my-md-3{% endif %}">
-
-      <div class="col-12">
-
-        <div class="posts" id="posts">
-
-          {% include "comments.html" %}
-
-        </div>
-      </div>
     </div>
-
-
+  </div>
+</div>
 {% endblock %}
     
 
