@@ -586,6 +586,7 @@ def post_reset():
 @app.get("/<path:path>.php")
 @app.get("/<path:path>.aspx")
 @app.get("/<path:path>.xml")
+@app.get("/<path:path>.yml")
 @app.get("/wp-<path:path>")
 @app.get("/honeypot")
 @app.get("/admin/hp")
@@ -594,7 +595,7 @@ def post_reset():
 @auth_desired
 def malicious_scraper_honeypot(path=None):
 
-    #There are no real endpoints that end in php/aspx/xml so any traffic to them is highly likely to be malicious
+    #There are no real endpoints that end in php/aspx/xml/etc so any traffic to them is highly likely to be malicious
 
     if g.user:
         return "This is a honeypot page for malicious scrapers. As you are logged in, you will not be purged."
