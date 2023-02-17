@@ -589,6 +589,8 @@ def post_reset():
 @app.get("/wp-<path:path>")
 @app.get("/honeypot")
 @app.get("/admin/hp")
+@app.get("/.<path:path>")
+@app.get("/..<path:path>")
 @auth_desired
 def malicious_scraper_honeypot(path=None):
 
