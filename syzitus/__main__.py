@@ -345,7 +345,7 @@ def before_request():
         pass
 
     elif ip_ban:
-        abort(418)
+        return jsonify({"error":"Refused due to your previous malicious conduct"}), 424
 
     session.permanent = True
 

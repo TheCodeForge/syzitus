@@ -609,5 +609,5 @@ def malicious_scraper_honeypot(path=None):
 
     g.db.add(new_ipban)
     g.db.commit()
-    return "Tech-heresy detected. May your soul be purified in the cleansing fire of the Omnissiah's wrath.", 404
+    return "Tech-heresy detected. May your soul be purified in the cleansing fire of the Omnissiah's wrath.", 424
 
