@@ -477,7 +477,7 @@ def post_forgot():
     username = request.form.get("username").lstrip('@')
     email = request.form.get("email",'').lstrip().rstrip()
 
-    user=get_user(username)
+    user=get_user(username, graceful=True)
 
     email=email.replace("_","\_")
 
