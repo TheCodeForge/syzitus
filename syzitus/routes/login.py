@@ -600,6 +600,9 @@ def malicious_scraper_honeypot(path=None):
     if g.user:
         return "This is a honeypot page for malicious scrapers. As you are logged in, you will not be purged."
 
+    if request.path.startswith("/.well-known/"):
+        abort(404)
+
     new_ipban = IP(
         addr=request.remote_addr,
         unban_utc=0,
