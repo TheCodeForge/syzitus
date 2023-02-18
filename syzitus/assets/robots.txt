@@ -7,6 +7,7 @@ Disallow: /me
 Disallow: /discord
 Disallow: /search
 
+User-Agent: Adsbot-Google
 User-Agent: AHC
 User-Agent: AhrefsBot
 User-Agent: AwarioSmartBot
