@@ -454,7 +454,7 @@ def sign_up_post():
     #award specific badge on signup --comment out as needed
     new_badge=Badge(
         user_id=new_user.id,
-        badge_id=15)
+        badge_id=16)
     g.db.add(new_badge)
     g.db.commit()
     # end new badge code
