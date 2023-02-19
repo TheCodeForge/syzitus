@@ -1,4 +1,5 @@
 from flask import render_template
+import time
 from sqlalchemy import Column, Integer, String, ForeignKey
 
 from syzitus.__main__ import Base, app
@@ -51,6 +52,13 @@ class Badge(Base):
     description = Column(String(64))
     url = Column(String(256))
     created_utc = Column(Integer)
+
+    def __init__(self, *args, **kwargs):
+
+        if "created_utc" not in kwargs:
+            kwargs["created_utc"] = int(time.time())
+
+        super().__init__(*args, **kwargs)
 
     def __repr__(self):
 
