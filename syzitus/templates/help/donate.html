@@ -286,6 +286,23 @@
 <!-- ClipboardJS -->
 
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script type="text/javascript" nonce="{{ g.nonce }}">
+  var clipboard = new ClipboardJS('.copy-link');
+  clipboard.on('success', function(e) {
+
+    jQuery(function($) {
+      $('#toast-copy-success').toast('show');
+    })
+    console.log(e);
+  });
+  clipboard.on('error', function(e) {
+
+    jQuery(function($) {
+      $('#toast-copy-error').toast('show');
+    })
+    console.log(e);
+  });
+</script>
 
 <!-- {{ 'SITE_NAME' | app_config }} JS -->
 
