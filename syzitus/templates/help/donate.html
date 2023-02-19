@@ -3,300 +3,293 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta name="author" content="">
+  <meta name="author" content="">
 
-    {% block title %}
-    <title>Donate - {{ 'SITE_NAME' | app_config | lower }}</title>
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
-    <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
-    <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
-    <meta property="og:url" content="{{ request.path | full_link }}">
-    <meta property="og:description" name="description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.">
-    <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+  {% block title %}
+  <title>Donate - {{ 'SITE_NAME' | app_config | lower }}</title>
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
+  <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
+  <meta property="og:url" content="{{ request.path | full_link }}">
+  <meta property="og:description" name="description" content="Support {{ 'SITE_NAME' | app_config }} via PayPal or Cryptocurrency. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.">
+  <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
 
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
-    <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
-    <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
-    <meta name="twitter:url" content="{{ request.path | full_link }}" />
-    {% endblock %}
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
+  <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
+  <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
+  <meta name="twitter:url" content="{{ request.path | full_link }}" />
+  {% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- {{ 'SITE_NAME' | app_config }} CSS -->
-    <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=4.0.0">
-    <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=4.0.0">
+  <!-- {{ 'SITE_NAME' | app_config }} CSS -->
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=4.0.0">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=4.0.0">
 
-    <!-- Font Awesome -->
-    <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
+  <!-- Font Awesome -->
+  <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
 
-    <!-- Code Prettify -->
+  <!-- Code Prettify -->
 
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
 
 </head>
 
 <body id="page">
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">{{ 'SITE_NAME' | app_config }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500 fa-2x"></i></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/help/about">About</a>
-                </li>
-            </ul>
-        </div>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md navbar-light bg-white border-bottom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">{{ 'SITE_NAME' | app_config }}</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"><i class="fal fa-bars text-gray-500 fa-2x"></i></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/help/about">About</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
 
 <!-- Hero -->
 
 <section class="d-flex align-items-center py-7 py-md-8 bg-primary">
-    <div class="container">
-        <div class="row text-white text-md-left justify-content-between align-items-center">
-            <div class="col-12 col-md-5 col-lg-6">
-                <h1 class="text-capitalize">Support online freedom of speech and the future of digital discourse</h1>
-                <p class="text-gray-300 mb-6">
-                    {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.
-                </p>
-                <div class="text-center text-md-left">
-                    <a href="#donate-CTA" class="btn btn-lg btn-black shadow-md"><i class="fas fa-heart text-small mr-2"></i>Donate to {{ 'SITE_NAME' | app_config }}</a>
-                    <p class="text-small mt-3">Just want to use {{ 'SITE_NAME' | app_config }}? <a href="/login" class="text-white">Visit {{ 'SERVER_NAME' | app_config }}</a></p>
-                </div>
+  <div class="container">
+    <div class="row text-white text-md-left justify-content-between align-items-center">
+      <div class="col-12 col-md-5 col-lg-6">
+        <h1 class="text-capitalize">Support online freedom of speech and the future of digital discourse</h1>
+        <p class="text-gray-300 mb-6">
+          {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse.
+        </p>
+        <div class="text-center text-md-left">
+          <a href="#donate-CTA" class="btn btn-lg btn-black shadow-md"><i class="fas fa-heart text-small mr-2"></i>Donate to {{ 'SITE_NAME' | app_config }}</a>
+          <p class="text-small mt-3">Just want to use {{ 'SITE_NAME' | app_config }}? <a href="/login" class="text-white">Visit {{ 'SERVER_NAME' | app_config }}</a></p>
+        </div>
+      </div>
+      <div class="col-12 col-md-5 col-lg-6 text-right">
+        <div><img src="/assets/images/illustrations/post.svg" class="img-fluid shadow-md rounded mb-3 mt-6 mt-md-0" data-aos="zoom-out"></div>
+        <div><img src="/assets/images/illustrations/reply_upvoted_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
+          data-aos="fade-up" data-aos-delay="500"></div>
+          <div><img src="/assets/images/illustrations/reply_downvoted_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
+            data-aos="fade-up" data-aos-delay="1000"></div>
+            <div><img src="/assets/images/illustrations/reply_neutral_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
+              data-aos="fade-up" data-aos-delay="1500"></div>
             </div>
-            <div class="col-12 col-md-5 col-lg-6 text-right">
-                <div><img src="/assets/images/illustrations/post.svg" class="img-fluid shadow-md rounded mb-3 mt-6 mt-md-0" data-aos="zoom-out"></div>
-                <div><img src="/assets/images/illustrations/reply_upvoted_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
-                    data-aos="fade-up" data-aos-delay="500"></div>
-                    <div><img src="/assets/images/illustrations/reply_downvoted_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
-                        data-aos="fade-up" data-aos-delay="1000"></div>
-                        <div><img src="/assets/images/illustrations/reply_neutral_1.svg" class="img-fluid shadow-md rounded mb-3" data-aos-easing="ease-in-out"
-                            data-aos="fade-up" data-aos-delay="1500"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          </div>
+        </div>
+      </section>
 
 
 <!-- Why Choose {{ 'SITE_NAME' | app_config }} -->
 
 <section id="donate-whychoose" class="py-7 bg-white">
-    <div class="container">
-        <div class="row justify-content-center text-center">
+  <div class="container">
+    <div class="row justify-content-center text-center">
 
-            <div class="col col-md-7">
+      <div class="col col-md-7">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary">Why donate?</p>
+        <h1 class="text-uppercase font-weight-bold text-primary h2">Why donate?</p>
 
-                <h2 class="h3">We're taking on Big Tech and traditional social media</h2>
-                <p class="text-muted mb-6 mb-md-7">Our crack team of developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
+        <h2 class="h3">We're taking on Big Tech and traditional social media</h2>
+        <p class="text-muted mb-6 mb-md-7">Our crack team of developers are committed to protecting online freedom of speech. Your support helps us build the best possible product.</p>
 
-            </div>
+      </div>
 
-        </div>
-        <div class="row justify-content-around">
-            <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up">
-
-                <div class="card h-100 border-0 text-center shadow-lg p-5">
-                    <i class="fad fa-server text-primary mb-4 fa-3x"></i>
-
-                    <h3 class="h5">Help {{ 'SITE_NAME' | app_config }} Grow</h3>
-
-                    <p class="text-muted mb-0">Your support will help the {{ 'SITE_NAME' | app_config }} team upgrade server infrastructure, pay for APIs, etc.</p>
-
-                </div>
-            </div>
-
-            <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up" data-aos-delay="100">
-
-                <div class="card h-100 border-0 text-center shadow-lg p-5">
-
-                    <i class="fad fa-podium-star text-primary mb-4 fa-3x"></i>
-
-                    <h3 class="h5">Support Freedom of Speech</h3>
-
-                    <p class="text-muted mb-0">Supporting {{ 'SITE_NAME' | app_config }} means supporting free speech and digital discourse.</p>
-
-                </div>
-
-            </div>
-        </div>
     </div>
+    <div class="row justify-content-around">
+      <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up">
+
+        <div class="card h-100 border-0 text-center shadow-lg p-5">
+          <i class="fad fa-server text-primary mb-4 fa-3x"></i>
+
+          <h3 class="h5">Help {{ 'SITE_NAME' | app_config }} Grow</h3>
+
+          <p class="text-muted mb-0">Your support will help the {{ 'SITE_NAME' | app_config }} team upgrade server infrastructure, pay for APIs, etc.</p>
+
+        </div>
+      </div>
+
+      <div class="col-12 col-md-5 aos-init aos-animate pb-4" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="card h-100 border-0 text-center shadow-lg p-5">
+
+          <i class="fad fa-podium-star text-primary mb-4 fa-3x"></i>
+
+          <h3 class="h5">Support Freedom of Speech</h3>
+
+          <p class="text-muted mb-0">Supporting {{ 'SITE_NAME' | app_config }} means supporting free speech and digital discourse.</p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Open Source Explainer -->
 
 <section class="py-7 py-md-8 bg-gray-100">
 
-    <div class="container">
+  <div class="container">
 
-        <div class="row justify-content-between align-items-center text-center text-md-left">
+    <div class="row justify-content-between align-items-center text-center text-md-left">
 
-            <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6">
 
-                <p class="text-uppercase font-weight-bold text-small text-primary">Transparency</p>
+        <h1 class="text-uppercase font-weight-bold text-small text-primary">Transparency</h1>
 
-                <h2 class="text-capitalize">
-                    Support a fair and open platform
-                </h2>
+        <h2 class="text-capitalize">
+          Support a fair and open platform
+        </h2>
 
-                <p class="text-muted">We like to keep things transparent. For this reason, our entire
-                    codebase is open-source and
-                    available on GitHub. View our
-                    algorithms right from your browser. No biased trending or sorting manipulation on {{ 'SITE_NAME' | app_config }}.
-                </p>
+        <p class="text-muted">We like to keep things transparent. For this reason, our entire
+          codebase is open-source and
+          available on GitHub. View our
+          algorithms right from your browser. No biased trending or sorting manipulation on {{ 'SITE_NAME' | app_config }}.
+        </p>
 
-                <ul class="list-inline no-bullets mb-6 mb-md-5">
-                    <li class="list-inline-item mr-3">
-                        <i class="fab fa-python"></i>
-                    </li>
-                    <li class="list-inline-item mr-3">
-                        <i class="fab fa-bootstrap"></i>
-                    </li>
-                    <li class="list-inline-item mr-3">
-                        <i class="fab fa-sass"></i>
-                    </li>
-                    <li class="list-inline-item mr-3">
-                        <i class="fab fa-css3"></i>
-                    </li>
-                    <li class="list-inline-item mr-3">
-                        <i class="fab fa-js"></i>
-                    </li>
-                </ul>
+        <ul class="list-inline no-bullets mb-6 mb-md-5">
+          <li class="list-inline-item mr-3">
+            <i class="fab fa-python"></i>
+          </li>
+          <li class="list-inline-item mr-3">
+            <i class="fab fa-bootstrap"></i>
+          </li>
+          <li class="list-inline-item mr-3">
+            <i class="fab fa-sass"></i>
+          </li>
+          <li class="list-inline-item mr-3">
+            <i class="fab fa-css3"></i>
+          </li>
+          <li class="list-inline-item mr-3">
+            <i class="fab fa-js"></i>
+          </li>
+        </ul>
 
-                <a href="https://github.com/thecodeforge/syzitus" class="btn btn-lg btn-primary shadow-md d-none d-md-inline-block">View our code</a>
+        <a href="https://github.com/thecodeforge/syzitus" class="btn btn-lg btn-primary shadow-md d-none d-md-inline-block">View our code</a>
 
-            </div>
-
-            <div class="col-12 col-md-6 d-none d-md-block">
-
-                <div class="row no-gutters mb-3">
-
-                    <div class="col">
-
-                        <div class="nav nav-pills justify-content-between mt-2 position-relative" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical">
-                          <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill" href="#v-pills-voting" role="tab" aria-controls="v-pills-voting" aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2" aria-hidden="true"></i>Voting</a>
-                          <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill" href="#v-pills-submission" role="tab" aria-controls="v-pills-submission" aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a> <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false"><i class="far fa-user-circle mr-2" aria-hidden="true"></i>User</a>
-                          <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true"><i class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
-                        </div>
-
-                </div>
-
-            </div>
-
-            <div class="row">
-              <div class="col">
-                <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
-
-                  <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel"aria-labelledby="v-pills-voting-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/votes.py" | source_code }}</pre>
-                  </div>
-
-                  <div class="tab-pane fade" id="v-pills-submission" role="tabpanel" aria-labelledby="v-pills-submission-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/submission.py" | source_code }}</pre>
-                  </div>
-                  <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/user.py" | source_code }}</pre>
-                  </div>
-
-                  <div class="tab-pane fade" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
-                    <pre class="prettyprint lang-python linenums bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/comment.py" | source_code }}</pre>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
       </div>
 
+      <div class="col-12 col-md-6 d-none d-md-block">
 
+        <div class="row no-gutters mb-3">
+
+          <div class="col">
+
+            <div class="nav nav-pills justify-content-between mt-2 position-relative" id="v-pills-tab" role="tablist"
+            aria-orientation="vertical">
+              <a class="nav-link text-center show active" id="v-pills-voting-tab" data-toggle="pill" href="#v-pills-voting" role="tab" aria-controls="v-pills-voting" aria-selected="false"><i class="far fa-arrow-alt-circle-up mr-2" aria-hidden="true"></i>Voting</a>
+              <a class="nav-link text-center" id="v-pills-submission-tab" data-toggle="pill" href="#v-pills-submission" role="tab" aria-controls="v-pills-submission" aria-selected="false"><i class="far fa-feather-alt mr-2" aria-hidden="true"></i>Post</a> <a class="nav-link text-center" id="v-pills-user-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-user" aria-selected="false"><i class="far fa-user-circle mr-2" aria-hidden="true"></i>User</a>
+              <a class="nav-link text-center d-none d-lg-block" id="v-pills-comment-tab" data-toggle="pill" href="#v-pills-comment" role="tab" aria-controls="v-pills-comment" aria-selected="true"><i class="far fa-comment-dots mr-2" aria-hidden="true"></i>Comment</a>
+            </div>
+
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col">
+        <div class="tab-content text-left bg-dark" id="v-pills-tabContent">
+
+          <div class="tab-pane fade show active" id="v-pills-voting" role="tabpanel"aria-labelledby="v-pills-voting-tab">
+          <pre class="prettyprint lang-python bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/votes.py" | source_code }}</pre>
+          </div>
+
+          <div class="tab-pane fade" id="v-pills-submission" role="tabpanel" aria-labelledby="v-pills-submission-tab">
+          <pre class="prettyprint lang-python bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/submission.py" | source_code }}</pre>
+          </div>
+          <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
+          <pre class="prettyprint lang-python bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/user.py" | source_code }}</pre>
+          </div>
+
+          <div class="tab-pane fade" id="v-pills-comment" role="tabpanel" aria-labelledby="v-pills-comment-tab">
+          <pre class="prettyprint lang-python bg-dark border-0 px-3 code-demo">{{ "syzitus/classes/comment.py" | source_code }}</pre>
+          </div>
+
+        </div>
+        </div>
+      </div>
+      </div>
     </div>
+
+
+  </div>
 
 </section>
 
 <!-- CTA -->
 
 <section class="py-7 py-md-8 bg-primary" id="donate-CTA">
+  <div class="container">
+    <div class="row justify-content-around align-items-center mb-5">
+      <div class="col col-md-10">
+        <div class="text-white text-center p-3 p-md-7 position-relative overflow-hidden">
 
-    <div class="container">
+          <h1 class="w-100">Donate today</h1>
+          <h2>Help support the future of online discourse</h2>
+          <p class="text-white opacity-80">Now accepting Bitcoin, Litecoin, and Ethereum. Every donation counts :)</p>
 
-        <div class="row justify-content-around align-items-center mb-5">
+          <div class="d-none d-md-block mt-5">
+            <button class="btn btn-black text-warning btn-lg mr-md-2" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
+            <a href="" target="_blank" class="btn btn-black text-info btn-lg d-none"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
+          </div>
 
-            <div class="col col-md-10">
-
-                <div class="text-white text-center p-3 p-md-7 position-relative overflow-hidden">
-                <div class="w-100">Donate today</p>
-                    <h2 class="h1">Help support the future of online discourse</h2>
-                    <p class="text-white opacity-80">Now accepting Bitcoin, Litecoin, and Ethereum. Every donation counts :)</p>
-
-                    <div class="d-none d-md-block mt-5">
-                        <button class="btn btn-black text-warning btn-lg mr-md-2" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
-                        <a href="" target="_blank" class="btn btn-black text-info btn-lg d-none"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
-                    </div>
-                    <div class="d-md-none mt-5">
-                        <button class="btn btn-black text-warning btn-lg btn-block mb-3" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
-                        <a href="" target="_blank" class="btn btn-black text-info btn-lg btn-block d-none"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
-                    </div>
-
-                </div>
-            </div>
+          <div class="d-md-none mt-5">
+            <button class="btn btn-black text-warning btn-lg btn-block mb-3" data-toggle="modal" data-target="#donateCryptoModal"><i class="fab fa-bitcoin text-small mr-2"></i>Donate with crypto</button>
+            <a href="" target="_blank" class="btn btn-black text-info btn-lg btn-block d-none"><i class="fab fa-paypal text-small mr-2"></i>Donate with PayPal</a>
+          </div>
 
         </div>
-
+      </div>
     </div>
-
-</div>
-
+  </div>
 </section>
 
 <footer class="footer bg-black py-5">
-    <div class="container">
-        <div class="row mb-5">
-            <div class="col-12 col-md-3 mb-4 mb-md-0">
-                <img class="mb-3 footer-logo" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}">
-                <p class="text-white">Awesome online communities, without censorship</p>
-            </div>
-            <div class="col-12 col-md-9">
-                <div class="row d-inline-block d-md-flex">
-                    <div class="col">
-                        <h6 class="text-white">Legal</h6>
-                        <ul class="no-bullets text-small pl-0">
-                            <li><a href="/help/terms">Terms</a></li>
-                            <li><a href="/help/privacy">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12 col-md-3 mb-4 mb-md-0">
+        <img class="mb-3 footer-logo" src="/logo/white/{{ 'COLOR_PRIMARY' | app_config }}/{{ ( 'SITE_NAME' | app_config )[0] | lower }}">
+        <p class="text-white">Awesome online communities, without censorship</p>
+      </div>
+      <div class="col-12 col-md-9">
+        <div class="row d-inline-block d-md-flex">
+          <div class="col">
+            <h6 class="text-white">Legal</h6>
+            <ul class="no-bullets text-small pl-0">
+              <li><a href="/help/terms">Terms</a></li>
+              <li><a href="/help/privacy">Privacy Policy</a></li>
+            </ul>
+          </div>
         </div>
-    <div>
+      </div>
+    </div>
+  <div>
 </footer>
 
 <!-- Clipboard Toast -->
 
 <div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-    <div class="toast-body bg-success text-center text-white">
-        <i class="fas fa-check-circle mr-2"></i>Crypto address copied to clipboard
-    </div>
+  <div class="toast-body bg-success text-center text-white">
+    <i class="fas fa-check-circle mr-2"></i>Crypto address copied to clipboard
+  </div>
 </div>
 
 <div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-    <div class="toast-body bg-danger text-center text-white">
-        <i class="fas fa-exclamation-circle mr-2"></i>Unable to copy crypto address
-    </div>
+  <div class="toast-body bg-danger text-center text-white">
+    <i class="fas fa-exclamation-circle mr-2"></i>Unable to copy crypto address
+  </div>
 </div>
 
 {% include "help/donate_crypto_modal.html" %}
@@ -317,17 +310,17 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <script nonce="{{ g.nonce }}">
-      AOS.init();
+  <script nonce="{{ g.nonce }}">
+    AOS.init();
 
-        // You can also pass an optional settings object
-        // below listed default settings
-        AOS.init({
+    // You can also pass an optional settings object
+    // below listed default settings
+    AOS.init({
 
-            once: true // whether animation should happen only once - while scrolling down
+      once: true // whether animation should happen only once - while scrolling down
 
-        });
-    </script>
+    });
+  </script>
 
   </body>
 
