@@ -278,23 +278,10 @@
   <div>
 </footer>
 
-<!-- Clipboard Toast -->
-
-<div class="toast clipboard" id="toast-success" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body bg-success text-center text-white">
-    <i class="fas fa-check-circle mr-2"></i>Crypto address copied to clipboard
-  </div>
-</div>
-
-<div class="toast clipboard" id="toast-error" role="alert" aria-live="assertive" aria-atomic="true" data-animation="true" data-autohide="true" data-delay="5000">
-  <div class="toast-body bg-danger text-center text-white">
-    <i class="fas fa-exclamation-circle mr-2"></i>Unable to copy crypto address
-  </div>
-</div>
-
 {% include "help/donate_crypto_modal.html" %}
 
 {% include "bootstrap.html" %}
+{% include "toasts.html"}
 
 <!-- ClipboardJS -->
 
