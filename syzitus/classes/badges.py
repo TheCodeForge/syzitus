@@ -116,14 +116,14 @@ KINDS={
 BADGE_DATA={
     1: {
         "name":"Artist",
-        "description":"Contributed art or other graphics to the platform",
+        "description":f"Contributed art or other graphics to {app.config['SITE_NAME']}",
         "kind": 2,
         "rank": 3,
         "icon": "art.png"
     },
     2: {
         "name":"New User",
-        "description":"Joined within the last 30 days",
+        "description":f"Joined {app.config['SITE_NAME']} within the last 30 days",
         "kind": 1,
         "rank": 1,
         "icon": "baby.png",
@@ -131,14 +131,14 @@ BADGE_DATA={
     },
     3: {
         "name":"Code Contributor",
-        "description":"Contributed code to the site",
+        "description":f"Contributed code to {app.config['SITE_NAME']}",
         "kind": 2,
         "rank": 3,
         "icon": "git.png"
     },
     4: {
         "name":"Idea",
-        "description":"Provided a good idea for the site that was eventually added",
+        "description":f"Provided a good idea for {app.config['SITE_NAME']} that was eventually added",
         "kind": 2,
         "rank": 2,
         "icon": "idea.png"
@@ -160,7 +160,7 @@ BADGE_DATA={
     },
     7: {
         "name":"Recruiter I",
-        "description":"Referred a friend to join",
+        "description":f"Referred a friend to join {app.config['SITE_NAME']}",
         "kind": 1,
         "rank": 1,
         "icon": "recruit-1.png",
@@ -168,7 +168,7 @@ BADGE_DATA={
     },
     8: {
         "name":"Recruiter II",
-        "description":"Referred 10 friends to join",
+        "description":f"Referred 10 friends to join {app.config['SITE_NAME']}",
         "kind": 1,
         "rank": 1,
         "icon": "recruit-10.png",
@@ -176,7 +176,7 @@ BADGE_DATA={
     },
     9: {
         "name":"Recruiter III",
-        "description":"Referred 100 friends to join",
+        "description":f"Referred 100 friends to join {app.config['SITE_NAME']}",
         "kind": 1,
         "rank": 1,
         "icon": "recruit-100.png",
@@ -184,7 +184,7 @@ BADGE_DATA={
     },
     10: {
         "name":"Recruiter IV",
-        "description":"Referred 1000 friends to join",
+        "description":f"Referred 1000 friends to join {app.config['SITE_NAME']}",
         "kind": 1,
         "rank": 1,
         "icon": "recruit-1000.png",
@@ -192,14 +192,14 @@ BADGE_DATA={
     },
     11: {
         "name":"Sitebreaker",
-        "description":"Involuntarily QA tested the site.",
+        "description":f"Involuntarily QA tested {app.config['SITE_NAME']}.",
         "kind": 2,
         "rank": 2,
         "icon": "sitebreaker.png"
     },
     12: {
         "name":"White Hat Hacker",
-        "description":"Responsibly disclosed a security vulnerability to staff.",
+        "description":f"Responsibly disclosed a security vulnerability to {app.config['SITE_NAME']} staff.",
         "kind": 2,
         "rank": 3,
         "icon": "whitehat.png"
