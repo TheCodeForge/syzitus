@@ -918,9 +918,9 @@ $("#yankPostButton").click(function() {
         window.location.reload(true);
       }
       else {
-        $('#toast-invite-error').toast('dispose');
-        $('#toast-invite-error').toast('show');
-        yankError.textContent = JSON.parse(xhr.response)["error"];
+        $('#toast-error').toast('dispose');
+        $('#toast-error').toast('show');
+        $('#toast-error .toast-text').text(JSON.parse(xhr.response)["error"]);
       }
     }
     xhr.send(f);
