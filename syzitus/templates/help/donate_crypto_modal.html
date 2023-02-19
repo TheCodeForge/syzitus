@@ -39,6 +39,7 @@
         </button>
       </div>
       <div class="modal-body accordion" id="cryptoAccordion">
+
         {% for x in data %}
         <div class="border rounded p-3 mb-3">
           <div class="" data-toggle="collapse" href="#collapse-{{ loop.index0 }}" role="button" aria-expanded="true" aria-controls="collapse-{{ loop.index0 }}">
@@ -49,12 +50,13 @@
             <div class="mt-3 text-center">
               <img class="mx-auto d-block w-75" src="{{ data[x]['addr'] | qrcode_img_data }}">
               <div class="mt-3">
-                <input class="copy-link form-control mr-3" role="button" value="{{ data[x]['addr'] }}" data-clipboard-text="{{ data[x]['addr'] }}" aria-describedby="bitcoinAddress" readonly>
+                <input class="copy-link form-control mr-3" role="button" value="{{ data[x]['addr'] }}" data-clipboard-text="{{ data[x]['addr'] }}" readonly>
               </div>
             </div>
           </div>
         </div>
         {% endfor %}
+
       </div>
     </div>
   </div>
