@@ -17,8 +17,6 @@ class ModAction(Base, standard_mixin, age_mixin):
     target_user_id = Column(Integer, ForeignKey("users.id"), default=None)
     target_submission_id = Column(Integer, ForeignKey("submissions.id"), default=None)
     target_comment_id = Column(Integer, ForeignKey("comments.id"), default=None)
-    #targetLodge = Column(Integer, ForeignKey("lodges.id"), default=0)
-    #targetRule = Column(Boolean, ForeignKey("rules.id"), default=False)
     _note=Column(String(256), default=None)
     created_utc = Column(Integer, default=0)
 
