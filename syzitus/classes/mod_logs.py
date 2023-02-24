@@ -52,8 +52,6 @@ class ModAction(Base, standard_mixin, age_mixin):
                 return f'for <a href="{self.target_post.permalink}">post</a>'
             elif self.target_comment:
                 return f'for <a href="{self.target_comment.permalink}">comment</a>'
-        elif self.kind=="chatban_user":
-            return f'Reason: {self._note}' if self._note else ''
         else:
             return self._note or ""
 
