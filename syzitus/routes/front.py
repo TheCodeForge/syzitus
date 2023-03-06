@@ -930,6 +930,10 @@ Optional query parameters:
 @api()
 def categories():
 
+    """
+    Get all guild category and subcategory data
+    """
+
     return make_response(
         jsonify(
             {"data":[x.json for x in CATEGORIES]}
