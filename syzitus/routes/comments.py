@@ -595,7 +595,7 @@ Optional file data:
 @api("update")
 def edit_comment(cid):
     """
-Edit your comment.
+Edit a comment. You must be a the comment's author in order to do this.
 
 URL path parameters:
 * `cid` - The base 36 id of the comment to edit

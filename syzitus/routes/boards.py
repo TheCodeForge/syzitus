@@ -175,6 +175,7 @@ Create a Guild
 
 Required form data:
 * `name` - Name of Guild to create
+* `category` - The ID of the subcategory with which to associate the new Guild (obtained from `GET /categories`)
 
 Optional form data:
 * `description` - Guild description
