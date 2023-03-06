@@ -339,33 +339,33 @@ def user_profile_uid(uid, profile_nonce):
     return redirect(x.profile_url), 301
 
 
-@app.route("/saved", methods=["GET"])
-@app.get("/api/v2/me/saved")
-@auth_required
-@api("read")
-def saved_listing():
+# @app.route("/saved", methods=["GET"])
+# @app.get("/api/v2/me/saved")
+# @auth_required
+# @api("read")
+# def saved_listing():
 
-    print("saved listing")
+#     print("saved listing")
 
-    page=int(request.args.get("page",1))
+#     page=int(request.args.get("page",1))
 
-    ids=g.user.saved_idlist(page=page)
+#     ids=g.user.saved_idlist(page=page)
 
-    next_exists=len(ids)==26
+#     next_exists=len(ids)==26
 
-    ids=ids[0:25]
+#     ids=ids[0:25]
 
-    print(ids)
+#     print(ids)
 
-    listing = get_posts(ids, sort="new")
+#     listing = get_posts(ids, sort="new")
 
-    return {'html': lambda: render_template("home.html",
-                                            listing=listing,
-                                            page=page,
-                                            next_exists=next_exists
-                                            ),
-            'api': lambda: jsonify({"data": [x.json for x in listing]})
-            }
+#     return {'html': lambda: render_template("home.html",
+#                                             listing=listing,
+#                                             page=page,
+#                                             next_exists=next_exists
+#                                             ),
+#             'api': lambda: jsonify({"data": [x.json for x in listing]})
+#             }
 
 
 @app.post("/@<username>/toggle_bell")
