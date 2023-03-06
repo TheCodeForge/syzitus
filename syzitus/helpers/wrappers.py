@@ -107,12 +107,17 @@ def get_logged_in_user():
 def validate_csrf_token():
 
     if request.method not in ["POST", "PUT", "PATCH", "DELETE"]:
-        # debug("req does not need csrf")
+        #req does not need csrf
         return
 
     if request.path.startswith("/api/v2/") and g.user:
-        # debug("req is api call, does not need csrf")
-        pass
+        #req is api call, does not need csrf
+        return
+
+    if not request.url_rule:
+        #req is 404 due to nonexistent function, does not need csrf.
+        #needed to properly 404 and/or honeypot malicious POST scrapers
+        return
 
     submitted_key = request.values.get("formkey", "none")
 
