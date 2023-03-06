@@ -931,8 +931,8 @@ Optional query parameters:
 def categories():
 
     """
-    Get all guild category and subcategory data
-    """
+Get all guild category and subcategory data
+"""
 
     return make_response(
         jsonify(
