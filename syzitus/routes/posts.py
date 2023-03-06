@@ -319,7 +319,7 @@ def get_post_title():
 @no_negative_balance('html')
 @api("create")
 def submit_post():
-    """
+    f"""
 Create a post
 
 Required form data:
@@ -331,7 +331,7 @@ At least one of the following form items is required:
 * `body` - The text body of the post
 
 Optional file data:
-* `file` - An image to upload as the post target. Requires premium or 500 Rep.
+* `file` - An image to upload as the post target. Requires premium or {app.config['UPLOAD_IMAGE_REP']} Rep.
 """
 
     title = request.form.get("title", "").lstrip().rstrip()
