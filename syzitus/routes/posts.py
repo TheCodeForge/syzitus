@@ -199,7 +199,7 @@ URL path parameters:
 * `pid` - The base 36 id of the post to edit
 
 Required form data:
-* `body` - The new raw comment text
+* `body` - The new raw post text
 """
 
     p = get_post(pid)
