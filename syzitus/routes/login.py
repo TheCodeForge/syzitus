@@ -583,15 +583,17 @@ def post_reset():
         )
 
 
-@app.get("/<path:path>.php")
-@app.get("/<path:path>.aspx")
-@app.get("/<path:path>.xml")
-@app.get("/<path:path>.yml")
-@app.get("/wp-<path:path>")
-@app.get("/honeypot")
-@app.get("/admin/hp")
-@app.get("/.<path:path>")
-@app.get("/..<path:path>")
+@app.route("/<path:path>.alfa")
+@app.route("/<path:path>.aspx")
+@app.route("/<path:path>.php")
+@app.route("/<path:path>.pl")
+@app.route("/<path:path>.xml")
+@app.route("/<path:path>.yml")
+@app.route("/wp-<path:path>")
+@app.route("/honeypot")
+@app.route("/admin/hp")
+@app.route("/.<path:path>")
+@app.route("/..<path:path>")
 @auth_desired
 def malicious_scraper_honeypot(path=None):
 
