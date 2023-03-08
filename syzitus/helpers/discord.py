@@ -56,13 +56,18 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
     elif target.fullname.startswith("t4_"):
         title_text = f"{action} +{target.name}"
 
+    if isinstance(target, str):
+        url=None
+    else:
+        url=target.permalink_full
+
 
     if user:
         data={
             "embeds":[
                 {
                     "title": title_text,
-                    "url": target.permalink_full,
+                    "url": url,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": user.username,
@@ -88,7 +93,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": target.permalink_full,
+                    "url": url,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": app.config['SITE_NAME'].lower(),
