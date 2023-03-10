@@ -94,10 +94,10 @@ def activate():
 
     if user.is_activated and user.email == email:
         return render_template(
-            "message_success.html",
+            "message.html",
             title="Email already verified.", 
             message="Email already verified."
-            ), 404
+            ), 409
 
     user.email = email
     user.is_activated = True
