@@ -67,7 +67,6 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": url,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": user.username,
@@ -93,7 +92,6 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
             "embeds":[
                 {
                     "title": title_text,
-                    "url": url,
                     "color": int(app.config["COLOR_PRIMARY"], 16),
                     "author": {
                         "name": app.config['SITE_NAME'].lower(),
@@ -114,6 +112,9 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
                 }
             ]
         }
+
+    if url:
+        data['embeds']['url']=url
 
     #debug(data)
     x=requests.post(url, headers=headers, json=data)
