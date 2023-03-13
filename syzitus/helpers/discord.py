@@ -114,7 +114,7 @@ def discord_log_event(action, target, user, reason=None, admin_action=False):
         }
 
     if url:
-        data['embeds']['url']=url
+        data['embeds'][0]['url']=url
 
     #debug(data)
     x=requests.post(url, headers=headers, json=data)
