@@ -60,7 +60,7 @@
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
 
-        {% elif p.thumb_url and p.is_image and ((p.over_18 and (not b or not p.board.over18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
+        {% elif p.thumb_url and p.is_image and ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
 
         <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <div class="blur-container">
@@ -98,7 +98,7 @@
 
       <div class="d-block d-md-none zi-3">
         {% if p.thumb_url %}
-          {% if p.is_image and ((p.over_18 and (not b or not p.board.over18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
+          {% if p.is_image and ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
 
           <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
             <div class="blur-container">
