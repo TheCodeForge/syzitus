@@ -2211,18 +2211,22 @@ div:hover .thumb-img-link-overlay {
 // Small devices (landscape phones, less than 768px)
 @media (max-width: 767.98px) { 
     .post-img {
-    width: 80px;
-    height: 60px;
-}
+        width: 80px;
+        height: 60px;
+    }
 
-.post-img-overlay {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: .25rem .5rem;
-    text-align: right;
-    width: 100%;
-    color: $white;
-}
+    .post-img.img-blur {
+        width: 78px;
+    }
+
+    .post-img-overlay {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: .25rem .5rem;
+        text-align: right;
+        width: 100%;
+        color: $white;
+    }
 }
 
 .post-actions .comments, .post-actions .share, .post-actions .save, .post-actions .flag {
