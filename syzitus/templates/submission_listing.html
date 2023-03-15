@@ -60,6 +60,14 @@
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
 
+        {% elif p.thumb_url and p.is_image and p.over_18 and not b %}
+
+        <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+          <div class="blur-container">
+            <img src="{{ p.thumb_url }}" class="post-img img-blur">
+          </div>
+        </a>
+
         {% elif p.thumb_url and p.is_image %}
         <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
           <img src="{{ p.thumb_url }}" class="post-img">
@@ -90,7 +98,14 @@
 
       <div class="d-block d-md-none zi-3">
         {% if p.thumb_url %}
-          {% if p.is_image %}
+          {% if p.is_image and p.over_18 and not b %}
+
+          <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+            <div class="blur-container">
+              <img src="{{ p.thumb_url }}" class="post-img img-blur">
+            </div>
+          </a>
+          {% elif p.is_image %}
           <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
             <img src="{{ p.thumb_url }}" class="post-img">
           </a>

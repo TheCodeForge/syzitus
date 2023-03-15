@@ -4002,3 +4002,13 @@ body.light .d-light-none {
 body.dark .d-dark-none {
     display: none;
 }
+
+img.img-blur {
+    filter: blur(3px);
+    border: 0px;
+}
+div.blur-container {
+    border: 1px solid $primary;
+    margin: -3px;
+    overflow: hidden;
+}
