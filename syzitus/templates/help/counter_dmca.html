@@ -41,18 +41,18 @@ Abuse of this form may lead to the termination of your {{ "SITE_NAME" | app_conf
 
 {% endfilter %}
 
-{% if v and v.is_banned %}
+{% if g.user and g.user.is_banned %}
 
 <div>Your {{ "SITE_NAME" | app_config }} account has been suspended. You are not permitted to submit DMCA takedown requests at this time.</div>
 
-{% elif v and v.is_activated %}
+{% elif g.user and g.user.is_activated %}
 
 <div class="h6 mt-5">Email</div>
-<input type="text" name="email" class="form-control" value="{{ v.email }}" readonly="readonly">
+<input type="text" name="email" class="form-control" value="{{ g.user.email }}" readonly="readonly">
 
 <form id="dmca-form" action="/help/counter_dmca" method="post">
 	
-	<input type="hidden" name="formkey" value="{{ v.formkey }}">
+	<input type="hidden" name="formkey" value="{{ g.user.formkey }}">
 
 	<label class="mt-5" for="input-links">Links to removed content</label>
 	<div>If you don't already have them, these links are in the DMCA Takedown Notice.</div>
@@ -76,7 +76,7 @@ Abuse of this form may lead to the termination of your {{ "SITE_NAME" | app_conf
 	<input class="btn btn-primary mt-5" type="submit" value="Submit">
 </form>
 
-{% elif v %}
+{% elif g.user %}
 <p>Please <a target="_blank" href="/settings/security">verify your press email address</a> in order to ensure we can respond to your request if needed. Then, refresh this page.</p>
 {% else %}
 {% filter markdown %}
