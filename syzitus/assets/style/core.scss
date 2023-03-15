@@ -4006,10 +4006,10 @@ body.dark .d-dark-none {
 img.img-blur {
     filter: blur(3px);
     border: 0px;
+    width:98px
 }
 div.blur-container {
     border: 1px solid $primary;
-    margin: -6px;
     overflow: hidden;
     border-radius: $border-radius;
 }
