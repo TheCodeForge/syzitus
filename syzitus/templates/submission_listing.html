@@ -60,13 +60,22 @@
           <img src="{{ p.thumb_url }}" class="post-img">
         </a>
 
-        {% elif p.thumb_url and p.is_image and ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
+        {% elif p.thumb_url and ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
 
-        <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
-          <div class="blur-container">
-            <img src="{{ p.thumb_url }}" class="post-img img-blur">
-          </div>
-        </a>
+          {% if p.is_image %}
+          <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+            <div class="blur-container">
+              <img src="{{ p.thumb_url }}" class="post-img img-blur">
+            </div>
+          </a>
+
+          {% else %}
+          <a href="{{ p.url }}" rel="nofollow noopener" target="_blank">
+            <div class="blur-container">
+              <img src="{{ p.thumb_url }}" class="post-img img-blur" alt="">
+            </div>
+          </a>
+          {% endif %}
 
         {% elif p.thumb_url and p.is_image %}
         <a href="javascript:void(0)" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
@@ -98,13 +107,21 @@
 
       <div class="d-block d-md-none zi-3">
         {% if p.thumb_url %}
-          {% if p.is_image and ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
+          {% if ((p.over_18 and (not b or not p.board.over_18)) or (p.is_nsfl and (not b or not p.board.is_nsfl))) %}
 
-          <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
-            <div class="blur-container">
-              <img src="{{ p.thumb_url }}" class="post-img img-blur">
-            </div>
-          </a>
+            {% if p.is_image %}
+            <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
+              <div class="blur-container">
+                <img src="{{ p.thumb_url }}" class="post-img img-blur">
+              </div>
+            </a>
+            {% elif p.url and not request.path.startswith('/embed/') %}
+            <a href="{{ p.url }}" rel="nofollow noopener">
+              <div class="blur-container">
+                <img src="{{ p.thumb_url }}" class="post-img img-blur" alt="link post thumbnail">
+              </div>
+            </a>
+            {% endif %}
           {% elif p.is_image %}
           <a href="javascript:void(0)" rel="nofollow noopener" class="expandable-image" data-toggle="modal" data-target="#expandImageModal" data-url="{{ p.url }}">
             <img src="{{ p.thumb_url }}" class="post-img">
