@@ -390,7 +390,7 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     def visibility_reason(self):
 
 
-        if not g.user or self.author_id == g.user.id:
+        if g.user and self.author_id == g.user.id:
             return "this is your content."
         elif self.is_pinned:
             return "a guildmaster has pinned it."
