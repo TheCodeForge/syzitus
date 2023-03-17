@@ -386,6 +386,7 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
         else:
             return None
 
+    @property
     def visibility_reason(self):
 
 
