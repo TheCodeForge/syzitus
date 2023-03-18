@@ -333,7 +333,7 @@ def logo_fontawesome_icon(style, icon):
     text_layer = PIL.Image.new("RGBA", (500, 500), color=(255,255,255,0))
 
     font = ImageFont.truetype(
-        safe_join(f"{app.config['RUQQUSPATH']}", f"assets/fontawesome/webfonts/fa-{style}-400.ttf", 
+        safe_join(f"{app.config['RUQQUSPATH']}", f"assets/fontawesome/webfonts/fa-{style}-400.ttf"), 
         size=300
         )
 
