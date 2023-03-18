@@ -54,7 +54,7 @@ CATEGORY_DATA={
     3: {'icon': 'fa-users', 'name': 'Culture', 'icon_text': ''},
     4: {'icon': 'fa-podium', 'name': 'Discussion', 'icon_text': ''},
     5: {'icon': 'fa-masks-theater', 'name': 'Entertainment', 'icon_text': ''},
-    6: {'icon': 'fa-alien', 'name': 'Gaming', 'icon_text': ''},
+    6: {'icon': 'fa-gamepad', 'name': 'Gaming', 'icon_text': ''},
     7: {'icon': 'fa-wrench', 'name': 'Hobbies', 'icon_text': ''},
     8: {'icon': 'fa-heart', 'name': 'Health', 'icon_text': ''},
     9: {'icon': 'fa-shirt', 'name': 'Lifestyle', 'icon_text': ''},
