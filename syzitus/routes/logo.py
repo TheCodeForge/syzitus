@@ -326,7 +326,8 @@ def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     size=int(size)
 
-    color=color or app.config["COLOR_PRIMARY"]
+    if not color:
+        color=app.config['COLOR_PRIMARY']
 
     primary_r=int(color[0:2], 16)
     primary_g=int(color[2:4], 16)
