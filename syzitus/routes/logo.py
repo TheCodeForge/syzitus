@@ -344,7 +344,7 @@ def logo_fontawesome_icon(style, icon, color=None, size=500):
         'light':'fa-light-300',
         'regular':'fa-regular-400',
         'sharp-regular':'fa-sharp-regular-400',
-        'sharp-solid':'fa-sharp-soid-900',
+        'sharp-solid':'fa-sharp-solid-900',
         'solid':'fa-solid-900',
         'thin':'fa-thin-100'
     }
