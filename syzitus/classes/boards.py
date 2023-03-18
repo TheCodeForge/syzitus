@@ -502,7 +502,7 @@ class Board(Base, standard_mixin, age_mixin):
             if self.over_18:
                 return "/assets/images/icons/nsfw_guild_icon.png"
             else:
-                return f"/logo/fontawesome/solid//{self.color.lower()}/75"
+                return f"/logo/fontawesome/solid/{self.subcat.category.icon_text}/{self.color.lower()}/75"
 
     @property
     def main_css_light_url(self):

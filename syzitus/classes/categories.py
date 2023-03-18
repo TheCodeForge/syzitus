@@ -49,21 +49,21 @@ class SubCategory(standard_mixin):
         }
 
 CATEGORY_DATA={
-    1: {'icon': 'fa-palette', 'name': 'Arts'},
-    2: {'icon': 'fa-chart-line', 'name': 'Business'},
-    3: {'icon': 'fa-users', 'name': 'Culture'},
-    4: {'icon': 'fa-podium', 'name': 'Discussion'},
-    5: {'icon': 'fa-theater-masks', 'name': 'Entertainment'},
-    6: {'icon': 'fa-alien-monster', 'name': 'Gaming'},
-    7: {'icon': 'fa-wrench', 'name': 'Hobbies'},
-    8: {'icon': 'fa-heart', 'name': 'Health'},
-    9: {'icon': 'fa-tshirt', 'name': 'Lifestyle'},
-    10: {'icon': 'fa-grin', 'name': 'Memes'},
-    11: {'icon': 'fa-newspaper', 'name': 'News'},
-    12: {'icon': 'fa-university', 'name': 'Politics'},
-    13: {'icon': 'fa-flask', 'name': 'Science'},
-    14: {'icon': 'fa-baseball-ball', 'name': 'Sports'},
-    15: {'icon': 'fa-microchip', 'name': 'Technology'}
+    1: {'icon': 'fa-palette', 'name': 'Arts', 'icon_text': ''},
+    2: {'icon': 'fa-chart-line', 'name': 'Business', 'icon_text': ''},
+    3: {'icon': 'fa-users', 'name': 'Culture', 'icon_text': ''},
+    4: {'icon': 'fa-podium', 'name': 'Discussion', 'icon_text': ''},
+    5: {'icon': 'fa-masks-theater', 'name': 'Entertainment', 'icon_text': ''},
+    6: {'icon': 'fa-alien', 'name': 'Gaming', 'icon_text': ''},
+    7: {'icon': 'fa-wrench', 'name': 'Hobbies', 'icon_text': ''},
+    8: {'icon': 'fa-heart', 'name': 'Health', 'icon_text': ''},
+    9: {'icon': 'fa-shirt', 'name': 'Lifestyle', 'icon_text': ''},
+    10: {'icon': 'fa-face-grin-beam', 'name': 'Memes', 'icon_text': ''},
+    11: {'icon': 'fa-newspaper', 'name': 'News', 'icon_text': ''},
+    12: {'icon': 'fa-building-columns', 'name': 'Politics', 'icon_text': ''},
+    13: {'icon': 'fa-flask', 'name': 'Science', 'icon_text': ''},
+    14: {'icon': 'fa-baseball', 'name': 'Sports', 'icon_text': ''},
+    15: {'icon': 'fa-microchip', 'name': 'Technology', 'icon_text': ''}
 }
 
 SUBCAT_DATA={
