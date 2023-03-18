@@ -319,6 +319,45 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
     bytesout.seek(0)
     return send_file(bytesout, mimetype="image/png")
 
+@app.get("/logo/fontawesome/<icon>")
+@admin_level_required(2)
+def logo_fontawesome_icon(icon):
+
+    primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
+    primary_g=int(app.config["COLOR_PRIMARY"][2:4], 16)
+    primary_b=int(app.config["COLOR_PRIMARY"][4:6], 16)
+
+    primary = (primary_r, primary_g, primary_b, 255)
+
+    base_layer = PIL.Image.new("RGBA", (500, 500), color=primary)
+    text_layer = PIL.Image.new("RGBA", (500, 500), color=(255,255,255,0))
+
+    font = ImageFont.truetype(
+        f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/fa-regular-400.ttf", 
+        size=400
+        )
+
+    icon=icon[0]
+
+    box=font.getbbox(icon)
+
+    d = ImageDraw.Draw(text_layer)
+    d.text(
+        (
+            500 // 2 - box[2] // 2, 
+            500 // 2 - (box[3]+box[1]) // 2
+            ),
+        icon, 
+        font=font,
+        fill=(255,255,255,255)
+        )
+
+    output=PIL.Image.alpha_composite(base_layer, text_layer)
+
+    bytesout=BytesIO()
+    output.save(bytesout, format="PNG")
+    bytesout.seek(0)
+    return send_file(bytesout, mimetype="image/png")
 
 @app.get("/favicon.ico")
 @cf_cache
