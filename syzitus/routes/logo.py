@@ -340,7 +340,7 @@ def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     filenames={
         'brands':'fa-brands-400',
-        'duotone':'fa-duotone-900',
+        #'duotone':'fa-duotone-900',
         'light':'fa-light-300',
         'regular':'fa-regular-400',
         'sharp-regular':'fa-sharp-regular-400',
