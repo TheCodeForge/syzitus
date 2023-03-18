@@ -320,7 +320,6 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
     return send_file(bytesout, mimetype="image/png")
 
 @app.get("/logo/fontawesome/<style>/<icon>")
-@admin_level_required(2)
 def logo_fontawesome_icon(style, icon):
 
     primary_r=int(app.config["COLOR_PRIMARY"][0:2], 16)
@@ -351,7 +350,7 @@ def logo_fontawesome_icon(style, icon):
         f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/{filename}.ttf", 
         size=300
         )
-
+https://test.syzitus.com/logo/fontawesome/solid/%EF%91%87
     icon=icon[0]
 
     box=font.getbbox(icon)
