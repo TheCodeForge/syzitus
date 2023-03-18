@@ -43,6 +43,7 @@ app.config["SITE_NAME"]=environ.get("SITE_NAME", "Syzitus").lstrip().rstrip()
 
 app.config["COLOR_PRIMARY"]=environ.get("COLOR_PRIMARY", "805AD5").lstrip().rstrip()
 app.config["COLOR_SECONDARY"]=environ.get("COLOR_SECONDARY", "E2E8F0").lstrip().rstrip()
+app.config["COLOR_PRIMARY_NAME"]=environ.get("COLOR_PRIMARY_NAME","Porpl").lstrip().rstrip()
 
 app.config["RUQQUSPATH"]=environ.get("RUQQUSPATH", path.dirname(path.realpath(__file__)))
 

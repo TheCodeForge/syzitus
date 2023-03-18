@@ -386,16 +386,17 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
         else:
             return None
 
+    @property
     def visibility_reason(self):
 
 
-        if not g.user or self.author_id == g.user.id:
+        if g.user and self.author_id == g.user.id:
             return "this is your content."
         elif self.is_pinned:
             return "a guildmaster has pinned it."
-        elif self.board.has_mod(v):
+        elif self.board.has_mod(g.user):
             return f"you are a guildmaster of +{self.board.name}."
-        elif self.board.has_contributor(v):
+        elif self.board.has_contributor(g.user):
             return f"you are an approved contributor in +{self.board.name}."
         elif g.user.admin_level >= 4:
             return f"you are a {app.config['SITE_NAME']} admin."
