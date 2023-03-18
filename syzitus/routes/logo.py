@@ -321,7 +321,8 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 
 @app.get("/logo/fontawesome/<style>/<icon>")
 @app.get("/logo/fontawesome/<style>/<icon>/<color>")
-def logo_fontawesome_icon(style, icon, color=None):
+@app.get("/logo/fontawesome/<style>/<icon>/<color>/<size>")
+def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     color=color or app.config["COLOR_PRIMARY"]
 
@@ -331,8 +332,8 @@ def logo_fontawesome_icon(style, icon, color=None):
 
     primary = (primary_r, primary_g, primary_b, 255)
 
-    base_layer = PIL.Image.new("RGBA", (500, 500), color=primary)
-    text_layer = PIL.Image.new("RGBA", (500, 500), color=(255,255,255,0))
+    base_layer = PIL.Image.new("RGBA", (size, size), color=primary)
+    text_layer = PIL.Image.new("RGBA", (size, size), color=(255,255,255,0))
 
     filenames={
         'brands':'fa-brands-400',
@@ -351,9 +352,9 @@ def logo_fontawesome_icon(style, icon, color=None):
 
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/{filename}.ttf", 
-        size=300
+        size=size * 3 // 5
         )
-    
+
     icon=icon[0]
 
     box=font.getbbox(icon)
@@ -361,8 +362,8 @@ def logo_fontawesome_icon(style, icon, color=None):
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
-            500 // 2 - box[2] // 2, 
-            500 // 2 - (box[3]+box[1]) // 2
+            size // 2 - box[2] // 2, 
+            size // 2 - (box[3]+box[1]) // 2
             ),
         icon, 
         font=font,
