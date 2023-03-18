@@ -52,7 +52,7 @@ CATEGORY_DATA={
     1: {'icon': 'fa-palette', 'name': 'Arts', 'icon_text': ''},
     2: {'icon': 'fa-chart-line', 'name': 'Business', 'icon_text': ''},
     3: {'icon': 'fa-users', 'name': 'Culture', 'icon_text': ''},
-    4: {'icon': 'fa-podium', 'name': 'Discussion', 'icon_text': ''},
+    4: {'icon': 'fa-comment-lines', 'name': 'Discussion', 'icon_text': ''},
     5: {'icon': 'fa-masks-theater', 'name': 'Entertainment', 'icon_text': ''},
     6: {'icon': 'fa-gamepad', 'name': 'Gaming', 'icon_text': ''},
     7: {'icon': 'fa-wrench', 'name': 'Hobbies', 'icon_text': ''},
