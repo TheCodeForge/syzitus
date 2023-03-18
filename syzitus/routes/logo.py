@@ -353,7 +353,7 @@ def logo_fontawesome_icon(style, icon, color=None):
         f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/{filename}.ttf", 
         size=300
         )
-https://test.syzitus.com/logo/fontawesome/solid/%EF%91%87
+    
     icon=icon[0]
 
     box=font.getbbox(icon)
