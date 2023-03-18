@@ -324,6 +324,8 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 @app.get("/logo/fontawesome/<style>/<icon>/<color>/<size>")
 def logo_fontawesome_icon(style, icon, color=None, size=500):
 
+    size=int(size)
+
     color=color or app.config["COLOR_PRIMARY"]
 
     primary_r=int(color[0:2], 16)
