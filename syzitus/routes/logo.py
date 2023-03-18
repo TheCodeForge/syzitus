@@ -332,8 +332,23 @@ def logo_fontawesome_icon(style, icon):
     base_layer = PIL.Image.new("RGBA", (500, 500), color=primary)
     text_layer = PIL.Image.new("RGBA", (500, 500), color=(255,255,255,0))
 
+    filenames={
+        'brands':'fa-brands-400',
+        'duotone':'fa-duotone-900',
+        'light':'fa-light-300',
+        'regular':'fa-regular-400',
+        'sharp-regular':'fa-sharp-regular-400',
+        'sharp-solid':'fa-sharp-soid-900',
+        'solid':'fa-solid-900',
+        'thin':'fa-thin-100'
+    }
+    if style not in filenames:
+        abort(404)
+
+    filename=filenames[style]
+
     font = ImageFont.truetype(
-        safe_join(f"{app.config['RUQQUSPATH']}", f"assets/fontawesome/webfonts/fa-{style}-400.ttf"), 
+        f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/{filename}.ttf", 
         size=300
         )
 
