@@ -334,7 +334,7 @@ def logo_fontawesome_icon(icon):
 
     font = ImageFont.truetype(
         f"{app.config['RUQQUSPATH']}/assets/fontawesome/webfonts/fa-regular-400.ttf", 
-        size=400
+        size=300
         )
 
     icon=icon[0]
