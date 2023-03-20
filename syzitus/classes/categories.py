@@ -116,11 +116,11 @@ SUBCAT_DATA={
     48: {'cat_id': 8,  'name': 'Mental Health',     'icon': 'fa-brain-circuit', 'icon_text': ''},
     49: {'cat_id': 1,  'name': 'Music',             'icon': 'fa-music', 'icon_text': ''},
     50: {'cat_id': 13, 'name': 'Natural Sciences',  'icon': 'fa-leaf', 'icon_text': ''},
-    51: {'cat_id': 5,  'name': 'News',              'icon': 'fa-newspaper', 'icon_text': ''}, #multiple news overlaps
+    51: {'cat_id': 5,  'name': 'News',              'icon': 'fa-podium-star', 'icon_text': ''}, #multiple news overlaps
     31: {'cat_id': 6,  'name': 'News',              'icon': 'fa-trophy', 'icon_text': ''},
     52: {'cat_id': 15, 'name': 'News',              'icon': 'fa-browser', 'icon_text': ''},
     53: {'cat_id': 13, 'name': 'News',              'icon': 'fa-newspaper', 'icon_text': ''},
-    54: {'cat_id': 12, 'name': 'News',              'icon': 'fa-newspaper', 'icon_text': ''},
+    54: {'cat_id': 12, 'name': 'News',              'icon': 'fa-podium', 'icon_text': ''},
     55: {'cat_id': 11, 'name': 'North America',     'icon': 'fa-flag-usa', 'icon_text': ''}, #globe-americas is currently used as "all"
     56: {'cat_id': 10, 'name': 'Offensive',         'icon': 'fa-face-explode', 'icon_text': ''},
     57: {'cat_id': 7,  'name': 'Outdoors',          'icon': 'fa-trees', 'icon_text': ''},
