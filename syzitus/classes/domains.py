@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from syzitus.__main__ import Base, cache, app
 
 reasons = {
-    1: "URL shorteners are not allowed.",
+    1: "URL shorteners and redirection services are not allowed.",
     3: "Piracy is not allowed.",
     4: "Sites hosting digitally malicious content are not allowed.",
     5: "Spam",
