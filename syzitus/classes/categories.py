@@ -61,7 +61,7 @@ CATEGORY_DATA={
     10: {'icon': 'fa-face-grin-beam', 'name': 'Memes', 'icon_text': ''},
     11: {'icon': 'fa-newspaper', 'name': 'News', 'icon_text': ''},
     12: {'icon': 'fa-podium', 'name': 'Politics', 'icon_text': ''},
-    13: {'icon': 'fa-flask', 'name': 'Science', 'icon_text': ''},
+    13: {'icon': 'fa-atom', 'name': 'Science', 'icon_text': ''},
     14: {'icon': 'fa-baseball', 'name': 'Sports', 'icon_text': ''},
     15: {'icon': 'fa-microchip', 'name': 'Technology', 'icon_text': ''}
 }
