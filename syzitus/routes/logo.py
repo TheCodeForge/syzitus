@@ -322,6 +322,7 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 @app.get("/logo/fontawesome/<style>/<icon>")
 @app.get("/logo/fontawesome/<style>/<icon>/<color>")
 @app.get("/logo/fontawesome/<style>/<icon>/<color>/<size>")
+@cf_cache
 def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     size=int(size)
