@@ -102,6 +102,8 @@ app.config["UserAgent"] = f"Content Aquisition for Porpl message board v{_versio
 
 if "localhost" in app.config["SERVER_NAME"]:
     app.config["CACHE_TYPE"] = "NullCache"
+elif not environ.get("REDIS_URL"):
+    app.config["CACHE_TYPE"] = "FileSystemCache"
 else:
     app.config["CACHE_TYPE"] = environ.get("CACHE_TYPE", 'NullCache').lstrip().rstrip()
 
