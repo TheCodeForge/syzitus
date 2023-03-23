@@ -28,6 +28,16 @@
         </div>
       </a>
     </div>
+{% if g.user and g.user.admin_level>=3 %}
+    <div class="col px-0">
+      <a href="/admin/all" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/admin/all' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/admin/all' %}fas{% else %}far{% endif %} fa-infinity text-lg d-block"></i>
+          <div class="text-small">All</div>
+        </div>
+      </a>
+    </div>
+{% endif %}
 {% if g.user %}
     <div class="col px-0">
       <a href="/mine/guilds" class="text-decoration-none" role="button">
@@ -46,16 +56,6 @@
         </div>
       </a>
     </div>
-{% if g.user and g.user.admin_level>=3 %}
-    <div class="col px-0">
-      <a href="/admin/all" class="text-decoration-none" role="button">
-        <div class="text-center {% if request.path=='/admin/all' %}text-purple{% else %}text-muted{% endif %}">
-          <i class="{% if request.path=='/admin/all' %}fas{% else %}far{% endif %} fa-compass text-lg d-block"></i>
-          <div class="text-small">All</div>
-        </div>
-      </a>
-    </div>
-{% endif %}
 {% if not g.user %}
     <div class="col px-0">
       <a href="/signup" class="text-decoration-none" role="button">
