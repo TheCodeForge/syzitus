@@ -1090,6 +1090,8 @@ window.onload = function () {
 
     var navbar = document.getElementById("navbar");
 
+    var height = bottomBar.offsetHeight.toString()
+
     if (bottomBar != null) {
       if (prevScrollpos > currentScrollPos && (window.innerHeight + currentScrollPos) < (document.body.offsetHeight - 65)) {
         bottomBar.style.bottom = "0px";
@@ -1098,10 +1100,10 @@ window.onload = function () {
         bottomBar.style.bottom = "0px";
       }
       else if (prevScrollpos > currentScrollPos && (window.innerHeight + currentScrollPos) >= (document.body.offsetHeight - 65)) {
-        bottomBar.style.bottom = "-50px";
+        bottomBar.style.bottom = "-"+height+"px";
       }
       else {
-        bottomBar.style.bottom = "-50px";
+        bottomBar.style.bottom = "-"+height+"px";
       }
     }
 
