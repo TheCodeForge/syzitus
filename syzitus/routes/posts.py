@@ -594,7 +594,7 @@ Optional file data:
                 return redirect('/notifications')
             else:
 
-                return jsonify({"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}), 400
+                return jsonify({"error": f"The link `{badlink.link}` is not allowed. Reason: {badlink.reason}"}), 422
 
     # check for embeddable video
     domain = parsed_url.netloc

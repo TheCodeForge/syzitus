@@ -322,6 +322,7 @@ def get_assets_images_splash(kind, width, height, color=None, letter=None):
 @app.get("/logo/fontawesome/<style>/<icon>")
 @app.get("/logo/fontawesome/<style>/<icon>/<color>")
 @app.get("/logo/fontawesome/<style>/<icon>/<color>/<size>")
+@cf_cache
 def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     size=int(size)
@@ -340,7 +341,6 @@ def logo_fontawesome_icon(style, icon, color=None, size=500):
 
     filenames={
         'brands':'fa-brands-400',
-        #'duotone':'fa-duotone-900',
         'light':'fa-light-300',
         'regular':'fa-regular-400',
         'sharp-regular':'fa-sharp-regular-400',
@@ -365,8 +365,8 @@ def logo_fontawesome_icon(style, icon, color=None, size=500):
     d = ImageDraw.Draw(text_layer)
     d.text(
         (
-            size // 2 - box[2] // 2, 
-            size // 2 - (box[3]+box[1]) // 2
+            size // 2 - box[2] // 2 + 1, 
+            size // 2 - (box[3]+box[1]) // 2 + 1
             ),
         icon, 
         font=font,

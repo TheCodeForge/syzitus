@@ -13,13 +13,13 @@
   <title>{% block pagetitle %}Settings - {{ 'SITE_NAME' | app_config  }}{% endblock %}</title>
 
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.0/css/bootstrap.min.css"
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Ruqqus CSS -->
 
-  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=4.2.0">
-  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=4.2.0">
+  <link id="css-link-dark" rel="{% if session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/dark.css?v=4.2.1">
+  <link id="css-link-light" rel="{% if not session.get('dark_mode_enabled') %}stylesheet{% endif %}" href="/assets/style/{{ 'COLOR_PRIMARY' | app_config }}/light.css?v=4.2.1">
 
   <!-- Font Awesome -->
   <link href="/assets/fontawesome/css/all.css" rel="stylesheet"> <!--load all styles -->
@@ -175,7 +175,7 @@
 <!--Post toasts -->
 {% include "toasts.html" %}
 
-<script src="/assets/js/all_js.js?v=4.2.0"></script>
+<script src="/assets/js/all_js.js?v=4.2.1"></script>
 
 </body>
 

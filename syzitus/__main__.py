@@ -29,7 +29,7 @@ from redis import BlockingConnectionPool, ConnectionPool
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 
-_version = "4.2.0"
+_version = "4.2.1"
 
 app = Flask(__name__,
             template_folder='./templates'
@@ -98,10 +98,12 @@ app.config["DISABLE_SIGNUPS"]=int(environ.get("DISABLE_SIGNUPS",0))
 
 app.jinja_env.cache = {}
 
-app.config["UserAgent"] = f"Content Aquisition for Porpl message board v{_version}."
+app.config["UserAgent"] = f"Content Aquisition for {app.config['COLOR_PRIMARY_NAME']} message board v{_version}."
 
 if "localhost" in app.config["SERVER_NAME"]:
     app.config["CACHE_TYPE"] = "NullCache"
+elif not environ.get("REDIS_URL"):
+    app.config["CACHE_TYPE"] = "FileSystemCache"
 else:
     app.config["CACHE_TYPE"] = environ.get("CACHE_TYPE", 'NullCache').lstrip().rstrip()
 

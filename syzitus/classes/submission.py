@@ -389,7 +389,6 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
     @property
     def visibility_reason(self):
 
-
         if g.user and self.author_id == g.user.id:
             return "this is your content."
         elif self.is_pinned:
