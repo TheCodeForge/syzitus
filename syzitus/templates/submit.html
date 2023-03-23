@@ -193,7 +193,7 @@
   </div>
 
   <div id="submit-page-footer" class="container">
-    <div class="row fixed-bottom bg-white border-top p-3">
+    <div class="row fixed-bottom bg-white border-top p-3{% if g.system=='ios/safari' %} pb-5{% endif %}">
       <div class="col">
         <a href="/" class="btn btn-secondary">Cancel</a>
       </div>
