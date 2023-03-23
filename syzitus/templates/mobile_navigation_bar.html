@@ -1,6 +1,6 @@
 <div class="container d-inline-flex d-lg-none">
 
-    <div class="row fixed-bottom bg-white border-top p-2" id="mobile-bottom-navigation-bar">
+    <div class="row fixed-bottom bg-white border-top p-2{% if g.system=='ios/safari' %} pb-4{% endif %} id="mobile-bottom-navigation-bar">
 
 {% if g.user %}
         <div class="col px-0">
