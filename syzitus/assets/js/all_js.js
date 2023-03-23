@@ -1090,7 +1090,7 @@ window.onload = function () {
 
     var navbar = document.getElementById("navbar");
 
-    var bottom_height = bottomBar.offsetHeight.toString();
+    var height = bottomBar.offsetHeight.toString()
 
     if (bottomBar != null) {
       if (prevScrollpos > currentScrollPos && (window.innerHeight + currentScrollPos) < (document.body.offsetHeight - 65)) {
