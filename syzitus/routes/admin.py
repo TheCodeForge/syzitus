@@ -1508,7 +1508,7 @@ def admin_ban_domain():
     if request.form.get("from")=="admin":
         return redirect(d.permalink)
     else:
-        return redirect(f"/search?domain:{domain}")
+        return redirect(f"/search?q=domain:{domain}")
 
 
 @app.route("/admin/nuke_user", methods=["POST"])
