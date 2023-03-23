@@ -1,62 +1,72 @@
 <div class="container d-inline-flex d-lg-none">
 
-    <div class="row fixed-bottom bg-white border-top p-2{% if g.system=='ios/safari' %} pb-5{% endif %}" id="mobile-bottom-navigation-bar">
+  <div class="row fixed-bottom bg-white border-top p-2{% if g.system=='ios/safari' %} pb-5{% endif %}" id="mobile-bottom-navigation-bar">
 
 {% if g.user %}
-        <div class="col px-0">
-            <a href="/" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/' %}fas{% else %}far{% endif %} fa-home-alt text-lg d-block"></i>
-                    <div class="text-small">Home</div>
-                </div>
-            </a>
+    <div class="col px-0">
+      <a href="/" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/' %}fas{% else %}far{% endif %} fa-home-alt text-lg d-block"></i>
+          <div class="text-small">Home</div>
         </div>
-{% endif %}
-        <div class="col px-0">
-            <a href="/all?sort=new" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/all' and sort_method=='new' %}fas{% else %}far{% endif %} fa-globe-americas text-lg d-block"></i>
-                    <div class="text-small">New</div>
-                </div>
-            </a>
-        </div>
-        <div class="col px-0">
-            <a href="/all?sort=hot" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/all' and sort_method=='hot' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/all' and sort_method=='hot' %}fas{% else %}far{% endif %} fa-fire text-lg d-block"></i>
-                    <div class="text-small">Trending</div>
-                </div>
-            </a>
-        </div>
-{% if g.user %}
-        <div class="col px-0">
-            <a href="/mine/guilds" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/mine/guilds' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/mine/guilds' %}fas{% else %}far{% endif %} fa-chess-rook text-lg d-block"></i>
-                    <div class="text-small">Guilds</div>
-                </div>
-            </a>
-        </div>
-{% endif %}
-        <div class="col px-0">
-            <a href="/browse" class="text-decoration-none" role="button">
-                <div class="text-center {% if request.path=='/browse' %}text-purple{% else %}text-muted{% endif %}">
-                    <i class="{% if request.path=='/browse' %}fas{% else %}far{% endif %} fa-compass text-lg d-block"></i>
-                    <div class="text-small">Browse</div>
-                </div>
-            </a>
-        </div>
-{% if not g.user %}
-        <div class="col px-0">
-            <a href="/signup" class="text-decoration-none" role="button">
-                <div class="text-center text-muted">
-                    <i class="far fa-user-plus text-lg d-block"></i>
-                    <div class="text-small">Sign Up</div>
-                </div>
-            </a>
-        </div>
-{% endif %}
-
+      </a>
     </div>
+{% endif %}
+    <div class="col px-0">
+      <a href="/all?sort=new" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/all' and sort_method=='new' %}fas{% else %}far{% endif %} fa-globe-americas text-lg d-block"></i>
+          <div class="text-small">New</div>
+        </div>
+      </a>
+    </div>
+    <div class="col px-0">
+      <a href="/all?sort=hot" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/all' and sort_method=='hot' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/all' and sort_method=='hot' %}fas{% else %}far{% endif %} fa-fire text-lg d-block"></i>
+          <div class="text-small">Trending</div>
+        </div>
+      </a>
+    </div>
+{% if g.user %}
+    <div class="col px-0">
+      <a href="/mine/guilds" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/mine/guilds' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/mine/guilds' %}fas{% else %}far{% endif %} fa-chess-rook text-lg d-block"></i>
+          <div class="text-small">Guilds</div>
+        </div>
+      </a>
+    </div>
+{% endif %}
+    <div class="col px-0">
+      <a href="/browse" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/browse' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/browse' %}fas{% else %}far{% endif %} fa-compass text-lg d-block"></i>
+          <div class="text-small">Browse</div>
+        </div>
+      </a>
+    </div>
+{% if g.user and g.user.admin_level>=3 %}
+    <div class="col px-0">
+      <a href="/admin/all" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/admin/all' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/admin/all' %}fas{% else %}far{% endif %} fa-compass text-lg d-block"></i>
+          <div class="text-small">All</div>
+        </div>
+      </a>
+    </div>
+{% endif %}
+{% if not g.user %}
+    <div class="col px-0">
+      <a href="/signup" class="text-decoration-none" role="button">
+        <div class="text-center text-muted">
+          <i class="far fa-user-plus text-lg d-block"></i>
+          <div class="text-small">Sign Up</div>
+        </div>
+      </a>
+    </div>
+{% endif %}
+
+  </div>
 
 </div>
