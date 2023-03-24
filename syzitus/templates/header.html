@@ -149,14 +149,20 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw mr-3"></i>@{{ g.user.username }}</a>
           </li>
+          {% if g.user.notifications_count %}
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="/notifications">
+              <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
+              <i class="fas fa-circle text-danger position-absolute" id="red-notif-circle"></i>
+            </a>
+          </li>
+          {% else %}
           <li class="nav-item">
             <a class="nav-link {% if g.user.notifications_count %}position-relative{% endif %}" href="/notifications/all">
               <i class="fas fa-envelope fa-fw mr-3"></i>Inbox
-              {% if g.user.notifications_count %}
-              <i class="fas fa-circle text-danger position-absolute" id="red-notif-circle"></i>
-              {% endif %}
             </a>
           </li>
+          {% endif %}
 
           <li class="nav-item">
             <a class="nav-link" href="/settings"><i class="fas fa-cog fa-fw mr-3"></i>My account</a>
