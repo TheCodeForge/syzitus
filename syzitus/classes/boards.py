@@ -93,7 +93,8 @@ class Board(Base, standard_mixin, age_mixin):
 
     def __init__(self, **kwargs):
 
-        kwargs["created_utc"] = g.timestamp
+        if "created_utc" not in kwargs:
+            kwargs["created_utc"] = g.timestamp
 
         super().__init__(**kwargs)
 

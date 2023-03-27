@@ -301,6 +301,7 @@ def debug(text):
 import syzitus.classes
 from syzitus.routes import *
 import syzitus.helpers.jinja2
+from syzitus.helpers.get import *
 
 #purge css from cache
 cache.delete_memoized(syzitus.routes.main_css)
@@ -448,3 +449,40 @@ def teardown_request(resp):
 def www_redirect(path):
 
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
+
+
+#Check for existence of +general and @system
+db=db_session()
+system = db.query(syzitus.classes.User).filter_by(id=1).first()
+if not system:
+    system = User(
+        id=1,
+        name=app.config['SITE_NAME'].lower(),
+        created_utc = int(time.time()),
+        admin_level=6,
+        original_username=app.config['SITE_NAME'].lower()
+        )
+
+    db.add(system)
+    db.commit()
+    debug(f"@{app.config['SITE_NAME'].lower()} created")
+
+
+general = get_guild("general", graceful=True)
+
+if not general:
+
+    general = Board(
+        id=1,
+        name="general",
+        created_utc = int(time.time()),
+        creator_id=1,
+        is_siegable=False,
+        all_opt_out=True,
+        subcat_id=71,
+        description=f"Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.",
+        description_html=f"<p>Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.</p>"
+        )
+    db.add(general)
+    db.commit()
+    debug("+general created")
