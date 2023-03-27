@@ -145,8 +145,6 @@ app.config["CACHE_OPTIONS"]={'connection_pool':redispool} if app.config["CACHE_T
 app.config["READ_ONLY"]=bool(int(environ.get("READ_ONLY", False)))
 app.config["BOT_DISABLE"]=bool(int(environ.get("BOT_DISABLE", False)))
 
-app.config["TENOR_KEY"]=environ.get("TENOR_KEY",'').lstrip().rstrip()
-
 app.config["PROFILE_UPLOAD_REP"]=int(environ.get("PROFILE_UPLOAD_REP", "300").lstrip().rstrip())
 app.config["BANNER_UPLOAD_REP"]=int(environ.get("BANNER_UPLOAD_REP", "500").lstrip().rstrip())
 app.config["GUILD_CREATION_REQ"]=int(environ.get("GUILD_CREATION_REQ", "500").lstrip().rstrip())
@@ -187,7 +185,7 @@ app.config["IMG_URL_JUMBOTRON"] = f"/logo/jumbotron/{app.config['COLOR_PRIMARY']
 app.config["IMG_URL_FAVICON"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/64/64"
 app.config["IMG_URL_THUMBSPLASH"]=f"/logo/splash/{app.config['COLOR_PRIMARY']}/{app.config['SITE_NAME'][0].lower()}/1200/630"
 app.config["FEATURE_ENABLE_EMOJI"]=bool(int(environ.get("FEATURE_ENABLE_EMOJI",1)))
-app.config["FEATURE_ENABLE_GIFS"]=bool(int(environ.get("FEATURE_ENABLE_GIFS",1)))
+app.config["FEATURE_ENABLE_GIFS"]=bool(int(environ.get("FEATURE_ENABLE_GIFS",bool(environ.get('GIPHY_KEY')))))
 
 #GIPHY
 app.config["GIPHY_KEY"] = environ.get('GIPHY_KEY','').lstrip().rstrip()
