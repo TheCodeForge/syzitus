@@ -98,7 +98,7 @@ app.config["DISABLE_SIGNUPS"]=int(environ.get("DISABLE_SIGNUPS",0))
 
 app.jinja_env.cache = {}
 
-app.config["UserAgent"] = f"Content Aquisition for {app.config['COLOR_PRIMARY_NAME']} message board v{_version}."
+app.config["UserAgent"] = f"Content Aquisition for {app.config['SERVER_NAME']} message board v{_version}."
 
 if "localhost" in app.config["SERVER_NAME"]:
     app.config["CACHE_TYPE"] = "NullCache"
