@@ -466,7 +466,7 @@ if not system:
     debug(f"@{app.config['SITE_NAME'].lower()} created")
 
 
-general = get_guild("general", graceful=True)
+general = db.query(syzitus.classes.Board).filter_by(id=1).first()
 
 if not general:
 
@@ -484,3 +484,5 @@ if not general:
     db.add(general)
     db.commit()
     debug("+general created")
+
+db.close()
