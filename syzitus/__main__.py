@@ -449,7 +449,7 @@ def www_redirect(path):
     return redirect(f"https://{app.config['SERVER_NAME']}/{path}")
 
 
-#Check for existence of +general and @system
+#Check for existence of +general and @system and image host db entries
 db=db_session()
 system = db.query(syzitus.classes.User).filter_by(id=1).first()
 if not system:
@@ -484,5 +484,18 @@ if not general:
     db.add(general)
     db.commit()
     debug("+general created")
+
+img = db.query(syzitus.classes.Domain).filter_by(domain=app.config["S3_BUCKET"]).first()
+
+if not img:
+
+    img = Domain(
+        id=1,
+        domain=app.config["S3_BUCKET"],
+        is_banned=False,
+        show_thumbnail=True
+        )
+    db.add(img)
+    db.commit()
 
 db.close()
