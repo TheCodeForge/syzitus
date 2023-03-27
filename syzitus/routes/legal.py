@@ -107,104 +107,104 @@ def dmca_post():
     post_html = sanitize(post_html, linkgen=True)
 
     # create +DMCA post
-    guild=get_guild("DMCA", graceful=True)
+    guild=get_guild("DMCA")
 
     if guild:
 
-        new_post = Submission(author_id=1,
-                              domain_ref=None,
-                              board_id=guild.id,
-                              original_board_id=guild.id,
-                              over_18=False,
-                              post_public=True,
-                              repost_id=None,
-                              is_offensive=False
-                              )
+    new_post = Submission(author_id=1,
+                          domain_ref=None,
+                          board_id=guild.id,
+                          original_board_id=guild.id,
+                          over_18=False,
+                          post_public=True,
+                          repost_id=None,
+                          is_offensive=False
+                          )
 
-        g.db.add(new_post)
-        g.db.flush()
+    g.db.add(new_post)
+    g.db.flush()
 
-        new_post_aux = SubmissionAux(id=new_post.id,
-                                     url=None,
-                                     body=post_text,
-                                     body_html=post_html,
-                                     embed_url=None,
-                                     title=f"DMCA {new_post.base36id}"
-                                     )
+    new_post_aux = SubmissionAux(id=new_post.id,
+                                 url=None,
+                                 body=post_text,
+                                 body_html=post_html,
+                                 embed_url=None,
+                                 title=f"DMCA {new_post.base36id}"
+                                 )
 
-        g.db.add(new_post_aux)
-        g.db.flush()
+    g.db.add(new_post_aux)
+    g.db.flush()
 
-        comment_text = f"##### Username\n\n@{g.user.username}\n\n##### Email\n\n{g.user.email}\n\n##### Address\n\n{data['your_address']}"
-        with CustomRenderer() as renderer:
-            c_html = renderer.render(Document(comment_text))
-        c_html = sanitize(c_html, linkgen=True)
+    comment_text = f"##### Username\n\n@{g.user.username}\n\n##### Email\n\n{g.user.email}\n\n##### Address\n\n{data['your_address']}"
+    with CustomRenderer() as renderer:
+        c_html = renderer.render(Document(comment_text))
+    c_html = sanitize(c_html, linkgen=True)
 
-        c = Comment(author_id=1,
-                    parent_submission=new_post.id,
-                    parent_comment_id=None,
-                    level=1,
-                    over_18=False,
-                    is_nsfl=False,
-                    is_offensive=False,
-                    original_board_id=guild.id,
-                    deleted_utc=int(time.time())
-                    )
-        g.db.add(c)
-        g.db.flush()
+    c = Comment(author_id=1,
+                parent_submission=new_post.id,
+                parent_comment_id=None,
+                level=1,
+                over_18=False,
+                is_nsfl=False,
+                is_offensive=False,
+                original_board_id=guild.id,
+                deleted_utc=int(time.time())
+                )
+    g.db.add(c)
+    g.db.flush()
 
-        c_aux = CommentAux(
-            id=c.id,
-            body_html=c_html,
-            body=comment_text
+    c_aux = CommentAux(
+        id=c.id,
+        body_html=c_html,
+        body=comment_text
+    )
+
+    g.db.add(c_aux)
+    g.db.commit()
+
+
+    #Bell notifs
+    board_uids = g.db.query(
+        Subscription.user_id
+        ).options(lazyload('*')).filter(
+        Subscription.board_id==new_post.board_id, 
+        Subscription.is_active==True,
+        Subscription.get_notifs==True,
+        Subscription.user_id != g.user.id,
+        Subscription.user_id.notin_(
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
+            ),
+        Subscription.user_id.notin_(
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
+            )
         )
 
-        g.db.add(c_aux)
-        g.db.commit()
-
-
-        #Bell notifs
-        board_uids = g.db.query(
-            Subscription.user_id
-            ).options(lazyload('*')).filter(
-            Subscription.board_id==new_post.board_id, 
-            Subscription.is_active==True,
-            Subscription.get_notifs==True,
-            Subscription.user_id != g.user.id,
-            Subscription.user_id.notin_(
-                select(UserBlock.user_id).filter_by(target_id=g.user.id)
-                ),
-            Subscription.user_id.notin_(
-                select(UserBlock.target_id).filter_by(user_id=g.user.id)
-                )
+    follow_uids=g.db.query(
+        Follow.user_id
+        ).options(lazyload('*')).filter(
+        Follow.target_id==g.user.id,
+        Follow.get_notifs==True,
+        Follow.user_id!=g.user.id,
+        Follow.user_id.notin_(
+            select(UserBlock.user_id).filter_by(target_id=g.user.id)
+            ),
+        Follow.user_id.notin_(
+            select(UserBlock.target_id).filter_by(user_id=g.user.id)
             )
+        ).join(Follow.target).filter(
+        User.is_private==False,
+        User.is_nofollow==False,
+        )
 
-        follow_uids=g.db.query(
-            Follow.user_id
-            ).options(lazyload('*')).filter(
-            Follow.target_id==g.user.id,
-            Follow.get_notifs==True,
-            Follow.user_id!=g.user.id,
-            Follow.user_id.notin_(
-                select(UserBlock.user_id).filter_by(target_id=g.user.id)
-                ),
-            Follow.user_id.notin_(
-                select(UserBlock.target_id).filter_by(user_id=g.user.id)
-                )
-            ).join(Follow.target).filter(
-            User.is_private==False,
-            User.is_nofollow==False,
+    uids=list(set([x[0] for x in board_uids.all()] + [x[0] for x in follow_uids.all()]))
+    for uid in uids:
+        new_notif=Notification(
+            user_id=uid,
+            submission_id=new_post.id
             )
+        g.db.add(new_notif)
 
-        uids=list(set([x[0] for x in board_uids.all()] + [x[0] for x in follow_uids.all()]))
-        for uid in uids:
-            new_notif=Notification(
-                user_id=uid,
-                submission_id=new_post.id
-                )
-            g.db.add(new_notif)
-
-        g.db.commit()
+    g.db.commit()
 
     return render_template(
         "/message.html",
