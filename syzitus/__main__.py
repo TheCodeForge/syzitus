@@ -471,7 +471,7 @@ try:
 
         general = Board(
             id=1,
-            name="general",
+            username="general",
             created_utc = int(time.time()),
             creator_id=1,
             is_siegable=False,
