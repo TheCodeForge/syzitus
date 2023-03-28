@@ -8,7 +8,6 @@ from secrets import token_hex
 from flask import Flask, redirect, render_template, jsonify, abort, g, request
 from flask_caching import Cache
 from flask_limiter import Limiter
-from flask_compress import Compress
 from flask_minify import Minify
 from collections import deque
 from psycopg2.errors import UndefinedColumn
@@ -202,7 +201,6 @@ app.config['BYPASS_CATEGORIES']=bool(int(environ.get("BYPASS_CATEGORIES", 0)))
 
 Markdown(app)
 cache = Cache(app)
-Compress(app)
 
 if bool(int(environ.get("MINIFY",0))):
     Minify(app)
@@ -450,52 +448,55 @@ def www_redirect(path):
 
 
 #Check for existence of +general and @system and image host db entries
-db=db_session()
-system = db.query(syzitus.classes.User).filter_by(id=1).first()
-if not system:
-    system = User(
-        id=1,
-        name=app.config['SITE_NAME'].lower(),
-        created_utc = int(time.time()),
-        admin_level=6,
-        original_username=app.config['SITE_NAME'].lower()
-        )
+try:
+    db=db_session()
+    system = db.query(syzitus.classes.User).filter_by(id=1).first()
+    if not system:
+        system = User(
+            id=1,
+            name=app.config['SITE_NAME'].lower(),
+            created_utc = int(time.time()),
+            admin_level=6,
+            original_username=app.config['SITE_NAME'].lower()
+            )
 
-    db.add(system)
-    db.commit()
-    debug(f"@{app.config['SITE_NAME'].lower()} created")
+        db.add(system)
+        db.commit()
+        debug(f"@{app.config['SITE_NAME'].lower()} created")
 
 
-general = db.query(syzitus.classes.Board).filter_by(id=1).first()
+    general = db.query(syzitus.classes.Board).filter_by(id=1).first()
 
-if not general:
+    if not general:
 
-    general = Board(
-        id=1,
-        name="general",
-        created_utc = int(time.time()),
-        creator_id=1,
-        is_siegable=False,
-        all_opt_out=True,
-        subcat_id=71,
-        description=f"Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.",
-        description_html=f"<p>Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.</p>"
-        )
-    db.add(general)
-    db.commit()
-    debug("+general created")
+        general = Board(
+            id=1,
+            name="general",
+            created_utc = int(time.time()),
+            creator_id=1,
+            is_siegable=False,
+            all_opt_out=True,
+            subcat_id=71,
+            description=f"Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.",
+            description_html=f"<p>Catch-all zone for content rejected from elsewhere on {app.config['SITE_NAME']}. Not shown in All/Trending.</p>"
+            )
+        db.add(general)
+        db.commit()
+        debug("+general created")
 
-img = db.query(syzitus.classes.Domain).filter_by(domain=app.config["S3_BUCKET"]).first()
+    img = db.query(syzitus.classes.Domain).filter_by(domain=app.config["S3_BUCKET"]).first()
 
-if not img:
+    if not img:
 
-    img = Domain(
-        id=1,
-        domain=app.config["S3_BUCKET"],
-        is_banned=False,
-        show_thumbnail=True
-        )
-    db.add(img)
-    db.commit()
+        img = Domain(
+            id=1,
+            domain=app.config["S3_BUCKET"],
+            is_banned=False,
+            show_thumbnail=True
+            )
+        db.add(img)
+        db.commit()
 
-db.close()
+    db.close()
+except sqlalchemy.exc.ProgrammingError:
+    pass
