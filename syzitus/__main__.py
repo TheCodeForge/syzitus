@@ -498,5 +498,5 @@ try:
         db.commit()
 
     db.close()
-except sqlalchemy.exc.ProgrammingError:
+except ProgrammingError:
     pass
