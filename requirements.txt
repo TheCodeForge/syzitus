@@ -5,7 +5,7 @@ botocore>=1.29.23
 cssutils==2.6.0
 Flask>=2.2.2
 Flask-Caching>=2.0.1
-Flask-Compress>=1.13
+#Flask-Compress>=1.13
 Flask-Limiter>=3.1.0
 Flask-Markdown>=0.3
 Flask-Minify>=0.41
