@@ -233,7 +233,7 @@ class User(Base, standard_mixin, age_mixin):
             kwargs["passhash"] = self.hash_password(kwargs["password"])
             kwargs.pop("password")
 
-        if ["created_utc"] not in kwargs:
+        if "created_utc" not in kwargs:
             kwargs["created_utc"] = g.timestamp
 
         super().__init__(**kwargs)
