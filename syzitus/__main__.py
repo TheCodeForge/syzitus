@@ -454,7 +454,7 @@ try:
     if not system:
         system = User(
             id=1,
-            name=app.config['SITE_NAME'].lower(),
+            username=app.config['SITE_NAME'].lower(),
             created_utc = int(time.time()),
             admin_level=6,
             original_username=app.config['SITE_NAME'].lower()
@@ -471,7 +471,7 @@ try:
 
         general = Board(
             id=1,
-            username="general",
+            name="general",
             created_utc = int(time.time()),
             creator_id=1,
             is_siegable=False,
