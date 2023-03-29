@@ -26,7 +26,7 @@ def coins_to_price_cents(n, code=None):
         price= per_coin*n+75
 
     #drop one cent for the $X.99
-    n -= 1
+    price -= 1
 
     if code:
         if isinstance(code, str):
