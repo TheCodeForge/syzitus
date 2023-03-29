@@ -530,8 +530,6 @@ SANCTIONS=[
     "CU",   #Cuba
     "IR",   #Iran
     "KP",   #North Korea
-    "RU",   #Russia
-    "SY",   #Syria
     "VE",   #Venezuela
 ]
 
