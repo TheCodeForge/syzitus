@@ -606,8 +606,7 @@ class User(Base, standard_mixin, age_mixin):
     @cache.memoize()
     def true_score(self):   
         
-        value= max((self.karma + self.comment_karma), -5)
-        return value
+        return max((self.karma + self.comment_karma), -5)
 
     @property
     def fullname(self):
