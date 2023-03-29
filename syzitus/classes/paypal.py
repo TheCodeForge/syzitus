@@ -11,7 +11,7 @@ PAYPAL_ID=environ.get("PAYPAL_CLIENT_ID", "").rstrip()
 PAYPAL_SECRET=environ.get("PAYPAL_CLIENT_SECRET", "").rstrip()
 PAYPAL_WEBHOOK_ID=environ.get("PAYPAL_WEBHOOK_ID", "").rstrip()
 
-PAYPAL_URL="https://api.paypal.com"
+PAYPAL_URL="https://api-m.paypal.com"
 
 STATUSES={
 	1:"CREATED",
