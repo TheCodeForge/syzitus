@@ -681,7 +681,7 @@ Optional file data:
         #check file size
         if request.content_length > 16 * 1024 * 1024 and not g.user.has_premium:
             g.db.rollback()
-            abort(413)
+            return jsonify({"error":f"Attached file is too large. Size limit is 16MB, or 64MB with {app.config['SITE_NAME']} Premium"}), 413
 
         file = request.files['file']
         if not file.content_type.startswith('image/'):
