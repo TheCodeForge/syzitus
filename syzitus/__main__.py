@@ -466,7 +466,6 @@ try:
 
     elif len(app.config["SERVER_NAME"].split('.'))==2 and system.username != app.config["SITE_NAME"].lower():
         system.username=app.config["SITE_NAME"].lower()
-        system.original_username=app.config["SITE_NAME"].lower()
         db.add(system)
         db.commit()
 

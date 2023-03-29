@@ -57,7 +57,7 @@
             <div class="ml-3 w-100">
               <div class="d-flex align-items-center mt-1 mb-2">
                 <h1 class="h3 mb-0">{{ u.username }}</h1>
-                {% if u.username != u.original_username %}
+                {% if u.username != u.original_username and u.id>1 %}
                 <span>
                   <i class="fad fa-user-tag text-info align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="Original Username: @{{ u.original_username }}"></i>
                 </span>
