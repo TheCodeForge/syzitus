@@ -109,8 +109,6 @@ def dmca_post():
     # create +DMCA post
     guild=get_guild("DMCA")
 
-    if guild:
-
     new_post = Submission(author_id=1,
                           domain_ref=None,
                           board_id=guild.id,
