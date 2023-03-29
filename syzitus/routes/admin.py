@@ -1990,7 +1990,7 @@ def admin_give_coins():
 
     send_notification(target_user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
 
-    debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{user.original_username}")
+    debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{target_user.username}")
 
     return jsonify({"message":f"{coin_count} Coins given to @{user.username}"})
 
