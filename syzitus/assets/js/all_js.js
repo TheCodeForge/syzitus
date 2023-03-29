@@ -1850,6 +1850,11 @@ function postformtoast(x, callback=function(data){}){
       callback(xhr);
     } 
     else if (xhr.status >= 300 && xhr.status < 400 ) {
+      if (x.hasClass('btn')) {
+        x.prop('disabled', false)
+        x.removeClass('disabled')
+        x.text(x.data('text'))
+      }
       window.location.href=data['redirect']
     } 
     else if (xhr.status >=400 && xhr.status < 500) {
