@@ -201,7 +201,9 @@ def paypal_webhook_handler():
         return "", 204
 
 
-    #increase to cover extra round of paypal fees
+    #increase to cover the costs of two rounds of paypal fees
+    amount_cents += 30
+    amount_cents /= (1-0.029)
     amount_cents += 30
     amount_cents /= (1-0.029)
     amount_cents = int(amount_cents)
@@ -214,8 +216,6 @@ def paypal_webhook_handler():
     g.db.add(txn.user)
 
     g.db.commit()
-
-
 
     return "", 204
 
