@@ -1070,7 +1070,7 @@ class User(Base, standard_mixin, age_mixin):
         if self.has_profile and not self.is_deleted:
             return f"https://{app.config['S3_BUCKET']}/uid/{self.base36id}/profile-{self.profile_nonce}.png"
         else:
-            return f"http{'s' if app.config['FORCE_HTTPS'] else ''}://{app.config['SERVER_NAME']}/logo/fontawesome/solid//36827f/150"
+            return f"http{'s' if app.config['FORCE_HTTPS'] else ''}://{app.config['SERVER_NAME']}/logo/fontawesome/solid//{app.config['COLOR_PRIMARY']}/150"
 
     @property
     def can_make_guild(self):
