@@ -51,25 +51,9 @@ def jinja_is_mod(uid, bid):
 @cache.cached(timeout=600, key_prefix="premium_coin_goal")
 def coin_goal(x):
     
-    now = gmtime()
-    midnight_month_start = struct_time((now.tm_year,
-                                              now.tm_mon,
-                                              1,
-                                              0,
-                                              0,
-                                              0,
-                                              now.tm_wday,
-                                              now.tm_yday,
-                                              0)
-                                             )
-    cutoff = calendar_timegm(midnight_month_start)
-    
-    coins=g.db.query(func.sum(PayPalTxn.coin_count)).filter(
-        PayPalTxn.created_utc>cutoff,
-        PayPalTxn.status==3).all()[0][0] or 0
-    
-    
-    return int(100*coins/60)
+    #find number of users with premium experation greater than right now
+    coin_sunk = g.db.query(User).filter(User.premium_expires_utc>g.timestamp).count()    
+    return int(100*coins_sunk/21)
 
 
 @app.template_filter("app_config")

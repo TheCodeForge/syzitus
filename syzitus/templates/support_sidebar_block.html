@@ -1,0 +1,46 @@
+<div class="sidebar-section">
+  <div class="title">
+    <i class="fas fa-heart mr-2"></i>Support {{ 'SITE_NAME' | app_config }}
+  </div>
+  <div class="body">
+    <p>Support {{ 'SITE_NAME' | app_config }} today!</p>
+
+    <a href="https://github.com/thecodeforge/syzitus" target="blank" class="btn btn-block btn-link text-black text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x text-gray-300"></i>
+        <i class="fab fa-github fa-stack-1x text-black text-base fa-inverse"></i>
+      </span>Contribute Code
+    </a>
+
+    {% if not g.user.has_premium %}
+    <a href="/help/donate" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fab fa-bitcoin fa-stack-1x text-base fa-inverse"></i>
+      </span>Donate Crypto
+    </a>
+
+    <a href="/settings/premium" target="blank" class="btn btn-block btn-link text-left text-decoration-none px-1 mt-0">
+      <span class="fa-stack fa-1x ml-n1 mr-2">
+        <i class="fas fa-square fa-stack-2x"></i>
+        <i class="fas fa-coins fa-stack-1x text-base fa-inverse"></i>
+      </span>{{ 'SITE_NAME' | app_config }} Premium
+    </a>
+    {% endif %}
+
+    <div class="" data-toggle="tooltip" data-placement="bottom" title="Based on coins sold this month">
+      <div class="text-center text-small">Operating at {{ g.timestamp | coin_goal }}% of sustainability requirement</div>
+      <div class="progress rounded">
+        <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
+        </div>
+        <style nonce="{{ g.nonce }}">
+          #premium-bar-progress {
+            width: {{ g.timestamp | coin_goal }}%;
+          }
+        </style>
+      </div>
+    </div>
+    
+  </div>
+
+</div>
