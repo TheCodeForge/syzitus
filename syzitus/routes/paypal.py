@@ -16,8 +16,12 @@ def coins_to_price_cents(n, code=None):
 
     if n>=52:
         price= per_coin*(n-7)
+    elif n>=45:
+        price= per_coin*(n-5)
     elif n>=26:
         price= per_coin*(n-3) 
+    elif n>=20:
+        price= per_coin*(n-2)
     elif n>=12:
         price= per_coin*(n-1)
     elif n >=4:
