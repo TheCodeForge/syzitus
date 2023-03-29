@@ -1988,9 +1988,7 @@ def admin_give_coins():
     g.db.add(target_user)
     g.db.commit()
 
-    user=get_user(request.form.get('target_username',''))
-
-    send_notification(user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
+    send_notification(target_user, f"{coin_count} Coin{' has' if coin_count==1 else 's have'} been added to your account by {app.config['SITE_NAME']} staff.")
 
     debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{user.original_username}")
 
