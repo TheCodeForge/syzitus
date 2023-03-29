@@ -12,16 +12,21 @@ CLIENT=PayPalClient()
 
 def coins_to_price_cents(n, code=None):
 
+    per_coin=100
+
     if n>=52:
-        price= 100*n - 1001
+        price= per_coin*(n-10)
     elif n>=26:
-        price= 100*n-401
+        price= per_coin*(n-4) 
     elif n>=12:
-        price= 100*n-101
+        price= per_coin*(n-1)
     elif n >=4:
-        price= 100*n-1
+        price= per_coin*n
     else:
-        price= 100*n+49
+        price= per_coin*n+50
+
+    #drop one cent for the $X.99
+    n -= 1
 
     if code:
         if isinstance(code, str):
