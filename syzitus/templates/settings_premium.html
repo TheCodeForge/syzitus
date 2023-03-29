@@ -81,7 +81,7 @@
                 </ul>
               </div>
 
-              <form id="order-coins-form" method="post">
+              <form id="order-coins-form" method="post" action="/shop/buy_coins">
                 <input type="hidden" name="formkey" value="{{ g.user.formkey }}">
                 <label for="select-coins">Select Package</label>
                 <select id="select-coins" name="coin_count" class="form-control">
