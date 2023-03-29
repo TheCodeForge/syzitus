@@ -202,10 +202,11 @@ def paypal_webhook_handler():
 
 
     #increase to cover the costs of two rounds of paypal fees
-    amount_cents += 30
-    amount_cents /= (1-0.029)
-    amount_cents += 30
-    amount_cents /= (1-0.029)
+    #one from the reversed transaction, and one from the transaction required to clear the negative balance
+    amount_cents += 49
+    amount_cents /= (1-0.0349)
+    amount_cents += 49
+    amount_cents /= (1-0.0349)
     amount_cents = int(amount_cents)
 
     txn.user.negative_balance_cents+=amount_cents
