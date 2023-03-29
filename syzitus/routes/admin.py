@@ -1992,7 +1992,7 @@ def admin_give_coins():
 
     debug(f"Give coins: @{g.user.username} gave {coin_count} Coins to @{target_user.username}")
 
-    return jsonify({"message":f"{coin_count} Coins given to @{user.username}"})
+    return jsonify({"message":f"{coin_count} Coins given to @{target_user.username}"})
 
 
 @app.get("/admin/useragent")
