@@ -22,54 +22,65 @@
           <div class="text-small-extra text-muted mb-3">All tips are anonymous :)</div>
 
           <div class="position-relative">
-          <div class="bg-white shadow-sm rounded-lg text-left {% if not g.user.has_premium %}opacity-25{% endif %}">
-            <div class="px-5 py-4">
-              <div class="font-weight-bold text-muted mb-2">You are tipping</div>
-              <div class="h3 mb-0"><img src="/assets/images/icons/ruqqus-coin.png" class="mt-n1"> 1 <span class="text-muted text-lg">coin</span></div></div><hr class="my-0 border-dashed"><div class="px-5 py-4">
-                <div class="mb-3">
-                  <div class="text-muted">Recipient:</div>
-                  <div class="font-weight-bold">@<span id="tip-recipient-username"></span></div>
-                </div><div class="mb-3">
-                  <div class="text-muted">Premium duration:</div>
-                  <div class="font-weight-bold">1 week</div>
-                </div>
+            <div class="bg-white shadow-sm rounded-lg text-left {% if not g.user.has_premium %}opacity-25{% endif %}">
+              <div class="px-5 py-4">
+                <div class="font-weight-bold text-muted mb-2">You are tipping</div>
+                <div class="h3 mb-0"><img src="/assets/images/icons/ruqqus-coin.png" class="mt-n1"> 1 <span class="text-muted text-lg">coin</span></div></div><hr class="my-0 border-dashed"><div class="px-5 py-4">
+                  <div class="mb-3">
+                    <div class="text-muted">Recipient:</div>
+                    <div class="font-weight-bold">@<span id="tip-recipient-username"></span></div>
+                  </div><div class="mb-3">
+                    <div class="text-muted">Premium duration:</div>
+                    <div class="font-weight-bold">1 week</div>
+                  </div>
 
-                <div class="mb-md-3">
-                  <div class="text-muted">Content awarded:</div>
-                  <div class="font-weight-bold text-capitalize" id="tip-content-type">Post</div>
+                  <div class="mb-md-3">
+                    <div class="text-muted">Content awarded:</div>
+                    <div class="font-weight-bold text-capitalize" id="tip-content-type">Post</div>
+                  </div>
+                  <div class="d-none d-md-block"><div class="text-muted">Perks:</div>
+                  <ul class="mb-0 pl-0 no-bullets font-weight-bold">
+                    <li class="py-1">
+                      <span class="fa-stack fa-1x mr-2">
+                      <i class="fas fa-square fa-stack-2x"></i>
+                      <i class="fas fa-unlock fa-stack-1x text-warning text-base fa-inverse"></i>
+                      </span>Unlock all Rep-gated features
+                    </li>
+                    <li class="py-1">
+                      <span class="fa-stack fa-1x mr-2">
+                      <i class="fas fa-square fa-stack-2x"></i>
+                      <i class="fas fa-image fa-stack-1x text-danger text-base fa-inverse"></i>
+                      </span>Direct image uploads in comments
+                    </li>
+                    <li class="py-1">
+                      <span class="fa-stack fa-1x mr-2">
+                      <i class="fas fa-square fa-stack-2x"></i>
+                      <i class="fas fa-file-upload fa-stack-1x text-success text-base fa-inverse"></i>
+                      </span>Increased upload file size limit
+                    </li>
+                    <li class="py-1">
+                      <span class="fa-stack fa-1x mr-2">
+                      <i class="fas fa-square fa-stack-2x"></i>
+                      <i class="fab fa-discord fa-stack-1x text-base fa-inverse"></i>
+                      </span>Access to the premium-only channel on Discord
+                      <style nonce="{{ g.nonce }}">.fa-discord {color: #5865f2}</style>
+                    </li>
+                    <li class="py-1">
+                      <span class="fa-stack fa-1x mr-2">
+                      <i class="fas fa-square fa-stack-2x"></i>
+                      <i class="fas fa-hand-peace fa-stack-1x text-primary text-base fa-inverse"></i>
+                      </span>Keeping the {{ 'SITE_NAME' | app_config }} servers alive
+                    </li>
+                  </ul>
                 </div>
-                <div class="d-none d-md-block"><div class="text-muted">Perks:</div>
-                <ul class="mb-0 pl-0 no-bullets font-weight-bold">
-                  <li class="py-1"><span class="fa-stack fa-1x mr-2">
-                  <i class="fas fa-square fa-stack-2x"></i>
-                  <i class="fas fa-unlock fa-stack-1x text-info text-base fa-inverse"></i>
-                  </span>Unlock all Rep-gated features
-                  </li>
-                  <li class="py-1"><span class="fa-stack fa-1x mr-2">
-                    <i class="fas fa-square fa-stack-2x"></i>
-                    <i class="fas fa-image fa-stack-1x text-purple text-base fa-inverse"></i>
-                  </span>Direct image uploads in comments
-                  </li>
-                  <li class="py-1"><span class="fa-stack fa-1x mr-2">
-                  <i class="fas fa-square fa-stack-2x"></i>
-                  <i class="fas fa-file-upload fa-stack-1x text-warning text-base fa-inverse"></i>
-                  </span>Increased upload file size limit
-                  </li>
-              <li class="py-1"><span class="fa-stack fa-1x mr-2">
-                <i class="fas fa-square fa-stack-2x"></i>
-                <i class="fas fa-hand-peace fa-stack-1x text-success text-base fa-inverse"></i>
-              </span>Keeping the {{ "SITE_NAME" | app_config }} servers alive
-            </li>
-          </ul>
-        </div>
+              </div>
+            </div>
+
+      {% if not g.user.has_premium %}
+      <div class="position-relative ml-auto mr-auto">
+        <a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1 coin-ruqqus">Get coins</a>
       </div>
-    </div>
-
-    {% if not g.user.has_premium %}
-    <div class="position-relative ml-auto mr-auto">
-      <a href="/settings/premium" class="btn btn-warning btn-lg shadow-sm"><img src="/assets/images/icons/ruqqus-coin.png" class="ml-2 mr-1 mt-n1 coin-ruqqus">Get coins</a>
-    </div>
-    {% endif %}
+      {% endif %}
 
     </div>
 
