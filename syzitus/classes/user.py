@@ -1106,8 +1106,6 @@ class User(Base, standard_mixin, age_mixin):
     @property
     def can_submit_image(self):
         # Has premium
-        # Has 1000 Rep, or 500 for older accounts
-        # if connecting through Tor, must have verified email
         return (self.has_premium or self.true_score >= app.config['UPLOAD_IMAGE_REP']) and not g.is_tor
 
     @property
