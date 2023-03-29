@@ -53,7 +53,7 @@ def coin_goal(x):
     
     #find number of users with premium experation greater than right now
     coins_sunk = g.db.query(User).filter(User.premium_expires_utc>g.timestamp).count()    
-    return int(100*coins_sunk/21)
+    return int(100*coins_sunk/8)
 
 
 @app.template_filter("app_config")
