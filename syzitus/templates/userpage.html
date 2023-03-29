@@ -164,7 +164,7 @@
       <div class="mt-n3 py-3">
         <a href="{{ u.permalink }}" class="text-black">
           <h1 class="h5 d-inline-block">{{ u.username }}
-            {% if u.username != u.original_username %}
+            {% if u.username != u.original_username and u.id>1 %}
             <span>
               <i class="fad fa-user-tag text-info align-middle ml-2" data-toggle="tooltip" data-placement="bottom" title="Original Username: @{{ u.original_username }}"></i>
             </span>
