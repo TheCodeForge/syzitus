@@ -52,7 +52,7 @@ def jinja_is_mod(uid, bid):
 def coin_goal(x):
     
     #find number of users with premium experation greater than right now
-    coin_sunk = g.db.query(User).filter(User.premium_expires_utc>g.timestamp).count()    
+    coins_sunk = g.db.query(User).filter(User.premium_expires_utc>g.timestamp).count()    
     return int(100*coins_sunk/21)
 
 
