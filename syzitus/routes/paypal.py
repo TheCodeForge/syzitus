@@ -12,7 +12,7 @@ CLIENT=PayPalClient()
 
 def coins_to_price_cents(n, code=None):
 
-    per_coin=125
+    per_coin=110
 
     if n>=52:
         price= per_coin*(n-10)
@@ -217,6 +217,9 @@ def paypal_webhook_handler():
     g.db.add(txn.user)
 
     g.db.commit()
+
+    text=f"PayPal has informed us that the following transaction has been reversed:\n\n{txn.permalink_full}\n\nYour account now has a negative balance, which will need to be [cleared](/settings/premium) in order to use site features."
+    send_notification(txn.user, text)
 
     return "", 204
 
