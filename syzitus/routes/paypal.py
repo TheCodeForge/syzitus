@@ -86,7 +86,7 @@ def shop_buy_coins():
     g.db.add(new_txn)
     g.db.commit()
 
-    return redirect(new_txn.approve_url)
+    return jsonify({'redirect':new_txn.approve_url}), 302
 
 
 @app.route("/shop/negative_balance", methods=["POST"])
