@@ -28,8 +28,8 @@
     </a>
     {% endif %}
 
-    <div class="" data-toggle="tooltip" data-placement="bottom" title="Based on coins sold this month">
-      <div class="text-center text-small">Operating at {{ g.timestamp | coin_goal }}% of sustainability requirement</div>
+    <div class="" data-toggle="tooltip" data-placement="bottom" title="Based on coins redeemed in the past week">
+      <div class="text-center text-small">{{ g.timestamp | coin_goal }}% sustainability</div>
       <div class="progress rounded">
         <div id="premium-bar-progress" class="progress-bar bg-primary" role="progressbar" aria-valuenow="{{ g.timestamp | coin_goal }}" aria-valuemin="0" aria-valuemax="100">
         </div>
