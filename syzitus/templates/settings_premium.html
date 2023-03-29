@@ -43,10 +43,10 @@
             <label for="buypremium">Coins</label>
           </div>
           <div class="body w-lg-100">
-              <p>Coins are auto-redeemed for one week of premium account time.</p>
+              <p>Coins are auto-redeemed for one week of {{ 'SITE_NAME' | app_config }} Premium, one Coin at a time.</p>
               {% if g.user.has_premium and g.user.coin_balance >=1 %}
               <p class="text-muted">Current balance: <span class="text-black font-weight-bold">{{ g.user.coin_balance }} Coin{{ '' if g.user.coin_balance==1 else 's' }}</span></p>
-              <p class="text-muted">Next renewal after: <span class="text-black font-weight-bold">{{ g.user.renew_premium_time }} UTC</span></p>
+              <p class="text-muted">Next renewal at or after: <span class="text-black font-weight-bold">{{ g.user.renew_premium_time }} UTC</span></p>
 
               {% elif g.user.has_premium %}
               <p class="text-muted">Current balance: <span class="text-black font-weight-bold">0 Coins</span></p>
