@@ -1501,7 +1501,7 @@ class User(Base, standard_mixin, age_mixin):
 
     @property
     def can_upload_comment_image(self):
-        return request.headers.get("cf-ipcountry") != "T1" #self.has_premium and (request.headers.get("cf-ipcountry")!="T1" or self.is_activated)
+        return self.has_premium and not g.is_tor
 
     @property
     def can_change_name(self):
