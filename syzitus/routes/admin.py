@@ -1757,13 +1757,6 @@ def api_distinguish_post(post_id):
 def api_sticky_post(post_id):
 
     post = get_post(post_id)
-
-    if not post.stickied:
-        already_stickied = g.db.query(Submission).filter_by(stickied=True).first()
-        if already_stickied:
-            already_stickied.stickied = False
-            g.db.add(already_stickied)
-
     post.stickied = not post.stickied
     g.db.add(post)
     g.db.commit()

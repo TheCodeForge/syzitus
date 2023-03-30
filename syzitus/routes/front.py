@@ -328,11 +328,11 @@ Optional query parameters:
 
         # If page 1, check for sticky
         if page == 1 and not ignore_pinned:
-            sticky = g.db.query(Submission.id).filter_by(stickied=True).first()
+            stickies = g.db.query(Submission.id).filter_by(stickied=True).all()
 
 
-            if sticky:
-                ids=[sticky.id]+ids
+            if stickies:
+                ids=stickies+ids
 
 
         posts = get_posts(ids, sort=sort)
