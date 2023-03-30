@@ -243,7 +243,10 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
     return x
 
 
-def get_posts(pids, sort="hot", v=None):
+def get_posts(pids, sort=None, v=None):
+
+    if sort:
+        print("outdated argument of `sort` passed to get_posts")
 
     if not pids:
         return []
