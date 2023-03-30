@@ -142,6 +142,7 @@ CREATE TABLE public.users (
     banner_upload_region varchar(2) NULL,
     original_username varchar(255) NULL,
     name_changed_utc int4 NULL,
+    per_page_preference int4 NULL,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 CREATE INDEX users_created_utc_idx ON public.users USING btree (created_utc DESC);
@@ -195,7 +196,7 @@ CREATE TABLE public.badges (
 
 CREATE TABLE public.boards (
     id serial4 NOT NULL,
-    "name" varchar NULL,
+    name varchar NULL,
     created_utc int4 NULL,
     description varchar NULL,
     description_html varchar NULL,
