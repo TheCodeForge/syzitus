@@ -457,9 +457,9 @@ Optional query parameters:
 
         if stickies:
             ids=[x[0] for x in stickies]+ids
-            
+
     # check if ids exist
-    posts = get_posts(ids, sort=sort)
+    posts = get_posts(ids)
 
     return {'html': lambda: render_template("home.html",
                                             listing=posts,
