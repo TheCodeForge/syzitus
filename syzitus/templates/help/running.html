@@ -102,19 +102,26 @@ In this section, you will set up the main Syzitus application, prepare the datab
 6. In the Resources tab, under Add-ons, search for and add Heroku Postgres. The basic plan ($9/mo) is recommended.
 7. In the Settings tab, click "Reveal Config Vars". Take note of the `DATABASE_URL` variable; you will need it later
 8. Add new config variable with a key of `S3_BUCKET_NAME` and value of the name of your S3 bucket (`i.syzitus.com`)
-8. Add new config variables named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, using the AWS access keys obtained earlier.
+8. Add new config variables named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, using the AWS access keys obtained in step 1.4.3.
 9. Add new config variable `WEB_CONCURRENCY` with a value of `2`
-10. Add new config variable `SECRET_KEY` using the python secret value generated earlier.
+10. Add new config variable `SECRET_KEY` using the python secret value generated in step 1.6.3.
 11. Add new config variable `SERVER_NAME`, set to your domain name (`syzitus.com`)
 12. Add new config variable `SITE_NAME`, set to the plain English name of your site. (`Syzitus`)
-13. Add new config variable `MAILGUN_KEY`, using the mailgun api key from earlier.
-11. In the "Domains" section, click "Add Domain". Enter your domain name and click Next. Heroku will generate a DNS target; save that for later.
+13. Add new config variable `MAILGUN_KEY`, using the mailgun api key from step 1.5.3.
+11. In the "Domains" section, click "Add Domain". Enter your domain name and click Next. Heroku will generate a DNS target (usually looks something like `happy-octopus-12345.herokudns.com`); save that for later.
 
 ### 2.2 CloudFlare DNS
 1. Follow CloudFlare's instructions to add your domain to CloudFlare and use CloudFlare's nameservers.
-2. Add the following DNS records:
-    * `CNAME @ dns.target.from.heroku` with proxy status off, using the Heroku DNS target, found in the settings tab
-    * `CNAME i.syzitus.com aws.bucket.website.endpoint` with proxy status on, using the AWS bucket website endpoint, found in your bucket's properties tab
+2. Add a new DNS record:
+    * Type: `CNAME`
+    * Name: `@`
+    * Target: `dns.target.from.heroku` with proxy status off, using the Heroku DNS target from step 2.1.11
+    * Proxy status: off
+3. Add a new DNS record:
+    * Type: `CNAME`
+    * Name: `i`
+    * Target `your.aws.bucket.website.endpoint` with proxy status on, using the AWS bucket website endpoint, from step 1.3.4
+    * Proxy status: on
 3. Add the `MX` and `TXT` type records specified by Mailgun
 4. In Heroku settings tab, under SSL Certificates, click Configure SSL. Select Automatic Certificate Management, and click Next.
 5. Wait for certificate verification to complete. This will be indicated by a green checkmark under "ACM Status" in the Domains section.
@@ -183,7 +190,10 @@ These steps are not required but can improve the overall performance and user ex
 ### 4.1 Shortlink Domain
 
 1. Add your shortlink domain to CloudFlare, using the same process as before
-2. In the DNS settings for your shortlink domain, add the record `CNAME @ <the regular domain>` with proxy status on. For example, `CNAME @ syzitus.com`
+2. In the DNS settings for your shortlink domain, add a new DNS record:
+    * Type: `CNAME`
+    * Name: `@`
+    * Target: `syzitus.com` (using your own domain name of course)
 3. In the Rules section, click Page Rules, and add a new rule as follows, substituting your shortlink domain and regular domain as appropriate:
     * If the URL matches: `syzit.us/*`
     * Then the settings are: Forwarding URL, 301 Permanent Redirect
