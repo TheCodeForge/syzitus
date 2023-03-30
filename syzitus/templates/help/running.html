@@ -203,7 +203,7 @@ These steps are not required but can improve the overall performance and user ex
 
 ### 4.2 Giphy
 
-1. At https://developers.giphy.com, create an account and create a new application. You should recieve a "beta" API key.
+1. Go to [developers.giphy.com](https://developers.giphy.com), create an account and create a new application. You should recieve a "beta" API key.
 2. Add the Heroku config variable `GIPHY_KEY` with your API key
 3. After successful deployment, follow Giphy's instructions to apply to upgrade your API application to production tier.
 
@@ -220,7 +220,7 @@ Redis should not be necessary unless you have exceptionally high traffic.
 
 Follow these instructions to enable Coin sales. You need either a business paypal account, or a personal paypal account that you are willing to convert into a business account.
 
-1. Go to https://developer.paypal.com and click "Get API credentials". Log in; you will now be at the developer dashboard.
+1. Go to [developer.paypal.com](https://developer.paypal.com) and click "Get API credentials". Log in; you will now be at the developer dashboard.
 2. In the top right corner, flip the switch from "Sandbox" to "Live". If you are using a personal account, follow Paypal's instructions to convert your account to business type. When you are done with that, go back to the developer dashboard and make sure the switch is set to "Live".
 3. Click "Apps & Credentials"
 4. Click "Create App" and provide an application name (e.g. the name of your site)
@@ -230,6 +230,12 @@ Follow these instructions to enable Coin sales. You need either a business paypa
 8. Select the following event types: Payment sale refunded, Payment sale reversed, Payment capture refunded, Payment capture reversed
 9. Click Save
 
+### 4.5 Staying up to date
+
+You don't want a permanently unchanging website. Even the best run social media hub can get stale. Keep up to date with the latest and greatest software updates from the mainline Syzitus developers.
+
+1. Follow [these instructions](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) to sync your fork from the Syzitus mainline. You may be prompted to resolve conflicts if you have made any of your own code edits (like changing the ToS).
+2. If any database schema changes have been made, you will need to update your database to match the data structure that the new code is expecting to see. In sql/upgrades, check for any files that are more recent than your fork or last sync. If there are any new files, open DBeaver and connect to your database. **In order**, copy and paste each file into a new script and run them.
 
 {% endfilter %}
 {% endblock %}
