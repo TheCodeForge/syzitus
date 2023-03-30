@@ -1,0 +1,224 @@
+{% extends "docs_default.html" %}
+
+{% block title %}
+<title>{{ "SITE_NAME" | app_config }} - The independent social platform</title>
+<meta name="description" content="Rules.">
+{% endblock %}
+
+
+{% block content %}
+{% filter markdown %}
+
+This post is intended to serve as a guide to anyone looking to launch their own Syzitus clone. Throughout this tutorial, the Syzitus domain name and subdomains will be used; replace these with your own domain name and subdomains.
+
+
+## 1. Systems Setup
+
+In this phase you will gather all the various accounts and services you need, and set up some of the core systems that Syzitus needs to operate. You will also collect numerous tokens, secrets, and other codes that you will feed to the main Syzitus application later.
+
+### 1.1 Requirements
+
+1. GitHub account and desktop client
+2. Heroku account with credit card saved
+3. AWS account with credit card saved
+4. [Mailgun](https://mailgun.io) account
+4. [CloudFlare](https://cloudflare.com) account
+6. A domain name that you own (This guide will use `syzitus.com` as its example)
+7. Optional: A "shortlink" version of the domain (for example, `syzit.us`)
+8. [Python 3.11 or newer](https://python.org). During installation, make sure "Add python to PATH" is selected.
+9. [DBeaver](https://dbeaver.io/) or other database editor
+10. Optional - a [FontAwesome Pro license](https://fontawesome.com/plans) ($99) less than one year old at the time of forking. This is only required if you want your fork to be open source for others to subsequently fork. Otherwise, your project may remain private and piggyback off Syzitus's FA Pro license.
+
+### 1.2 Github
+
+1. Clone the [Syzitus Repository](https://github.com/thecodeforge/syzitus) to your own account, then use the desktop client to copy the repository to your own computer.
+
+### 1.3 AWS Bucket
+
+1. Create a new S3 bucket, named after your intended image hosting domain name. This should be a subdomain of the domain that you own, for example, `i.syzitus.com`
+2. Go to the bucket's Properties tab.
+3. In the Static Website Hosting section, apply the following settings:
+    * Static website hosting - enabled
+    * Hosting type - Host a static website
+    * Index document - `index.html` (You don't actually need to add an index.html document to the bucket)
+4. At the bottom of the bucket properties tab, take note of the Bucket website endpoint; you'll need it for later
+5. Go to the bucket's Permissions tab.
+6. In the Block Public Access section, click Edit. Un-select all options and click Save.
+7. In the Access Control List section, click Edit. Under "Bucket owner - Objects", select both checkboxes. Under "Bucket owner - Bucket ACL", select both checkboxes as well. Under "Everyone (public access) - Objects, select "List" only. Ensure all other options are un-selected. Click "I understand the effects of these changes on my objects and buckets" and click Save Changes
+8. In the Bucket Policy section, copy and paste the following policy, substituting your bucket name and your 12-digit AWS account ID (with dashes removed). Your account ID can be found in the top-right dropdown menu.
+
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "Statement1",
+                    "Effect": "Allow",
+                    "Principal": "*",
+                    "Action": "s3:GetObject",
+                    "Resource": "arn:aws:s3:::i.syzitus.com/*"
+                },
+                {
+                    "Sid": "Statement2",
+                    "Effect": "Allow",
+                    "Principal": {
+                        "AWS": "arn:aws:iam::123456789012:root"
+                    },
+                    "Action": "s3:*",
+                    "Resource": "arn:aws:s3:::i.syzitus.com"
+                }
+            ]
+        }
+
+### 1.4 AWS Credentials
+
+1. In the top right drop-down menu, click "Security credentials"
+2. Scroll down to "Access Keys" and click "Create access key"
+3. Save the Access Key ID and Secret for later.
+
+### 1.5 Mailgun
+
+1. In the left sidebar, navigate to Sending > Domains
+2. Click "Add new domain" and follow the instructions to add a new domain. Using the "mail" subdomain is recommended, for example, `mail.syzitus.com`
+3. In the top right dropdown, click "API keys". Save your Private API Key for later.
+4. Under Sending -> Domain settings -> DNS records, there will be several MX and TXT records; you will need these later
+
+### 1.6 Python
+
+1. Open a new python IDLE shell
+2. Run the command `import secrets`
+3. Run the command `print(secrets.token_hex(512))` and save the result for later (Important: under no circumstances should you ever reveal this to anyone else, except as described in these instructions)
+
+## 2. Application,  Database, and DNS
+
+In this section, you will set up the main Syzitus application, prepare the database that holds all its data, and publish DNS records.
+
+### 2.1 Heroku
+
+1. Create a new application. 
+2. In the Deploy tab, connect the application to your GitHub repository.
+3. Optional: Under "Automatic deploys", select the master branch and click "Enable Automatic Deploys"
+4. Under Manual Deploy, select the master branch and click "Deploy Branch"
+5. In the Resources tab, click "Change Dyno Type" and select the "Basic" dyno type ($7/mo).
+6. In the Resources tab, under Add-ons, search for and add Heroku Postgres. The basic plan ($9/mo) is recommended.
+7. In the Settings tab, click "Reveal Config Vars". Take note of the `DATABASE_URL` variable; you will need it later
+8. Add new config variable with a key of `S3_BUCKET_NAME` and value of the name of your S3 bucket (`i.syzitus.com`)
+8. Add new config variables named `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, using the AWS access keys obtained earlier.
+9. Add new config variable `WEB_CONCURRENCY` with a value of `2`
+10. Add new config variable `SECRET_KEY` using the python secret value generated earlier.
+11. Add new config variable `SERVER_NAME`, set to your domain name (`syzitus.com`)
+12. Add new config variable `SITE_NAME`, set to the plain English name of your site. (`Syzitus`)
+13. Add new config variable `MAILGUN_KEY`, using the mailgun api key from earlier.
+11. In the "Domains" section, click "Add Domain". Enter your domain name and click Next. Heroku will generate a DNS target; save that for later.
+
+### 2.2 CloudFlare DNS
+1. Follow CloudFlare's instructions to add your domain to CloudFlare and use CloudFlare's nameservers.
+2. Add the following DNS records:
+    * `CNAME @ dns.target.from.heroku` with proxy status off, using the Heroku DNS target, found in the settings tab
+    * `CNAME i.syzitus.com aws.bucket.website.endpoint` with proxy status on, using the AWS bucket website endpoint, found in your bucket's properties tab
+3. Add the `MX` and `TXT` type records specified by Mailgun
+4. In Heroku settings tab, under SSL Certificates, click Configure SSL. Select Automatic Certificate Management, and click Next.
+5. Wait for certificate verification to complete. This will be indicated by a green checkmark under "ACM Status" in the Domains section.
+6. Go back to CloudFlare and enable proxy status for the record pointing to Heroku
+7. In SSL/TLS overview settings, select Full
+8. In the left sidebar, navigate to Rules -> Page Rules. Create a Page Rule as follows:
+    * If the url matches: `i.syzitus.com`
+    * Then the settings are: SSL - Flexible
+
+### 2.3 CloudFlare Turnstile
+
+Cloudflare Turnstile is a free human verification service that prevents bots from using the new account registration page.
+
+1. In Cloudflare, click the top right dropdown and click Account Home
+2. Click Turnstile in the left hand navigation menu
+3. Click Add Site and follow the prompts. You will get a Turnstile API key and secret.
+4. In Heroku settings, add config variables `CLOUDFLARE_TURNSTILE_KEY` and `CLOUDFLARE_TURNSTILE_SECRET` using the key and secret obtained from Cloudflare Turnstile.
+
+### 2.4 Database setup
+
+1. Open DBeaver. Create a new connection. Select PostgreSQL as the connection type. Fill in the host, port, username, password, and database name using the information from your `DATABASE_URL`. (The url is structured in the format `postgres://username:password@host:port/databasename`).
+2. Save the connection and connect to your database.
+3. Open a new script. Copy and paste the contents of sql/extensions.sql (from the syzitus repository) into the new script. Run the script.
+4. Open a new script. Copy and paste the contents of sql/tables.sql (from the syzitus repository) into the new script. Run the script.
+5. Open a new script. Copy and paste the contents of sql/functions.sql (from the syzitus repository) into the new script. Run the script. You'll get some errors; the functions are exported in alphabetical order and some of the earlier ones depend on some of the later ones that don't exist just yet. Skip the errors, then run the script again until no errors are generated.
+
+### 2.5 Start it running!
+
+1. Open the Heroku resources tab.
+2. Near the top right corner, click More, then right click View More, and select Open In New Tab
+3. In the resources tab, click the edit icon. Turn on the switch, and click Confirm
+4. Watch the logs and check for any error messages
+5. The +general guild, and the system admin account should be automatically created at this point.
+
+## 3. Administrative Setup 
+
+### 3.1 Give yourself admin
+
+1. Navigate to your site's signup page and create an account for yourself.
+2. In DBeaver, connect to the database and navigate to Databases --> {dbname} --> Schemas --> public --> Tables --> `users` table
+3. Open the table and find the record for your new account.
+4. Use your database editor to change the `admin_level` value of your account to 6 (values 1-5 represent varying levels of partial administrative permission that may be granted to other people if you so choose. They correspond to: former admin, junior content moderator, senior content moderator, junior administrator, senior administrator.)
+5. Click Save (at the bottom)
+
+### 3.2 Administrativia
+
+1. Set up two-factor authentication for your account!
+2. Create a +DMCA guild and a +Syzitus (sitename) guild
+3. Navigate to those guild settings and mark them as "admin-controlled" to prevent sieging
+4. Add the Heroku config variable `ADMIN_EMAIL` with an email address to be notified in the event of certain events like a DMCA submission.
+
+### 13. Customization
+
+You can set the following Heroku config variables as you like:
+
+* `COLOR_PRIMARY` - Your site's primary theme color; defaults to the Ruqqus porpl color of `805ad5` if not specified
+* `COLOR_PRIMARY_NAME` - The name of your site's primary theme color; defaults to `Porpl` if not specified
+* `PROFILE_UPLOAD_REP`, `BANNER_UPLOAD_REP`, `GUILD_CREATION_REQ`, `MAX_GUILD_COUNT`, `UPLOAD_IMAGE_REP` - set various Rep requirements and limits
+* `COINS_REQUIRED_CHANGE_USERNAME`, `COOLDOWN_DAYS_CHANGE_USERNAME` - Set coin cost and cooldown period for username changes
+
+
+## 4. Bells and Whistles
+
+These steps are not required but can improve the overall performance and user experienceof your site.
+
+### 4.1 Shortlink Domain
+
+1. Add your shortlink domain to CloudFlare, using the same process as before
+2. In the DNS settings for your shortlink domain, add the record `CNAME @ <the regular domain>` with proxy status on. For example, `CNAME @ syzitus.com`
+3. In the Rules section, click Page Rules, and add a new rule as follows, substituting your shortlink domain and regular domain as appropriate:
+    * If the URL matches: `syzit.us/*`
+    * Then the settings are: Forwarding URL, 301 Permanent Redirect
+    * Destination URL: `https://syzitus.com/post/$1`
+4. In Heroku settings, add config variable `SHORT_DOMAIN` using your short domain name
+
+### 4.2 Giphy
+
+1. At https://developers.giphy.com, create an account and create a new application. You should recieve a "beta" API key.
+2. Add the Heroku config variable `GIPHY_KEY` with your API key
+3. After successful deployment, follow Giphy's instructions to apply to upgrade your API application to production tier.
+
+### 4.3 Set up Redis
+
+Redis is a fast-access caching service that stores the results of expensive computations for later re-use. Redis is only recommended if you are scaling your application up to two or more dynos, in order to avoid duplicating work across multiple server instances. Syzitus is written to cache with Redis if it is available, or to cache in the filesystem if it is not.
+
+Redis should not be necessary unless you have exceptionally high traffic.
+
+1. In Resources, under add-ons, add "Heroku Data for Redis". The "Mini" plan ($3/mo) is recommended.
+2. In the settings tab, add the config variable `CACHE_TYPE` with a value of `Redis`
+
+### 4.2 Paypal Donations and Coin sales
+
+Follow these instructions to enable Coin sales. You need either a business paypal account, or a personal paypal account that you are willing to convert into a business account.
+
+1. Go to https://developer.paypal.com and click "Get API credentials". Log in.
+2. In the top right corner, flip the switch from "Sandbox" to "Live". If you are using a personal account, follow Paypal's instructions to convert your account to business type. When you are done converting to a business account, go back to the developer dashboard and make sure the switch is set to "Live".
+3. Click "Apps & Credentials"
+4. Click "Create App" and provide an application name (e.g. the name of your site)
+5. Copy the provided Client ID and Secret to Heroku config variables `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET`, respectively
+6. Under "App Feature Payments", enable "Accept Payments" and "Invoicing"
+7. Under "Live Webhooks" click "Add Webhook". For the URL, put `https://syzitus.com/shop/buy_coins_completed` (using your own domain name of course)
+8. Select the following event types: Payment sale refunded, Payment sale reversed, Payment capture refunded, Payment capture reversed
+9. Click Save
+
+
+{% endfilter %}
+{% endblock %}
