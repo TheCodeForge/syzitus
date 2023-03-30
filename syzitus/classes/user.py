@@ -761,15 +761,16 @@ class User(Base, standard_mixin, age_mixin):
         notifications = notifications.order_by(
             Notification.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
-        output = []
-        for x in notifications[0:25]:
+        mark_as_read=False
+        for x in notifications[0:25] if x.read==False:
             x.read = True
             g.db.add(x)
-            output.append(x.comment_id)
+            mark_as_read=True
 
-        g.db.commit()
+        if mark_as_read:
+            g.db.commit()
 
-        return output
+        return [x.comment_id for x in notifications]
 
     def notification_postlisting(self, all_=False, page=1):
 
@@ -790,14 +791,17 @@ class User(Base, standard_mixin, age_mixin):
                 Notification.id.desc()
             ).offset(25*(page-1)).limit(26)
 
-        output=[]
-        for x in notifications[0:25]:
+        mark_as_read=False
+        for x in notifications[0:25] if not x.read:
             x.read=True
             g.db.add(x)
-            output.append(x.submission_id)
+            mark_as_ready=True
+
+        if mark_as_read:
+            g.db.commit()
 
         g.db.commit()
-        return output
+        return [x.submission_id for x in notifications]
 
     @property
     @lazy
