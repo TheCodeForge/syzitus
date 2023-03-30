@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship, deferred, lazyload, load_only
 from flask import g, abort, request
 
 from syzitus.helpers.lazy import lazy
+from syzitus.helpers.wrappers import per_page
 import syzitus.helpers.aws as aws
 from .userblock import UserBlock
 from .submission import Submission
@@ -155,6 +156,7 @@ class Board(Base, standard_mixin, age_mixin):
         return not self.postrels.filter_by(post_id=post.id).first()
 
     @cache.memoize()
+    @per_page
     def idlist(self, sort=None, page=1, t=None,
                hide_offensive=True, hide_bot=False, nsfw=False, **kwargs):
 
