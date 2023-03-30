@@ -480,6 +480,12 @@ def post_forgot():
     user=get_user(username, graceful=True)
 
     email=email.replace("_","\_")
+    #counteract gmail username+2 and extra period tricks - convert submitted email to actual inbox
+    if email.endswith("@gmail.com"):
+        gmail_username=email.split('@')[0]
+        gmail_username=gmail_username.split('+')[0]
+        gmail_username=gmail_username.replace('.','')
+        email=f"{gmail_username}@gmail.com"
 
     if user and user.email.lower()==email.lower() and not user.is_deleted:
         # generate url
