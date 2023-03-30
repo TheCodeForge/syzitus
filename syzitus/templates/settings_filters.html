@@ -10,7 +10,28 @@
   <div class="col col-lg-8">
 
     <div class="settings">
+      <h2 class="h5">Display Preferences</h2>
+        <div class="settings-section rounded">
+          <div class="d-lg-flex border-bottom">
 
+            <div class="title w-lg-25">
+              <label for="per-page"><i class="fas fa-star"></i>View Per Page</label>
+            </div>
+
+            <div class="body w-lg-100">
+
+              <select name="per_page" class="form-control">
+                {% for x in [25, 50, 100, 200] %}
+                <option value="{{ x }}"{% if x==g.user.per_page_preference %} selected{% endif %}{% if not g.user.has_premium %} disabled{% endif %}>{{ x }}</option>
+                {% endfor %}
+              </select>
+
+              <span class="text-small-extra text-muted">Select the number of posts to show per page. Requires <a href="/settings/premium">{{ 'SITE_NAME' | app_config }} Premium</a></span>
+
+            </div>
+
+          </div>
+        </div>
       <h2 class="h5">Content Filters</h2>
 
         <div class="settings-section rounded">
