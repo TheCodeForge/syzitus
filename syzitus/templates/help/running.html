@@ -219,8 +219,8 @@ Redis should not be necessary unless you have exceptionally high traffic.
 
 Follow these instructions to enable Coin sales. You need either a business paypal account, or a personal paypal account that you are willing to convert into a business account.
 
-1. Go to https://developer.paypal.com and click "Get API credentials". Log in.
-2. In the top right corner, flip the switch from "Sandbox" to "Live". If you are using a personal account, follow Paypal's instructions to convert your account to business type. When you are done converting to a business account, go back to the developer dashboard and make sure the switch is set to "Live".
+1. Go to https://developer.paypal.com and click "Get API credentials". Log in; you will now be at the developer dashboard.
+2. In the top right corner, flip the switch from "Sandbox" to "Live". If you are using a personal account, follow Paypal's instructions to convert your account to business type. When you are done with that, go back to the developer dashboard and make sure the switch is set to "Live".
 3. Click "Apps & Credentials"
 4. Click "Create App" and provide an application name (e.g. the name of your site)
 5. Copy the provided Client ID and Secret to Heroku config variables `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET`, respectively
