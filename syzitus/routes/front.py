@@ -332,7 +332,7 @@ Optional query parameters:
 
 
             if stickies:
-                ids=stickies+ids
+                ids=[x[0] for x in stickies]+ids
 
 
         posts = get_posts(ids, sort=sort)
