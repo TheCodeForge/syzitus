@@ -1563,7 +1563,7 @@ $("#sendTipButton").click(function() {
 );
 
 $('.cat-check').change(function(){
-  togglecat(this.data('sort'))
+  togglecat($(this).data('sort'))
 })
 
 var togglecat = function(sort, reload=false, delay=1000, page="/all") {
