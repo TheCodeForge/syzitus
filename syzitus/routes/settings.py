@@ -30,6 +30,22 @@ def settings_profile_post():
 
     updated = False
 
+    if request.values.get("per_page"):
+        try:
+            per_page=int(request.values.get(per_page))
+        except:
+            break
+
+        if per_page != g.user.per_page_preference:
+            break
+
+        if per_page>25 and not g.user.has_premium:
+            return jsonify({"error":f"That's a {app.config['SITE_NAME']} Premium option"}), 402
+
+        updated = True
+        g.user.per_page_preference = per_page
+        #cache.delete_memoized(User.idlist, g.user)
+
     if request.values.get("over18", g.user.over_18) != g.user.over_18:
         updated = True
         g.user.over_18 = request.values.get("over18", None) == 'true'
