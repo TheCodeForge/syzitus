@@ -330,12 +330,11 @@ Optional query parameters:
         if page == 1 and not ignore_pinned:
             stickies = g.db.query(Submission.id).filter_by(stickied=True).all()
 
-
             if stickies:
                 ids=[x[0] for x in stickies]+ids
 
 
-        posts = get_posts(ids, sort=sort)
+        posts = get_posts(ids)
 
         return {'html': lambda: render_template("subscriptions.html",
                                                 listing=posts,
@@ -454,10 +453,11 @@ Optional query parameters:
 
    # If page 1, check for sticky
     if page == 1 and not ignore_pinned:
-        sticky = []
-        sticky = g.db.query(Submission.id).filter_by(stickied=True).first()
-        if sticky:
-            ids = [sticky.id] + ids
+        stickies = g.db.query(Submission.id).filter_by(stickied=True).all()
+
+        if stickies:
+            ids=[x[0] for x in stickies]+ids
+            
     # check if ids exist
     posts = get_posts(ids, sort=sort)
 
