@@ -99,6 +99,7 @@ class User(Base, standard_mixin, age_mixin):
     show_nsfl = Column(Boolean, default=False)
     custom_filter_list=Column(String(1000), default="")
     filter_nsfw = Column(Boolean, default=False)
+    per_page_preference=Column(Integer, default=25)
 
     #security
     login_nonce = Column(Integer, default=0)
@@ -800,7 +801,7 @@ class User(Base, standard_mixin, age_mixin):
 
             if x.read:
                 continue
-                
+
             x.read=True
             g.db.add(x)
             mark_as_ready=True
