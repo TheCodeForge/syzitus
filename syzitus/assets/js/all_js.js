@@ -2030,6 +2030,10 @@ $('#2faToggle').change(function(){
   $('#2faModal').modal('toggle')
 })
 
+$('#per-page').change(function(){
+  post_toast('/settings/profile?per_page='+$(this).find(":selected").val());
+})
+
 $('#over18').change(function(){
   post_toast('/settings/profile?over18='+$(this).prop('checked'));
   $('#filter-nsfw-option').toggleClass('d-none')
