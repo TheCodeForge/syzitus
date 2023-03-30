@@ -762,7 +762,11 @@ class User(Base, standard_mixin, age_mixin):
             Notification.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
         mark_as_read=False
-        for x in notifications[0:25] if not x.read:
+        for x in notifications[0:25]:
+
+            if x.read:
+                continue
+
             x.read = True
             g.db.add(x)
             mark_as_read=True
@@ -792,7 +796,11 @@ class User(Base, standard_mixin, age_mixin):
             ).offset(25*(page-1)).limit(26)
 
         mark_as_read=False
-        for x in notifications[0:25] if not x.read:
+        for x in notifications[0:25]:
+
+            if x.read:
+                continue
+                
             x.read=True
             g.db.add(x)
             mark_as_ready=True
