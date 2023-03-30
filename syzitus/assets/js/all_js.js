@@ -1562,6 +1562,10 @@ $("#sendTipButton").click(function() {
 }
 );
 
+$('.cat-check').change(function(){
+  togglecat(this.data('sort'))
+})
+
 var togglecat = function(sort, reload=false, delay=1000, page="/all") {
   var cbs = document.getElementsByClassName('cat-check');
   var l = []
@@ -1620,7 +1624,6 @@ var triggercat=function(sort, cats, reload, page) {
     else {
       var l = document.getElementById('posts');
       l.innerHTML=xhr.response;
-      register_votes();
     }
   }
   xhr.send()

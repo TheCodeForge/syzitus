@@ -242,7 +242,7 @@
             {% for y in c.subcats %}
             {% set subcat=c.subcats[y] %}
             <div class="custom-control custom-checkbox mb-2">
-              <input type="checkbox" class="custom-control-input cat-check" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}" onchange="togglecat('{{ sort_method }}')"{% if subcat.id in session.get('catids',[]) %} checked{% endif %}>
+              <input type="checkbox" class="custom-control-input cat-check" id="cat-{{ subcat.base36id }}" data-cat="{{ subcat.id }}" data-sort="{{ sort_method }}" {% if subcat.id in session.get('catids',[]) %} checked{% endif %}>
               <label class="custom-control-label" for="cat-{{ subcat.base36id }}">{{ subcat.name }}</label>
             </div>
             {% endfor %}
