@@ -12,7 +12,7 @@ import threading
 from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.security import generate_hash, validate_hash
 from syzitus.helpers.lazy import lazy
-from syzitus.helpers.user_imports import send_notification
+from syzitus.helpers.user_imports import send_notif
 from syzitus_helpers.class_wrappers import per_page
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
