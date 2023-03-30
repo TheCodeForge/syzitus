@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship, deferred, lazyload, load_only
 from flask import g, abort, request
 
 from syzitus.helpers.lazy import lazy
-from syzitus.helpers.wrappers import per_page
+from syzitus.helpers.class_wrappers import per_page
 import syzitus.helpers.aws as aws
 from .userblock import UserBlock
 from .submission import Submission
