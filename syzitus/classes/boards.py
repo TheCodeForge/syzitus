@@ -252,7 +252,7 @@ class Board(Base, standard_mixin, age_mixin):
         else:
             abort(422)
 
-        posts = [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
+        posts = [x[0] for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
 
         return posts
 
@@ -634,8 +634,7 @@ class Board(Base, standard_mixin, age_mixin):
         comments = comments.join(
             posts, Comment.parent_submission == posts.c.id)
 
-        comments = comments.order_by(Comment.created_utc.desc()).offset(
-            25 * (page - 1)).limit(26).all()
+        comments = comments.order_by(Comment.created_utc.desc()).offset(g.per_page * (page - 1)).limit(g.per_page+1).all()
 
         return [x.id for x in comments]
 
