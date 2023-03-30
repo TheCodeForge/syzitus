@@ -31,10 +31,7 @@ def settings_profile_post():
     updated = False
 
     if request.values.get("per_page"):
-        try:
-            per_page=int(request.values.get(per_page))
-        except:
-            abort(400)
+        per_page=int(request.values.get(per_page))
 
         if per_page>25 and not g.user.has_premium:
             return jsonify({"error":f"That's a {app.config['SITE_NAME']} Premium option"}), 402
