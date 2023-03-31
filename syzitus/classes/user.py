@@ -264,7 +264,6 @@ class User(Base, standard_mixin, age_mixin):
     
 
     @cache.memoize()
-    @per_page
     def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
 
         posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
@@ -384,7 +383,6 @@ class User(Base, standard_mixin, age_mixin):
         return [x.id for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
 
     @cache.memoize()
-    @per_page
     def userpagelisting(self, page=1, sort="new", t="all"):
 
         submissions = g.db.query(Submission).options(
@@ -450,7 +448,6 @@ class User(Base, standard_mixin, age_mixin):
         return listing
 
     @cache.memoize()
-    @per_page
     def commentlisting(self, page=1, sort="new", t="all"):
         comments = self.comments.options(
             load_only(Comment.id)).filter(Comment.parent_submission is not None).join(Comment.post)
