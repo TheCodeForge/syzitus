@@ -119,7 +119,7 @@ Optional query parameters:
     page = int(request.args.get("page", "1"))
     page = max(page, 1)
 
-    ids = u.userpagelisting(page=page, sort=sort, t=t)
+    ids = u.userpagelisting(page=page, sort=sort, t=t, per_page=g.per_page)
 
     # we got g.per_page+1 items just to see if a next page exists
     next_exists = (len(ids) == g.per_page+1)
