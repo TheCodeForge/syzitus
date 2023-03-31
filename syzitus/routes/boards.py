@@ -278,6 +278,7 @@ def reddit_moment_redirect(name):
 @app.route("/api/v1/guild/<guildname>/listing", methods=["GET"])
 @app.get("/api/v2/guilds/<guildname>/submissions")
 @auth_desired
+@per_page
 @api("read")
 def board_name(guildname):
     """
@@ -2105,6 +2106,7 @@ URL path parameters:
 @app.get("/api/v1/guild/<guildname>/comments")
 @app.get("/api/v2/guilds/<guildname>/comments")
 @auth_desired
+@per_page
 @api("read")
 def board_comments(guildname):
     """
@@ -2125,7 +2127,8 @@ Optional query parameters:
                               nsfw=g.user and g.user.over_18,
                               nsfl=g.user and g.user.show_nsfl,
                               hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
-                              hide_bot=g.user and g.user.hide_bot)
+                              hide_bot=g.user and g.user.hide_bot,
+                              per_page=g.per_page)
 
     next_exists = len(idlist) == g.per_page+1
 
