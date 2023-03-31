@@ -38,8 +38,8 @@ def notifications():
         system_only=request.path=="/notifications/system"
         )
     
-    next_exists = (len(cids) == g.per_page+1)
-    cids = cids[0:g.per_page]
+    next_exists = (len(cids) == 25)
+    cids = cids[0:25]
 
     comments = get_comments(cids, sort_type="new", load_parent=True)
 
@@ -79,7 +79,6 @@ def notifications():
 
 @app.get("/notifications/posts")
 @auth_required
-@per_page
 @api("read")
 def notifications_posts():
 
@@ -272,7 +271,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     else:
         abort(400)
 
-    return [x.id for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
+    return [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
     
 
 @app.route("/", methods=["GET"])
