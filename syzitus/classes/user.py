@@ -731,7 +731,8 @@ class User(Base, standard_mixin, age_mixin):
         )
 
         notifications = notifications.order_by(
-            Notification.id.desc()).offset(g.per_page * (page - 1)).limit(g.per_page+1).all()
+            #staying at 25 for performance reasons
+            Notification.id.desc()).offset(25 * (page - 1)).limit(26).all()
 
         mark_as_read=False
         for x in notifications[0:25]:
