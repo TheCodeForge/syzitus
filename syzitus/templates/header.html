@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-md navbar-light border-bottom fixed-top" id="navbar">
   <div class="container-fluid">
     <div class="flex-grow-1">
-      <a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}{% if 'SUBTITLE'|app_config %}<span class="text-small-extra text-uppercase text-gray-400"> {{ 'SUBTITLE' | app_config }}</span>{% endif %}</a>
+      <a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}{% if ( 'SUBTITLE' | app_config ) %}<span class="text-small-extra text-uppercase text-gray-400"> {{ 'SUBTITLE' | app_config }}</span>{% endif %}</a>
     </div>
     <div class="flex-grow-1 d-fl d-none d-md-block">
       <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
