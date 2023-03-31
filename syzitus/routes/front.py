@@ -5,7 +5,6 @@ from random import randint
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.get import *
-from syzitus.helpers.class_wrappers import per_page
 
 from syzitus.__main__ import app, cache
 from syzitus.classes.submission import Submission
