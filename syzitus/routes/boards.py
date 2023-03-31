@@ -333,7 +333,8 @@ Optional query parameters:
                        page=page,
                        nsfw=(g.user and g.user.over_18) or session_over18(board),
                        gt=int(request.args.get("utc_greater_than", 0)),
-                       lt=int(request.args.get("utc_less_than", 0))
+                       lt=int(request.args.get("utc_less_than", 0)),
+                       per_page=g.per_page
                        )
 
     next_exists = (len(ids) == g.per_page+1)
