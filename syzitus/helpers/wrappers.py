@@ -587,7 +587,7 @@ def per_page(f):
 
         if g.user and g.user.has_premium:
             arg=int(request.values.get('per_page', g.user.per_page_preference))
-            g.per_page=max(25, arg)
+            g.per_page=min(max(25, arg), 200)
         else:
             g.per_page=25
 
