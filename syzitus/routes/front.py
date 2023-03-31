@@ -900,6 +900,7 @@ def comment_idlist(page=1, nsfw=False, **kwargs):
 @app.route("/all/comments", methods=["GET"])
 @app.get("/api/v2/comments")
 @auth_desired
+@per_page
 @api("read")
 def all_comments():
     """
