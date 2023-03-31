@@ -9,10 +9,10 @@
   <meta name="author" content="">
 
   {% block title %}
-  <title>Donate - {{ "SITE_NAME" | app_config }}</title>
+  <title>Donate - {{ 'SITE_NAME' | app_config }}</title>
   <meta name="description" content="{{ 'TAGLINE' | app_config }}">
   <meta property="og:type" content="article" />
-  <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
+  <meta property="og:title" content="Donate - {{ 'SITE_NAME' | app_config }}" />
   <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
   <meta property="og:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
   <meta property="og:url" content="{{ request.path | full_link }}">
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="{{ 'SERVER_NAME' | app_config }}" />
 
   <meta name="twitter:card" content="summary_large_image"/>
-  <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}: Awesome Online Communities, Without Censorship" />
+  <meta name="twitter:title" content="{{ 'SITE_NAME' | app_config }}{{ ': ' + ( 'TAGLINE' | app_config ) if ( 'TAGLINE' | app_config ) else ''}}" />
   <meta name="twitter:description" content="Support {{ 'SITE_NAME' | app_config }}. {{ 'SITE_NAME' | app_config }} is an open-source web app that lets you enjoy online communities focused around topics you love, without censorship and moderator abuse." />
   <meta name="twitter:image" content="{{ 'IMG_URL_THUMBSPLASH' | app_config }}" />
   <meta name="twitter:url" content="{{ request.path | full_link }}" />

@@ -155,7 +155,7 @@ In this section, you will set up the main Syzitus application, prepare the datab
     * (Remaining settings leave unchanged)
     ...and click Save
 
-### 2.3 CloudFlare Turnstile
+### 2.4 CloudFlare Turnstile
 
 Cloudflare Turnstile is a free human verification service that prevents bots from using the new account registration page.
 
@@ -164,7 +164,7 @@ Cloudflare Turnstile is a free human verification service that prevents bots fro
 3. Click Add Site and follow the prompts. You will get a Turnstile API key and secret.
 4. In Heroku settings, add config variables `CLOUDFLARE_TURNSTILE_KEY` and `CLOUDFLARE_TURNSTILE_SECRET` using the key and secret obtained from Cloudflare Turnstile.
 
-### 2.4 Database setup
+### 2.5 Database setup
 
 1. Open DBeaver. Create a new connection. Select PostgreSQL as the connection type. Fill in the host, port, username, password, and database name using the information from your `DATABASE_URL`. (The url is structured in the format `postgres://username:password@host:port/databasename`).
 2. Save the connection and connect to your database.
@@ -172,7 +172,7 @@ Cloudflare Turnstile is a free human verification service that prevents bots fro
 4. Open a new script. Copy and paste the contents of sql/tables.sql (from the syzitus repository) into the new script. Run the script.
 5. Open a new script. Copy and paste the contents of sql/functions.sql (from the syzitus repository) into the new script. Run the script. You'll get some errors; the functions are exported in alphabetical order and some of the earlier ones depend on some of the later ones that don't exist just yet. Skip the errors, then run the script again until no errors are generated.
 
-### 2.5 Start it running!
+### 2.6 Start it running!
 
 1. Open the Heroku resources tab.
 2. Near the top right corner, click More, then right click View More, and select Open In New Tab
@@ -201,6 +201,7 @@ Cloudflare Turnstile is a free human verification service that prevents bots fro
 
 You can set the following Heroku config variables as you like:
 
+* `TAGLINE` - Your site's tagline. Used in metadata and on the About and Donate pages
 * `COLOR_PRIMARY` - Your site's primary theme color; defaults to the Ruqqus porpl color of `805ad5` if not specified
 * `COLOR_PRIMARY_NAME` - The name of your site's primary theme color; defaults to `Porpl` if not specified
 * `PROFILE_UPLOAD_REP`, `BANNER_UPLOAD_REP`, `GUILD_CREATION_REQ`, `MAX_GUILD_COUNT`, `UPLOAD_IMAGE_REP` - set various Rep requirements and limits

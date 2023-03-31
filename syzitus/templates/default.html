@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="{{ 'IMG_URL_FAVICON' | app_config }}">
   
 	{% block title %}
-	<title>{{ "SITE_NAME" | app_config }}: The Open-Source Platform for Independent Internet Communities</title>
+	<title>{{ "SITE_NAME" | app_config }}{{ ': ' + ( 'TAGLINE' | app_config ) if ( 'TAGLINE' | app_config ) else ''}}</title>
 
   <meta property="og:type" content="article" />
   <meta property="og:title" content="{{ 'SITE_NAME' | app_config }}: The Open-Source Platform for Independent Internet Communities" />
