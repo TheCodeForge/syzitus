@@ -1407,6 +1407,9 @@ class User(Base, standard_mixin, age_mixin):
         if self.negative_balance_cents:
             return False
 
+        if self.is_permbanned:
+            return False
+
         elif self.premium_expires_utc > now:
             return True
 
