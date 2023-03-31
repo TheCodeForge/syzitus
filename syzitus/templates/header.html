@@ -2,136 +2,138 @@
 
 <nav class="navbar navbar-expand-md navbar-light border-bottom fixed-top" id="navbar">
   <div class="container-fluid">
-    <div class="flex-grow-1"><a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}{% if 'SUBTITLE'|app_config %}<span class="text-small-extra text-uppercase text-gray-400"> {{ 'SUBTITLE' | app_config }}</span>{% endif %}</a></div>
-      <div class="flex-grow-1 d-fl d-none d-md-block">
-        <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
-          <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q" value="{{ query }}">
-          <span class="input-group-append">
-            <span class="input-group-text border-0 bg-transparent ml--3">
-              <i class="fa fa-search" aria-hidden="true"></i>
-            </span>
+    <div class="flex-grow-1">
+      <a href="/" class="navbar-brand text-purple">{{ "SITE_NAME" | app_config | lower }}{% if 'SUBTITLE'|app_config %}<span class="text-small-extra text-uppercase text-gray-400"> {{ 'SUBTITLE' | app_config }}</span>{% endif %}</a>
+    </div>
+    <div class="flex-grow-1 d-fl d-none d-md-block">
+      <form class="form-inline search flex-nowrap mx-0 mx-lg-auto" action="{% if b %}/+{{ b.name }}{% endif %}/search" method="get">
+        <input class="form-control w-100" type="search" placeholder="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" aria-label="Search posts{% if b %} in +{{ b.name }}{% else %}, +guilds, and @users{% endif %}" name="q" value="{{ query }}">
+        <span class="input-group-append">
+          <span class="input-group-text border-0 bg-transparent ml--3">
+            <i class="fa fa-search" aria-hidden="true"></i>
           </span>
-        </form>
-      </div>
-      {% if g.user and not g.user.is_suspended %}
-      <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
-      {% else %}
-      <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
-      {% endif %}
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon {% if g.user and g.user.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
-        {% if g.user and g.user.notifications_count %}
-        <i id="red-notif-circle-mobile" class="fas fa-circle text-danger text-small-extra position-absolute"></i>
-        {% endif %}
         </span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto d-none d-md-flex">
+      </form>
+    </div>
+    {% if g.user and not g.user.is_suspended %}
+    <a class="mobile-nav-icon d-block d-md-none" href="/submit{{ '?guild='+b.name if b else '' }}"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+    {% else %}
+    <a class="mobile-nav-icon d-block d-md-none" href="/login"><i class="fas fa-feather-alt align-middle text-gray-500"></i></a>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon {% if g.user and g.user.notifications_count %}position-relative{% endif %}"><i class="fal fa-bars text-gray-500"></i>
+      {% if g.user and g.user.notifications_count %}
+      <i id="red-notif-circle-mobile" class="fas fa-circle text-danger text-small-extra position-absolute"></i>
+      {% endif %}
+      </span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto d-none d-md-flex">
 
-          {% if g.user and g.user.mods_anything %}
-          <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-            <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools">
-              <i class="fas fa-crown fa-fw{% if g.user.has_report_queue %} text-warning{% endif %}"></i>
+        {% if g.user and g.user.mods_anything %}
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <a class="nav-link" href="/mod/queue" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Guildmaster tools">
+            <i class="fas fa-crown fa-fw{% if g.user.has_report_queue %} text-warning{% endif %}"></i>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if g.user %}
+
+        {% if g.user.notifications_count %}
+
+        <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+          <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications">
+            <i class="fas fa-envelope text-danger"></i>
+            <span class="badge-count font-weight-bolder">{{ g.user.notifications_count }}</span>
+          </a>
+        </li>
+        
+        {% else %}
+
+        <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
+          <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-envelope"></i></a>
+        </li>
+
+        {% endif %}
+
+        {% if not g.user.is_suspended %}
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <a class="nav-link" href="/submit{{ '?guild='+b.name if b else '' }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Create post"><i class="fas fa-feather-alt"></i></a>
+        </li>
+        {% endif %}
+
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <div class="dropdown">
+            <a href="javascript:void(0)" class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+              <i class="fas fa-random"></i>
             </a>
-          </li>
-          {% endif %}
-
-          {% if g.user %}
-
-          {% if g.user.notifications_count %}
-
-          <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
-            <a class="nav-link position-relative" href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications">
-              <i class="fas fa-envelope text-danger"></i>
-              <span class="badge-count font-weight-bolder">{{ g.user.notifications_count }}</span>
-            </a>
-          </li>
-          
-          {% else %}
-
-          <li class="nav-item d-flex align-items-center text-center justify-content-center mx-1">
-            <a class="nav-link" href="/notifications/all" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Notifications"><i class="fas fa-envelope"></i></a>
-          </li>
-
-          {% endif %}
-
-          {% if not g.user.is_suspended %}
-          <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-            <a class="nav-link" href="/submit{{ '?guild='+b.name if b else '' }}" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="Create post"><i class="fas fa-feather-alt"></i></a>
-          </li>
-          {% endif %}
-
-          <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-            <div class="dropdown">
-              <a href="javascript:void(0)" class="nav-link bg-transparent" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                <i class="fas fa-random"></i>
-              </a>
-              <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
-                <h6 class="dropdown-header">View random</h6>
-                <div class="px-2">
-                  <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
-                  <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
-                  <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
-                </div>
+            <div class="dropdown-menu border-0 shadow fade px-0 mt-2" aria-labelledby="dropdownMenuButton">
+              <h6 class="dropdown-header">View random</h6>
+              <div class="px-2">
+                <a class="dropdown-item" href="/random/guild"><i class="fas fa-chess-rook fa-fw text-center mr-3"></i>Guild</a>
+                <a class="dropdown-item" href="/random/post"><i class="fas fa-feather-alt fa-fw text-center mr-3"></i>Post</a>
+                <a class="dropdown-item" href="/random/comment"><i class="fas fa-comment fa-fw text-center mr-3"></i>Comment</a>
               </div>
             </div>
-          </li>
+          </div>
+        </li>
 
-          <li class="nav-item d-flex align-items-center justify-content-center text-center">
-            <div class="dropdown">
-              <a class="nav-link bg-transparent py-0 pr-0" href="javascript:void(0)" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">
-                <div class="d-flex">
-                  <div><img src="{{ g.user.profile_url }}" class="profile-pic-35"></div>
-                  <div class="text-left pl-2">
-                    <div class="text-small font-weight-bold">{{ g.user.username }}</div>
-                    <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
-                  </div>
-                </div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right border-0 shadow fade px-0 mt-2"
-            aria-labelledby="dropdownMenuButton">
-                <div class="px-2">
-                  <div class="dropdown-meta">
-                    <div class="font-weight-bold text-dark mb-2">{{ g.user.username }}</div>
-                    <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
-                  </div>
-                </div>
-                <hr class="my-2">
-                <div class="px-2">
-                  <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My profile</a>
-                  {% if g.user.notifications_count %}
-                  <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
-                  {% else %}
-                  <a class="dropdown-item" href="/notifications/all"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
-                  {% endif %}
-                  <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
-
-                  <a class="dropdown-item dark-switch text-black" href="javascript:void(0)"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3 dark-switch-icon"></i>Dark mode</a>
-                </div>
-                <hr class="my-2">
-                <div class="px-2">
-                  <button class="dropdown-item copy-link" data-clipboard-text="{{ ('/signup?ref='+g.user.username) | full_link }}"><i class="fad fa-user-friends fa-fw text-left mr-3"></i>Invite friends</button>
-                </div>
-                <hr class="my-2">
-                <div class="px-2">
-                  <a href="javascript:void(0)" class="dropdown-item post-url-reload" data-post-url="/logout"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
+        <li class="nav-item d-flex align-items-center justify-content-center text-center">
+          <div class="dropdown">
+            <a class="nav-link bg-transparent py-0 pr-0" href="javascript:void(0)" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+              <div class="d-flex">
+                <div><img src="{{ g.user.profile_url }}" class="profile-pic-35"></div>
+                <div class="text-left pl-2">
+                  <div class="text-small font-weight-bold">{{ g.user.username }}</div>
+                  <div class="text-small-extra text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
                 </div>
               </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right border-0 shadow fade px-0 mt-2"
+          aria-labelledby="dropdownMenuButton">
+              <div class="px-2">
+                <div class="dropdown-meta">
+                  <div class="font-weight-bold text-dark mb-2">{{ g.user.username }}</div>
+                  <div class="text-small text-purple"><i class="fad fa-diamond mr-1"></i>{{ g.user.true_score }} Rep</div>
+                </div>
+              </div>
+              <hr class="my-2">
+              <div class="px-2">
+                <a class="dropdown-item" href="{{ g.user.permalink }}"><i class="fas fa-user-circle fa-fw text-left mr-3"></i>My profile</a>
+                {% if g.user.notifications_count %}
+                <a class="dropdown-item" href="/notifications"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox<span class="badge badge-danger rounded-circle align-top ml-1">{{ g.user.notifications_count }}</span></a>
+                {% else %}
+                <a class="dropdown-item" href="/notifications/all"><i class="fas fa-inbox fa-fw text-left mr-3"></i>Inbox</a>
+                {% endif %}
+                <a class="dropdown-item" href="/settings"><i class="fas fa-cog fa-fw text-left mr-3"></i>Settings</a>
+
+                <a class="dropdown-item dark-switch text-black" href="javascript:void(0)"><i class="fas {% if session.get('dark_mode_enabled') %}fa-toggle-on{% else %}fa-toggle-off{% endif %} fa-fw text-left mr-3 dark-switch-icon"></i>Dark mode</a>
+              </div>
+              <hr class="my-2">
+              <div class="px-2">
+                <button class="dropdown-item copy-link" data-clipboard-text="{{ ('/signup?ref='+g.user.username) | full_link }}"><i class="fad fa-user-friends fa-fw text-left mr-3"></i>Invite friends</button>
+              </div>
+              <hr class="my-2">
+              <div class="px-2">
+                <a href="javascript:void(0)" class="dropdown-item post-url-reload" data-post-url="/logout"><i class="fas fa-sign-out fa-fw text-left mr-3"></i>Log out</a>
+              </div>
             </div>
-          </li>
-          {% else %}
-          <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
-            <a class="nav-link" href="/random/post" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="View random post"><i class="fas fa-random"></i></a>
-          </li>
-          <li class="nav-item d-flex align-items-center justify-content-center mx-1">
-           <a class="btn btn-outline-purple" href="/login?redirect={{ request.path | urlencode }}">Sign In</a>
-         </li>
-         <li class="nav-item d-flex align-items-center justify-content-center mx-1">
-           <a class="btn btn-purple" href="/signup?redirect={{ request.path | urlencode }}">Sign Up</a>
-         </li>
-         {% endif %}
-       </ul>
+          </div>
+        </li>
+        {% else %}
+        <li class="nav-item d-flex align-items-center justify-content-center text-center mx-1">
+          <a class="nav-link" href="/random/post" data-toggle="tooltip" data-placement="bottom" data-delay='{"show":"700", "hide":"0"}' title="View random post"><i class="fas fa-random"></i></a>
+        </li>
+        <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+         <a class="btn btn-outline-purple" href="/login?redirect={{ request.path | urlencode }}">Sign In</a>
+       </li>
+       <li class="nav-item d-flex align-items-center justify-content-center mx-1">
+         <a class="btn btn-purple" href="/signup?redirect={{ request.path | urlencode }}">Sign Up</a>
+       </li>
+       {% endif %}
+      </ul>
 
       <!-- Mobile Nav Menu -->
        <ul class="navbar-nav ml-auto d-flex d-md-none mt-3">
