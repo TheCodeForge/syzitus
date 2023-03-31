@@ -264,7 +264,7 @@ class User(Base, standard_mixin, age_mixin):
     
 
     @cache.memoize()
-    def idlist(self, sort=None, page=1, t=None, filter_words="", **kwargs):
+    def idlist(self, sort=None, page=1, t=None, filter_words="", per_page=25 **kwargs):
 
         posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
             is_banned=False,
@@ -380,10 +380,10 @@ class User(Base, standard_mixin, age_mixin):
         else:
             abort(422)
 
-        return [x.id for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
+        return [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
 
     @cache.memoize()
-    def userpagelisting(self, page=1, sort="new", t="all"):
+    def userpagelisting(self, page=1, sort="new", t="all", per_page):
 
         submissions = g.db.query(Submission).options(
             load_only(Submission.id)).filter_by(author_id=self.id)
@@ -444,11 +444,11 @@ class User(Base, standard_mixin, age_mixin):
             cutoff = 0
         submissions = submissions.filter(Submission.created_utc >= cutoff)
 
-        listing = [x.id for x in submissions.offset(g.per_page * (page - 1)).limit(g.per_page+1)]
+        listing = [x.id for x in submissions.offset(per_page * (page - 1)).limit(per_page+1)]
         return listing
 
     @cache.memoize()
-    def commentlisting(self, page=1, sort="new", t="all"):
+    def commentlisting(self, page=1, sort="new", t="all", per_page=25):
         comments = self.comments.options(
             load_only(Comment.id)).filter(Comment.parent_submission is not None).join(Comment.post)
 
@@ -529,7 +529,7 @@ class User(Base, standard_mixin, age_mixin):
             cutoff = 0
         comments = comments.filter(Comment.created_utc >= cutoff)
 
-        comments = comments.offset(g.per_page * (page - 1)).limit(g.per_page+1)
+        comments = comments.offset(per_page * (page - 1)).limit(per_page+1)
 
         listing = [c.id for c in comments]
         return listing
@@ -761,7 +761,7 @@ class User(Base, standard_mixin, age_mixin):
                 contains_eager(Notification.post)
             ).order_by(
                 Notification.id.desc()
-            ).offset(g.per_page*(page-1)).limit(g.per_page+1)
+            ).offset(25*(page-1)).limit(26)
 
         mark_as_read=False
         for x in notifications[0:25]:
@@ -1314,7 +1314,7 @@ class User(Base, standard_mixin, age_mixin):
             OauthApp.id.asc()).all()]
 
 
-    # def saved_idlist(self, page=1):
+    # def saved_idlist(self, page=1, per_page=25):
 
     #     posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
     #                                                                        deleted_utc=0
@@ -1362,7 +1362,7 @@ class User(Base, standard_mixin, age_mixin):
 
     #     posts=posts.order_by(Submission.created_utc.desc())
         
-    #     return [x[0] for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
+    #     return [x[0] for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
 
 
 

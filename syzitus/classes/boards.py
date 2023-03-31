@@ -155,8 +155,7 @@ class Board(Base, standard_mixin, age_mixin):
         return not self.postrels.filter_by(post_id=post.id).first()
 
     @cache.memoize()
-    def idlist(self, sort=None, page=1, t=None,
-               hide_offensive=True, hide_bot=False, nsfw=False, **kwargs):
+    def idlist(self, sort=None, page=1, t=None, hide_offensive=True, hide_bot=False, nsfw=False, per_page=25 **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
                                                                            #is_pinned=False,
@@ -250,7 +249,7 @@ class Board(Base, standard_mixin, age_mixin):
         else:
             abort(422)
 
-        posts = [x[0] for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
+        posts = [x[0] for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
 
         return posts
 
@@ -580,7 +579,7 @@ class Board(Base, standard_mixin, age_mixin):
         return self.is_private or self.restricted_posting or self.over_18 or self.all_opt_out
 
     @cache.memoize()
-    def comment_idlist(self, page=1, v=None, nsfw=False, **kwargs):
+    def comment_idlist(self, page=1, v=None, nsfw=False, per_page=25, **kwargs):
 
         posts = g.db.query(Submission).options(
             lazyload('*')).filter_by(board_id=self.id)
@@ -632,7 +631,7 @@ class Board(Base, standard_mixin, age_mixin):
         comments = comments.join(
             posts, Comment.parent_submission == posts.c.id)
 
-        comments = comments.order_by(Comment.created_utc.desc()).offset(g.per_page * (page - 1)).limit(g.per_page+1).all()
+        comments = comments.order_by(Comment.created_utc.desc()).offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in comments]
 
