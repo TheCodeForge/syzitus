@@ -586,6 +586,7 @@ def guild_ids(sort="subs", page=1, nsfw=False, cats=[]):
 @app.route("/browse", methods=["GET"])
 @app.get("/api/v2/guilds")
 @auth_desired
+@per_page
 @api("read")
 def browse_guilds():
     """
