@@ -683,10 +683,8 @@ class User(Base, standard_mixin, age_mixin):
 
 
         notifications = g.db.query(Notification
-            # ).options(
-            # lazyload('*'),
-            # joinedload(Notification.comment).lazyload('*'),
-            # joinedload(Notification.comment).joinedload(Comment.comment_aux)
+            ).options(
+            lazyload('*'),
             ).join(
             Notification.comment
             ).filter(
