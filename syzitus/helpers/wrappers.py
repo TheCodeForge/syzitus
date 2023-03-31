@@ -586,7 +586,8 @@ def per_page(f):
     def wrapper(*args, **kwargs):
 
         if g.user and g.user.has_premium:
-            g.per_page=max(25, request.values.get('per_page',g.user.per_page_preference))
+            arg=int(request.values.get('per_page'))
+            g.per_page=max(25, g.user.per_page_preference)
         else:
             g.per_page=25
 
