@@ -38,7 +38,7 @@ def searchparse(text):
 
 
 @cache.memoize()
-def searchlisting(criteria, page=1, t="None", sort="top", b=None):
+def searchlisting(criteria, page=1, t="None", sort="top", b=None, per_page=25):
 
     posts = g.db.query(Submission).options(
                 lazyload('*'), load_only(Submission.id)
@@ -201,11 +201,12 @@ def searchlisting(criteria, page=1, t="None", sort="top", b=None):
 
     total = posts.count()
 
-    return total, [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
+    return total, [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
 
 
 @app.route("/search", methods=["GET"])
 @auth_desired
+@per_page
 @api("read")
 def search(search_type="posts"):
 
@@ -262,9 +263,9 @@ def search(search_type="posts"):
 
         total = boards.count()
 
-        boards = [x for x in boards.offset(25 * (page - 1)).limit(26)]
-        next_exists = (len(boards) == 26)
-        boards = boards[0:25]
+        boards = [x for x in boards.offset(per_page * (page - 1)).limit(per_page+1)]
+        next_exists = (len(boards) == per_page+1)
+        boards = boards[0:per_page]
 
         return {"html":lambda:render_template("search_boards.html",
                                query=query,
@@ -305,9 +306,9 @@ def search(search_type="posts"):
         
         total=users.count()
         
-        users=[x for x in users.offset(25 * (page-1)).limit(26)]
-        next_exists=(len(users)==26)
-        users=users[0:25]
+        users=[x for x in users.offset(per_page * (page-1)).limit(per_page+1)]
+        next_exists=(len(users)==per_page+1)
+        users=users[0:per_page]
         
         
         
@@ -332,10 +333,10 @@ def search(search_type="posts"):
         # posts search
 
         criteria=searchparse(query)
-        total, ids = searchlisting(criteria, page=page, t=t, sort=sort)
+        total, ids = searchlisting(criteria, page=page, t=t, sort=sort, per_page=g.per_page)
 
-        next_exists = (len(ids) == 26)
-        ids = ids[0:25]
+        next_exists = (len(ids) == per_page+1)
+        ids = ids[0:per_page]
 
         posts = get_posts(ids)
 
@@ -373,6 +374,7 @@ def search(search_type="posts"):
 
 @app.route("/+<name>/search", methods=["GET"])
 @auth_desired
+@per_page
 def search_guild(name, search_type="posts"):
 
 
@@ -395,10 +397,10 @@ def search_guild(name, search_type="posts"):
 
     #posts search
 
-    total, ids = searchlisting(searchparse(query), page=page, t=t, sort=sort, b=b)
+    total, ids = searchlisting(searchparse(query), page=page, t=t, sort=sort, b=b, per_page=g.per_page)
 
-    next_exists=(len(ids)==26)
-    ids=ids[0:25]
+    next_exists=(len(ids)==g.per_page+1)
+    ids=ids[0:g.per_page]
 
     posts=get_posts(ids)
 
