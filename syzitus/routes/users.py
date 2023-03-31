@@ -122,7 +122,7 @@ Optional query parameters:
 
     # we got g.per_page+1 items just to see if a next page exists
     next_exists = (len(ids) == g.per_page+1)
-    ids = ids[0:25]
+    ids = ids[0:g.per_page]
 
     listing = get_posts(ids)
 
@@ -213,7 +213,7 @@ Optional query parameters:
 
     # we got g.per_page+1 items just to see if a next page exists
     next_exists = (len(ids) == g.per_page+1)
-    ids = ids[0:25]
+    ids = ids[0:g.per_page]
 
     listing = get_comments(ids)
 
@@ -353,7 +353,7 @@ def user_profile_uid(uid, profile_nonce):
 
 #     next_exists=len(ids)==g.per_page+1
 
-#     ids=ids[0:25]
+#     ids=ids[0:g.per_page]
 
 #     print(ids)
 
