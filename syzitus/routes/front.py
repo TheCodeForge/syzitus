@@ -5,6 +5,7 @@ from random import randint
 
 from syzitus.helpers.wrappers import *
 from syzitus.helpers.get import *
+from syzitus.helpers.class_wrappers import per_page
 
 from syzitus.__main__ import app, cache
 from syzitus.classes.submission import Submission
@@ -78,6 +79,7 @@ def notifications():
 
 @app.get("/notifications/posts")
 @auth_required
+@per_page
 @api("read")
 def notifications_posts():
 
@@ -276,6 +278,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
 @app.route("/", methods=["GET"])
 @app.route("/api/v2/me/submissions")
 @auth_desired
+@per_page
 @api("read")
 def home():
     """
@@ -376,6 +379,7 @@ def categories_select():
 @app.route("/inpage/all")
 @app.get("/api/v2/submissions")
 @auth_desired
+@per_page
 @api("read")
 def front_all():
     """
@@ -480,6 +484,7 @@ Optional query parameters:
 
 @app.route("/subcat/<name>", methods=["GET"])
 @auth_desired
+@per_page
 @api("read")
 def subcat(name):
 
