@@ -56,6 +56,7 @@ def redditor_moment_redirect(username):
 @app.route("/@<username>", methods=["GET"])
 @app.get("/api/v2/users/<username>/submissions")
 @auth_desired
+@per_page
 @no_archive
 @api("read")
 def u_username(username):
