@@ -751,7 +751,7 @@ class User(Base, standard_mixin, age_mixin):
     @per_page
     def notification_postlisting(self, all_=False, page=1):
 
-        notifications=g.db.query(Notification).join(
+        notifications=g.db.query(Notification).options(lazyload('*')).join(
             Notification.post
             ).filter(
             Notification.user_id==self.id,
