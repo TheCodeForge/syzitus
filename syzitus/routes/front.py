@@ -312,6 +312,7 @@ Optional query parameters:
             only=only,
             t=t,
             filter_words=g.user.filter_words,
+            per_page=g.per_page,
 
             # these arguments don't really do much but they exist for
             # cache memoization differentiation
@@ -438,6 +439,7 @@ Optional query parameters:
 
     ids = frontlist(
         sort=sort,
+        per_page=g.per_page,
         page=page,
         nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
         nsfl=(g.user and g.user.show_nsfl),
@@ -536,7 +538,7 @@ def subcat(name):
     ids = ids[0:g.per_page]
 
     # check if ids exist
-    posts = get_posts(ids, sort=sort_method)
+    posts = get_posts(ids)
 
     return {'html': lambda: render_template("home.html",
                                             listing=posts,
