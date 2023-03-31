@@ -13,7 +13,6 @@ from syzitus.helpers.base36 import base36encode
 from syzitus.helpers.security import generate_hash, validate_hash
 from syzitus.helpers.lazy import lazy
 from syzitus.helpers.user_imports import send_notif
-from syzitus.helpers.class_wrappers import per_page
 import syzitus.helpers.aws as aws
 from syzitus.helpers.discord import add_role, delete_role, discord_log_event
 from .alts import Alt
@@ -678,7 +677,6 @@ class User(Base, standard_mixin, age_mixin):
     def __repr__(self):
         return f"<User(username={self.username})>"
 
-    @per_page
     def notification_commentlisting(self, page=1, all_=False, replies_only=False, mentions_only=False, system_only=False):
 
 
@@ -749,7 +747,6 @@ class User(Base, standard_mixin, age_mixin):
 
         return [x.comment_id for x in notifications]
 
-    @per_page
     def notification_postlisting(self, all_=False, page=1):
 
         notifications=g.db.query(Notification).options(lazyload('*')).join(
