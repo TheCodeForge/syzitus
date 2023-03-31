@@ -263,9 +263,9 @@ def search(search_type="posts"):
 
         total = boards.count()
 
-        boards = [x for x in boards.offset(per_page * (page - 1)).limit(per_page+1)]
-        next_exists = (len(boards) == per_page+1)
-        boards = boards[0:per_page]
+        boards = [x for x in boards.offset(g.per_page * (page - 1)).limit(g.per_page+1)]
+        next_exists = (len(boards) == g.per_page+1)
+        boards = boards[0:g.per_page]
 
         return {"html":lambda:render_template("search_boards.html",
                                query=query,
@@ -306,9 +306,9 @@ def search(search_type="posts"):
         
         total=users.count()
         
-        users=[x for x in users.offset(per_page * (page-1)).limit(per_page+1)]
-        next_exists=(len(users)==per_page+1)
-        users=users[0:per_page]
+        users=[x for x in users.offset(g.per_page * (page-1)).limit(g.per_page+1)]
+        next_exists=(len(users)==g.per_page+1)
+        users=users[0:g.per_page]
         
         
         
@@ -335,8 +335,8 @@ def search(search_type="posts"):
         criteria=searchparse(query)
         total, ids = searchlisting(criteria, page=page, t=t, sort=sort, per_page=g.per_page)
 
-        next_exists = (len(ids) == per_page+1)
-        ids = ids[0:per_page]
+        next_exists = (len(ids) == g.per_page+1)
+        ids = ids[0:g.per_page]
 
         posts = get_posts(ids)
 
