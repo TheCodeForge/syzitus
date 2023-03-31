@@ -120,8 +120,8 @@ Optional query parameters:
 
     ids = u.userpagelisting(page=page, sort=sort, t=t)
 
-    # we got 26 items just to see if a next page exists
-    next_exists = (len(ids) == 26)
+    # we got g.per_page+1 items just to see if a next page exists
+    next_exists = (len(ids) == g.per_page+1)
     ids = ids[0:25]
 
     listing = get_posts(ids)
@@ -211,8 +211,8 @@ Optional query parameters:
         t=request.args.get("t","all")
         )
 
-    # we got 26 items just to see if a next page exists
-    next_exists = (len(ids) == 26)
+    # we got g.per_page+1 items just to see if a next page exists
+    next_exists = (len(ids) == g.per_page+1)
     ids = ids[0:25]
 
     listing = get_comments(ids)
@@ -351,7 +351,7 @@ def user_profile_uid(uid, profile_nonce):
 
 #     ids=g.user.saved_idlist(page=page)
 
-#     next_exists=len(ids)==26
+#     next_exists=len(ids)==g.per_page+1
 
 #     ids=ids[0:25]
 
