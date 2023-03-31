@@ -1,4 +1,10 @@
 {% extends "docs_default.html" %}
+
+{% block title %}
+<title>Badges - {{ "SITE_NAME" | app_config }}</title>
+<meta name="description" content="{{ 'TAGLINE' | app_config }}">
+{% endblock %}
+
 {% block content %}
 <h1>User Badges</h1>
 <div>This page describes the requirements for obtaining all profile badges.</div>

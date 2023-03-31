@@ -1,5 +1,10 @@
 {% extends "mine/mine.html" %}
 
+{% block title %}
+<title>Admins - {{ "SITE_NAME" | app_config }}</title>
+<meta name="description" content="{{ 'TAGLINE' | app_config }}">
+{% endblock %}
+
 {% block maincontent %}
 
 <div class="col">

@@ -1,6 +1,9 @@
 {% extends "docs_default.html" %}
 
-
+{% block title %}
+<title>Titles - {{ "SITE_NAME" | app_config }}</title>
+<meta name="description" content="{{ 'TAGLINE' | app_config }}">
+{% endblock %}
 
 {% block content %}
 <h1 class="article-title">User titles</h1>
