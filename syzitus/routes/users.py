@@ -210,7 +210,8 @@ Optional query parameters:
     ids = user.commentlisting(
         page=page,
         sort=request.args.get("sort","new"),
-        t=request.args.get("t","all")
+        t=request.args.get("t","all"),
+        per_page=g.per_page
         )
 
     # we got g.per_page+1 items just to see if a next page exists
