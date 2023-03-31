@@ -132,6 +132,29 @@ In this section, you will set up the main Syzitus application, prepare the datab
     * If the url matches: `i.syzitus.com`
     * Then the settings are: SSL - Flexible
 
+### 2.3 CloudFlare Caching
+1. In the Caching -> Cache Rules page, add the following rule:
+    * When incoming requests match...
+    * URI Path contains `/assets/`
+    * Or
+    * URI Path contains `/logo/`
+    * Or
+    * URI Path contains `/mascot/`
+    * Or
+    * URI Path contains `/favicon.ico`
+    * Or
+    * URI Path contains `/pic/profile/`
+    * Or
+    * URI Path ends with `.css`
+    * Or
+    * URI Path ends with `.json`
+    * Or
+    * Hostname equals `i.syzitus.com`
+    * Then...
+    * Cache status: Eligible for cache
+    * (Remaining settings leave unchanged)
+    ...and click Save
+
 ### 2.3 CloudFlare Turnstile
 
 Cloudflare Turnstile is a free human verification service that prevents bots from using the new account registration page.
