@@ -155,7 +155,7 @@ class Board(Base, standard_mixin, age_mixin):
         return not self.postrels.filter_by(post_id=post.id).first()
 
     @cache.memoize()
-    def idlist(self, sort=None, page=1, t=None, hide_offensive=True, hide_bot=False, nsfw=False, per_page=25 **kwargs):
+    def idlist(self, sort=None, page=1, t=None, hide_offensive=True, hide_bot=False, nsfw=False, per_page=25, **kwargs):
 
         posts = g.db.query(Submission.id).options(lazyload('*')).filter_by(is_banned=False,
                                                                            #is_pinned=False,
