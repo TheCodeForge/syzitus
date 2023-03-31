@@ -176,6 +176,7 @@ app.config["DISCORD_CHANNEL_IDS"]={
 #premium related configs
 app.config["COINS_REQUIRED_CHANGE_USERNAME"]=int(environ.get("COINS_REQUIRED_CHANGE_USERNAME", 20))
 app.config["COOLDOWN_DAYS_CHANGE_USERNAME"]=int(environ.get("COOLDOWN_DAYS_CHANGE_USERNAME", 7))
+app.config["WEEKLY_COIN_TARGET"]=int(environ.get("WEEKLY_COIN_TARGET"), 20)
 
 #precompute logo urls
 app.config["IMG_URL_MASCOT"] = f"/mascot/{app.config['COLOR_PRIMARY'].lower()}"
