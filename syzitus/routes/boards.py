@@ -108,10 +108,10 @@ def multiboard(name):
     else:
         abort(422)
     
-    posts = [x[0] for x in posts.offset(25 * (page - 1)).limit(26).all()]
+    posts = [x[0] for x in posts.offset(g.per_page * (page - 1)).limit(g.per_page+1).all()]
     
-    next_exists = (len(posts) == 26)
-    posts = posts[0:25]
+    next_exists = (len(posts) == g.per_page+1)
+    posts = posts[0:g.per_page]
 
     posts = get_posts(posts,
                       sort=sort)
@@ -335,8 +335,8 @@ Optional query parameters:
                        lt=int(request.args.get("utc_less_than", 0))
                        )
 
-    next_exists = (len(ids) == 26)
-    ids = ids[0:25]
+    next_exists = (len(ids) == g.per_page+1)
+    ids = ids[0:g.per_page]
 
     if page == 1 and sort != "new" and sort != "old" and not ignore_pinned:
         if (g.user and g.user.over_18) or session_over18(board):
@@ -1554,10 +1554,10 @@ Optional query parameters
         User.is_deleted==False
         ).order_by(
         BanRelationship.created_utc.desc()
-        ).offset(25 * (page - 1)).limit(26).all()
+        ).offset(g.per_page * (page - 1)).limit(g.per_page+1).all()
 
-    next_exists = (len(bans) == 26)
-    bans = bans[0:25]
+    next_exists = (len(bans) == g.per_page+1)
+    bans = bans[0:g.per_page]
 
     return {
         "html":lambda:render_template(
@@ -1592,13 +1592,13 @@ Optional query parameters
     page = int(request.args.get("page", 1))
 
     contributors = board.contributors.filter_by(is_active=True).order_by(
-        ContributorRelationship.created_utc.desc()).offset(25 * (page - 1)).limit(26)
+        ContributorRelationship.created_utc.desc()).offset(g.per_page * (page - 1)).limit(g.per_page+1)
 
     # Deleted users will still remove a spot on the page but this will stop them from cluttering it
     contributors = [x for x in contributors if not x.user.is_deleted]
 
-    next_exists = (len(contributors) == 26)
-    contributors = contributors[0:25]
+    next_exists = (len(contributors) == g.per_page+1)
+    contributors = contributors[0:g.per_page]
 
     return {
         'html':
@@ -1721,13 +1721,13 @@ URL path parameters:
     if not g.user.over_18:
         ids = ids.filter(Submission.over_18 == False)
 
-    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * 25).limit(26).all()
+    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * g.per_page).limit(g.per_page+1).all()
 
     ids = [x[0] for x in ids]
 
-    next_exists = (len(ids) == 26)
+    next_exists = (len(ids) == g.per_page+1)
 
-    ids = ids[0:25]
+    ids = ids[0:g.per_page]
 
     posts = get_posts(ids)
 
@@ -1764,13 +1764,13 @@ def all_mod_queue():
     if not g.user.over_18:
         ids = ids.filter(Submission.over_18 == False)
 
-    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * 25).limit(26).all()
+    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * g.per_page).limit(g.per_page+1).all()
     
     ids = [x[0] for x in ids]
    
-    next_exists = (len(ids) == 26)
+    next_exists = (len(ids) == g.per_page+1)
 
-    ids = ids[0:25]
+    ids = ids[0:g.per_page]
 
     posts = get_posts(ids)
 
@@ -2127,9 +2127,9 @@ Optional query parameters:
                               hide_offensive=(g.user and g.user.hide_offensive) or not g.user,
                               hide_bot=g.user and g.user.hide_bot)
 
-    next_exists = len(idlist) == 26
+    next_exists = len(idlist) == g.per_page+1
 
-    idlist = idlist[0:25]
+    idlist = idlist[0:g.per_page]
 
     comments = get_comments(idlist)
 
@@ -2216,11 +2216,11 @@ Optional query parameters
         board_id=board.id
         ).order_by(
         ModAction.id.desc()
-        ).offset(25*(page-1)).limit(26).all()
+        ).offset(g.per_page*(page-1)).limit(g.per_page+1).all()
     actions=[i for i in actions]
 
-    next_exists=len(actions)==26
-    actions=actions[0:25]
+    next_exists=len(actions)==g.per_page+1
+    actions=actions[0:g.per_page]
 
     return {
         "html":lambda:render_template(
