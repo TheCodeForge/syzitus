@@ -690,6 +690,7 @@ def mine_redirect():
 @app.get("/mine/users")
 @app.get("/api/v2/me/users")
 @auth_required
+@per_page
 @api("read")
 def my_subs():
 
