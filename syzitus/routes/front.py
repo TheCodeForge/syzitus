@@ -637,6 +637,7 @@ Optional query parameters:
 @app.route('/mine/guilds', methods=["GET"])
 @app.get("/api/v2/me/guilds")
 @auth_required
+@per_page
 @api("read")
 def my_guilds():
 
