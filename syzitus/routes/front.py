@@ -78,6 +78,7 @@ def notifications():
 
 @app.get("/notifications/posts")
 @auth_required
+@per_page
 @api("read")
 def notifications_posts():
 
