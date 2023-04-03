@@ -201,12 +201,20 @@ Cloudflare Turnstile is a free human verification service that prevents bots fro
 
 You can set the following Heroku config variables as you like:
 
-* `TAGLINE` - Your site's tagline. Used in metadata and on the About and Donate pages
-* `COLOR_PRIMARY` - Your site's primary theme color; defaults to the Ruqqus porpl color of `805ad5` if not specified
-* `COLOR_PRIMARY_NAME` - The name of your site's primary theme color; defaults to `Porpl` if not specified
-* `PROFILE_UPLOAD_REP`, `BANNER_UPLOAD_REP`, `GUILD_CREATION_REQ`, `MAX_GUILD_COUNT`, `UPLOAD_IMAGE_REP` - set various Rep requirements and limits
-* `COINS_REQUIRED_CHANGE_USERNAME`, `COOLDOWN_DAYS_CHANGE_USERNAME` - Set coin cost and cooldown period for username changes
+1. `TAGLINE` - Your site's tagline. Used in metadata and on the About and Donate pages
+2. `COLOR_PRIMARY` - Your site's primary theme color; defaults to the Ruqqus porpl color of `805ad5` if not specified
+3. `COLOR_PRIMARY_NAME` - The name of your site's primary theme color; defaults to `Porpl` if not specified
+4. `PROFILE_UPLOAD_REP`, `BANNER_UPLOAD_REP`, `GUILD_CREATION_REQ`, `MAX_GUILD_COUNT`, `UPLOAD_IMAGE_REP` - set various Rep requirements and limits
+5. `COINS_REQUIRED_CHANGE_USERNAME`, `COOLDOWN_DAYS_CHANGE_USERNAME` - Set coin cost and cooldown period for username changes
 
+### 3.4 Legal Stuff
+
+The Terms of Service and Content Policy are Syzitus's. For you, they are merely a template. They are not legal advice. Consult an attorney for advice on your own terms of service and content policy.
+
+1. Open `syzitus/templates/help/terms.html` in your text editor. In the "Governing Law" section, revise the state and county to indicate your preferred governing law and legal venue. Make any other changes as you see fit, or as recommended by your legal counsel.
+2. Open `syzitus/templates/help/rules.html` in your text editor. Make any changes you see fit, or as recommended by your legal counsel.
+3. Save the above changes.
+4. Use the Github desktop client to commit and push the changes.
 
 ## 4. Bells and Whistles
 
