@@ -1723,13 +1723,13 @@ URL path parameters:
     if not g.user.over_18:
         ids = ids.filter(Submission.over_18 == False)
 
-    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * g.per_page).limit(g.per_page+1).all()
+    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * 25).limit(26).all()
 
     ids = [x[0] for x in ids]
 
-    next_exists = (len(ids) == g.per_page+1)
+    next_exists = (len(ids) == 26)
 
-    ids = ids[0:g.25]
+    ids = ids[0:25]
 
     posts = get_posts(ids)
 
@@ -1766,13 +1766,13 @@ def all_mod_queue():
     if not g.user.over_18:
         ids = ids.filter(Submission.over_18 == False)
 
-    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * g.per_page).limit(g.per_page+1).all()
+    ids = ids.order_by(Submission.id.desc()).offset((page - 1) * 25).limit(26).all()
     
     ids = [x[0] for x in ids]
    
-    next_exists = (len(ids) == g.per_page+1)
+    next_exists = (len(ids) == 26)
 
-    ids = ids[0:g.per_page]
+    ids = ids[0:25]
 
     posts = get_posts(ids)
 
