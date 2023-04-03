@@ -88,8 +88,8 @@ def notifications_posts():
         all_=request.args.get("all")
         )
 
-    next_exists=(len(pids)==g.per_page+1)
-    pids=pids[0:g.per_page]
+    next_exists=(len(pids)==26)
+    pids=pids[0:25]
 
     posts=get_posts(pids, sort="new")
 
