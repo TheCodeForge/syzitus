@@ -1652,12 +1652,17 @@ def ban_post(post_id):
 
     cache.delete_memoized(Board.idlist, post.board)
 
+    if post.author.is_suspended and post.author.ban_reason:
+        note = f"admin action | {post.author.ban_reason}"
+    else:
+        note="admin action"
+
     ma=ModAction(
         kind="ban_post",
         user_id=g.user.id,
         target_submission_id=post.id,
         board_id=post.board_id,
-        note="admin action"
+        note=note
         )
     g.db.add(ma)
     g.db.commit()
@@ -1776,12 +1781,19 @@ def api_ban_comment(c_id):
     comment.approved_utc = 0
 
     g.db.add(comment)
+
+
+    if comment.author.is_suspended and comment.author.ban_reason:
+        note = f"admin action | {comment.author.ban_reason}"
+    else:
+        note="admin action"
+
     ma=ModAction(
         kind="ban_comment",
         user_id=g.user.id,
         target_comment_id=comment.id,
         board_id=comment.post.board_id,
-        note="admin action"
+        note=note
         )
     g.db.add(ma)
     g.db.commit()
