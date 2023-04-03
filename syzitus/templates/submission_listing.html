@@ -381,7 +381,7 @@
           <button class="btn btn-link btn-block btn-lg text-left text-muted btn-delete-post" data-toggle="modal" data-dismiss="modal" data-target="#deletePostModal" data-post-id="{{ p.base36id }}"><i class="far fa-trash-alt fa-fw text-center text-muted mr-3"></i>Delete</button>
           {% endif %}
           {% if g.user and g.user.mods_anything and p.board_id==1 %}
-          <button class="btn btn-link btn-block btn-lg text-left text-muted" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard fa-fw text-center text-muted mr-3"></i>Yank</button>
+          <button class="btn btn-link btn-block btn-lg text-left text-muted btn-yank-post" data-toggle="modal" data-dismiss="modal" data-target="#yankPostModal" class="d-block btn-yank-post" data-post-author="{{ p.author.username }}" data-post-id="{{ p.base36id }}" data-comment-count="{{ p.comment_count }}" data-title="{{ p.title }}" data-author-link="{{ p.author.permalink }}" data-domain="{{ p.domain }}" data-timestamp="{{ p.age_string }}"><i class="far fa-hand-lizard fa-fw text-center text-muted mr-3"></i>Yank</button>
           {% endif %}
           {% if g.user %}
           {% if not p.is_subscribed %}
