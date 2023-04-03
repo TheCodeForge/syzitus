@@ -1729,7 +1729,7 @@ URL path parameters:
 
     next_exists = (len(ids) == g.per_page+1)
 
-    ids = ids[0:g.per_page]
+    ids = ids[0:g.25]
 
     posts = get_posts(ids)
 
