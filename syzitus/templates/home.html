@@ -13,7 +13,7 @@
     <div class="d-flex justify-content-between align-items-center">
 
       {% block navbar %}
-      <div class="font-weight-bold py-3">{{ 'SITE_NAME' | app_config }} {% if request.path=="/all" %}All{% elif request.path.startswith('/m/') %}Multi-Guild{% elif request.path.startswith('/admin/') %}Admin{% elif request.path=='/recommended' %}Recommended{% else %}Homepage{% endif %}</div>
+      <div class="font-weight-bold py-3">{{ 'SITE_NAME' | app_config }} {% if request.path=="/all" %}All{% elif request.path.startswith('/m/') %}Multi-Guild{% elif request.path.startswith('/admin/') %}Admin{% elif request.path=='/recommended' %}For You{% else %}Homepage{% endif %}</div>
 
       {% if request.path in ['/','/all'] %}
       <div class="d-flex align-items-center">
