@@ -369,47 +369,43 @@ class User(Base, standard_mixin, age_mixin):
                 )
             )
 
-        #guild privacy settings
-        if self.admin_level < 4:
-            # admins can see everything
+        #subquery - guilds where user is mod or has mod invite
+        m = select(
+            ModRelationship.board_id).filter_by(
+            user_id=self.id,
+            invite_rescinded=False)
 
-            #subquery - guilds where user is mod or has mod invite
-            m = select(
-                ModRelationship.board_id).filter_by(
-                user_id=self.id,
-                invite_rescinded=False)
+        #subquery - guilds where user is added as contributor
+        c = select(
+            ContributorRelationship.board_id).filter_by(
+            user_id=self.id)
 
-            #subquery - guilds where user is added as contributor
-            c = select(
-                ContributorRelationship.board_id).filter_by(
-                user_id=self.id)
-
-            #no content from private guilds, unless the post was made while guild
-            #was public, or the user is mod, or has mod invite, or is contributor, or is the post author
-            posts = posts.filter(
-                or_(
-                    Submission.author_id == self.id,
-                    Submission.post_public == True,
-                    Submission.board_id.in_(m),
-                    Submission.board_id.in_(c)
-                )
+        #no content from private guilds, unless the post was made while guild
+        #was public, or the user is mod, or has mod invite, or is contributor, or is the post author
+        posts = posts.filter(
+            or_(
+                Submission.author_id == self.id,
+                Submission.post_public == True,
+                Submission.board_id.in_(m),
+                Submission.board_id.in_(c)
             )
+        )
 
-            #subquery - other users who you are blocking
-            blocking = select(
-                UserBlock.target_id).filter_by(
-                user_id=self.id)
+        #subquery - other users who you are blocking
+        blocking = select(
+            UserBlock.target_id).filter_by(
+            user_id=self.id)
 
-            #subquery - other users you are blocked by
-            blocked = select(
-                UserBlock.user_id).filter_by(
-                target_id=self.id)
+        #subquery - other users you are blocked by
+        blocked = select(
+            UserBlock.user_id).filter_by(
+            target_id=self.id)
 
-            #no content where you're blocking the user or vice versa
-            posts = posts.filter(
-                Submission.author_id.notin_(blocking),
-                Submission.author_id.notin_(blocked)
-            )
+        #no content where you're blocking the user or vice versa
+        posts = posts.filter(
+            Submission.author_id.notin_(blocking),
+            Submission.author_id.notin_(blocked)
+        )
 
         #guild-based restrictions on recommended content
         #no content from banned guilds, and no content from opt-out guilds unless the user is sub'd
