@@ -1,4 +1,5 @@
 from mistletoe import markdown
+from flask import g
 from syzitus.classes.comment import Comment, CommentAux, Notification
 
 def send_notif(user, text):
