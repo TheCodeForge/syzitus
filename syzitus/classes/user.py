@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g, session, abort, request
 from time import strftime, gmtime
-from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select, func
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load, load_only
 from os import environ
 from secrets import token_hex
@@ -273,7 +273,32 @@ class User(Base, standard_mixin, age_mixin):
         # get those posts ordered by number of upvotes among those users
         # eliminate content based on personal filters
 
-        posts=g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
+
+        #set up subqueries for ordering later
+        #only votes we care about are from users who co-voted the user's last 100 upvotes
+        votes=g.db.query(Votes).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(100)
+                        )
+                    )
+                )
+            ).subquery()
+
+        ranks=g.db.query(votes.c.submission_id, func.count(votes.c.submission_id).label("rank")).group_by(votes.c.submission_id)
+
+        posts=g.db.query(
+            Submission,
+            ranks.c.rank
+            ).options(
+            load_only(Submission.id), 
+            lazyload('*')).filter_by(
             is_banned=False,
             deleted_utc=0,
             stickied=False
@@ -357,9 +382,12 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         #ordering - use regular score for now. This is the other part of the "meat" - needs to order by co-vote popularity
-        posts=posts.order_by(Submission.score_best.desc())
-
-        posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
+        posts=posts.join(
+            ranks,
+            posts.id==ranks.c.submission_id
+            ).order_by(
+            ranks.c.rank.desc()
+            ).offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in posts]
 
