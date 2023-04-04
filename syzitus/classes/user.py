@@ -311,15 +311,6 @@ class User(Base, standard_mixin, age_mixin):
                 )
             ).subquery()
 
-        #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
-        #this is part 2 of the algorithm core (part 1 is later)
-        post_ranks=g.db.query(
-            votes.c.submission_id, 
-            func.count(
-                votes.c.submission_id
-                ).label("rank")
-            ).group_by(votes.c.submission_id).subquery()
-
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
             Submission
@@ -458,38 +449,51 @@ class User(Base, standard_mixin, age_mixin):
         #here's part 2 of the algorithm core
         #join against the ranking subquery,
         #sort first by content age bracket, then by that rank
-        #Newer content breaks ties
-        posts=posts.join(
-            post_ranks,
-            Submission.id==post_ranks.c.submission_id
-            ).order_by(
-            Submission.created_utc < g.timestamp-60*60*24*7, #bools sort False first
-            post_ranks.c.rank.desc(),
-            Submission.created_utc.desc()
-            )
+        
+        #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
+        #this is our initial ordering, from which scaling penalties will be derived
+        post_ranks=g.db.query(
+            votes.c.submission_id, 
+            func.count(
+                votes.c.submission_id
+                ).label("rank")
+            ).group_by(votes.c.submission_id).subquery()
 
-        #make a subquery of all that, with a groupby authorid, cap 3 items per person
+        #make a subquery of all that, with a rownumber over authorid, 
         post_subq=posts.subquery()
 
         user_subq=g.db.query(
             post_subq.c.id, 
-            func.count(
-                post_subq.c.author_id
-                ).label("user_rank")
-            ).group_by(post.c.author_id).subquery()
+            func.row_number().over(
+                partition_by=post_subq.c.author_id,
+                order_by=post_ranks.c.rank).label("user_rank")
+            ).subquery()
 
-        #re-sort by user uniqueness first, then by previous methods
-        #3 posts of any user first
-        posts=posts.join(
+        #repeat for guilds
+        guild_subq=g.db.query(
+            post_subq.c.id, 
+            func.row_number().over(
+                partition_by=post_subq.c.board_id,
+                order_by=post_ranks.c.rank).label("guild_rank")
+            ).subquery()
+
+        #final sort is post minus user minus guild
+        #this introduces a ramping penalty for content from repeat user/guild
+
+        final_subq=g.db.query(
+            post_subq.c.id,
+            (post.subq.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
+            ).join(
             user_subq,
-            Submission.id==user_subq.c.submission_id
-            ).order_by(
-            user_subq.c.user_rank > 3, #false sorts first
-            Submission.created_utc < g.timestamp-60*60*24*7,
-            post_ranks.c.rank.desc(),
+            post_subq.c.id==user_subq.c.id
+            ).join(
+            guild_subq,
+            post_subq.c.id==guild_subq.c.id)
+
+        posts=posts.join(final_subq).order_by(
+            final_subq.c.final_rank.desc(),
             Submission.created_utc.desc()
             )
-
 
 
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
