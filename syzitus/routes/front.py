@@ -948,3 +948,64 @@ Get all guild category and subcategory data
             {"data":[x.json for x in CATEGORIES]}
             )
         )
+
+@app.get("/recommended")
+@app.get("/api/v2/me/recommended")
+@auth_required
+@per_page
+@api("read")
+def recommended_feed():
+    """
+Get personalized home page based on subscriptions and personal settings.
+
+Optional query parameters:
+* `page` - Page of results to return. Default `1`.
+"""
+    page=max(int(request.args.get("page",1)),0)
+    ignore_pinned = bool(request.args.get("ignore_pinned", False))
+    
+    ids=g.user.recommendedlist(
+        sort=sort,
+        page=page,
+        only=only,
+        t=t,
+        filter_words=g.user.filter_words,
+        per_page=g.per_page,
+
+        # these arguments don't really do much but they exist for
+        # cache memoization differentiation
+        allow_nsfw=g.user.over_18,
+        hide_offensive=g.user.hide_offensive,
+        hide_bot=g.user.hide_bot,
+
+        #greater/less than
+        gt=int(request.args.get("utc_greater_than",0)),
+        lt=int(request.args.get("utc_less_than",0)),
+
+        )
+
+    next_exists=(len(ids)==g.per_page+1)
+    ids=ids[0:g.per_page]
+
+    # If page 1, check for sticky
+    if page == 1 and not ignore_pinned:
+        stickies = g.db.query(Submission.id).filter_by(stickied=True).all()
+
+        if stickies:
+            ids=[x[0] for x in stickies]+ids
+
+
+    posts = get_posts(ids)
+
+    return {'html': lambda: render_template("subscriptions.html",
+                                            listing=posts,
+                                            next_exists=next_exists,
+                                            sort_method=sort,
+                                            time_filter=t,
+                                            page=page,
+                                            only=only),
+            'api': lambda: jsonify({"data": [x.json for x in posts],
+                                    "next_exists": next_exists
+                                    }
+                                   )
+            }
