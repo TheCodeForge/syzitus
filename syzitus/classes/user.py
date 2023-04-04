@@ -346,26 +346,24 @@ class User(Base, standard_mixin, age_mixin):
         #         )
         #     )
 
-
-        #the stuff they've upvoted
-        their_upvotes=g.db.query(Vote.submission_id).filter(
-            Vote.vote_type==1,
-            Vote.user_id.in_(
-                select(Vote.user_id).filter(
+        posts=posts.filter(
+            Submission.id.in_(
+                g.db.query(Vote.submission_id).filter(
                     Vote.vote_type==1,
-                    Vote.submission_id.in_(
-                        select(Vote.submission_id).filter(
-                            Vote.vote_type==1, 
-                            Vote.user_id==self.id
+                    Vote.user_id.in_(
+                        select(Vote.user_id).filter(
+                            Vote.vote_type==1,
+                            Vote.submission_id.in_(
+                                select(Vote.submission_id).filter(
+                                    Vote.vote_type==1, 
+                                    Vote.user_id==self.id
+                                    )
+                                )
                             )
                         )
                     )
                 )
-            ).distinct()
-
-        debug(f"their_upvotes {their_upvotes}")
-
-        posts=posts.filter(Submission.id.in_(their_upvotes))
+            )
 
 
         #filter out stuff you've already voted on
@@ -381,7 +379,7 @@ class User(Base, standard_mixin, age_mixin):
 
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
-        return [x[0] for x in posts]
+        return [x.id for x in posts]
 
 
     @cache.memoize()
