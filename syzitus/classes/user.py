@@ -456,12 +456,15 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         #here's part 2 of the algorithm core
-        #join against the ranking subquery, sort by that rank (the number of upvotes from co-voting users)
+        #join against the ranking subquery,
+        #sort first by content age bracket, then by that rank
         #Newer content breaks ties
         posts=posts.join(
             ranks,
             Submission.id==ranks.c.submission_id
             ).order_by(
+            Submission.created_utc > g.timestamp-60*60*24,
+            Submission.created_utc > g.timestamp-60*60*24*7,
             ranks.c.rank.desc(),
             Submission.created_utc.desc()
             ).offset(per_page * (page - 1)).limit(per_page+1).all()
