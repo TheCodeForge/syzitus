@@ -976,8 +976,6 @@ Optional query parameters:
         hide_bot=g.user.hide_bot
         )
 
-    debug(f"ids: {ids}")
-
     next_exists=(len(ids)==g.per_page+1)
     ids=ids[0:g.per_page]
 

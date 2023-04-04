@@ -327,24 +327,48 @@ class User(Base, standard_mixin, age_mixin):
 
         #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
         #really crude version - no discounting of auto-self-upvote for example
-        posts=posts.filter(
-            Submission.id.in_(
-                select(Vote.submission_id).filter(
-                    Vote.vote_type==1,
-                    Vote.user_id.in_(
-                        select(Vote.user_id).filter(
-                            Vote.vote_type==1,
-                            Vote.submission_id.in_(
-                                select(Vote.submission_id).filter(
-                                    Vote.vote_type==1, 
-                                    Vote.user_id==self.id
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+        # posts=posts.filter(
+        #     Submission.id.in_(
+        #         select(Vote.submission_id).filter(
+        #             Vote.vote_type==1,
+        #             Vote.user_id.in_(
+        #                 select(Vote.user_id).filter(
+        #                     Vote.vote_type==1,
+        #                     Vote.submission_id.in_(
+        #                         select(Vote.submission_id).filter(
+        #                             Vote.vote_type==1, 
+        #                             Vote.user_id==self.id
+        #                             )
+        #                         )
+        #                     )
+        #                 )
+        #             )
+        #         )
+        #     )
+
+        #IDs of posts i've upvoted
+        my_upvotes=g.db.query(Vote.submission_id).filter(
+            Vote.vote_type==1, 
+            Vote.user_id==self.id
+            ).all()
+        debug(f"my_upvotes {my_upvotes}")
+
+        #users who also upvoted those things
+        co_voters=g.db.query(Vote.user_id).filter(
+            Vote.vote_type==1,
+            Vote.submission_id.in_(my_upvotes))
+
+        debug(f"co_voters {co_voters}")
+
+        #the stuff they've upvoted
+        their_upvotes=g.db.query(Vote.submission_id).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(co_voters))
+
+        debug(f"their_upvotes {their_upvotes}")
+
+        posts=posts.filter(Submission.id.in_(their_upvotes))
+
 
         #filter out stuff you've already voted on
         posts=posts.filter(
@@ -358,7 +382,6 @@ class User(Base, standard_mixin, age_mixin):
         posts=posts.order_by(Submission.score_best.desc())
 
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
-        debug(posts)
 
         return [x[0] for x in posts]
 
