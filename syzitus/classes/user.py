@@ -401,7 +401,7 @@ class User(Base, standard_mixin, age_mixin):
             UserBlock.user_id).filter_by(
             target_id=self.id)
 
-        #no content where you're blocking the user or vice versa
+        #no content where you're blocking the user or they're blocking you
         posts = posts.filter(
             Submission.author_id.notin_(blocking),
             Submission.author_id.notin_(blocked)
