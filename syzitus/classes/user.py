@@ -460,11 +460,11 @@ class User(Base, standard_mixin, age_mixin):
         #sort first by content age bracket, then by that rank
         #Newer content breaks ties
         posts=posts.join(
-            ranks,
-            Submission.id==ranks.c.submission_id
+            post_ranks,
+            Submission.id==post_ranks.c.submission_id
             ).order_by(
             Submission.created_utc < g.timestamp-60*60*24*7, #bools sort False first
-            ranks.c.rank.desc(),
+            post_ranks.c.rank.desc(),
             Submission.created_utc.desc()
             )
 
@@ -486,7 +486,7 @@ class User(Base, standard_mixin, age_mixin):
             ).order_by(
             user_subq.c.user_rank > 3, #false sorts first
             Submission.created_utc < g.timestamp-60*60*24*7,
-            ranks.c.rank.desc(),
+            post_ranks.c.rank.desc(),
             Submission.created_utc.desc()
             )
 
