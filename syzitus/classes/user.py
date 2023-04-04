@@ -352,7 +352,6 @@ class User(Base, standard_mixin, age_mixin):
             Vote.user_id==self.id
             ).all()
         debug(f"my_upvotes {my_upvotes}")
-        debug(f"my_upvotes {[x for x in my_upvotes]}")
 
         #users who also upvoted those things
         co_voters=g.db.query(Vote.user_id).filter(
