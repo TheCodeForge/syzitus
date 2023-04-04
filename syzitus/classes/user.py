@@ -372,7 +372,11 @@ class User(Base, standard_mixin, age_mixin):
             posts = posts.filter(
                 Submission.author_id.notin_(blocking) #,
                 #Submission.author_id.notin_(blocked)
-            ).join(Submission.board).filter(Board.is_banned==False)
+            )
+
+        posts = posts.join(Submission.board).filter(
+            Board.is_banned==False,
+            Board.all_opt_out==False)
 
 
         #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
