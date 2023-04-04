@@ -280,7 +280,7 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         #personal filters
-        if not self.over_18:
+        if self.filter_nsfw or not self.over_18:
             posts = posts.filter_by(over_18=False)
 
         if self.hide_offensive:
