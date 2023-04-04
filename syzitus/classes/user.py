@@ -461,7 +461,7 @@ class User(Base, standard_mixin, age_mixin):
             ).group_by(votes.c.submission_id).subquery()
 
         scoring_subq=g.db.query(
-            post_subq.c.id, 
+            posts.c.id, 
             func.row_number().over(
                 partition_by=post_subq.c.author_id,
                 order_by=post_ranks.c.rank).label("user_penalty"),
