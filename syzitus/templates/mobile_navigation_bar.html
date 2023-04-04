@@ -13,18 +13,18 @@
     </div>
 {% endif %}
     <div class="col px-0">
-      <a href="/all?sort=new" class="text-decoration-none" role="button">
-        <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
-          <i class="{% if request.path=='/all' and sort_method=='new' %}fas{% else %}far{% endif %} fa-sparkles text-lg d-block"></i>
-          <div class="text-small">New</div>
-        </div>
-      </a>
-    </div>
-    <div class="col px-0">
       <a href="/all?sort=hot" class="text-decoration-none" role="button">
         <div class="text-center {% if request.path=='/all' and sort_method=='hot' %}text-purple{% else %}text-muted{% endif %}">
           <i class="{% if request.path=='/all' and sort_method=='hot' %}fas{% else %}far{% endif %} fa-fire text-lg d-block"></i>
           <div class="text-small">Trending</div>
+        </div>
+      </a>
+    </div>
+    <div class="col px-0">
+      <a href="/all?sort=new" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/all' and sort_method=='new' %}fas{% else %}far{% endif %} fa-sparkles text-lg d-block"></i>
+          <div class="text-small">New</div>
         </div>
       </a>
     </div>
