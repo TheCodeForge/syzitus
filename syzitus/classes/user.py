@@ -264,7 +264,7 @@ class User(Base, standard_mixin, age_mixin):
         return TITLES.get(self.title_id)
     
 
-    def recommended_list(self, page=1, per_page=25, **kwargs):
+    def recommended_list(self, page=1, per_page=25, filter_words=[], **kwargs):
 
         # get N most recent upvotes
         # get those posts
@@ -378,6 +378,11 @@ class User(Base, standard_mixin, age_mixin):
             Board.is_banned==False,
             Board.all_opt_out==False)
 
+        if filter_words:
+            posts=posts.join(Submission.submission_aux)
+            for word in filter_words:
+                posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
+
 
         #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
         #really crude version - no discounting of auto-self-upvote for example
@@ -423,7 +428,7 @@ class User(Base, standard_mixin, age_mixin):
 
 
     @cache.memoize()
-    def idlist(self, sort=None, page=1, t=None, filter_words="", per_page=25, **kwargs):
+    def idlist(self, sort=None, page=1, t=None, filter_words=[], per_page=25, **kwargs):
 
         posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
             is_banned=False,
@@ -495,7 +500,6 @@ class User(Base, standard_mixin, age_mixin):
         if filter_words:
             posts=posts.join(Submission.submission_aux)
             for word in filter_words:
-                #print(word)
                 posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
         if t:
