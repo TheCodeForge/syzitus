@@ -355,7 +355,7 @@ class User(Base, standard_mixin, age_mixin):
                     Vote.user_id==self.id
                     )
                 )
-            )
+            ).all()
 
         debug(f"co_voters {co_voters}")
 
