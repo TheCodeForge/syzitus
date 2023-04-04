@@ -476,8 +476,8 @@ class User(Base, standard_mixin, age_mixin):
             post_ranks.c.submission_id,
             (post_ranks.c.rank - scoring_subq.c.user_penalty - scoring_subq.c.guild_penalty).label('final_rank')
             ).join(
-            final_subq,
-            final_subq.c.id==post_ranks.c.submission_id
+            scoring_subq,
+            scoring_subq.c.id==post_ranks.c.submission_id
             ).subquery()
 
         post_ids=g.db.query(
