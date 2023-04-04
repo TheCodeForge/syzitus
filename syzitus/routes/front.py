@@ -966,7 +966,6 @@ Optional query parameters:
     
     ids=g.user.recommended_list(
         page=page,
-        only=only,
         t=t,
         filter_words=g.user.filter_words,
         per_page=g.per_page,
