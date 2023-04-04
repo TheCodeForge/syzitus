@@ -318,7 +318,7 @@ class User(Base, standard_mixin, age_mixin):
             func.count(
                 votes.c.submission_id
                 ).label("rank")
-            ).group_by(votes.c.submission_id).subquery()\
+            ).group_by(votes.c.submission_id).subquery()
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
@@ -466,7 +466,33 @@ class User(Base, standard_mixin, age_mixin):
             Submission.created_utc < g.timestamp-60*60*24*7, #bools sort False first
             ranks.c.rank.desc(),
             Submission.created_utc.desc()
-            ).offset(per_page * (page - 1)).limit(per_page+1).all()
+            )
+
+        #make a subquery of all that, with a groupby authorid, cap 3 items per person
+        post_subq=posts.subquery()
+
+        user_subq=g.db.query(
+            post_subq.c.submission_id, 
+            func.count(
+                post_subq.c.author_id
+                ).label("user_rank")
+            ).group_by(post.c.author_id).subquery()
+
+        #re-sort by user uniqueness first, then by previous methods
+        #3 posts of any user first
+        posts=posts.join(
+            user_subq,
+            Submission.id==user_subq.c.submission_id
+            ).order_by(
+            user_subq.c.user_rank > 3, #false sorts first
+            Submission.created_utc < g.timestamp-60*60*24*7,
+            ranks.c.rank.desc(),
+            Submission.created_utc.desc()
+            )
+
+
+
+        posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in posts]
 
