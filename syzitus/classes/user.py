@@ -482,17 +482,14 @@ class User(Base, standard_mixin, age_mixin):
 
 
         final_subq=g.db.query(
-            post_subq.c.id,
+            post_ranks.c.submission_id,
             (post_ranks.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
             ).join(
-            post_ranks,
-            post_subq.c.id==post_ranks.c.submission_id
-            ).join(
             user_subq,
-            post_subq.c.id==user_subq.c.id
+            post_ranks.c.submission_id==user_subq.c.id
             ).join(
             guild_subq,
-            post_subq.c.id==guild_subq.c.id).subquery()
+            post_ranks.c.submission_id==guild_subq.c.id).subquery()
 
         posts=posts.join(final_subq).order_by(
             final_subq.c.final_rank.desc(),
