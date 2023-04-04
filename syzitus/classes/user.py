@@ -337,7 +337,7 @@ class User(Base, standard_mixin, age_mixin):
                                 select(Vote.user_id).filter(
                                     Vote.vote_type==1,
                                     Vote.submission_id.in_(
-                                        select(Vote.submission_id).in_(
+                                        select(Vote.submission_id).filter(
                                             Vote.vote_type==1,
                                             Vote.user_id==g.user.id
                                             )
