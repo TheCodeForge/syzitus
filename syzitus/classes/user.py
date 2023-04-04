@@ -291,7 +291,7 @@ class User(Base, standard_mixin, age_mixin):
                 )
             ).subquery()
 
-        ranks=g.db.query(votes.c.submission_id, func.count(votes.c.submission_id).label("rank")).group_by(votes.c.submission_id)
+        ranks=g.db.query(votes.c.submission_id, func.count(votes.c.submission_id).label("rank")).group_by(votes.c.submission_id).subquery()
 
         posts=g.db.query(
             Submission
