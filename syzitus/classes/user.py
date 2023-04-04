@@ -492,7 +492,7 @@ class User(Base, standard_mixin, age_mixin):
             post_subq.c.id==user_subq.c.id
             ).join(
             guild_subq,
-            post_subq.c.id==guild_subq.c.id)
+            post_subq.c.id==guild_subq.c.id).subquery()
 
         posts=posts.join(final_subq).order_by(
             final_subq.c.final_rank.desc(),
