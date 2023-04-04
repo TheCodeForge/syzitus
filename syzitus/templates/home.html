@@ -142,6 +142,7 @@
     <div class="d-flex flex-row flex-nowrap justify-content-between">
 
       {% block sortnav %}
+      {% if request.path in ['/','/all'] %}
 
       <div class="post-filter">
 
@@ -167,7 +168,6 @@
             </div>
           </div>
 
-          {% if request.path in ['/','/all'] %}
           <div class="dropdown dropdown-actions ml-2">
             <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {% if time_filter=="day" %}<i class="fas fa-calendar-day mr-1"></i>{% endif %}
@@ -185,11 +185,11 @@
               {% if not time_filter=="all" %}<a class="dropdown-item" href="?sort={{ sort_method }}&t=all"><i class="fas fa-infinity text-primary mr-3"></i>All</a>{% endif %}
             </div>
           </div>
-          {% endif %}
 
         </div>
 
       </div>
+      {% endif %}
 
       {% endblock %}
 
