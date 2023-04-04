@@ -11,6 +11,14 @@
         </div>
       </a>
     </div>
+    <div class="col px-0">
+      <a href="/recommended" class="text-decoration-none" role="button">
+        <div class="text-center {% if request.path=='/recommended' %}text-purple{% else %}text-muted{% endif %}">
+          <i class="{% if request.path=='/recommended' %}fas{% else %}far{% endif %} fa-sparkles text-lg d-block"></i>
+          <div class="text-small">For You</div>
+        </div>
+      </a>
+    </div>
 {% endif %}
     <div class="col px-0">
       <a href="/all?sort=hot" class="text-decoration-none" role="button">
@@ -24,7 +32,7 @@
       <a href="/all?sort=new" class="text-decoration-none" role="button">
         <div class="text-center {% if request.path=='/all' and sort_method=='new' %}text-purple{% else %}text-muted{% endif %}">
           <i class="{% if request.path=='/all' and sort_method=='new' %}fas{% else %}far{% endif %} fa-globe-americas text-lg d-block"></i>
-          <div class="text-small">New</div>
+          <div class="text-small">All</div>
         </div>
       </a>
     </div>
