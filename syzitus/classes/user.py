@@ -331,7 +331,7 @@ class User(Base, standard_mixin, age_mixin):
             stickied=False
             )
 
-            
+
         #filter out anything that's yours,
         #or that you've already voted on,
         #or that's too old
@@ -460,7 +460,7 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         #here's part 2 of the algorithm core
-        #join against the ranking subquery, sort by that rank
+        #join against the ranking subquery, sort by that rank (the number of upvotes from co-voting users)
         #Newer content breaks ties
         posts=posts.join(
             ranks,
