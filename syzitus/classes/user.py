@@ -380,8 +380,8 @@ class User(Base, standard_mixin, age_mixin):
             ContributorRelationship.board_id).filter_by(
             user_id=self.id)
 
-        #no content from private guilds, unless the post was made while guild
-        #was public, or the user is mod, or has mod invite, or is contributor, or is the post author
+        #no content from private guilds, unless the post was made while guild was public,
+        #or the user is mod, or has mod invite, or is contributor, or is the post author
         posts = posts.filter(
             or_(
                 Submission.author_id == self.id,
