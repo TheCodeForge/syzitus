@@ -316,6 +316,14 @@ class User(Base, standard_mixin, age_mixin):
         if not self.show_nsfl:
             posts = posts.filter_by(is_nsfl=False)
 
+        posts = posts.filter(
+            Submission.board_id.notin_(
+                select(BoardBlock.board_id).filter_by(
+                    user_id=g.user.id
+                    )
+                )
+            )
+
         #guild privacy settings
         if self.admin_level < 4:
             # admins can see everything

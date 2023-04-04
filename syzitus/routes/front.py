@@ -149,11 +149,13 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
         posts = posts.filter(Submission.is_bot==False)
 
     if g.user and g.user.admin_level >= 4:
-        board_blocks = select(
-            BoardBlock.board_id).filter_by(
-            user_id=g.user.id)
-
-        posts = posts.filter(Submission.board_id.notin_(board_blocks))
+        posts = posts.filter(
+            Submission.board_id.notin_(
+                select(BoardBlock.board_id).filter_by(
+                    user_id=g.user.id
+                    )
+                )
+            )
     elif g.user:
         m = select(ModRelationship.board_id).filter_by(
             user_id=g.user.id, invite_rescinded=False)
