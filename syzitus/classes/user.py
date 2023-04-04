@@ -263,6 +263,98 @@ class User(Base, standard_mixin, age_mixin):
         return TITLES.get(self.title_id)
     
 
+    def recommended_list(self, page=1, per_page=25, **kwargs):
+
+        # get N most recent upvotes
+        # get those posts
+        # get a list of all users who also upvoted those things
+        # get their upvotes
+        # get those posts ordered by number of upvotes among those users
+        # eliminate content based on personal filters
+
+        posts=g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
+            is_banned=False,
+            deleted_utc=0,
+            stickied=False
+            )
+
+        #personal filters
+        if not self.over_18:
+            posts = posts.filter_by(over_18=False)
+
+        if self.hide_offensive:
+            posts = posts.filter_by(is_offensive=False)
+
+        if self.hide_bot:
+            posts = posts.filter_by(is_bot=False)
+
+        if not self.show_nsfl:
+            posts = posts.filter_by(is_nsfl=False)
+
+        #guild privacy settings
+        if self.admin_level < 4:
+            # admins can see everything
+
+            m = select(
+                ModRelationship.board_id).filter_by(
+                user_id=self.id,
+                invite_rescinded=False)
+            c = select(
+                ContributorRelationship.board_id).filter_by(
+                user_id=self.id)
+            posts = posts.filter(
+                or_(
+                    Submission.author_id == self.id,
+                    Submission.post_public == True,
+                    Submission.board_id.in_(m),
+                    Submission.board_id.in_(c)
+                )
+            )
+
+            blocking = select(
+                UserBlock.target_id).filter_by(
+                user_id=self.id)
+            blocked = select(
+                UserBlock.user_id).filter_by(
+                target_id=self.id)
+
+            posts = posts.filter(
+                Submission.author_id.notin_(blocking) #,
+                #Submission.author_id.notin_(blocked)
+            ).join(Submission.board).filter(Board.is_banned==False)
+
+
+        #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
+        #really crude version - no discounting of auto-self-upvote for example
+        posts=posts.filter(
+            Submission.id.in_(
+                select(Vote.submission_id).filter_by(
+                    Vote.vote_type==1,
+                    Vote.user_id.in_(
+                        select(User.id).filter_by(
+                            User.id.in_(
+                                select(Vote.submission_id).filter_by(
+                                    Vote.user_id==g.user.id,
+                                    Vote.vote_type==1
+                                    ).order_by(
+                                    Vote.id.desc()).limit(100)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+
+        #filter out stuff you've already voted on
+        posts=posts.filter(
+            Submission.id.notin_(
+                select(Vote.submission_id).filter_by(Vote.user_id==g.user.id)
+                )
+            )
+
+        return [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
+
+
     @cache.memoize()
     def idlist(self, sort=None, page=1, t=None, filter_words="", per_page=25, **kwargs):
 
