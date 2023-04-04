@@ -964,7 +964,7 @@ Optional query parameters:
     page=max(int(request.args.get("page",1)),0)
     ignore_pinned = bool(request.args.get("ignore_pinned", False))
     
-    ids=g.user.recommendedlist(
+    ids=g.user.recommended_list(
         sort=sort,
         page=page,
         only=only,
