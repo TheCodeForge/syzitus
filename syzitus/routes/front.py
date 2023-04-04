@@ -997,10 +997,7 @@ Optional query parameters:
     return {'html': lambda: render_template("subscriptions.html",
                                             listing=posts,
                                             next_exists=next_exists,
-                                            sort_method=sort,
-                                            time_filter=t,
-                                            page=page,
-                                            only=only),
+                                            page=page),
             'api': lambda: jsonify({"data": [x.json for x in posts],
                                     "next_exists": next_exists
                                     }
