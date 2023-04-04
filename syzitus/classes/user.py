@@ -360,7 +360,7 @@ class User(Base, standard_mixin, age_mixin):
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
         debug(posts)
 
-        return [x.[0] for x in posts]
+        return [x[0] for x in posts]
 
 
     @cache.memoize()
