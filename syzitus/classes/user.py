@@ -327,15 +327,18 @@ class User(Base, standard_mixin, age_mixin):
 
         #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
         #really crude version - no discounting of auto-self-upvote for example
-
-
         posts=posts.filter(
             Submission.id.in_(
                 select(Vote.submission_id).filter(
+                    Vote.vote_type==1,
                     Vote.user_id.in_(
                         select(Vote.user_id).filter(
+                            Vote.vote_type==1,
                             Vote.submission_id.in_(
-                                select(Vote.submission_id).filter(Vote.vote_type==1, Vote.user_id==g.user.id)
+                                select(Vote.submission_id).filter(
+                                    Vote.vote_type==1, 
+                                    Vote.user_id==g.user.id
+                                    )
                                 )
                             )
                         )
