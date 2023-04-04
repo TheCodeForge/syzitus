@@ -274,7 +274,7 @@ class User(Base, standard_mixin, age_mixin):
         # eliminate content based on personal filters
 
         #hard check to prevent this feature from being used as a "vote stalker"
-        #Recommendations must be based on 4 second-degree users minimum
+        #Recommendations must be based on 4 other co-voting users minimum
         user_count=g.db.query(Vote.user_id).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
@@ -294,7 +294,8 @@ class User(Base, standard_mixin, age_mixin):
             return []
 
         #set up subqueries for ordering later
-        #only votes we care about are from users who co-voted the user's last 100 upvotes
+
+        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
         votes=g.db.query(Vote).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
@@ -310,6 +311,8 @@ class User(Base, standard_mixin, age_mixin):
                 )
             ).subquery()
 
+        #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
+        #this is part 2 of the algorithm core (part 1 is later)
         ranks=g.db.query(
             votes.c.submission_id, 
             func.count(
@@ -317,6 +320,7 @@ class User(Base, standard_mixin, age_mixin):
                 ).label("rank")
             ).group_by(votes.c.submission_id).subquery()
 
+        #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
             Submission
             ).options(
@@ -327,19 +331,23 @@ class User(Base, standard_mixin, age_mixin):
             stickied=False
             )
 
-        #personal filters
+        #no nsfw content if personal settings dicate
         if self.filter_nsfw or not self.over_18:
             posts = posts.filter_by(over_18=False)
 
+        #no racial slur content if personal settings dictate
         if self.hide_offensive:
             posts = posts.filter_by(is_offensive=False)
 
+        #no bot content if personal settings dictate
         if self.hide_bot:
             posts = posts.filter_by(is_bot=False)
 
+        #no disturbing/gruesome content if personal settings dictate
         if not self.show_nsfl:
             posts = posts.filter_by(is_nsfl=False)
 
+        #no content from guilds on user's personal block list
         posts = posts.filter(
             Submission.board_id.notin_(
                 select(BoardBlock.board_id).filter_by(
@@ -352,13 +360,19 @@ class User(Base, standard_mixin, age_mixin):
         if self.admin_level < 4:
             # admins can see everything
 
+            #subquery - guilds where user is mod or has mod invite
             m = select(
                 ModRelationship.board_id).filter_by(
                 user_id=self.id,
                 invite_rescinded=False)
+
+            #subquery - guilds where user is added as contributor
             c = select(
                 ContributorRelationship.board_id).filter_by(
                 user_id=self.id)
+
+            #no content from private guilds, unless the post was made while guild
+            #was public, or the user is mod, or has mod invite, or is contributor, or is the post author
             posts = posts.filter(
                 or_(
                     Submission.author_id == self.id,
@@ -368,30 +382,50 @@ class User(Base, standard_mixin, age_mixin):
                 )
             )
 
+            #subquery - other users who you are blocking
             blocking = select(
                 UserBlock.target_id).filter_by(
                 user_id=self.id)
+
+            #subquery - other users you are blocked by
             blocked = select(
                 UserBlock.user_id).filter_by(
                 target_id=self.id)
 
+            #no content where you're blocking the user or vice versa
             posts = posts.filter(
-                Submission.author_id.notin_(blocking) #,
-                #Submission.author_id.notin_(blocked)
+                Submission.author_id.notin_(blocking),
+                Submission.author_id.notin_(blocked)
             )
 
+        #guild-based restrictions on recommended content
+        #no content from banned guilds, and no content from opt-out guilds unless the user is sub'd
         posts = posts.join(Submission.board).filter(
             Board.is_banned==False,
-            Board.all_opt_out==False)
+            or_(
+                Board.all_opt_out == False,
+                Submission.board_id.in_(
+                    select(
+                        Subscription.board_id).filter_by(
+                        user_id=g.user.id,
+                        is_active=True)
+                )
+            ))
 
+        #personal filter word restrictions
+        #no content whose title contains a personal filter word
         if filter_words:
             posts=posts.join(Submission.submission_aux)
             for word in filter_words:
                 posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
 
-        #this is the meat - filter by posts upvoted by people who've upvoted the same things you've upvoted
-        #really crude version - no discounting of auto-self-upvote for example
+        #Algorithm core part 1
+        #read this code inside -> outside
+        #select your 100 most recent upvoted posts,
+        #then select the users who also upvoted those posts ("co-voting users")
+        #then select the other stuff they upvoted
+        #filter out any posts not in that list
 
         posts=posts.filter(
             Submission.id.in_(
@@ -422,7 +456,8 @@ class User(Base, standard_mixin, age_mixin):
                 )
             )
 
-        #ordering - use regular score for now. This is the other part of the "meat" - needs to order by co-vote popularity
+        #here's part 2 of the algorithm core
+        #join against the ranking subquery, sort by that rank
         posts=posts.join(
             ranks,
             Submission.id==ranks.c.submission_id
