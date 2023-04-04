@@ -276,7 +276,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #set up subqueries for ordering later
         #only votes we care about are from users who co-voted the user's last 100 upvotes
-        votes=g.db.query(Votes).filter(
+        votes=g.db.query(Vote).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
                 select(Vote.user_id).filter(
