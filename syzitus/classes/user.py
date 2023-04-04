@@ -294,8 +294,7 @@ class User(Base, standard_mixin, age_mixin):
         ranks=g.db.query(votes.c.submission_id, func.count(votes.c.submission_id).label("rank")).group_by(votes.c.submission_id)
 
         posts=g.db.query(
-            Submission,
-            ranks.c.rank
+            Submission
             ).options(
             load_only(Submission.id), 
             lazyload('*')).filter_by(
