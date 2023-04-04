@@ -383,7 +383,7 @@ class User(Base, standard_mixin, age_mixin):
         #ordering - use regular score for now. This is the other part of the "meat" - needs to order by co-vote popularity
         posts=posts.join(
             ranks,
-            posts.id==ranks.c.submission_id
+            Submission.id==ranks.c.submission_id
             ).order_by(
             ranks.c.rank.desc()
             ).offset(per_page * (page - 1)).limit(per_page+1).all()
