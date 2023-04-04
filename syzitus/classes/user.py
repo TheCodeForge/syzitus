@@ -496,11 +496,7 @@ class User(Base, standard_mixin, age_mixin):
             Submission.created_utc.desc()
             )
 
-        posts=posts.offset(per_page * (page - 1)).limit(per_page+1)
-
-        debug(posts)
-
-        posts=posts.all()
+        posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in posts]
 
