@@ -349,11 +349,11 @@ class User(Base, standard_mixin, age_mixin):
         #filter out stuff you've already voted on
         posts=posts.filter(
             Submission.id.notin_(
-                select(Vote.submission_id).filter_by(Vote.user_id==g.user.id)
+                select(Vote.submission_id).filter(Vote.user_id==g.user.id)
                 )
             )
 
-        #ordering - use regular score for now
+        #ordering - use regular score for now. This is the other part of the "meat" - needs to order by co-vote popularity
         posts=posts.order_by(Submission.score_best.desc())
 
         return [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
