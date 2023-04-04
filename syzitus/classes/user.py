@@ -459,42 +459,47 @@ class User(Base, standard_mixin, age_mixin):
                 ).label("rank")
             ).group_by(votes.c.submission_id).subquery()
 
-        #make a subquery of all that, with a rownumber over authorid, 
-        post_subq=posts.subquery()
+        #this is all super slow
+        # #make a subquery of all that, with a rownumber over authorid, 
+        # post_subq=posts.subquery()
 
-        user_subq=g.db.query(
-            post_subq.c.id, 
-            func.row_number().over(
-                partition_by=post_subq.c.author_id,
-                order_by=post_ranks.c.rank).label("user_rank")
-            ).subquery()
+        # user_subq=g.db.query(
+        #     post_subq.c.id, 
+        #     func.row_number().over(
+        #         partition_by=post_subq.c.author_id,
+        #         order_by=post_ranks.c.rank).label("user_rank")
+        #     ).subquery()
 
-        #repeat for guilds
-        guild_subq=g.db.query(
-            post_subq.c.id, 
-            func.row_number().over(
-                partition_by=post_subq.c.board_id,
-                order_by=post_ranks.c.rank).label("guild_rank")
-            ).subquery()
+        # #repeat for guilds
+        # guild_subq=g.db.query(
+        #     post_subq.c.id, 
+        #     func.row_number().over(
+        #         partition_by=post_subq.c.board_id,
+        #         order_by=post_ranks.c.rank).label("guild_rank")
+        #     ).subquery()
 
-        #final sort is post minus user minus guild
-        #this introduces a ramping penalty for content from repeat user/guild
+        # #final sort is post minus user minus guild
+        # #this introduces a ramping penalty for content from repeat user/guild
+        # final_subq=g.db.query(
+        #     post_ranks.c.submission_id,
+        #     (post_ranks.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
+        #     ).join(
+        #     user_subq,
+        #     post_ranks.c.submission_id==user_subq.c.id
+        #     ).join(
+        #     guild_subq,
+        #     post_ranks.c.submission_id==guild_subq.c.id).subquery()
 
+        # posts=posts.join(final_subq).order_by(
+        #     final_subq.c.final_rank.desc(),
+        #     Submission.created_utc.desc()
+        #     )
 
-        final_subq=g.db.query(
-            post_ranks.c.submission_id,
-            (post_ranks.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
-            ).join(
-            user_subq,
-            post_ranks.c.submission_id==user_subq.c.id
-            ).join(
-            guild_subq,
-            post_ranks.c.submission_id==guild_subq.c.id).subquery()
+        posts=posts.join(
+            post_ranks, 
+            Submission.id==post_ranks.c.submission_id
+            ).order_by(post_ranks.c.rank.desc())
 
-        posts=posts.join(final_subq).order_by(
-            final_subq.c.final_rank.desc(),
-            Submission.created_utc.desc()
-            )
 
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
