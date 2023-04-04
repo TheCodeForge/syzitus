@@ -289,7 +289,7 @@ class User(Base, standard_mixin, age_mixin):
                 )
             ).distinct().count()
 
-        if user_count<3:
+        if user_count<=5:
             return []
 
         #set up subqueries for ordering later
