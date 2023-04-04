@@ -273,6 +273,24 @@ class User(Base, standard_mixin, age_mixin):
         # get those posts ordered by number of upvotes among those users
         # eliminate content based on personal filters
 
+        #hard check to prevent this feature from being used as a "vote stalker"
+        user_count=g.db.query(Vote.user_id).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(50)
+                        )
+                    )
+                )
+            ).distinct().count()
+
+        if user_count<3:
+            return []
 
         #set up subqueries for ordering later
         #only votes we care about are from users who co-voted the user's last 100 upvotes
