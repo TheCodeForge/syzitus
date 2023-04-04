@@ -334,11 +334,15 @@ class User(Base, standard_mixin, age_mixin):
                     Vote.user_id.in_(
                         select(User.id).filter(
                             User.id.in_(
-                                select(Vote.submission_id).filter(
-                                    Vote.user_id==g.user.id,
-                                    Vote.vote_type==1
-                                    ).order_by(
-                                    Vote.id.desc()).limit(100)
+                                select(Vote.user_id).filter(
+                                    Vote.vote_type==1,
+                                    Vote.submission_id.in_(
+                                        select(Vote.submission_id).in_(
+                                            Vote.vote_type==1,
+                                            Vote.user_id==g.user.id
+                                            )
+                                        )
+                                    )
                                 )
                             )
                         )
