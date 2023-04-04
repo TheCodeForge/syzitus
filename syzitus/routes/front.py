@@ -973,12 +973,7 @@ Optional query parameters:
         # cache memoization differentiation
         allow_nsfw=g.user.over_18,
         hide_offensive=g.user.hide_offensive,
-        hide_bot=g.user.hide_bot,
-
-        #greater/less than
-        gt=int(request.args.get("utc_greater_than",0)),
-        lt=int(request.args.get("utc_less_than",0)),
-
+        hide_bot=g.user.hide_bot
         )
 
     debug(f"ids: {ids}")
