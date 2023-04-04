@@ -28,6 +28,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
+from .votes import Vote
 
 from syzitus.__main__ import Base, cache, app, g, db_session, debug
 
