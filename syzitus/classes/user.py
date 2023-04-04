@@ -480,9 +480,13 @@ class User(Base, standard_mixin, age_mixin):
         #final sort is post minus user minus guild
         #this introduces a ramping penalty for content from repeat user/guild
 
+
         final_subq=g.db.query(
             post_subq.c.id,
-            (post_subq.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
+            (post_ranks.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
+            ).join(
+            post_ranks,
+            post_subq.c.id==post_ranks.c.submission_id
             ).join(
             user_subq,
             post_subq.c.id==user_subq.c.id
