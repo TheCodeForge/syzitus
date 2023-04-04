@@ -337,7 +337,7 @@ class User(Base, standard_mixin, age_mixin):
                             Vote.submission_id.in_(
                                 select(Vote.submission_id).filter(
                                     Vote.vote_type==1, 
-                                    Vote.user_id==g.user.id
+                                    Vote.user_id==self.id
                                     )
                                 )
                             )
@@ -348,9 +348,9 @@ class User(Base, standard_mixin, age_mixin):
 
         #filter out stuff you've already voted on
         posts=posts.filter(
-            Submission.author_id!=g.user.id
+            Submission.author_id!=self.id
             Submission.id.notin_(
-                select(Vote.submission_id).filter(Vote.user_id==g.user.id)
+                select(Vote.submission_id).filter(Vote.user_id==self.id)
                 )
             )
 
