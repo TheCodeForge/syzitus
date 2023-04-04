@@ -472,7 +472,7 @@ class User(Base, standard_mixin, age_mixin):
         post_subq=posts.subquery()
 
         user_subq=g.db.query(
-            post_subq.c.submission_id, 
+            post_subq.c.id, 
             func.count(
                 post_subq.c.author_id
                 ).label("user_rank")
