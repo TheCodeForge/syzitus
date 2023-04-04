@@ -338,7 +338,7 @@ Optional query parameters:
 
         posts = get_posts(ids)
 
-        return {'html': lambda: render_template("subscriptions.html",
+        return {'html': lambda: render_template("home.html",
                                                 listing=posts,
                                                 next_exists=next_exists,
                                                 sort_method=sort,
