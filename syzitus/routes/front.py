@@ -971,7 +971,7 @@ Optional query parameters:
 
         # these arguments don't really do much but they exist for
         # cache memoization differentiation
-        allow_nsfw=g.user.over_18,
+        allow_nsfw=g.user.over_18 and not g.user.filter_nsfw,
         hide_offensive=g.user.hide_offensive,
         hide_bot=g.user.hide_bot
         )
