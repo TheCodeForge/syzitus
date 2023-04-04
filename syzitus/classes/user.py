@@ -295,28 +295,11 @@ class User(Base, standard_mixin, age_mixin):
 
         #set up subqueries for ordering later
 
-        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
-        votes=g.db.query(Vote).filter(
-            Vote.vote_type==1,
-            Vote.user_id.in_(
-                select(Vote.user_id).filter(
-                    Vote.vote_type==1,
-                    Vote.submission_id.in_(
-                        select(Vote.submission_id).filter(
-                            Vote.vote_type==1, 
-                            Vote.user_id==self.id
-                            ).order_by(Vote.created_utc.desc()).limit(50)
-                        )
-                    )
-                )
-            ).subquery()
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
-        posts=g.db.query(
-            Submission
-            ).options(
-            load_only(Submission.id), 
-            lazyload('*')).filter_by(
+        posts=select(
+            Submission.id
+            ).filter_by(
             is_banned=False,
             deleted_utc=0,
             stickied=False
@@ -452,6 +435,23 @@ class User(Base, standard_mixin, age_mixin):
         
         #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
         #this is our initial ordering, from which scaling penalties will be derived
+
+
+        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
+        votes=g.db.query(Vote).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(50)
+                        )
+                    )
+                )
+            ).subquery()
         post_ranks=g.db.query(
             votes.c.submission_id, 
             func.count(
@@ -459,46 +459,40 @@ class User(Base, standard_mixin, age_mixin):
                 ).label("rank")
             ).group_by(votes.c.submission_id).subquery()
 
-        #this is all super slow
-        # #make a subquery of all that, with a rownumber over authorid, 
-        # post_subq=posts.subquery()
+        scoring_subq=g.db.query(
+            post_subq.c.id, 
+            func.row_number().over(
+                partition_by=post_subq.c.author_id,
+                order_by=post_ranks.c.rank).label("user_penalty"),
+            func.row_number().over(
+                partition_by=post_subq.c.guild_id,
+                order_by=post_ranks.c.rank).label("guild_penalty")
+            ).subquery()
 
-        # user_subq=g.db.query(
-        #     post_subq.c.id, 
-        #     func.row_number().over(
-        #         partition_by=post_subq.c.author_id,
-        #         order_by=post_ranks.c.rank).label("user_rank")
-        #     ).subquery()
 
-        # #repeat for guilds
-        # guild_subq=g.db.query(
-        #     post_subq.c.id, 
-        #     func.row_number().over(
-        #         partition_by=post_subq.c.board_id,
-        #         order_by=post_ranks.c.rank).label("guild_rank")
-        #     ).subquery()
+        #final sort is post minus user minus guild
+        #this introduces a ramping penalty for content from repeat user/guild
+        final_subq=g.db.query(
+            post_ranks.c.submission_id,
+            (post_ranks.c.rank - scoring_subq.c.user_penalty - scoring_subq.c.guild_penalty).label('final_rank')
+            ).join(
+            final_subq,
+            final_subq.c.id==post_ranks.c.submission_id
+            ).subquery()
 
-        # #final sort is post minus user minus guild
-        # #this introduces a ramping penalty for content from repeat user/guild
-        # final_subq=g.db.query(
-        #     post_ranks.c.submission_id,
-        #     (post_ranks.c.rank - user_subq.c.user_rank - guild_subq.c.guild_rank).label('final_rank')
-        #     ).join(
-        #     user_subq,
-        #     post_ranks.c.submission_id==user_subq.c.id
-        #     ).join(
-        #     guild_subq,
-        #     post_ranks.c.submission_id==guild_subq.c.id).subquery()
-
-        # posts=posts.join(final_subq).order_by(
-        #     final_subq.c.final_rank.desc(),
-        #     Submission.created_utc.desc()
-        #     )
-
-        posts=posts.join(
-            post_ranks, 
-            Submission.id==post_ranks.c.submission_id
-            ).order_by(post_ranks.c.rank.desc())
+        post_ids=g.db.query(
+            Submission.id
+            ).options(
+            load_only(Submission.id), 
+            lazyload('*')
+            ).filter_by(
+            Submission.id.in_(posts)
+            ).join(
+            final_subq,
+            Submission.id==final_subq.c.submission_id
+            ).order_by(
+            final_subq.c.final_rank.desc()
+            )
 
 
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
