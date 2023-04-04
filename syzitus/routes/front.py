@@ -981,6 +981,8 @@ Optional query parameters:
 
         )
 
+    debug(f"ids: {ids}")
+
     next_exists=(len(ids)==g.per_page+1)
     ids=ids[0:g.per_page]
 
