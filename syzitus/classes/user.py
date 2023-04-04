@@ -372,9 +372,10 @@ class User(Base, standard_mixin, age_mixin):
             )
 
 
-        #filter out stuff you've already voted on
+        #filter out anything that's yours, stuff you've already voted on, and stuff that's too old
         posts=posts.filter(
             Submission.author_id!=self.id,
+            Submission.created_utc > g.timestamp-2592000,
             Submission.id.notin_(
                 select(Vote.submission_id).filter(Vote.user_id==self.id)
                 )
