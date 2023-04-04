@@ -329,12 +329,12 @@ class User(Base, standard_mixin, age_mixin):
         #really crude version - no discounting of auto-self-upvote for example
         posts=posts.filter(
             Submission.id.in_(
-                select(Vote.submission_id).filter_by(
+                select(Vote.submission_id).filter(
                     Vote.vote_type==1,
                     Vote.user_id.in_(
-                        select(User.id).filter_by(
+                        select(User.id).filter(
                             User.id.in_(
-                                select(Vote.submission_id).filter_by(
+                                select(Vote.submission_id).filter(
                                     Vote.user_id==g.user.id,
                                     Vote.vote_type==1
                                     ).order_by(
