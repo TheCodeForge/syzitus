@@ -1,3 +1,4 @@
+from mistletoe import markdown
 from syzitus.classes.comment import Comment, CommentAux, Notification
 
 def send_notif(user, text):
