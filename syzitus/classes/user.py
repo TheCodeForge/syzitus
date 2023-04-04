@@ -274,6 +274,7 @@ class User(Base, standard_mixin, age_mixin):
         # eliminate content based on personal filters
 
         #hard check to prevent this feature from being used as a "vote stalker"
+        #Recommendations must be based on 4 second-degree users minimum
         user_count=g.db.query(Vote.user_id).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
@@ -289,7 +290,7 @@ class User(Base, standard_mixin, age_mixin):
                 )
             ).distinct().count()
 
-        if user_count<=5:
+        if user_count < 4:
             return []
 
         #set up subqueries for ordering later
