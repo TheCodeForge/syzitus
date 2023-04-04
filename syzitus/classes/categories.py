@@ -113,7 +113,7 @@ SUBCAT_DATA={
     45: {'cat_id': 13, 'name': 'Mathematics',       'icon': 'fa-function', 'icon_text': ''},
     46: {'cat_id': 15, 'name': 'Mechanics',         'icon': 'fa-gears', 'icon_text': ''},
     47: {'cat_id': 8,  'name': 'Medical',           'icon': 'fa-truck-medical', 'icon_text': ''},
-    48: {'cat_id': 8,  'name': 'Mental Health',     'icon': 'fa-brain-circuit', 'icon_text': ''},
+    48: {'cat_id': 8,  'name': 'Mental Health',     'icon': 'fa-brain', 'icon_text': ''},
     49: {'cat_id': 1,  'name': 'Music',             'icon': 'fa-music', 'icon_text': ''},
     50: {'cat_id': 13, 'name': 'Natural Sciences',  'icon': 'fa-leaf', 'icon_text': ''},
     51: {'cat_id': 5,  'name': 'News',              'icon': 'fa-podium-star', 'icon_text': ''}, #multiple news overlaps
