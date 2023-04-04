@@ -353,6 +353,9 @@ class User(Base, standard_mixin, age_mixin):
                 )
             )
 
+        #ordering - use regular score for now
+        posts=posts.order_by(Submission.score_best.desc())
+
         return [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
 
 
