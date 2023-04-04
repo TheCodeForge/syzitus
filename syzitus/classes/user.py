@@ -356,14 +356,14 @@ class User(Base, standard_mixin, age_mixin):
         #users who also upvoted those things
         co_voters=g.db.query(Vote.user_id).filter(
             Vote.vote_type==1,
-            Vote.submission_id.in_(my_upvotes))
+            Vote.submission_id.in_(my_upvotes)).all()
 
         debug(f"co_voters {co_voters}")
 
         #the stuff they've upvoted
         their_upvotes=g.db.query(Vote.submission_id).filter(
             Vote.vote_type==1,
-            Vote.user_id.in_(co_voters))
+            Vote.user_id.in_(co_voters)).all()
 
         debug(f"their_upvotes {their_upvotes}")
 
