@@ -313,12 +313,12 @@ class User(Base, standard_mixin, age_mixin):
 
         #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
         #this is part 2 of the algorithm core (part 1 is later)
-        ranks=g.db.query(
+        post_ranks=g.db.query(
             votes.c.submission_id, 
             func.count(
                 votes.c.submission_id
                 ).label("rank")
-            ).group_by(votes.c.submission_id).subquery()
+            ).group_by(votes.c.submission_id).subquery()\
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
@@ -463,9 +463,7 @@ class User(Base, standard_mixin, age_mixin):
             ranks,
             Submission.id==ranks.c.submission_id
             ).order_by(
-            Submission.created_utc < g.timestamp-60*60*24, #bools sort False first
-            Submission.created_utc < g.timestamp-60*60*24*3,
-            Submission.created_utc < g.timestamp-60*60*24*7,
+            Submission.created_utc < g.timestamp-60*60*24*7, #bools sort False first
             ranks.c.rank.desc(),
             Submission.created_utc.desc()
             ).offset(per_page * (page - 1)).limit(per_page+1).all()
