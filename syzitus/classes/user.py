@@ -428,7 +428,7 @@ class User(Base, standard_mixin, age_mixin):
                         )
                     )
                 )
-            ).subquery()
+            )
 
         #here's part 2 of the algorithm core
         #join against the ranking subquery,
@@ -453,49 +453,26 @@ class User(Base, standard_mixin, age_mixin):
                     )
                 )
             ).subquery()
-        post_ranks=g.db.query(
-            votes.c.submission_id, 
-            func.count(
-                votes.c.submission_id
-                ).label("rank")
-            ).group_by(votes.c.submission_id).subquery()
 
-        scoring_subq=g.db.query(
-            posts.c.id, 
-            func.row_number().over(
-                partition_by=post_subq.c.author_id,
-                order_by=post_ranks.c.rank).label("user_penalty"),
-            func.row_number().over(
+        initial_ranks=g.db.query(
+            votes.c.submission_id,
+            func.count(votes.c.submission_id).label('rank')
+            ).subquery()
+
+        posts=posts.join(
+            initial_ranks,
+            Submission.id==initial_ranks.c.submission_id)
+
+        posts=posts.order_by(
+            initial_ranks.c.rank - func.row_number().over(
+                partition_by=posts.author_id,
+                order_by=initial_ranks.c.rank
+                )-func.row_number().over(
                 partition_by=post_subq.c.guild_id,
-                order_by=post_ranks.c.rank).label("guild_penalty")
-            ).subquery()
-
-
-        #final sort is post minus user minus guild
-        #this introduces a ramping penalty for content from repeat user/guild
-        final_subq=g.db.query(
-            post_ranks.c.submission_id,
-            (post_ranks.c.rank - scoring_subq.c.user_penalty - scoring_subq.c.guild_penalty).label('final_rank')
-            ).join(
-            scoring_subq,
-            scoring_subq.c.id==post_ranks.c.submission_id
-            ).subquery()
-
-        post_ids=g.db.query(
-            Submission.id
-            ).options(
-            load_only(Submission.id), 
-            lazyload('*')
-            ).filter_by(
-            Submission.id.in_(posts)
-            ).join(
-            final_subq,
-            Submission.id==final_subq.c.submission_id
-            ).order_by(
-            final_subq.c.final_rank.desc()
+                order_by=post_ranks.c.rank
+                )
             )
-
-
+    
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in posts]
