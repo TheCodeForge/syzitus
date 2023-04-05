@@ -297,8 +297,8 @@ class User(Base, standard_mixin, age_mixin):
 
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
-        posts=g.db.query(
-            Submission
+        posts=select(
+            Submission.id
             ).options(load_only(Submission.id), lazyload('*')
             ).filter_by(
             is_banned=False,
@@ -428,7 +428,7 @@ class User(Base, standard_mixin, age_mixin):
                         )
                     )
                 )
-            ).subquery()
+            )
 
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
