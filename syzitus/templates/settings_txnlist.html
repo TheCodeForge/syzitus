@@ -11,19 +11,15 @@
 
     <div class="settings">
 
-          <h2 id="ruqqus-premium" class="h5">Purchase History</h2>
+      <h2 id="ruqqus-premium" class="h5">Purchase History</h2>
 
-          {% with txns = g.user.txn_history %}
-          {% include "txn_listing.html" %}
-          {% endwith %}
-
-        </div>
+      {% with txns = g.user.txn_history %}
+      {% include "txn_listing.html" %}
+      {% endwith %}
 
     </div>
 
   </div>
-
-</div>
 
 </div>
 

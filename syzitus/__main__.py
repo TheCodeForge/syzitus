@@ -28,7 +28,7 @@ from redis import BlockingConnectionPool, ConnectionPool
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 
-_version = "4.4.2"
+_version = "4.5.0"
 
 app = Flask(__name__,
             template_folder='./templates'
@@ -96,6 +96,7 @@ app.config["SESSION_REFRESH_EACH_REQUEST"] = True
 
 app.config["FORCE_HTTPS"] = int(environ.get("FORCE_HTTPS", 1)) if not any([x in app.config["SERVER_NAME"] for x in ["localhost","127.0.0.1"]]) else 0
 app.config["DISABLE_SIGNUPS"]=int(environ.get("DISABLE_SIGNUPS",0))
+app.config["DISABLE_CATEGORIES"]=int(environ.get("DISABLE_CATEGORIES",0))
 
 app.jinja_env.cache = {}
 

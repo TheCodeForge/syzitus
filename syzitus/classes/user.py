@@ -1,7 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import g, session, abort, request
 from time import strftime, gmtime
-from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select
+from sqlalchemy import Column, Integer, BigInteger, String, Boolean, ForeignKey, FetchedValue, Index, and_, or_, select, func
 from sqlalchemy.orm import relationship, deferred, joinedload, lazyload, contains_eager, aliased, Load, load_only
 from os import environ
 from secrets import token_hex
@@ -28,6 +28,7 @@ from .badges import *
 from .clients import *
 from .paypal import PayPalTxn
 from .flags import Report
+from .votes import Vote
 
 from syzitus.__main__ import Base, cache, app, g, db_session, debug
 
@@ -263,8 +264,240 @@ class User(Base, standard_mixin, age_mixin):
         return TITLES.get(self.title_id)
     
 
+    def recommended_list(self, page=1, per_page=25, filter_words=[], **kwargs):
+
+        # get N most recent upvotes
+        # get those posts
+        # get a list of all users who also upvoted those things
+        # get their upvotes
+        # get those posts ordered by number of upvotes among those users
+        # eliminate content based on personal filters
+
+        #hard check to prevent this feature from being used as a "vote stalker"
+        #Recommendations must be based on 4 other co-voting users minimum
+        user_count=g.db.query(Vote.user_id).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(50)
+                        )
+                    )
+                )
+            ).distinct().count()
+
+        if user_count < 4:
+            return []
+
+        #set up subqueries for ordering later
+
+
+        #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
+        posts=g.db.query(
+            Submission
+            ).options(load_only(Submission.id), lazyload('*')
+            ).filter_by(
+            is_banned=False,
+            deleted_utc=0,
+            stickied=False
+            )
+
+
+        #filter out anything that's yours,
+        #or that you've already voted on,
+        #or that's too old
+        
+        posts=posts.filter(
+            Submission.author_id!=self.id,
+            Submission.created_utc > g.timestamp-2592000,
+            Submission.id.notin_(
+                select(Vote.submission_id).filter(Vote.user_id==self.id)
+                )
+            )
+
+        #no nsfw content if personal settings dicate
+        if self.filter_nsfw or not self.over_18:
+            posts = posts.filter_by(over_18=False)
+
+        #no racial slur content if personal settings dictate
+        if self.hide_offensive:
+            posts = posts.filter_by(is_offensive=False)
+
+        #no bot content if personal settings dictate
+        if self.hide_bot:
+            posts = posts.filter_by(is_bot=False)
+
+        #no disturbing/gruesome content if personal settings dictate
+        if not self.show_nsfl:
+            posts = posts.filter_by(is_nsfl=False)
+
+        #no content from guilds on user's personal block list
+        posts = posts.filter(
+            Submission.board_id.notin_(
+                select(BoardBlock.board_id).filter_by(
+                    user_id=g.user.id
+                    )
+                )
+            )
+
+        #subquery - guilds where user is mod or has mod invite
+        m = select(
+            ModRelationship.board_id).filter_by(
+            user_id=self.id,
+            invite_rescinded=False)
+
+        #subquery - guilds where user is added as contributor
+        c = select(
+            ContributorRelationship.board_id).filter_by(
+            user_id=self.id)
+
+        #no content from private guilds, unless the post was made while guild was public,
+        #or the user is mod, or has mod invite, or is contributor, or is the post author
+        posts = posts.filter(
+            or_(
+                Submission.author_id == self.id,
+                Submission.post_public == True,
+                Submission.board_id.in_(m),
+                Submission.board_id.in_(c)
+            )
+        )
+
+        #subquery - other users who you are blocking
+        blocking = select(
+            UserBlock.target_id).filter_by(
+            user_id=self.id)
+
+        #subquery - other users you are blocked by
+        blocked = select(
+            UserBlock.user_id).filter_by(
+            target_id=self.id)
+
+        #no content where you're blocking the user or they're blocking you
+        posts = posts.filter(
+            Submission.author_id.notin_(blocking),
+            Submission.author_id.notin_(blocked)
+        )
+
+        #guild-based restrictions on recommended content
+        #no content from banned guilds, and no content from opt-out guilds unless the user is sub'd
+        posts = posts.join(Submission.board).filter(
+            Board.is_banned==False,
+            or_(
+                Board.all_opt_out == False,
+                Submission.board_id.in_(
+                    select(
+                        Subscription.board_id).filter_by(
+                        user_id=g.user.id,
+                        is_active=True)
+                )
+            ))
+
+        #personal filter word restrictions
+        #no content whose title contains a personal filter word
+        if filter_words:
+            posts=posts.join(Submission.submission_aux)
+            for word in filter_words:
+                posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
+
+
+        #Algorithm core part 1
+        #read this code inside -> outside
+        #select your 100 most recent upvoted posts,
+        #then select the users who also upvoted those posts ("co-voting users")
+        #then select the other stuff they upvoted
+        #filter out any posts not in that list
+
+        posts=posts.filter(
+            Submission.id.in_(
+                g.db.query(Vote.submission_id).filter(
+                    Vote.vote_type==1,
+                    Vote.user_id.in_(
+                        select(Vote.user_id).filter(
+                            Vote.vote_type==1,
+                            Vote.submission_id.in_(
+                                select(Vote.submission_id).filter(
+                                    Vote.vote_type==1, 
+                                    Vote.user_id==self.id
+                                    ).order_by(Vote.created_utc.desc()).limit(100)
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+
+        #here's part 2 of the algorithm core
+        #develop some ranking subqueries, join them onto existing posts query
+
+        posts_subq=posts.subquery()
+
+        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
+
+        votes=select(Vote).options(lazyload('*')).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(50)
+                        ),
+                    )
+                ),
+            #Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
+            )
+
+        vote_scores=g.db.query(
+            votes.c.submission_id.label('id'),
+            func.count(votes.c.submission_id).label('rank')
+            ).group_by(votes.c.submission_id).subquery()
+
+        #This assigns posts their initial score - the number of upvotes it has from co-voting users
+        #create final scoring matrix, starting with post id, author_id, and board_id,
+        #and add in penalty columns based on age and prior entries of the same author/board
+
+        age_penalty = ((g.timestamp - posts_subq.c.created_utc)//(60*60*24*2)).label('age_penalty')
+        scores=g.db.query(
+            posts_subq.c.id,
+            posts_subq.c.author_id,
+            posts_subq.c.board_id,
+            posts_subq.c.created_utc,
+            vote_scores.c.rank,
+            age_penalty,
+            func.row_number().over(
+                partition_by=posts_subq.c.author_id,
+                order_by=(vote_scores.c.rank - age_penalty).desc()
+                ).label('user_penalty'),
+            func.row_number().over(
+                partition_by=posts_subq.c.board_id,
+                order_by=(vote_scores.c.rank - age_penalty).desc()
+                ).label('board_penalty')
+            ).join(
+            vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
+
+
+        post_ids=g.db.query(
+            scores.c.id
+            ).order_by(
+            # Submission.score_best.desc()
+            # scores.c.rank.desc()
+            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty*2 - scores.c.age_penalty).desc(),
+            scores.c.created_utc.desc()
+            )
+    
+        post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
+
+        return [x.id for x in post_ids]
+
+
     @cache.memoize()
-    def idlist(self, sort=None, page=1, t=None, filter_words="", per_page=25, **kwargs):
+    def idlist(self, sort=None, page=1, t=None, filter_words=[], per_page=25, **kwargs):
 
         posts = g.db.query(Submission).options(load_only(Submission.id), lazyload('*')).filter_by(
             is_banned=False,
@@ -336,7 +569,6 @@ class User(Base, standard_mixin, age_mixin):
         if filter_words:
             posts=posts.join(Submission.submission_aux)
             for word in filter_words:
-                #print(word)
                 posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
         if t:
