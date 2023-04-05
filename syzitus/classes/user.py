@@ -298,7 +298,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=select(
-            Submission.id
+            Submission
             ).options(load_only(Submission.id), lazyload('*')
             ).filter_by(
             is_banned=False,
@@ -452,15 +452,15 @@ class User(Base, standard_mixin, age_mixin):
             Vote.submission_id.in_(posts)
             ).subquery()
 
-        ranks=g.db.query(
+        initial=g.db.query(
             votes.c.submission_id,
             func.count(votes.c.submission_id).label('rank')
-            )
+            ).subquery()
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
-        # posts=posts.join(
-        #     initial_ranks,
-        #     Submission.id==initial_ranks.c.submission_id)
+        posts=posts.join(
+            initial_ranks,
+            Submission.id==initial_ranks.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
 
