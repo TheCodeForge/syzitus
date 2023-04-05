@@ -465,12 +465,16 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         starting_rank=func.count(votes.c.submission_id).label('rank')
+
+
+        #This assigns posts their initial score - the number of upvotes it has from co-voting users
+        #chop at 200 for performance
         vote_scores=g.db.query(
             votes.c.submission_id.label('id'),
             starting_rank
             ).group_by(votes.c.submission_id).order_by(starting_rank.desc()).limit(200).subquery()
 
-        #This assigns posts their initial score - the number of upvotes it has from co-voting users
+
         #create final scoring matrix, starting with post id, author_id, and board_id,
         #and add in penalty columns based on age and prior entries of the same author/board
 
