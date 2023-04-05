@@ -428,7 +428,7 @@ class User(Base, standard_mixin, age_mixin):
                         )
                     )
                 )
-            )
+            ).subquery()
 
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
@@ -446,20 +446,21 @@ class User(Base, standard_mixin, age_mixin):
                             Vote.vote_type==1, 
                             Vote.user_id==self.id
                             ).order_by(Vote.created_utc.desc()).limit(50)
-                        )
+                        ),
                     )
-                )
+                ),
+            Vote.submission_id.in_(posts)
             ).subquery()
 
-        initial_ranks=g.db.query(
+        ranks=g.db.query(
             votes.c.submission_id,
             func.count(votes.c.submission_id).label('rank')
-            ).subquery()
+            )
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
-        posts=posts.join(
-            initial_ranks,
-            Submission.id==initial_ranks.c.submission_id)
+        # posts=posts.join(
+        #     initial_ranks,
+        #     Submission.id==initial_ranks.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
 
@@ -477,7 +478,7 @@ class User(Base, standard_mixin, age_mixin):
 
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
-        posts=posts.order_by(
+        post_ids=initial_ranks.order_by(
             initial_ranks.c.rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
