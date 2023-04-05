@@ -298,7 +298,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=select(
-            Submission.id
+            Submission
             ).options(load_only(Submission.id), lazyload('*')
             ).filter_by(
             is_banned=False,
@@ -449,7 +449,7 @@ class User(Base, standard_mixin, age_mixin):
                         ),
                     )
                 ),
-            Vote.submission_id.in_(posts)
+            Vote.submission_id.in_(posts.subquery().c.id)
             )
 
         rank=func.count(votes.c.submission_id).label('rank')
