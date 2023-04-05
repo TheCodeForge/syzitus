@@ -463,23 +463,23 @@ class User(Base, standard_mixin, age_mixin):
 
         #add in penalty factors for repeat users and guilds
 
-        scoring_subq=g.db.query(
-            initial.c.submission_id,
-            initial.c.rank,
-            func.row_number().over(
-                partition_by=Submission.author_id,
-                order_by=initial.c.rank
-                ).label('user_penalty'),
-            func.row_number().over(
-                partition_by=Submission.board_id,
-                order_by=initial.c.rank
-                ).label('guild_penalty')
-            ).group_by(initial.c.submission_id, initial.c.rank, Submission.author_id, Submission.board_id).subquery()
+        # scoring_subq=g.db.query(
+        #     initial.c.submission_id,
+        #     initial.c.rank,
+        #     func.row_number().over(
+        #         partition_by=Submission.author_id,
+        #         order_by=initial.c.rank
+        #         ).label('user_penalty'),
+        #     func.row_number().over(
+        #         partition_by=Submission.board_id,
+        #         order_by=initial.c.rank
+        #         ).label('guild_penalty')
+        #     ).group_by(initial.c.submission_id, initial.c.rank, Submission.author_id, Submission.board_id).subquery()
 
-        posts=posts.reset_joinpoint().join(
-            scoring_subq, 
-            Submission.id==scoring_subq.c.submission_id
-            )
+        # posts=posts.reset_joinpoint().join(
+        #     scoring_subq, 
+        #     Submission.id==scoring_subq.c.submission_id
+        #     )
 
         posts=posts.order_by(
             # Submission.score_best.desc()
