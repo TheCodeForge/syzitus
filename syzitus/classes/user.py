@@ -444,7 +444,7 @@ class User(Base, standard_mixin, age_mixin):
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
 
-        posts_subq=posts.subquery()
+        posts_subq=posts.limit(500).subquery()
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
@@ -472,7 +472,7 @@ class User(Base, standard_mixin, age_mixin):
         vote_scores=g.db.query(
             votes.c.submission_id.label('id'),
             starting_rank
-            ).group_by(votes.c.submission_id).order_by(starting_rank.desc()).limit(500).subquery()
+            ).group_by(votes.c.submission_id).order_by(starting_rank.desc()).subquery()
 
 
         #create final scoring matrix, starting with post id, author_id, and board_id,
