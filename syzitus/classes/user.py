@@ -368,7 +368,7 @@ class User(Base, standard_mixin, age_mixin):
         #or the user is mod, or has mod invite, or is contributor, or is the post author
         posts = posts.filter(
             or_(
-                Submission.author_id == self.id,
+                # Submission.author_id == self.id,
                 Submission.post_public == True,
                 Submission.board_id.in_(m),
                 Submission.board_id.in_(c)
