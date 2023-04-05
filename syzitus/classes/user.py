@@ -469,11 +469,11 @@ class User(Base, standard_mixin, age_mixin):
             vote_scores.c.rank,
             func.row_number().over(
                 partition_by=posts_subq.c.author_id,
-                order_by=vote_scores.c.rank
+                order_by=vote_scores.c.rank.desc()
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=posts_subq.c.board_id,
-                order_by=vote_scores.c.rank
+                order_by=vote_scores.c.rank.desc()
                 ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
@@ -481,7 +481,9 @@ class User(Base, standard_mixin, age_mixin):
 
         post_ids=g.db.query(
             scores.c.id
-            ).order_by(
+            )
+
+        if request.args.get("".order_by(
             # Submission.score_best.desc()
             # scores.c.rank.desc()
             (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty).desc()
