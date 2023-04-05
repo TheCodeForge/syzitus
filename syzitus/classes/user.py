@@ -487,7 +487,7 @@ class User(Base, standard_mixin, age_mixin):
             ).order_by(
             # Submission.score_best.desc()
             # scores.c.rank.desc()
-            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty + (scores.c.created_utc - g.timestamp)//7200).desc()
+            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty - scores.c.age_penalty).desc()
             )
     
         post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
