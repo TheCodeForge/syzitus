@@ -428,14 +428,10 @@ class User(Base, standard_mixin, age_mixin):
                         )
                     )
                 )
-            )
+            ).limit(100)
 
         #here's part 2 of the algorithm core
-        #join against the ranking subquery,
-        #sort first by content age bracket, then by that rank
-        
-        #ranking subquery - sets up scoring of posts based on number of votes by co-voting users only
-        #this is our initial ordering, from which scaling penalties will be derived
+        #develop some ranking subqueries, join them onto existing posts query
 
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
