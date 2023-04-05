@@ -465,15 +465,14 @@ class User(Base, standard_mixin, age_mixin):
             initial_ranks,
             Submission.id==initial_ranks.c.submission_id)
 
-        #final sort is initial score minus scaling penalty for repeat users/guilds
-        #-1 counted vote for each earlier post of same user, -1 for each earlier post of same guild
+        #final sortis initial score minus scaling penalty for repeat users/guilds
         posts=posts.order_by(
-            initial_ranks.c.rank # - func.row_number().over(
-                # partition_by=Submission.author_id,
-                # order_by=initial_ranks.c.rank
-                # )-func.row_number().over(
-                # partition_by=Submission.board_id,
-                # order_by=initial_ranks.c.rank
+            initial_ranks.c.rank - func.row_number().over(
+                partition_by=Submission.author_id,
+                order_by=initial_ranks.c.rank
+                )-func.row_number().over(
+                partition_by=Submission.board_id,
+                order_by=initial_ranks.c.rank
                 )
             )
     
