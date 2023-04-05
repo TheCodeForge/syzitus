@@ -459,14 +459,15 @@ class User(Base, standard_mixin, age_mixin):
             ).group_by(votes.c.submission_id).subquery()
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
-        posts=posts.join(
-            initial,
-            Submission.id==initial.c.submission_id)
+        # posts=posts.join(
+        #     initial,
+        #     Submission.id==initial.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
 
         penalty_subq=g.db.query(
             initial.c.submission_id,
+            initial.c.rank,
             func.row_number().over(
                 partition_by=Submission.author_id,
                 order_by=initial.c.rank
