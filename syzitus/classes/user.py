@@ -467,13 +467,13 @@ class User(Base, standard_mixin, age_mixin):
 
         #final sort is initial score minus scaling penalty for repeat users/guilds
         posts=posts.order_by(
-            initial_ranks.c.rank - func.row_number().over(
+            (initial_ranks.c.rank - func.row_number().over(
                 partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
                 )-func.row_number().over(
                 partition_by=Submission.board_id,
                 order_by=initial_ranks.c.rank
-                )
+                )).desc()
             )
     
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
