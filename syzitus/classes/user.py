@@ -456,7 +456,7 @@ class User(Base, standard_mixin, age_mixin):
         initial=g.db.query(
             votes.c.submission_id,
             func.count(votes.c.submission_id).label('rank')
-            ).subquery()
+            ).group_by(votes.c.submission_id).subquery()
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
         posts=posts.join(
@@ -480,8 +480,8 @@ class User(Base, standard_mixin, age_mixin):
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
         posts=posts.order_by(
-            Submission.score_best.desc()
-            #rank.desc()
+            #Submission.score_best.desc()
+            initial.c.rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
