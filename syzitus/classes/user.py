@@ -478,7 +478,7 @@ class User(Base, standard_mixin, age_mixin):
 
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
-        post_ids=initial_ranks.order_by(
+        post_ids=ranks.order_by(
             initial_ranks.c.rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
