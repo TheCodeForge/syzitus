@@ -433,6 +433,7 @@ class User(Base, standard_mixin, age_mixin):
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
 
+        posts_subq=posts.subquery()
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
