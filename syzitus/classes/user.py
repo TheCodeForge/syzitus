@@ -471,7 +471,7 @@ class User(Base, standard_mixin, age_mixin):
                 partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
                 )-func.row_number().over(
-                partition_by=Submission.guild_id,
+                partition_by=Submission.board_id,
                 order_by=initial_ranks.c.rank
                 )
             )
