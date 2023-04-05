@@ -472,11 +472,11 @@ class User(Base, standard_mixin, age_mixin):
             age_penalty,
             func.row_number().over(
                 partition_by=posts_subq.c.author_id,
-                order_by=vote_scores.c.rank.desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=posts_subq.c.board_id,
-                order_by=vote_scores.c.rank.desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
