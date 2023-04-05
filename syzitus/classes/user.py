@@ -462,7 +462,7 @@ class User(Base, standard_mixin, age_mixin):
         #create final scoring matrix, starting with post id, author_id, and board_id,
         #and add in penalty columns based on age and prior entries of the same author/board
 
-        age_penalty=((scores.c.created_utc - g.timestamp)//7200).label('age_penalty')
+        age_penalty = ((g.timestamp - posts_subq.c.created_utc)//14400).label('age_penalty')
         scores=g.db.query(
             posts_subq.c.id,
             posts_subq.c.author_id,
@@ -476,7 +476,7 @@ class User(Base, standard_mixin, age_mixin):
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=posts_subq.c.board_id,
-                order_by=(vote_scores.c.rank - age_penalty).c.rank.desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
@@ -487,7 +487,7 @@ class User(Base, standard_mixin, age_mixin):
             ).order_by(
             # Submission.score_best.desc()
             # scores.c.rank.desc()
-            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty - scores.c.age_penalty).desc()
+            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty + (scores.c.created_utc - g.timestamp)//7200).desc()
             )
     
         post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
