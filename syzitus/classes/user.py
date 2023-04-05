@@ -481,9 +481,7 @@ class User(Base, standard_mixin, age_mixin):
 
         post_ids=g.db.query(
             scores.c.id
-            )
-
-        if request.args.get("".order_by(
+            ).order_by(
             # Submission.score_best.desc()
             # scores.c.rank.desc()
             (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty).desc()
