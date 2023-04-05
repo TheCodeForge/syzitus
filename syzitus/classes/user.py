@@ -458,10 +458,10 @@ class User(Base, standard_mixin, age_mixin):
             func.count(votes.c.submission_id).label('rank')
             ).subquery()
 
-        # #This gives posts their initial score - the number of upvotes it has from co-voting users
-        # posts=posts.join(
-        #     initial,
-        #     Submission.id==initial.c.submission_id)
+        #This gives posts their initial score - the number of upvotes it has from co-voting users
+        posts=posts.join(
+            initial,
+            Submission.id==initial.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
 
