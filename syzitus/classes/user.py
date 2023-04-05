@@ -428,7 +428,7 @@ class User(Base, standard_mixin, age_mixin):
                         )
                     )
                 )
-            ).limit(100)
+            )
 
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
