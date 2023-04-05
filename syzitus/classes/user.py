@@ -450,7 +450,7 @@ class User(Base, standard_mixin, age_mixin):
                         ),
                     )
                 ),
-            Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
+            #Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
             )
 
         initial=g.db.query(
@@ -476,7 +476,10 @@ class User(Base, standard_mixin, age_mixin):
                 ).label('guild_penalty')
             ).group_by(initial.c.submission_id, initial.c.rank, Submission.author_id, Submission.board_id).subquery()
 
-        posts=posts.join(scoring_subq, Submission.id==scoring_subq.c.submission_id)
+        posts=posts.join(
+            scoring_subq, 
+            Submission.id==scoring_subq.c.submission_id
+            )
 
         posts=posts.order_by(
             # Submission.score_best.desc()
