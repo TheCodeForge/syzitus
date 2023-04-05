@@ -486,7 +486,7 @@ class User(Base, standard_mixin, age_mixin):
     
         post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1)
 
-        return [x.id for x in post_ids]
+        return [x.id for x in g.db.execute(post_ids)]
 
 
     @cache.memoize()
