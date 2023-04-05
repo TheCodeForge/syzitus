@@ -263,7 +263,6 @@ class User(Base, standard_mixin, age_mixin):
     def title(self):
         return TITLES.get(self.title_id)
     
-    @cache.memoize()
     def recommended_list(self, page=1, per_page=25, filter_words=[], **kwargs):
 
         # get N most recent upvotes
