@@ -437,21 +437,21 @@ class User(Base, standard_mixin, age_mixin):
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
-        # votes=select(Vote).filter(
-        #     Vote.vote_type==1,
-        #     Vote.user_id.in_(
-        #         select(Vote.user_id).filter(
-        #             Vote.vote_type==1,
-        #             Vote.submission_id.in_(
-        #                 select(Vote.submission_id).filter(
-        #                     Vote.vote_type==1, 
-        #                     Vote.user_id==self.id
-        #                     ).order_by(Vote.created_utc.desc()).limit(50)
-        #                 ),
-        #             )
-        #         ),
-        #     Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
-        #     )
+        votes=select(Vote).filter(
+            Vote.vote_type==1,
+            Vote.user_id.in_(
+                select(Vote.user_id).filter(
+                    Vote.vote_type==1,
+                    Vote.submission_id.in_(
+                        select(Vote.submission_id).filter(
+                            Vote.vote_type==1, 
+                            Vote.user_id==self.id
+                            ).order_by(Vote.created_utc.desc()).limit(50)
+                        ),
+                    )
+                ),
+            Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
+            )
 
         # rank=func.count(votes.c.submission_id).label('rank')
         # initial=g.db.query(
