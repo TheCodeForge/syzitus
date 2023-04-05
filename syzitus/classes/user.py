@@ -446,7 +446,7 @@ class User(Base, standard_mixin, age_mixin):
                         select(Vote.submission_id).filter(
                             Vote.vote_type==1, 
                             Vote.user_id==self.id
-                            ).order_by(Vote.created_utc.desc()).limit(50)
+                            ).order_by(Vote.created_utc.desc()).limit(100)
                         ),
                     )
                 ),
