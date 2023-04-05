@@ -462,19 +462,21 @@ class User(Base, standard_mixin, age_mixin):
         #create final scoring matrix, starting with post id, author_id, and board_id,
         #and add in penalty columns based on age and prior entries of the same author/board
 
+        age_penalty=((scores.c.created_utc - g.timestamp)//7200).label('age_penalty')
         scores=g.db.query(
             posts_subq.c.id,
             posts_subq.c.author_id,
             posts_subq.c.board_id,
             posts_subq.c.created_utc,
             vote_scores.c.rank,
+            age_penalty,
             func.row_number().over(
                 partition_by=posts_subq.c.author_id,
-                order_by=vote_scores.c.rank.desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=posts_subq.c.board_id,
-                order_by=vote_scores.c.rank.desc()
+                order_by=(vote_scores.c.rank - age_penalty).c.rank.desc()
                 ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
