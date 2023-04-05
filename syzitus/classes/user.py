@@ -450,7 +450,7 @@ class User(Base, standard_mixin, age_mixin):
                         ),
                     )
                 ),
-            Vote.submission_id.in_(posts_subq.c.id)
+            Vote.submission_id.in_(posts_subq.c.id.scalar_subquery())
             )
 
         rank=func.count(votes.c.submission_id).label('rank')
