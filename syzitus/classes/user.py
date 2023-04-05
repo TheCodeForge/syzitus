@@ -477,9 +477,8 @@ class User(Base, standard_mixin, age_mixin):
                 ).label('guild_penalty')
             )
 
-
         posts=posts.order_by(
-            (initial_ranks.c.rank - posts.user_penalty - posts.guild_penalty).desc()
+            (initial_ranks.c.rank - posts.c.user_penalty - posts.c.guild_penalty).desc()
             )
     
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
