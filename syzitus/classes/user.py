@@ -466,7 +466,7 @@ class User(Base, standard_mixin, age_mixin):
             posts_subq.c.id,
             posts_subq.c.author_id,
             posts_subq.c.board_id,
-            posts.subq.c.created_utc
+            posts_subq.c.created_utc
             vote_scores.c.rank,
             func.row_number().over(
                 partition_by=posts_subq.c.author_id,
