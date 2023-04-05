@@ -460,7 +460,7 @@ class User(Base, standard_mixin, age_mixin):
         #This gives posts their initial score - the number of upvotes it has from co-voting users
         posts=posts.join(
             initial,
-            Submission.id==initial.c.submission_id)
+            Submission.id==initial.c.submission_id).subquery()
 
         #add in penalty factors for repeat users and guilds
 
@@ -479,7 +479,7 @@ class User(Base, standard_mixin, age_mixin):
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
         post_ids=posts.order_by(
-            ranks.c.rank.desc()
+            posts.c.rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
