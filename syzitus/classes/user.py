@@ -462,7 +462,7 @@ class User(Base, standard_mixin, age_mixin):
         #create final scoring matrix, starting with post id, author_id, and board_id,
         #and add in penalty columns based on age and prior entries of the same author/board
 
-        age_penalty = ((g.timestamp - posts_subq.c.created_utc)//60*60*24*2).label('age_penalty')
+        age_penalty = ((g.timestamp - posts_subq.c.created_utc)//(60*60*24*2)).label('age_penalty')
         scores=g.db.query(
             posts_subq.c.id,
             posts_subq.c.author_id,
