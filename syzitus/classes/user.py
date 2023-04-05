@@ -476,7 +476,7 @@ class User(Base, standard_mixin, age_mixin):
                 partition_by=Submission.board_id,
                 order_by=initial.c.rank
                 ).label('guild_penalty')
-            ).group_by(initial.c.submission_id).subquery()
+            ).group_by(initial.c.submission_id, initial.c.rank).subquery()
 
         posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
