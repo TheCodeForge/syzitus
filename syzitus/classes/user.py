@@ -450,7 +450,7 @@ class User(Base, standard_mixin, age_mixin):
                         ),
                     )
                 ),
-            #Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
+            Vote.submission_id.in_(g.db.query(posts_subq.c.id).subquery())
             )
 
         vote_scores=g.db.query(
