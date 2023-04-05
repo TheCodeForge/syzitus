@@ -453,13 +453,21 @@ class User(Base, standard_mixin, age_mixin):
             #Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
             )
 
-        scores=g.db.query(
+        vote_scores=g.db.query(
             votes.c.submission_id.label('id'),
             func.count(votes.c.submission_id).label('rank')
             ).group_by(votes.c.submission_id).subquery()
 
         #This assigns posts their initial score - the number of upvotes it has from co-voting users
         #create final scoring matrix, starting with post id, author_id, and board_id
+
+        scores=g.db.query(
+            posts_subq.c.id,
+            posts_subq.c.author_id,
+            posts_subq.c.board_id,
+            vote_scores.c.rank
+            ).join(
+            vote_scores, posts_subq.c.id==vote_scores.c.id)
 
 
         #add in penalty factors for repeat users and guilds
