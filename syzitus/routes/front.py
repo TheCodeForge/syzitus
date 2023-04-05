@@ -414,7 +414,7 @@ Optional query parameters:
 
     cats=session.get("catids")
     new_cats=request.args.get('cats','')
-    if app.config["DISABLE_CATEGORIES"] and not cats:
+    if app.config["DISABLE_CATEGORIES"] and cats != [x for x in SUBCAT_DATA.keys()]:
         new_cats='all'
     elif not cats and not new_cats and not request.path.startswith('/api/'):
         return make_response(
