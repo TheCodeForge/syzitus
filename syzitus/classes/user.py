@@ -298,7 +298,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=select(
-            Submission
+            Submission.id
             ).options(load_only(Submission.id), lazyload('*')
             ).filter_by(
             is_banned=False,
