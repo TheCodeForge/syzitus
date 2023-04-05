@@ -453,11 +453,10 @@ class User(Base, standard_mixin, age_mixin):
             Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
             )
 
-        # rank=func.count(votes.c.submission_id).label('rank')
-        # initial=g.db.query(
-        #     votes.c.submission_id,
-        #     rank
-        #     ).subquery()
+        initial=g.db.query(
+            votes.c.submission_id,
+            func.count(votes.c.submission_id).label('rank')
+            ).subquery()
 
         # #This gives posts their initial score - the number of upvotes it has from co-voting users
         # posts=posts.join(
