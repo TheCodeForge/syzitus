@@ -313,10 +313,14 @@ class User(Base, standard_mixin, age_mixin):
         
         posts=posts.filter(
             Submission.author_id!=self.id,
-            Submission.created_utc > g.timestamp-2592000,
-            # Submission.id.notin_(
-            #     select(Vote.submission_id).filter(Vote.user_id==self.id)
-            #     )
+            Submission.created_utc > g.timestamp-2592000
+            )
+
+        if request.args.get("hide_voted"):
+            posts=posts.filter(
+            Submission.id.notin_(
+                select(Vote.submission_id).filter(Vote.user_id==self.id)
+                )
             )
 
         #no nsfw content if personal settings dicate
