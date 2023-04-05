@@ -436,7 +436,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
-        votes=g.db.query(Vote).filter(
+        votes=select(Vote).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
                 select(Vote.user_id).filter(
@@ -450,13 +450,13 @@ class User(Base, standard_mixin, age_mixin):
                     )
                 ),
             Vote.submission_id.in_(posts)
-            ).subquery()
+            )
 
         rank=func.count(votes.c.submission_id).label('rank')
-        initial=g.db.query(
+        initial=select(
             votes.c.submission_id,
             rank
-            ).subquery()
+            )
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
         posts=posts.join(
@@ -484,7 +484,7 @@ class User(Base, standard_mixin, age_mixin):
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
-        post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
+        post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1)
 
         return [x.id for x in post_ids]
 
