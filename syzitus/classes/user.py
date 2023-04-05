@@ -453,10 +453,10 @@ class User(Base, standard_mixin, age_mixin):
             )
 
         rank=func.count(votes.c.submission_id).label('rank')
-        initial=select(
+        initial=g.db.query(
             votes.c.submission_id,
             rank
-            )
+            ).subquery()
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
         posts=posts.join(
