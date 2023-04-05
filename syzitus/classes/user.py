@@ -298,8 +298,17 @@ class User(Base, standard_mixin, age_mixin):
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
-            Submission
-            ).options(load_only(Submission.id), lazyload('*')
+            Submission.id
+            Submission.author_id,
+            Submission.board_id,
+            Submission.created_utc
+            ).options(
+            load_only(
+                Submission.id
+                Submission.author_id,
+                Submission.board_id,
+                Submission.created_utc
+                ), lazyload('*')
             ).filter_by(
             is_banned=False,
             deleted_utc=0,
