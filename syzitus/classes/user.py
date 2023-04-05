@@ -468,10 +468,10 @@ class User(Base, standard_mixin, age_mixin):
         #final sortis initial score minus scaling penalty for repeat users/guilds
         posts=posts.order_by(
             initial_ranks.c.rank - func.row_number().over(
-                partition_by=posts.author_id,
+                partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
                 )-func.row_number().over(
-                partition_by=post_subq.c.guild_id,
+                partition_by=Submission.guild_id,
                 order_by=initial_ranks.c.rank
                 )
             )
