@@ -298,13 +298,13 @@ class User(Base, standard_mixin, age_mixin):
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
-            Submission.id
+            Submission.id,
             Submission.author_id,
             Submission.board_id,
             Submission.created_utc
             ).options(
             load_only(
-                Submission.id
+                Submission.id,
                 Submission.author_id,
                 Submission.board_id,
                 Submission.created_utc
