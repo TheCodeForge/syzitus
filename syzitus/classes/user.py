@@ -465,15 +465,22 @@ class User(Base, standard_mixin, age_mixin):
             initial_ranks,
             Submission.id==initial_ranks.c.submission_id)
 
-        #final sort is initial score minus scaling penalty for repeat users/guilds
-        posts=posts.order_by(
-            (initial_ranks.c.rank - func.row_number().over(
+        #add in penalty factors for repeat users and guilds
+        posts=select(
+            posts,
+            func.row_number().over(
                 partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
-                )-func.row_number().over(
+                ).label('user_penalty'),
+            func.row_number().over(
                 partition_by=Submission.board_id,
                 order_by=initial_ranks.c.rank
-                )).desc()
+                ).label('guild_penalty')
+            )
+
+
+        posts=posts.order_by(
+            (initial_ranks.c.rank - posts.user_penalty - posts.guild_penalty).desc()
             )
     
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
