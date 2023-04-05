@@ -135,6 +135,8 @@
   </div>
 </div>
 
+
+{% if request.path in ['/','/all'] %}
 <div class="row fixed-top bg-white border-top d-inline-flex d-md-none py-2 px-3" id="fixed-bar-mobile">
 
   <div class="col">
@@ -142,7 +144,6 @@
     <div class="d-flex flex-row flex-nowrap justify-content-between">
 
       {% block sortnav %}
-      {% if request.path in ['/','/all'] %}
 
       <div class="post-filter">
 
@@ -189,7 +190,6 @@
         </div>
 
       </div>
-      {% endif %}
 
       {% endblock %}
 
@@ -198,6 +198,7 @@
   </div>
 
 </div>
+{% endif %}
 
 {% endblock %}
 
