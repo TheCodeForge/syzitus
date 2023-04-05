@@ -475,14 +475,14 @@ class User(Base, standard_mixin, age_mixin):
                 partition_by=Submission.board_id,
                 order_by=initial_ranks.c.rank
                 ).label('guild_penalty')
-            ).subquery()
+            ).group_by(initial_ranks.c.submission_id).subquery()
 
-        # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
+        posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
         posts=posts.order_by(
             #Submission.score_best.desc()
-            initial.c.rank.desc()
-            # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
+            # initial.c.rank.desc()
+            (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
         post_ids=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
