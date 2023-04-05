@@ -225,7 +225,7 @@
 
 {% include "support_sidebar_block.html" %}
 
-{% if request.path=="/all" or (request.path=="/" and not g.user) %}
+{% if request.path=="/all" or (request.path=="/" and not g.user) and not ('DISABLE_CATEGORIES'|app_config)%}
 <div class="sidebar-section">
   <div class="title">
     <i class="fas fa-shapes mr-2"></i>Categories
