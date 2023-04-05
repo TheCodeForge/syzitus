@@ -437,7 +437,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
-        votes=select(Vote).optiosn(lazyload('*')).filter(
+        votes=select(Vote).options(lazyload('*')).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
                 select(Vote.user_id).filter(
