@@ -467,16 +467,19 @@ class User(Base, standard_mixin, age_mixin):
 
         #add in penalty factors for repeat users and guilds
 
-        user_penalty=func.row_number().over(
+        penalty_subq=g.db.query(
+            initial_ranks.c.submission_id,
+            func.row_number().over(
                 partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
-                ).label('user_penalty')
-        guild_penalty=func.row_number().over(
+                ).label('user_penalty'),
+            func.row_number().over(
                 partition_by=Submission.board_id,
                 order_by=initial_ranks.c.rank
                 ).label('guild_penalty')
+            )
 
-        posts=posts.add_columns(user_penalty, guild_penalty)
+        posts=posts.join(penalty_subq, Submission.id==penalty_subq.initial_ranks)
 
         posts=posts.order_by(
             (initial_ranks.c.rank - user_penalty - guild_penalty).desc()
