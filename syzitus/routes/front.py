@@ -370,6 +370,9 @@ def default_cat_cookie():
 @app.route("/categories", methods=["GET"])
 @auth_desired
 def categories_select():
+    if app.config["DISABLE_CATEGORIES"]:
+        return redirect('/')
+
     return render_template(
         "categorylisting.html",
         categories=CATEGORIES
@@ -411,7 +414,9 @@ Optional query parameters:
 
     cats=session.get("catids")
     new_cats=request.args.get('cats','')
-    if not cats and not new_cats and not request.path.startswith('/api/') and not app.config['BYPASS_CATEGORIES']:
+    if app.config["DISABLE_CATEGORIES"] and not cats:
+        new_cats='all'
+    elif not cats and not new_cats and not request.path.startswith('/api/'):
         return make_response(
             render_template(
                 "categorylisting.html",

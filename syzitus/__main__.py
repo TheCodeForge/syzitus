@@ -96,6 +96,7 @@ app.config["SESSION_REFRESH_EACH_REQUEST"] = True
 
 app.config["FORCE_HTTPS"] = int(environ.get("FORCE_HTTPS", 1)) if not any([x in app.config["SERVER_NAME"] for x in ["localhost","127.0.0.1"]]) else 0
 app.config["DISABLE_SIGNUPS"]=int(environ.get("DISABLE_SIGNUPS",0))
+app.config["DISABLE_CATEGORIES"]=int(environ.get("DISABLE_CATEGORIES",0))
 
 app.jinja_env.cache = {}
 
