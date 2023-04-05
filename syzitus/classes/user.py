@@ -464,7 +464,7 @@ class User(Base, standard_mixin, age_mixin):
         #add in penalty factors for repeat users and guilds
 
         scores=g.db.query(
-            scores.c.submission_id,
+            scores.c.id,
             scores.c.rank,
             func.row_number().over(
                 partition_by=Submission.author_id,
