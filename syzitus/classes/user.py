@@ -463,22 +463,23 @@ class User(Base, standard_mixin, age_mixin):
 
         #add in penalty factors for repeat users and guilds
 
-        penalty_subq=g.db.query(
-            initial_ranks.c.submission_id,
-            func.row_number().over(
-                partition_by=Submission.author_id,
-                order_by=initial_ranks.c.rank
-                ).label('user_penalty'),
-            func.row_number().over(
-                partition_by=Submission.board_id,
-                order_by=initial_ranks.c.rank
-                ).label('guild_penalty')
-            ).subquery()
+        # penalty_subq=g.db.query(
+        #     initial_ranks.c.submission_id,
+        #     func.row_number().over(
+        #         partition_by=Submission.author_id,
+        #         order_by=initial_ranks.c.rank
+        #         ).label('user_penalty'),
+        #     func.row_number().over(
+        #         partition_by=Submission.board_id,
+        #         order_by=initial_ranks.c.rank
+        #         ).label('guild_penalty')
+        #     ).subquery()
 
-        posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
+        # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
         posts=posts.order_by(
-            (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
+            initial_ranks.c.rank.desc()
+            # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
