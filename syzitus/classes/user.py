@@ -474,7 +474,7 @@ class User(Base, standard_mixin, age_mixin):
                 # )-func.row_number().over(
                 # partition_by=Submission.board_id,
                 # order_by=initial_ranks.c.rank
-                )
+                # )
             )
     
         posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
