@@ -466,8 +466,7 @@ class User(Base, standard_mixin, age_mixin):
             Submission.id==initial_ranks.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
-        posts=select(
-            posts,
+        posts=posts.add_columns(
             func.row_number().over(
                 partition_by=Submission.author_id,
                 order_by=initial_ranks.c.rank
