@@ -467,7 +467,7 @@ class User(Base, standard_mixin, age_mixin):
             posts_subq.c.board_id,
             vote_scores.c.rank
             ).join(
-            vote_scores, posts_subq.c.id==vote_scores.c.id)
+            vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
 
 
         #add in penalty factors for repeat users and guilds
