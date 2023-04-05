@@ -19,6 +19,7 @@
           </span>
         </div>
         <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-hidden">
+          {% if g.user %}
           <li class="guild-recommendations-item">
             <a href="/">
               <div class="d-flex">
@@ -30,7 +31,6 @@
               </div>
             </a>
           </li>
-          {% if g.user %}
           <li class="guild-recommendations-item">
             <a href="/recommended">
               <div class="d-flex">
@@ -114,6 +114,7 @@
         </ul>
         <!-- Show this list when sidebar is collapsed-->
         <ul class="no-bullets guild-recommendations-list pl-0 sidebar-collapsed-visible">
+          {% if g.user %}
           <li class="guild-recommendations-item">
             <a href="/">
               <span class="fa-stack">
@@ -122,7 +123,6 @@
               </span>
             </a>
           </li>
-          {% if g.user %}
           <li class="guild-recommendations-item">
             <a href="/recommended">
               <span class="fa-stack">
