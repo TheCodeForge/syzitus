@@ -439,6 +439,7 @@ class User(Base, standard_mixin, age_mixin):
 
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
+
         votes=g.db.query(Vote).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
@@ -459,17 +460,19 @@ class User(Base, standard_mixin, age_mixin):
             func.count(votes.c.submission_id).label('rank')
             ).subquery()
 
+        #This gives posts their initial score - the number of upvotes it has from co-voting users
         posts=posts.join(
             initial_ranks,
             Submission.id==initial_ranks.c.submission_id)
 
+        #final sortis initial score minus scaling penalty for repeat users/guilds
         posts=posts.order_by(
             initial_ranks.c.rank - func.row_number().over(
                 partition_by=posts.author_id,
                 order_by=initial_ranks.c.rank
                 )-func.row_number().over(
                 partition_by=post_subq.c.guild_id,
-                order_by=post_ranks.c.rank
+                order_by=initial_ranks.c.rank
                 )
             )
     
