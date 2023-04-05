@@ -393,7 +393,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #guild-based restrictions on recommended content
         #no content from banned guilds, and no content from opt-out guilds unless the user is sub'd
-        board_ids=g.db.query(Board.id).filter(
+        board_ids=select(Board.id).filter(
             Board.is_banned==False,
             or_(
                 Board.all_opt_out == False,
@@ -404,7 +404,7 @@ class User(Base, standard_mixin, age_mixin):
                         is_active=True)
                     )
                 )
-            ).subquery()
+            )
         posts=posts.filter(Submission.board_id.in_(board_ids))
 
         #personal filter word restrictions
@@ -461,7 +461,7 @@ class User(Base, standard_mixin, age_mixin):
                         ),
                     )
                 ),
-            Vote.submission_id.in_(g.db.query(posts_subq.c.id).subquery())
+            Vote.submission_id.in_(select(posts_subq.c.id))
             )
 
         vote_scores=g.db.query(
