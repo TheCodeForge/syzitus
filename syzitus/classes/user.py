@@ -465,7 +465,7 @@ class User(Base, standard_mixin, age_mixin):
             initial_ranks,
             Submission.id==initial_ranks.c.submission_id)
 
-        #final sortis initial score minus scaling penalty for repeat users/guilds
+        #final sort is initial score minus scaling penalty for repeat users/guilds
         posts=posts.order_by(
             initial_ranks.c.rank - func.row_number().over(
                 partition_by=Submission.author_id,
