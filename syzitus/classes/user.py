@@ -417,7 +417,7 @@ class User(Base, standard_mixin, age_mixin):
 
         #Algorithm core part 1
         #read this code inside -> outside
-        #select your 100 most recent upvoted posts,
+        #select your 50 most recent upvoted posts,
         #then select the users who also upvoted those posts ("co-voting users")
         #then select the other stuff they upvoted
         #filter out any posts not in that list
