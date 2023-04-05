@@ -297,7 +297,7 @@ class User(Base, standard_mixin, age_mixin):
 
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
-        posts=select(
+        posts=g.db.query(
             Submission
             ).options(load_only(Submission.id), lazyload('*')
             ).filter_by(
@@ -480,14 +480,15 @@ class User(Base, standard_mixin, age_mixin):
 
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
-        posts=posts.order_by(Submission.score_best.desc()
+        posts=posts.order_by(
+            Submission.score_best.desc()
             #rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
-        post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1)
+        post_ids=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
 
-        return [x.id for x in g.db.execute(post_ids)]
+        return [x.id for x in post_ids]
 
 
     @cache.memoize()
