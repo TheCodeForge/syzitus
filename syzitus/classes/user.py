@@ -469,11 +469,11 @@ class User(Base, standard_mixin, age_mixin):
             initial.c.submission_id,
             func.row_number().over(
                 partition_by=Submission.author_id,
-                order_by=initial_ranks.c.rank
+                order_by=initial.c.rank
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=Submission.board_id,
-                order_by=initial_ranks.c.rank
+                order_by=initial.c.rank
                 ).label('guild_penalty')
             ).group_by(initial.c.submission_id).subquery()
 
