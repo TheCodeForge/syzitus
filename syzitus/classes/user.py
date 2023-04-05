@@ -433,36 +433,36 @@ class User(Base, standard_mixin, age_mixin):
         #here's part 2 of the algorithm core
         #develop some ranking subqueries, join them onto existing posts query
 
-        posts_subq=posts.subquery()
+        # posts_subq=posts.subquery()
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
-        votes=select(Vote).filter(
-            Vote.vote_type==1,
-            Vote.user_id.in_(
-                select(Vote.user_id).filter(
-                    Vote.vote_type==1,
-                    Vote.submission_id.in_(
-                        select(Vote.submission_id).filter(
-                            Vote.vote_type==1, 
-                            Vote.user_id==self.id
-                            ).order_by(Vote.created_utc.desc()).limit(50)
-                        ),
-                    )
-                ),
-            Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
-            )
+        # votes=select(Vote).filter(
+        #     Vote.vote_type==1,
+        #     Vote.user_id.in_(
+        #         select(Vote.user_id).filter(
+        #             Vote.vote_type==1,
+        #             Vote.submission_id.in_(
+        #                 select(Vote.submission_id).filter(
+        #                     Vote.vote_type==1, 
+        #                     Vote.user_id==self.id
+        #                     ).order_by(Vote.created_utc.desc()).limit(50)
+        #                 ),
+        #             )
+        #         ),
+        #     Vote.submission_id.in_(select(posts_subq.c.id).scalar_subquery())
+        #     )
 
-        rank=func.count(votes.c.submission_id).label('rank')
-        initial=g.db.query(
-            votes.c.submission_id,
-            rank
-            ).subquery()
+        # rank=func.count(votes.c.submission_id).label('rank')
+        # initial=g.db.query(
+        #     votes.c.submission_id,
+        #     rank
+        #     ).subquery()
 
-        #This gives posts their initial score - the number of upvotes it has from co-voting users
-        posts=posts.join(
-            initial,
-            Submission.id==initial.c.submission_id)
+        # #This gives posts their initial score - the number of upvotes it has from co-voting users
+        # posts=posts.join(
+        #     initial,
+        #     Submission.id==initial.c.submission_id)
 
         #add in penalty factors for repeat users and guilds
 
@@ -480,8 +480,8 @@ class User(Base, standard_mixin, age_mixin):
 
         # posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
 
-        post_ids=posts.order_by(
-            rank.desc()
+        posts=posts.order_by(Submission.score_best.desc()
+            #rank.desc()
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
