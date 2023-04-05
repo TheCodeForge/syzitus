@@ -459,6 +459,8 @@ class User(Base, standard_mixin, age_mixin):
             ).group_by(votes.c.submission_id).subquery()
 
         #This gives posts their initial score - the number of upvotes it has from co-voting users
+
+
         #add in penalty factors for repeat users and guilds
 
         scoring_subq=g.db.query(
@@ -472,9 +474,9 @@ class User(Base, standard_mixin, age_mixin):
                 partition_by=Submission.board_id,
                 order_by=initial.c.rank
                 ).label('guild_penalty')
-            ).group_by(initial.c.submission_id, initial.c.rank).subquery()
+            ).group_by(initial.c.submission_id, initial.c.rank, Submission.author_id, Submission.board_id).subquery()
 
-        posts=posts.join(penalty_subq, Submission.id==penalty_subq.c.submission_id)
+        posts=posts.join(scoring_subq, Submission.id==scoring_subq.c.submission_id)
 
         posts=posts.order_by(
             # Submission.score_best.desc()
