@@ -459,36 +459,25 @@ class User(Base, standard_mixin, age_mixin):
             ).group_by(votes.c.submission_id).subquery()
 
         #This assigns posts their initial score - the number of upvotes it has from co-voting users
-        #create final scoring matrix, starting with post id, author_id, and board_id
+        #create final scoring matrix, starting with post id, author_id, and board_id,
+        #and add in penalty columns based on prior entries of the same author/board
 
         scores=g.db.query(
             posts_subq.c.id,
             posts_subq.c.author_id,
             posts_subq.c.board_id,
-            vote_scores.c.rank
+            vote_scores.c.rank,
+            func.row_number().over(
+                partition_by=posts_subq.c.author_id,
+                order_by=vote_scores.c.rank
+                ).label('user_penalty'),
+            func.row_number().over(
+                partition_by=posts_subq.c.board_id,
+                order_by=vote_scores.c.rank
+                ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
 
-
-        #add in penalty factors for repeat users and guilds
-
-        # scores=g.db.query(
-        #     scores.c.id,
-        #     scores.c.rank,
-        #     func.row_number().over(
-        #         partition_by=Submission.author_id,
-        #         order_by=scores.c.rank
-        #         ).label('user_penalty'),
-        #     func.row_number().over(
-        #         partition_by=Submission.board_id,
-        #         order_by=scores.c.rank
-        #         ).label('guild_penalty')
-        #     ).group_by(scores.c.id, scores.c.rank, Submission.author_id, Submission.board_id).subquery()
-
-        # posts=posts.reset_joinpoint().join(
-        #     scoring_subq, 
-        #     Submission.id==scoring_subq.c.submission_id
-        #     )
 
         post_ids=g.db.query(
             scores.c.id
