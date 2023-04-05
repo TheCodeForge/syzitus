@@ -483,9 +483,9 @@ class User(Base, standard_mixin, age_mixin):
             # (initial_ranks.c.rank - penalty_subq.c.user_penalty - penalty_subq.c.guild_penalty).desc()
             )
     
-        posts=posts.offset(per_page * (page - 1)).limit(per_page+1).all()
+        post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
 
-        return [x.id for x in posts]
+        return [x.id for x in post_ids]
 
 
     @cache.memoize()
