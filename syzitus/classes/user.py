@@ -292,7 +292,7 @@ class User(Base, standard_mixin, age_mixin):
 
         if user_count < 4:
             return []
-            
+
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
@@ -422,7 +422,7 @@ class User(Base, standard_mixin, age_mixin):
 
         posts=posts.filter(
             Submission.id.in_(
-                g.db.query(Vote.submission_id).filter(
+                select(Vote.submission_id).filter(
                     Vote.vote_type==1,
                     Vote.user_id.in_(
                         select(Vote.user_id).filter(
