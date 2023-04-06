@@ -413,7 +413,8 @@ class User(Base, standard_mixin, age_mixin):
                 posts=posts.filter(not_(SubmissionAux.title.ilike(f'%{word}%')))
 
 
-        #Algorithm core part 1
+        ### Algorithm core part 1
+
         #read this code inside -> outside
         #select your 50 most recent upvoted posts,
         #then select the users who also upvoted those posts ("co-voting users")
@@ -439,13 +440,16 @@ class User(Base, standard_mixin, age_mixin):
                 )
             )
 
-        #here's part 2 of the algorithm core
-        #develop some ranking subqueries, join them onto existing posts query
+        #at this point we have an unfinished query representing the pool of all possible For You posts
+        #The next steps involve some heavy lifting on the part of the database
+        #To save computation resources in the next steps, sort by Top and cut off everything below the first 500
 
+        #this is now an unsent db query that can be used in subsequent steps
         posts_subq=posts.order_by(Submission.score_top.desc()).limit(500).subquery()
 
-        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
 
+        #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
+        #this is similar to the algoritm core part 1, with an added filter of only paying attention to votes on the final pool of 500
         votes=select(Vote).options(lazyload('*')).filter(
             Vote.vote_type==1,
             Vote.user_id.in_(
@@ -462,11 +466,9 @@ class User(Base, standard_mixin, age_mixin):
             Vote.submission_id.in_(select(posts_subq.c.id))
             )
 
-        starting_rank=func.count(votes.c.submission_id).label('rank')
-
 
         #This assigns posts their initial score - the number of upvotes it has from co-voting users
-        #chop at 500 for performance
+        starting_rank=func.count(votes.c.submission_id).label('rank')
         vote_scores=g.db.query(
             votes.c.submission_id.label('id'),
             starting_rank
@@ -474,7 +476,8 @@ class User(Base, standard_mixin, age_mixin):
 
 
         #create final scoring matrix, starting with post id, author_id, and board_id,
-        #and add in penalty columns based on age and prior entries of the same author/board
+        #join it with the vote scores above
+        #and add in penalty columns based on age and prior entries of the same author/board (promoting variety)
 
         age_penalty = ((g.timestamp - posts_subq.c.created_utc)//(60*60*24*2)).label('age_penalty')
         scores=g.db.query(
@@ -495,6 +498,11 @@ class User(Base, standard_mixin, age_mixin):
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
 
+        # everything so far has been for the purpose of putting all candidate entries 
+        # into an ephemeral score table, which has columns:
+        # id | author_id | board_id | created_utc | vote_rank | age_penalty | user_penalty | board_penalty
+
+        # Last step, get *just* the ids, sorted by (vote_rank - age_penalty*a - user_penalty-b - board_penalty*c)
 
         post_ids=g.db.query(
             scores.c.id
@@ -505,6 +513,7 @@ class User(Base, standard_mixin, age_mixin):
             scores.c.created_utc.desc()
             )
     
+        #and paginate
         post_ids=post_ids.offset(per_page * (page - 1)).limit(per_page+1).all()
 
         return [x.id for x in post_ids]
