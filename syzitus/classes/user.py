@@ -292,9 +292,7 @@ class User(Base, standard_mixin, age_mixin):
 
         if user_count < 4:
             return []
-
-        #set up subqueries for ordering later
-
+            
 
         #select post IDs, with global restrictions - no deleted, removed, or front-page-sticky content
         posts=g.db.query(
