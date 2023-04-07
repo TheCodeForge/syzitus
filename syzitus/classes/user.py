@@ -445,7 +445,7 @@ class User(Base, standard_mixin, age_mixin):
         #To save computation resources in the next steps, sort by Top and cut off everything below the first 500
 
         #this is now an unsent db query that can be used in subsequent steps
-        posts_subq=posts.order_by(Submission.score_best.desc()).limit(500).subquery()
+        posts_subq=posts.order_by(Submission.score_top.desc()).limit(500).subquery()
 
 
         #Votes subquery - the only votes we care about are those from users who co-voted the user's last 100 upvotes
@@ -479,23 +479,21 @@ class User(Base, standard_mixin, age_mixin):
         #join it with the vote scores above
         #and add in penalty columns based on age and prior entries of the same author/board (promoting variety)
 
-        #age_penalty = ((g.timestamp - posts_subq.c.created_utc)//(60*60*24*2)).label('age_penalty')
+        age_penalty = ((g.timestamp - posts_subq.c.created_utc)//(60*60*24*2)).label('age_penalty')
         scores=g.db.query(
             posts_subq.c.id,
             posts_subq.c.author_id,
             posts_subq.c.board_id,
             posts_subq.c.created_utc,
             vote_scores.c.rank,
-            #age_penalty,
+            age_penalty,
             func.row_number().over(
                 partition_by=posts_subq.c.author_id,
-                order_by=(vote_scores.c.rank #- age_penalty
-                    ).desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('user_penalty'),
             func.row_number().over(
                 partition_by=posts_subq.c.board_id,
-                order_by=(vote_scores.c.rank #- age_penalty
-                    ).desc()
+                order_by=(vote_scores.c.rank - age_penalty).desc()
                 ).label('board_penalty')
             ).join(
             vote_scores, posts_subq.c.id==vote_scores.c.id).subquery()
@@ -511,8 +509,7 @@ class User(Base, standard_mixin, age_mixin):
             ).order_by(
             # Submission.score_best.desc()
             # scores.c.rank.desc()
-            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty*2 #- scores.c.age_penalty
-                ).desc(),
+            (scores.c.rank - scores.c.user_penalty - scores.c.board_penalty*2 - scores.c.age_penalty).desc(),
             scores.c.created_utc.desc()
             )
     
