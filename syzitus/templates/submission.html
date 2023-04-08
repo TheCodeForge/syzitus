@@ -357,10 +357,10 @@
             <button class="btn btn-link btn-block btn-lg text-danger text-left post-toast-url-reload" data-post-url="/retry_thumb/{{ p.base36id }}"><i class="far fa-image text-center text-muted mr-3"></i>Retry Thumbnail</button>
             {% endif %}
 
-<!--             {% if g.user and not g.user.is_suspended %}
+            {% if g.user and not g.user.is_suspended %}
             <button class="btn btn-link btn-block btn-lg text-left"><a class="text-muted" href="/submit?url={{ p.permalink | full_link | urlencode }}"><i class="far fa-retweet text-center text-muted mr-3"></i>Resubmit</a></button>
             <button class="btn btn-link btn-block btn-lg text-left"><a class="text-muted" href="{{ p.votes_permalink }}" target="_blank"><i class="far fa-arrow-up-arrow-down text-center text-muted mr-3"></i>Votes</a></button>
-              {% endif %} -->
+              {% endif %}
 
             {% if p.is_guildmaster('content') %}
 
@@ -643,11 +643,11 @@
                     {% endif %}
 
 
-<!--                     {% if g.user and not g.user.is_suspended %}
+                    {% if g.user and not g.user.is_suspended %}
                     <a href="/submit?url={{ p.permalink | full_link | urlencode }}" class="dropdown-item"><i class="fas fa-retweet"></i>Resubmit</a>
                     <a href="{{ p.votes_permalink }}" class="dropdown-item" target="_blank"><i class="fas fa-arrow-up-arrow-down"></i>Votes</a>
                     {% endif %}
- -->
+
                     <a id="embed-content-{{ p.fullname }}" href="javascript:void(0)" class="dropdown-item copy-outside-embed" data-thing-fullname="{{ p.fullname }}"><i class="fas fa-code"></i>Embed</a>
 
                     {% if g.user and g.user.id!=p.author_id and not p.author.is_deleted %}
