@@ -202,6 +202,11 @@
           <button class="btn btn-primary btn-toggle-follow" data-post-url="/api/follow/{{ u.username }}" data-thing-id="{{ u.fullname }}">Follow</button>
         </div>
         {% endif %}
+        {% if g.user and g.user.admin_level %}
+        <div id="btn-admin-mobile-div">
+          <button id="btn-admin-mobile" class="btn" data-toggle="modal" data-target="#mobile-admin-modal"><i class="fas fa-shield-quartered"></i></button>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -300,7 +305,6 @@
 {% endmacro %}
 
 {% block adminpanel %}{{ admin_panel() }}{% endblock %}
-{% block mobileadmin %}{{ admin_panel() }}{% endblock %}
 
 {% block content %}
 
@@ -330,6 +334,26 @@
   </div>
 
 </div>
+
+<div class="modal fade" id="mobile-admin-modal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Administrate @{{ u.username }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ admin_panel() }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block GIFpicker %}
