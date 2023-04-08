@@ -307,7 +307,7 @@
             <i class="fas bell-icon fa-fw {% if b.is_subscribed and b.is_subscribed.get_notifs %}fa-bell-on text-primary{% else %}fa-bell{% endif %}"></i>
           </button>
         </div>
-        {% if g.user.admin_level}
+        {% if g.user.admin_level %}
         <span id="btn-admin-mobile-div">
           <button id="btn-admin-mobile" class="btn" data-toggle="modal" data-target="#mobile-admin-modal"><i class="fas fa-shield-quartered text-danger"></i></button>
         </span>
