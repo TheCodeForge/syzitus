@@ -239,18 +239,12 @@
 
 {% endblock %}
 
-{% block adminpanel %}
-{% if u.is_private %}
-<p>User has private mode enabled.</p>
-{% endif %}
-{% if u.is_deleted %}
-<p>User account is deleted</p>
-{% endif %}
-<p>Premium: {{ u.has_premium_no_renew }}</p>
+{% macro admin_panel() %}
+{% if u.is_private %}{% include "tags/private.html" %}{% endif %}
+{% if u.is_deleted %}{% include "tags/deleted.html" %}{% endif %}
+{% if u.has_premium_no_renew %}{% include "tags/premium.html" %}{% endif %}
+{% if u.ban_evade %}{% include "tags/ban_evade.html" %}{% endif %}
 <p>user id: {{ u.base36id }}</p>
-{% if u.ban_evade %}
-<p>Ban Evasion Counter: {{ u.ban_evade }}</p>
-{% endif %}
 {% if g.user.admin_level >=3 and g.user.admin_level > u.admin_level %}
 {% if u.is_suspended %}
 <p>IP: <a href="/admin/ip/{{ u.creation_ip }}" target="_blank">{{ u.creation_ip }}</a></p>
@@ -303,7 +297,10 @@
   <input type="hidden" name="user" value="{{ u.username }}">
   <input type="submit" class="d-none btn btn-danger" id="demod-user" value="Confirm De-Mod User">
 </form>
-{% endblock %}
+{% endmacro %}
+
+{% block adminpanel %}{{ admin_panel() }}{% endblock %}
+{% block adminmobile %}{{ admin_panel() }}{% endblock %}
 
 {% block content %}
 

@@ -175,15 +175,20 @@
           </li>
 
           {% if g.user.can_make_guild %}
-            <li class="nav-item">
-              <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/create_guild"><i class="fas fa-chess-rook fa-fw mr-3"></i>Create Guild</a>
+          </li>
           {% endif %}
           {% if g.user.admin_level > 1 %}
-            <li class="nav-item">
-              <a class="nav-link" href="/admin"><i class="fas fa-shield fa-fw mr-3 text-danger"></i>Admin</a>
-            </li>
-            {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="/admin"><i class="fas fa-shield-quartered fa-fw mr-3 text-danger"></i>Admin Home</a>
+          </li>
+          <li class="nav-item border-top">
+            {% block mobileadmin %}
+            <span class="text-muted">No admin actions available</span>
+            {% endblock %}
+          </li>
+          {% endif %}
 
           <li class="nav-item border-top border-bottom mt-2 pt-2">
             <a href="javascript:void(0)" class="nav-link post-url-reload" data-post-url="/logout"><i class="fas fa-sign-out fa-fw mr-3 text-danger"></i>Log out</a>
