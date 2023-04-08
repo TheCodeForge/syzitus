@@ -248,7 +248,7 @@
   {% endblock %}
 
 
-{% block adminpanel %}
+{% macro adminpanel() %}
 
 {% if domain %}
 <p><b>{{ domain }}</b></p>
@@ -290,4 +290,7 @@
 {% endif %}
 {% endif %}
 
-{% endblock %}
+{% endmacro %}
+
+{% block adminpanel %}{{ admin_panel() }}{% endblock %}
+{% block mobileadmin %}{{ admin_panel() }}{% endblock %}

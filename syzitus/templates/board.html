@@ -1,6 +1,6 @@
 {% extends "home.html" %}
 
-{% block adminpanel %}
+{% macro admin_panel() %}
 {% if g.user.admin_level >=3 %}
 {% if b.is_banned %}
 <form action="/api/unban_guild/{{ b.base36id }}" method="post">
@@ -31,7 +31,9 @@
 {% endif %}
 {% endif %}
 
-{% endblock %}
+{% endmacro %}
+{% block adminpanel %}{{ admin_panel() }}{% endblock %}
+{% block mobileadmin %}{{ admin_panel() }}{% endblock %}
 
 {% block sidebarblock %}
 <div class="sidebar-section sidebar-guildmake">
