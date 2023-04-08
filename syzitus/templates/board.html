@@ -293,11 +293,7 @@
         <a class="btn btn-outline-secondary btn-block text-muted mb-2" href="{{ b.permalink }}/mod/settings">Guild settings</a>
         {% endif %}
 
-        {% if False and b.can_chat(g.user) %}
-        <a class="btn btn-primary btn-block text-white mb-2" href="{{ b.chat_url }}">Chat</a>
-        {% endif %}
-
-      {% if g.user %}
+        {% if g.user %}
         <div id="button-sub-mobile-{{ b.fullname }}" {% if b.is_subscribed %}class="d-none"{% endif %}>
           <button class="btn btn-primary btn-block btn-guild-sub" data-board-name="{{ b.name }}" data-thing-id="{{ b.fullname }}">
             Join guild
@@ -311,9 +307,35 @@
             <i class="fas bell-icon fa-fw {% if b.is_subscribed and b.is_subscribed.get_notifs %}fa-bell-on text-primary{% else %}fa-bell{% endif %}"></i>
           </button>
         </div>
-        {% elif not v %}
+        {% if g.user.admin_level}
+        <span id="btn-admin-mobile-div">
+          <button id="btn-admin-mobile" class="btn" data-toggle="modal" data-target="#mobile-admin-modal"><i class="fas fa-shield-quartered text-danger"></i></button>
+        </span>
+        {% endif %}
+        {% else %}
         <a class="btn btn-primary btn-block" href="/signup">Join guild</a>
         {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_modal %}
+<div class="modal fade" id="mobile-admin-modal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Administrate +{{ b.name }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ admin_panel() }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

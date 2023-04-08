@@ -358,6 +358,11 @@
 {% include "expanded_image_modal.html" %}
 {% endblock %}
 
+{% if g.user and g.user.admin_level %}
+{% block admin_modal %}
+{% endblock %}
+{% endif %}
+
 {% include "bootstrap.html" %}
 
 {% block clipboardjs %}
