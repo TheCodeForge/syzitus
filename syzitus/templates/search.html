@@ -86,6 +86,12 @@
           <h1 class="h4 mb-0">{{ query }}</h1>
           {% if b %}<div class="text-muted text-small mb-1">Showing results in +{{ b.name }}. <a href="/search?q={{ query | urlencode }}">Did you want to search all of {{ 'SITE_NAME' | app_config }} instead?</a></div>{% endif %}
 
+          {% if domain and g.user and g.user.admin_level %}
+          <div id="btn-admin-mobile-div">
+            <button id="btn-admin-mobile" class="btn" data-toggle="modal" data-target="#mobile-admin-modal"><i class="fas fa-shield-quartered text-danger"></i></button>
+          </div>
+          {% endif %}
+
         </div>
       </div>
     </div>
@@ -293,3 +299,24 @@
 {% endmacro %}
 
 {% block adminpanel %}{{ admin_panel() }}{% endblock %}
+
+{% block admin_modal %}
+<div class="modal fade" id="mobile-admin-modal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">domain: {{ domain }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ admin_panel() }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
