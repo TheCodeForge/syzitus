@@ -266,7 +266,7 @@
 
                 <a class="dropdown-item copy-outside-embed" href="javascript:void(0)" id="embed-content-{{ c.fullname }}" data-thing-fullname="{{ c.fullname }}"><i class="fas fa-code"></i>Embed</a>
 
-                {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 and is_allowed_to_comment %}
+                {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 %}
                 <a href="javascript:void(0)" class="dropdown-item btn-toggle-comment-edit" data-comment-id="{{ c.base36id }}"><i class="fas fa-edit fa-fw"></i>Edit</a>
 
                 <a href="javascript:void(0)" class="dropdown-item btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-trash-alt fa-fw"></i>Delete</a>
@@ -460,7 +460,7 @@
             <li class="list-group-item"><a href="javascript:void(0)" data-toggle="modal" data-dismiss="modal" data-target="#reportCommentModal" data-comment-id="{{ c.base36id }}" data-target-author="{{ c.author.username if not c.author.is_deleted else '[is_deleted]' }}" class="d-block btn-report-comment"><i class="fas fa-fw fa-flag"></i>Flag</a></li>
             {% endif %}
 
-            {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 and is_allowed_to_comment %}
+            {% if g.user and c.parent_submission and c.author_id==g.user.id and c.deleted_utc == 0 %}
             <li class="list-group-item"><a href="javascript:void(0)" data-dismiss="modal" data-comment-id="{{ c.base36id }}" class="d-block btn-toggle-comment-edit"><i class="fas fa-fw fa-edit" data-dismiss="modal"></i>Edit</a></li>
 
             <li class="list-group-item"><a href="javascript:void(0)" class="d-block btn-delete-comment" data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ c.base36id }}"><i class="fas fa-fw fa-trash-alt"></i>Delete</a></li>
