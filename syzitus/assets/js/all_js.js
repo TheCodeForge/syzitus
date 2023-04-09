@@ -2159,3 +2159,7 @@ $('.btn-warning-ban-ip').click(function(){
 $('.toggle-target-vis').click(function(){
   $('#'+$(this).data('toggle-target')).toggleClass('d-none')
 })
+
+$('.toggle-target-class').click(function(){
+  $('.'+$(this).data('toggle-target')).toggleClass('d-none')
+})

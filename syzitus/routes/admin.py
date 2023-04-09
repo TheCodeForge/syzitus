@@ -1557,6 +1557,56 @@ def admin_nuke_user():
 
     g.db.commit()
 
+
+    post_flags=select(Flag).filter(
+                Flag.post_id.in_(
+                    select(Submission.id).filter(Submission.author_id==user.id)
+                    ),
+                Flag.resolution_notif_sent==False
+        )
+
+    comment_flags=select(CommentFlag).filter(
+                CommentFlag.post_id.in_(
+                    select(Comment.id).filter(Comment.author_id==user.id)
+                    ),
+                CommentFlag.resolution_notif_sent==False
+        )
+ 
+
+    post_users=g.db.query(User).filter(
+        User.id.in_(
+            select(Flag.user_id).filter(
+                Flag.post_id.in_(
+                    select(Submission.id).filter(Submission.author_id==user.id)
+                    ),
+                Flag.resolution_notif_sent==False)
+            )
+        )
+    
+    comment_users=g.db.query(User).filter(
+        User.id.in_(
+            select(CommentFlag.user_id).filter(
+                CommentFlag.post_id.in_(
+                    select(Comment.id).filter(Comment.author_id==user.id)
+                    ),
+                CommentFlag.resolution_notif_sent==False)
+            )
+        )
+
+    for flagging_user in post_users:
+        send_notification(flagging_user, f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+    for flagging_user in comment_users:
+        send_notification(flagging_user, f"A comment you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
+
+    for flag in post_flags:
+        flag.resolution_notif_sent=True
+        g.db.add(flag)
+    for flag inc omment_flags:
+        flag.resolution_notif_sent=True
+        g.db.add(flag)
+        
+    g.db.commit()
+
     discord_log_event("Nuke user", user, g.user, reason=user.ban_reason, admin_action=True)
 
     return redirect(user.permalink)
