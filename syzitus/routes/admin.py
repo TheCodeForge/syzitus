@@ -1601,10 +1601,10 @@ def admin_nuke_user():
     for flag in post_flags:
         flag.resolution_notif_sent=True
         g.db.add(flag)
-    for flag inc omment_flags:
+    for flag in comment_flags:
         flag.resolution_notif_sent=True
         g.db.add(flag)
-        
+
     g.db.commit()
 
     discord_log_event("Nuke user", user, g.user, reason=user.ban_reason, admin_action=True)
