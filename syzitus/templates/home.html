@@ -186,13 +186,21 @@
             </div>
           </div>
           {% elif request.path=="/recommended" %}
-
           <div class="dropdown dropdown-actions">
             <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-circle-nodes mr-1"></i> Suggested
             </button>
             <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
               <a class="dropdown-item disabled"><i class="fas fa-circle-nodes text-primary mr-3"></i>Suggested</a>
+            </div>
+          </div>
+          {% elif request.path=="/admin/all" %}
+          <div class="dropdown dropdown-actions">
+            <button class="btn btn-link text-capitalize text-muted font-weight-normal dropdown-toggle px-0" type="button" id="dropdownMenuButtonMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-shield-quartered mr-1"></i> Admin All
+            </button>
+            <div class="dropdown-menu navbar-dropdown-menu" id="mobileSortDropdown" aria-labelledby="dropdownMenuButtonMobile" x-placement="bottom-start">
+              <a class="dropdown-item disabled"><i class="fas fa-circle-nodes text-primary mr-3"></i>Admin All</a>
             </div>
           </div>
           {% endif %}
