@@ -1586,7 +1586,7 @@ def admin_nuke_user():
     comment_users=g.db.query(User).filter(
         User.id.in_(
             select(CommentFlag.user_id).filter(
-                CommentFlag.post_id.in_(
+                CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
                 CommentFlag.resolution_notif_sent==False)
