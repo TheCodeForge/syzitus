@@ -1581,7 +1581,7 @@ def admin_nuke_user():
                     ),
                 Flag.resolution_notif_sent==False)
             )
-        )
+        ).all()
     
     comment_users=g.db.query(User).filter(
         User.id.in_(
@@ -1591,7 +1591,7 @@ def admin_nuke_user():
                     ),
                 CommentFlag.resolution_notif_sent==False)
             )
-        )
+        ).all()
 
     for flagging_user in post_users:
         send_notification(flagging_user, f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")
