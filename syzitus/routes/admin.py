@@ -1563,14 +1563,14 @@ def admin_nuke_user():
                     select(Submission.id).filter(Submission.author_id==user.id)
                     ),
                 Flag.resolution_notif_sent==False
-        )
+        ).all()
 
     comment_flags=select(CommentFlag).filter(
                 CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
                 CommentFlag.resolution_notif_sent==False
-        )
+        ).all()
  
 
     post_users=g.db.query(User).filter(
