@@ -1566,7 +1566,7 @@ def admin_nuke_user():
         )
 
     comment_flags=select(CommentFlag).filter(
-                CommentFlag.post_id.in_(
+                CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
                 CommentFlag.resolution_notif_sent==False
