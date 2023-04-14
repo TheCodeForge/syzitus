@@ -1558,14 +1558,14 @@ def admin_nuke_user():
     g.db.commit()
 
 
-    post_flags=select(Flag).filter(
+    post_flags=g.db.query(Flag).filter(
                 Flag.post_id.in_(
                     select(Submission.id).filter(Submission.author_id==user.id)
                     ),
                 Flag.resolution_notif_sent==False
         ).all()
 
-    comment_flags=select(CommentFlag).filter(
+    comment_flags=g.db.query(CommentFlag).filter(
                 CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
