@@ -156,7 +156,8 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
             joinedload(Submission.awards),
             joinedload(Submission.domain_obj),
             joinedload(Submission.reposts).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            Load(AwardRelationship).lazyload('*'),
+            joinedLoad(RegionBlock)
         )
         
         if no_text:
@@ -227,7 +228,8 @@ def get_post(pid, graceful=False, no_text=False, **kwargs):
             joinedload(Submission.awards),
             joinedload(Submission.domain_obj),
             joinedload(Submission.reposts).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            Load(AwardRelationship).lazyload('*'),
+            joinedLoad(RegionBlock)
         # ).join(
         #     exile,
         #     and_(exile.c.target_submission_id==Submission.id, exile.c.board_id==Submission.original_board_id),
@@ -297,7 +299,8 @@ def get_posts(pids, sort=None, v=None):
             joinedload(Submission.awards),
             joinedload(Submission.domain_obj),
             joinedload(Submission.reposts).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            Load(AwardRelationship).lazyload('*'),
+            joinedLoad(RegionBlock)
         ).filter(
             Submission.id.in_(pids)
         ).join(
@@ -357,7 +360,8 @@ def get_posts(pids, sort=None, v=None):
             joinedload(Submission.awards),
             joinedload(Submission.domain_obj),
             joinedload(Submission.reposts).lazyload('*'),
-            Load(AwardRelationship).lazyload('*')
+            Load(AwardRelationship).lazyload('*'),
+            joinedLoad(RegionBlock)
         ).filter(Submission.id.in_(pids)
         # ).join(
         #     exile,
@@ -822,7 +826,8 @@ def get_board(bid,graceful=False):
             Board,
             aliased(Subscription, alias=sub)
             ).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user)
+            joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                 Board.id==bid
             ).join(
@@ -840,11 +845,10 @@ def get_board(bid,graceful=False):
             
         query = g.db.query(Board).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                     Board.id==bid)
         board=query.first()
-    
-    
     
     if not board:
         if graceful:
@@ -863,6 +867,7 @@ def get_boards(bids, graceful=False):
             aliased(Subscription, alias=sub)
             ).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                 Board.id.in_(tuple(bids))
             ).join(
@@ -881,6 +886,7 @@ def get_boards(bids, graceful=False):
             
         output = g.db.query(Board).options(
             joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                     Board.id.in_(bids)
         ).all()
@@ -914,7 +920,8 @@ def get_guild(name, graceful=False):
             Board,
             aliased(Subscription, alias=sub)
             ).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user)
+            joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                     Board.name.ilike(name)
             ).join(
@@ -931,7 +938,8 @@ def get_guild(name, graceful=False):
     else:
             
         query = g.db.query(Board).options(
-            joinedload(Board.moderators).joinedload(ModRelationship.user)
+            joinedload(Board.moderators).joinedload(ModRelationship.user),
+            joinedLoad(RegionBlock)
             ).filter(
                     Board.name.ilike(name)
         )
