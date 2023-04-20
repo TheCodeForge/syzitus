@@ -140,6 +140,8 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
         uselist=False,
         primaryjoin="Submission.is_approved==User.id")
 
+    regionblocks = relationship("RegionBlock", lazy="joined")
+
     # not sure if we need this
     reposts = relationship("Submission", lazy="joined", remote_side=[id])
 

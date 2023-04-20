@@ -61,6 +61,7 @@ class Board(Base, standard_mixin, age_mixin):
     contributors=relationship("ContributorRelationship", lazy="dynamic")
     bans=relationship("BanRelationship", lazy="dynamic")
     postrels=relationship("PostRelationship", lazy="dynamic")
+    regionblocks=relationship("RegionBlock", lazy="joined")
 
     # db side functions
     trending_rank=deferred(Column(Float, server_default=FetchedValue()))
