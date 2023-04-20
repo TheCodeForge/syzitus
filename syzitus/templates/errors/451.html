@@ -7,5 +7,10 @@
 {% block icon %}<i class="fas fa-balance-scale text-muted"></i>{% endblock %}
 {% block pagetitle %}451 Unavailable For Legal Reasons{% endblock %}
 {% block pagebody %}
+{% if regionblock %}
+<p class="text-muted mb-5">This page has been blocked in {{ regionblock.country }} due to a legal "request" from: {{ regionblock.source }}</p>
+<p class="text-muted mb-5">(Tor, VPNs, or other anonymity tools may prevent us from being able to detect your real location and blocking this content)</p>
+{% else %}
 <p class="text-muted mb-5">The Emperor has decreed this page <i>Excommunicate Traitoris</i>.</p>
+{% endif %}
 {% endblock %}
