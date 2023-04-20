@@ -35,7 +35,7 @@ BAN_REASONS = ['',  #placeholder
                "Spam",
                "No doxxing",
                "Sexualizing minors",
-               'User safety - This site is a Ruqqus clone which is still displaying "Ruqqus" as its site name.',
+               f'User safety - This site is a {app.config["SITE_NAME"]} clone which is still displaying "{app.config["SITE_NAME"]}" as its site name.',
                "Engaging in or planning unlawful activity"
                ]
 
