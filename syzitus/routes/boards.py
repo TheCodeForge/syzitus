@@ -497,6 +497,14 @@ URL path parameters:
 
     cache.delete_memoized(Board.idlist, board)
 
+    #check for existing modaction - used to determine if it's first kick or not for sending notif
+    existing_ma = g.db.query(ModAction).filter_by(
+        kind="kick_post",
+        target_submission_id=post.id,
+        board_id=board.id
+        ).first()
+
+
     ma=ModAction(
         kind="kick_post",
         user_id=g.user.id,
@@ -505,6 +513,11 @@ URL path parameters:
         )
     g.db.add(ma)
     g.db.commit()
+
+    if post.author_id != g.user.id and not existing_ma:
+
+        notif_text=f"Your post [{post.title}]({post.permalink}) has been kicked to +general from +{board.name}."
+        send_notification(post.author, notif_text)
 
     return jsonify({
         'data':render_template(
