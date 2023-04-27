@@ -12,6 +12,8 @@ from flask_minify import Minify
 from collections import deque
 from psycopg2.errors import UndefinedColumn
 from sys import getsizeof
+import time
+from syzitus.helpers.security import generate_hash
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
@@ -317,6 +319,9 @@ cache.delete_memoized(syzitus.routes.main_css)
 @app.before_request
 def before_request():
 
+    if not session.get("session_id"):
+        session["session_id"] = token_hex(16)
+
     g.timestamp = int(time.time())
     g.nonce=generate_hash(f'{g.timestamp}+{session.get("session_id")}')
     g.db = db_session()
@@ -387,9 +392,6 @@ def before_request():
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
         url = request.url.replace("http://", "https://", 1)
         return redirect(url, code=301)
-
-    if not session.get("session_id"):
-        session["session_id"] = token_hex(16)
 
     #default user to none
     g.user=None
