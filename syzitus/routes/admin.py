@@ -1617,7 +1617,11 @@ def admin_demod_user():
 
     user=get_user(request.form.get("user"))
 
-    for mod in g.db.query(ModRelationship).filter_by(user_id=user.id, accepted=True):
+    guildlist=[]
+
+    for mod in g.db.query(ModRelationship).options(joinedload(ModRelationship.board)).filter_by(user_id=user.id, accepted=True):
+
+        guildlist.append(ma.board.name)
 
         ma=ModAction(
             user_id=g.user.id,
@@ -1633,6 +1637,10 @@ def admin_demod_user():
     g.db.commit()
 
     discord_log_event("Global De-Mod", user, g.user, admin_action=True)
+
+    note=f"A {app.config['SITE_NAME']} administrator has removed your guildmaster status. You are no longer a guildmaster in:\n\n* "
+    note += "\n* ".join(guildlist)
+    send_notification(user, note)
 
     return redirect(user.permalink)
 
