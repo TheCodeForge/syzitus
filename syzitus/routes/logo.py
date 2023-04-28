@@ -1,11 +1,10 @@
-from flask import g, session, abort, render_template, jsonify, send_file, redirect
+from flask import g, session, abort, jsonify, send_file, redirect
 import PIL
 from PIL import ImageFont, ImageDraw
 from werkzeug.security import safe_join
 from io import BytesIO
 
 from syzitus.helpers.wrappers import *
-from syzitus.helpers.markdown import *
 from syzitus.classes import *
 from syzitus.mail import *
 from syzitus.__main__ import app, limiter, debug, cache
