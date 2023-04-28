@@ -707,7 +707,7 @@ class Submission(Base, standard_mixin, age_mixin, score_mixin, fuzzing_mixin):
         self.score_activity=self.rank_activity
         self.score_best = self.rank_best
 
-        self.scores_last_updated_utc = int(time.time())
+        self.scores_last_updated_utc = g.timestamp
     
 # class SaveRelationship(Base, Stndrd):
 

@@ -22,6 +22,7 @@ class Board(Base, standard_mixin, age_mixin):
     name = Column(String) #trigram index below
     created_utc = Column(Integer)
     creator_id=Column(Integer, ForeignKey("users.id"))
+    rank_last_updated_utc=Column(Integer, default=0)
 
     #administrative variables
     is_banned=Column(Boolean, default=False)
@@ -679,3 +680,8 @@ class Board(Base, standard_mixin, age_mixin):
     def subcat(self):
         return SubCategory(id=self.subcat_id)
     
+
+    def update_scores(self):
+        self.rank_last_updated_utc=g.timestamp
+        self.rank_trending=self.trending_rank
+        self.stored_subscriber_count=self.subscriber_count

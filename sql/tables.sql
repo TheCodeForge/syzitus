@@ -223,6 +223,7 @@ CREATE TABLE public.boards (
     trending_rank float8 NULL,
     subcat_id int4 NULL,
     is_locked bool NULL,
+    rank_last_updated_utc int4 NOT NULL,
     CONSTRAINT boards_pkey PRIMARY KEY (id),
     CONSTRAINT boards_creator_id_fkey FOREIGN KEY (creator_id) REFERENCES public.users(id)
 );

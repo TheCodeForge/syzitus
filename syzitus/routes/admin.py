@@ -1558,19 +1558,19 @@ def admin_nuke_user():
     g.db.commit()
 
 
-    post_flags=select(Flag).filter(
+    post_flags=g.db.query(Flag).filter(
                 Flag.post_id.in_(
                     select(Submission.id).filter(Submission.author_id==user.id)
                     ),
                 Flag.resolution_notif_sent==False
-        )
+        ).all()
 
-    comment_flags=select(CommentFlag).filter(
-                CommentFlag.post_id.in_(
+    comment_flags=g.db.query(CommentFlag).filter(
+                CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
                 CommentFlag.resolution_notif_sent==False
-        )
+        ).all()
  
 
     post_users=g.db.query(User).filter(
@@ -1581,17 +1581,17 @@ def admin_nuke_user():
                     ),
                 Flag.resolution_notif_sent==False)
             )
-        )
+        ).all()
     
     comment_users=g.db.query(User).filter(
         User.id.in_(
             select(CommentFlag.user_id).filter(
-                CommentFlag.post_id.in_(
+                CommentFlag.comment_id.in_(
                     select(Comment.id).filter(Comment.author_id==user.id)
                     ),
                 CommentFlag.resolution_notif_sent==False)
             )
-        )
+        ).all()
 
     for flagging_user in post_users:
         send_notification(flagging_user, f"A post you reported has been removed. Thank you for your help in keeping {app.config['SITE_NAME']} safe.")

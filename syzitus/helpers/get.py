@@ -894,6 +894,16 @@ def get_boards(bids, graceful=False):
             abort(404)
             
     output=sorted(output, key=lambda x:bids.index(x.id))
+
+    any_updated=False
+    for board in output:
+        if g.timestamp-board.rank_last_updated_utc >= 3600: # 1hr
+            board.update_scores()
+            any_updated=True
+            g.db.add(board)
+
+    if any_updated:
+        g.db.commit()
     
     return output
 
