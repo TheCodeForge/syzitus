@@ -13,7 +13,6 @@ from collections import deque
 from psycopg2.errors import UndefinedColumn
 from sys import getsizeof
 import time
-from syzitus.helpers.security import generate_hash
 
 from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
@@ -300,6 +299,7 @@ def debug(text):
         print(text)
 
 # import and bind all routing functions
+from syzitus.helpers.security import generate_hash
 import syzitus.classes
 from syzitus.routes import *
 import syzitus.helpers.jinja2
