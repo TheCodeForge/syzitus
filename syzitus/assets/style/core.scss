@@ -2628,8 +2628,6 @@ ul.comment-section {
     font-size: 0;
 }
 
-
-
 .splash-overlay {
     position: absolute;
     top: 0;
@@ -2645,7 +2643,7 @@ ul.comment-section {
     height: 100%;
     width: 100%;
     background-size: cover;
-    background-position: bottom;
+    background-position: center;
     object-fit: cover;
 }
 
