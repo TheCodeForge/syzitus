@@ -11,21 +11,7 @@ from syzitus.__main__ import app, cache
 # Errors
 
 
-def error_wrapper(f):
-
-    def wrapper(*args, **kwargs):
-
-        resp=make_response(f(*args, **kwargs))
-
-        return resp
-
-    wrapper.__name__=f.__name__
-    return wrapper
-
-
-
 @app.errorhandler(401)
-@error_wrapper
 @api()
 def error_401(e):
 
@@ -39,7 +25,6 @@ def error_401(e):
            }
 
 @app.errorhandler(PaymentRequired)
-@error_wrapper
 @api()
 def error_402(e):
     return{"html": lambda: (render_template('errors/402.html'), 402),
@@ -47,7 +32,6 @@ def error_402(e):
            }
 
 @app.errorhandler(403)
-@error_wrapper
 @api()
 def error_403(e):
     return{"html": lambda: (render_template('errors/403.html'), 403),
@@ -57,7 +41,6 @@ def error_403(e):
 
 @app.errorhandler(404)
 @auth_desired
-@error_wrapper
 @api()
 def error_404(e):
 
@@ -72,7 +55,6 @@ def error_404(e):
 
 
 @app.errorhandler(405)
-@error_wrapper
 @api()
 def error_405(e):
     return{"html": lambda: (render_template('errors/405.html'), 405),
@@ -81,7 +63,6 @@ def error_405(e):
 
 
 @app.errorhandler(409)
-@error_wrapper
 @api()
 def error_409(e):
     return{"html": lambda: (render_template('errors/409.html'), 409),
@@ -90,7 +71,6 @@ def error_409(e):
 
 
 @app.errorhandler(410)
-@error_wrapper
 @api()
 def error_410(e):
     return{"html": lambda: (render_template('errors/410.html'), 410),
@@ -99,7 +79,6 @@ def error_410(e):
 
 
 @app.errorhandler(413)
-@error_wrapper
 @api()
 def error_413(e):
     return{"html": lambda: (render_template('errors/413.html'), 413),
@@ -107,7 +86,6 @@ def error_413(e):
            }
 
 @app.errorhandler(418)
-@error_wrapper
 @api()
 def error_418(e):
     return{"html": lambda: (render_template('errors/418.html'), 418),
@@ -116,7 +94,6 @@ def error_418(e):
 
 
 @app.errorhandler(422)
-@error_wrapper
 @api()
 def error_422(e):
     return{"html": lambda: (render_template('errors/422.html'), 422),
@@ -125,7 +102,6 @@ def error_422(e):
 
 
 @app.errorhandler(429)
-@error_wrapper
 @api()
 def error_429(e):
 
@@ -163,7 +139,6 @@ def error_429(e):
 
 
 @app.errorhandler(451)
-@error_wrapper
 @api()
 def error_451(e):
     return{"html": lambda: (render_template('errors/451.html'), 451),
@@ -172,7 +147,6 @@ def error_451(e):
 
 
 @app.errorhandler(500)
-@error_wrapper
 @api()
 def error_500(e):
     try:
@@ -185,7 +159,6 @@ def error_500(e):
            }
 
 @app.errorhandler(503)
-@error_wrapper
 @api()
 def error_503(e):
     try:
