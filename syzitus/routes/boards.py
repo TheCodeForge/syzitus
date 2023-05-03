@@ -183,7 +183,9 @@ Optional form data:
 
 
     if not g.user.can_make_guild:
-        return jsonify({"error": f'You need {app.config["GUILD_CREATION_REQ"]} Reputation before you can make a Guild.'}), 401
+        if not g.user.can_join_gms:
+            jsonify({"error": f'You already lead the maximum number of guilds.'}), 401
+        return jsonify({"error": f'{app.config["GUILD_CREATION_REQ"]} Reputation before you can make a Guild.'}), 401
 
     board_name = request.form.get("name")
     board_name = board_name.lstrip("+")
