@@ -3,7 +3,6 @@ from werkzeug.security import generate_password_hash
 from os import environ
 import time
 from random import uniform
-#import gevent
 
 from syzitus.__main__ import app
 

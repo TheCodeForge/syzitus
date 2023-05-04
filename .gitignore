@@ -115,5 +115,4 @@ local.txt
 #alembic
 ruqquscache/*
 alembic.ini
-alembic.ini
 *.ini
