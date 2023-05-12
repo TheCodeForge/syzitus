@@ -12,8 +12,8 @@ from re import search as re_search
 def get_user(username, graceful=False):
 
     username = username.replace('\\', '')
-    username = username.replace('_', '\_')
-    username = username.replace('%', '')
+    username = username.replace('_', r'\_')
+    username = username.replace('%', r'\%')
 
 
     if g.get('user'):

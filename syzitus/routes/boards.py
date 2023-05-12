@@ -1593,6 +1593,7 @@ Optional query parameters
 @auth_required
 @is_guildmaster("access")
 @api("read", "guildmaster")
+@per_page
 def board_about_contributors(guildname, board):
     """
 View guild contributor list.
