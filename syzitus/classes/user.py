@@ -1514,6 +1514,7 @@ class User(Base, standard_mixin, age_mixin):
         self.unban_utc = 0
 
         delete_role(self, "banned")
+        add_role(self, "member")
 
         g.db.add(self)
         
