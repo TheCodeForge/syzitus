@@ -12,6 +12,7 @@ User-Agent: AHC
 User-Agent: AhrefsBot
 User-Agent: AwarioSmartBot
 User-Agent: CCBot
+User-Agent: DataForSeoBot
 User-Agent: DotBot
 User-Agent: Huaweisymantecspider
 User-Agent: IonCrawl
