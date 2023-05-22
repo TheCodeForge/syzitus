@@ -386,7 +386,7 @@ def before_request():
             g.db.ua=ua_ban
             g.is_archive=True
     elif ua_ban and request.path != "/robots.txt":
-        return ua_ban.mock, ua_ban.status_code
+        return ua_ban.__dict__.get("mock",""), ua_ban.status_code
 
     if app.config["FORCE_HTTPS"] and request.url.startswith(
             "http://") and "localhost" not in app.config["SERVER_NAME"]:
