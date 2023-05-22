@@ -102,7 +102,7 @@ def notifications_posts():
             }
 
 @cache.memoize()
-def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
+def frontlist(sort=None, page=1, per_page=25, nsfw=False, nsfl=False,
               t=None, categories=[], filter_words='', **kwargs):
 
     # cutoff=g.timestamp-(60*60*24*30)
@@ -272,7 +272,7 @@ def frontlist(sort=None, page=1, nsfw=False, nsfl=False,
     else:
         abort(400)
 
-    return [x.id for x in posts.offset(25 * (page - 1)).limit(26).all()]
+    return [x.id for x in posts.offset(per_page * (page - 1)).limit(per_page+1).all()]
     
 
 @app.route("/", methods=["GET"])
@@ -515,6 +515,7 @@ def subcat(name):
         for name in name.split("+"):
             ids += frontlist(sort=sort,
                             page=page,
+                            per_page=g.per_page,
                             nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
                             nsfl=(g.user and g.user.show_nsfl),
                             t=t,
@@ -528,6 +529,7 @@ def subcat(name):
     else:
         ids = frontlist(sort=sort,
                         page=page,
+                            per_page=g.per_page,
                         nsfw=(g.user and g.user.over_18 and not g.user.filter_nsfw),
                         nsfl=(g.user and g.user.show_nsfl),
                         t=t,
