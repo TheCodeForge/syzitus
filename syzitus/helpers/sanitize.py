@@ -113,7 +113,7 @@ TLDS =sorted(
             TLDS + 
             """
             app bar best bio blogs club codes dev fit fun 
-            game guru ink joy life link live lol menu monster 
+            game guru ink joy life link live lol menu moe monster 
             network news ngo ong pics quest shop site space wiki
             """.split())
         ), 
