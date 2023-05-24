@@ -422,6 +422,8 @@ Optional file data:
                 g.user.ban(days=7, reason="Engaging in illegal activity")
             elif domain_obj.reason==7:
                 g.user.ban(reason="Sexualizing minors")
+            else:
+                return jsonify({"error":f"{domain_obj.domain} is banned. Remove that link and try again."})
 
             return jsonify({"redirect":"/notifications"}), 301
 
@@ -556,16 +558,14 @@ Optional file data:
     bans = filter_comment_html(body_html)
     if bans:
         ban = bans[0]
-        reason = f"Remove the {ban.domain} link from your post and try again."
-        if ban.reason:
-            reason += f" {ban.reason_text}"
             
         #auto ban for digitally malicious content
         if any([x.reason==4 for x in bans]):
             g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
-            abort(403)
-            
-        return jsonify({"redirect":"/notifications"}), 301
+            return jsonify({"redirect":"/notifications"}), 301
+
+        
+        return jsonify({"error":f"{ban.domain} is banned. Remove that link and try again."})
 
     # check spam
     soup = BeautifulSoup(body_html, features="html.parser")
