@@ -347,7 +347,7 @@ Optional file data:
         elif any([x.reason==9 for x in bans]):
             g.user.ban(days=7, reason="Engaging in illegal activity")
         else:
-            return jsonify({"error":f"{domain_obj.domain} is banned. Remove that link and try again."})
+            return jsonify({"error":f"{domain_obj.domain} is banned. Remove that link and try again."}), 403
         
         return jsonify({"redirect": "/notifications"}), 301
 

@@ -423,7 +423,7 @@ Optional file data:
             elif domain_obj.reason==7:
                 g.user.ban(reason="Sexualizing minors")
             else:
-                return jsonify({"error":f"{domain_obj.domain} is banned. Remove that link and try again."})
+                return jsonify({"error":f"{domain_obj.domain} is banned. Remove that link and try again."}), 403
 
             return jsonify({"redirect":"/notifications"}), 301
 
@@ -564,8 +564,8 @@ Optional file data:
             g.user.ban(days=30, reason="Digitally malicious content is not allowed.")
             return jsonify({"redirect":"/notifications"}), 301
 
-        
-        return jsonify({"error":f"{ban.domain} is banned. Remove that link and try again."})
+
+        return jsonify({"error":f"{ban.domain} is banned. Remove that link and try again."}), 403
 
     # check spam
     soup = BeautifulSoup(body_html, features="html.parser")
