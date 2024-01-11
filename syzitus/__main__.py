@@ -14,7 +14,6 @@ from psycopg2.errors import UndefinedColumn
 from sys import getsizeof
 import time
 
-from flaskext.markdown import Markdown
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError, StatementError, InternalError, IntegrityError, ProgrammingError
 from sqlalchemy.orm import Session, sessionmaker, scoped_session
@@ -204,7 +203,6 @@ app.config["EVENT_SNOWBALL_FIGHT"]=bool(int(environ.get("EVENT_SNOWBALL_FIGHT", 
 #random other configs
 app.config['BYPASS_CATEGORIES']=bool(int(environ.get("BYPASS_CATEGORIES", 0)))
 
-Markdown(app)
 cache = Cache(app)
 
 if bool(int(environ.get("MINIFY",0))):
