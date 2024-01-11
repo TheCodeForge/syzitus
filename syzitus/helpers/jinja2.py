@@ -6,6 +6,7 @@ from urllib.parse import quote_plus
 from io import BytesIO
 from qrcode import QRCode
 from base64 import b64encode
+import mistletoe
 
 from syzitus.classes.user import User
 from .get import *
@@ -137,3 +138,9 @@ def event_faction_score(x):
         )
 
     return int(post_karma+comment_karma)
+
+    
+
+@app.template_filter('markdown')
+def markdown_filter(x):
+    return mistletoe.markdown(x.lstrip().rstrip())
